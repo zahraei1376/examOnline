@@ -145,8 +145,8 @@ const TrueAndFalse = (props) => {
         // }
     };
     ////////////////////////////////////
-    function hashFile(file, chunkSize, blobSlice) {
-      return new Promise((resolve, reject) => {
+    async function hashFile(file, chunkSize, blobSlice) {
+      return await new Promise((resolve, reject) => {
         const chunks = Math.ceil(file.size / chunkSize);
         let currentChunk = 0;
         const spark = new SparkMD5.ArrayBuffer();
@@ -184,7 +184,7 @@ const TrueAndFalse = (props) => {
     }
     ///////////////////////////////////////////
   
-    const uploadfileToserver = async (file, format) => {
+    const uploadfileToserver = async (file) => {
       const chunkSize = 8 * 1024 * 1024; // The size of each chunk, set to 1 Megabyte
       var blobSlice =
         File.prototype.slice ||
