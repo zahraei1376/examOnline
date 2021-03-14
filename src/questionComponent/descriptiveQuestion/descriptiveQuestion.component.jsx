@@ -82,7 +82,7 @@ const DescriptiveQuestion = (props) => {
               color: '#000'
             },
             headerStyle: {
-              backgroundColor: '#039be5',
+              backgroundColor: '#b2dfdb',
             }
             
           }}

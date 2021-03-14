@@ -83,7 +83,7 @@ const Vacancy = (props) => {
               color: '#000'
             },
             headerStyle: {
-              backgroundColor: '#039be5',
+              backgroundColor: '#00897b',
             }
             
           }}

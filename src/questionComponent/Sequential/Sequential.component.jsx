@@ -82,7 +82,7 @@ const Sequential = (props) => {
               color: '#000'
             },
             headerStyle: {
-              backgroundColor: '#039be5',
+              backgroundColor: '#26a69a',
             }
             
           }}

@@ -15,12 +15,13 @@ export var loadVariable = {
 
 const Questions = () =>{
   // const [innerData, setInnerData] = useState([]);
+  const [typeQuestion,setTypeQuestion] =useState('');
   var tableRef = React.createRef();
-  // useEffect(()=>{
-  //   // fetchData();
-  //   console.log('reloadddddddddd');
+  useEffect(()=>{
+    // fetchData();
+    console.log('typeQuestion' , typeQuestion);
     
-  // })
+  },[typeQuestion])
   ///////////////////////////////////
   async function fetchData(){
     await fetch('http://localhost:9001',{
@@ -62,27 +63,11 @@ const Questions = () =>{
   ///////////////////////////////////////////////
  
   const [data, setData] = useState([
-    // { questionID: '1', },
-    // { questionID: '2', },
-    // { name: '3', },
-    // { name: '4', },
     { questionID: '1',axamQuestions_id:'111',question:'zzzz',},
     { questionID: '2',axamQuestions_id:'222',question:'zzzz',},
     { questionID: '3',axamQuestions_id:'333',question:'zzzz',},
   ]);
-  // const [data, setData] = useState([
-  //   // { questionID: '1', },
-  //   // { questionID: '2', },
-  //   // { name: '3', },
-  //   // { name: '4', },
-  //   // { name: 'Mehmet', surname: 'Baran', birthYear: 1987, birthCity: 63 },
-  //   //   { name: 'Zerya Betül', surname: 'Baran', birthYear: 2017, birthCity: 34 },
-  // ]);
-  // const [count,setCount]=useState(1);
-  // useEffect(()=>{
-  //   console.log('count',count);
-    
-  // },[count]);
+  /////////////////////////////////////////
 
   function createArray(item){
     var tempAray=[];
@@ -94,44 +79,30 @@ const Questions = () =>{
     <MaterialTable
       title="سوالات"
       tableRef={tableRef}
+      options={{
+        search: true,
+        actionsColumnIndex: -1,
+        actionsCellStyle:{
+          padding:'0 40px',
+        },
+        toolbarButtonAlignment:"right", // here is the option to change toolbar buttons' alignment
+        cellStyle: {
+          textAlign:'center',
+        },
+        headerStyle: {
+          textAlign:'center',
+        }
+      }}
+      
       columns={[
-        { title: 'questionID', field: 'questionID' },
-        // { title: 'axamQuestions_id', field: 'axamQuestions_id' },
-        // { title: 'question', field: 'question' },
-        //////////////////////////
-        // { title: 'Surname', field: 'surname' },
-        // { title: 'Birth Year', field: 'birthYear', type: 'numeric' },
-        // {
-        //   title: 'Birth Place',
-        //   field: 'birthCity',
-        //   lookup: { 34: 'İstanbul', 63: 'Şanlıurfa' },
-        // },
+        // { title: 'آیدی سوال', field: 'questionID' },
       ]}
       data={data}
       detailPanel={[
         {
-          tooltip: 'سوال تشریحی',
-          render: rowData => {
-            return (
-              <div
-                style={{
-                  // fontSize: 100,
-                  textAlign: 'center',
-                  color: 'white',
-                  backgroundColor: '#43A047',
-                }}
-              >
-                {(() => {
-                    return <MultipleChoice rowData={createArray(rowData)}/>
-                })()}
-
-              </div>
-            )
-          },
-        },
-        {
           icon: 'account_circle',
-          tooltip: 'Show Surname',
+          openIcon: 'favorite',
+          tooltip: 'سوال تشریحی',
           render: rowData => {
             return (
               <div
@@ -144,16 +115,39 @@ const Questions = () =>{
               >
                 {/* {rowData.question} */}
                 {(() => {
-                    return <DescriptiveQuestion rowData={createArray(rowData)}/>
+                    setTypeQuestion(1);
+                    return <DescriptiveQuestion rowData={createArray(rowData)} typeQuestion={typeQuestion} />
                 })()}
               </div>
             )
           },
         },
         {
+          tooltip: 'سوال چهار گزینه ای',
+          openIcon: 'favorite',
+          render: rowData => {
+            return (
+              <div
+                style={{
+                  // fontSize: 100,
+                  textAlign: 'center',
+                  color: 'white',
+                  backgroundColor: '#43A047',
+                }}
+              >
+                {(() => {
+                  setTypeQuestion(2);
+                    return <MultipleChoice rowData={createArray(rowData)} typeQuestion={typeQuestion}/>
+                })()}
+
+              </div>
+            )
+          },
+        },
+        {
           icon: 'favorite_border',
-          // openIcon: 'favorite',
-          tooltip: 'Show Both',
+          openIcon: 'favorite',
+          tooltip: 'سوال دو گزینه ای',
           render: rowData => {
             return (
               <div
@@ -167,7 +161,8 @@ const Questions = () =>{
                 {/* {rowData.question} {rowData.axamQuestions_id} */}
                 
                 {(() => {
-                    return <TrueAndFalse rowData={createArray(rowData)}/>
+                  setTypeQuestion(3);
+                    return <TrueAndFalse rowData={createArray(rowData)} typeQuestion={typeQuestion}/>
                 })()}
               </div>
             )
@@ -175,8 +170,8 @@ const Questions = () =>{
         },
         {
           icon: 'favorite_border',
-          // openIcon: 'favorite',
-          tooltip: 'Show Both',
+          openIcon: 'favorite',
+          tooltip: 'سوال جای خالی',
           render: rowData => {
             return (
               <div
@@ -190,7 +185,8 @@ const Questions = () =>{
                 {/* {rowData.question} {rowData.axamQuestions_id} */}
                 
                 {(() => {
-                    return <Vacancy rowData={createArray(rowData)}/>
+                  setTypeQuestion(4);
+                    return <Vacancy rowData={createArray(rowData)} typeQuestion={typeQuestion}/>
                 })()}
               </div>
             )
@@ -198,8 +194,8 @@ const Questions = () =>{
         },
         {
           icon: 'favorite_border',
-          // openIcon: 'favorite',
-          tooltip: 'Show Both',
+          openIcon: 'favorite',
+          tooltip: 'سوال تطبیقی',
           render: rowData => {
             return (
               <div
@@ -213,7 +209,8 @@ const Questions = () =>{
                 {/* {rowData.question} {rowData.axamQuestions_id} */}
                 
                 {(() => {
-                    return <Comparative rowData={createArray(rowData)}/>
+                  setTypeQuestion(5);
+                    return <Comparative rowData={createArray(rowData)} typeQuestion={typeQuestion}/>
                 })()}
               </div>
             )
@@ -221,8 +218,8 @@ const Questions = () =>{
         },
         {
           icon: 'favorite_border',
-          // openIcon: 'favorite',
-          tooltip: 'Show Both',
+          openIcon: 'favorite',
+          tooltip: 'سوال ترتیبی',
           render: rowData => {
             return (
               <div
@@ -236,7 +233,8 @@ const Questions = () =>{
                 {/* {rowData.question} {rowData.axamQuestions_id} */}
                 
                 {(() => {
-                    return <Sequential rowData={createArray(rowData)}/>
+                  setTypeQuestion(6);
+                    return <Sequential rowData={createArray(rowData)} typeQuestion={typeQuestion}/>
                 })()}
               </div>
             )
@@ -244,7 +242,7 @@ const Questions = () =>{
         },
         
       ]}
-        editable={{
+      editable={{
             onRowAdd: newData =>
               new Promise((resolve, reject) => {
                 setTimeout(() => {
@@ -253,17 +251,17 @@ const Questions = () =>{
                   resolve();
                 }, 1000)
               }),
-            // onRowUpdate: (newData, oldData) =>
-            //   new Promise((resolve, reject) => {
-            //     setTimeout(() => {
-            //       const dataUpdate = [...data];
-            //       const index = oldData.tableData.id;
-            //       dataUpdate[index] = newData;
-            //       setData([...dataUpdate]);
+            onRowUpdate: (newData, oldData) =>
+              new Promise((resolve, reject) => {
+                setTimeout(() => {
+                  const dataUpdate = [...data];
+                  const index = oldData.tableData.id;
+                  dataUpdate[index] = newData;
+                  setData([...dataUpdate]);
     
-            //       resolve();
-            //     }, 1000)
-            //   }),
+                  resolve();
+                }, 1000)
+              }),
             onRowDelete: oldData =>
               new Promise((resolve, reject) => {
                 setTimeout(() => {

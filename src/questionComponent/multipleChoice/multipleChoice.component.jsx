@@ -82,7 +82,7 @@ const MultipleChoice = (props) => {
               color: '#000'
             },
             headerStyle: {
-              backgroundColor: '#039be5',
+              backgroundColor: '#4db6ac',
             }
             
           }}

@@ -82,7 +82,7 @@ const Comparative = (props) => {
               color: '#000'
             },
             headerStyle: {
-              backgroundColor: '#039be5',
+              backgroundColor: '#004d40',
             }
             
           }}
