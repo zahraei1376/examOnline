@@ -1,21 +1,27 @@
 import React ,{useState , useEffect} from "react";
+import SparkMD5 from 'spark-md5';
+import { v4 as uuidv4 } from 'uuid';
+import axios from 'axios';
 import MaterialTable from 'material-table';
 import TextField from '@material-ui/core/TextField';
 import {Input,Button} from '@material-ui/core';
 import {loadVariable} from '../questionComponent';
 // import AddIcon from '@material-ui/icons/Add';
-import CloudUploadIcon from '@material-ui/icons/CloudUpload';
+// import BackupIcon from '@material-ui/icons/Backup';
+// import {CloudUploadIcon} from '@material-ui/icons';
 // var load = false;
+const graphql_server_uri ='/qraphql';
 
 const TrueAndFalse = (props) => {
     const [innerData, setInnerData] = useState([]);
     /////////////////////////////////////////
     // const [imageQuestion, setImageQuestion] = useState(false);
     // const [QuestionPic, setQuestionPic] = useState(false);
-    const [textImage, setTextImage] = useState(false);
-    const [questionImage, setQuestionImage] = useState(false);
-    const [selectedFile, SetselectedFile] = React.useState(null);
-    const [mimeTypeFile, SetMimeTypeFile] = React.useState('');
+    const [textImage, setTextImage] = useState(false); //pic with text
+    const [questionImage, setQuestionImage] = useState(false); //pic instanse text
+    const [selectedFile, SetselectedFile] = useState(null);
+    const [mimeTypeFile, SetMimeTypeFile] = useState('');
+    var format = '';
 
     useEffect(()=>{
 
@@ -34,7 +40,7 @@ const TrueAndFalse = (props) => {
         var file = myFile;
         var fileName = file.name;
         var fileIdL = fileName.split('.');
-        const format = fileIdL[fileIdL.length - 1].toLowerCase();
+        format = fileIdL[fileIdL.length - 1].toLowerCase();
         if (file.size < 10485760) {
             if (format == 'png' || format == 'jpg' || format == 'jpeg') {
             //   SetselectedFile(file);
@@ -137,8 +143,147 @@ const TrueAndFalse = (props) => {
         // } else {
         //     alert('حجم فایل ارسالی باید کمتر از 10 مگابایت باشد!!!');
         // }
-      };
+    };
     ////////////////////////////////////
+    function hashFile(file, chunkSize, blobSlice) {
+      return new Promise((resolve, reject) => {
+        const chunks = Math.ceil(file.size / chunkSize);
+        let currentChunk = 0;
+        const spark = new SparkMD5.ArrayBuffer();
+        const fileReader = new FileReader();
+        function loadNext() {
+          const start = currentChunk * chunkSize;
+          const end =
+            start + chunkSize >= file.size ? file.size : start + chunkSize;
+          fileReader.readAsArrayBuffer(blobSlice.call(file, start, end));
+        }
+        fileReader.onload = e => {
+          spark.append(e.target.result); // Append array buffer
+          currentChunk += 1;
+          if (currentChunk < chunks) {
+            loadNext();
+          } else {
+            console.log('finished loading');
+            const result = spark.end();
+            // If result s are used as hash values only, if the contents of the file are the same and the names are different
+            // You cannot keep two files if you want to.So add the file name.
+            const sparkMd5 = new SparkMD5();
+            sparkMd5.append(result);
+            sparkMd5.append(file.name);
+            const hexHash = sparkMd5.end();
+            resolve(hexHash);
+          }
+        };
+        fileReader.onerror = () => {
+          console.warn('File reading failed!');
+        };
+        loadNext();
+      }).catch(err => {
+        console.log(err);
+      });
+    }
+    ///////////////////////////////////////////
+  
+    const uploadfileToserver = async (file, format) => {
+      const chunkSize = 8 * 1024 * 1024; // The size of each chunk, set to 1 Megabyte
+      var blobSlice =
+        File.prototype.slice ||
+        File.prototype.mozSlice ||
+        File.prototype.webkitSlice;
+      ///////////////
+      ////////////////////////////////////////////////
+
+      if (!file) {
+        alert('فایلی وجود ندارد!!!');
+        return;
+      }
+      ///////////////////////////////
+      var maxUploadTries = 5;
+      var count = 0;
+      const sendToServerFilePart = async (
+        data,
+        axiosOptions,
+        maxUploadTries,
+      ) => {
+        var tryNum = 0;
+        try {
+          await axios.post(
+            '/fileQuestion/uploadQuestion',
+            data,
+            axiosOptions,
+          );
+        } catch {
+          if (tryNum < maxUploadTries) {
+            tryNum++;
+            sendToServerFilePart(data, axiosOptions, maxUploadTries);
+          } else {
+            alert('پس از مدتی مجددا امتحان نمایید!!!');
+          }
+        }
+      };
+
+      const blockCount = Math.ceil(file.size / chunkSize); // Total number of slices
+      const hash = await hashFile(file, chunkSize, blobSlice); //File hash
+      for (let i = 0; i < blockCount; i++) {
+        count++;
+        const start = i * chunkSize;
+        const end = Math.min(file.size, start + chunkSize);
+        var fileSlice = blobSlice.call(file, start, end);
+        const axiosOptions = {
+          timeout: 1800000,
+          onUploadProgress: ProgressEvent => {
+            // setCompleted(
+            //   (ProgressEvent.loaded /
+            //     ProgressEvent.total /
+            //     blockCount) *
+            //   100,
+            // );
+            console.log(blockCount, i, ProgressEvent, file);
+          },
+        };
+        const form = new FormData();
+        form.append('file', fileSlice);
+        form.append('name', file.name);
+        form.append('total', blockCount);
+        form.append('index', i);
+        form.append('size', file.size);
+        form.append('hash', hash);
+        await sendToServerFilePart(form, axiosOptions, maxUploadTries);
+      }
+      if (count == blockCount) {
+        const data = {
+          size: file.size,
+          name: file.name,
+          total: blockCount,
+          hash,
+        };
+        return await axios
+          .post('/fileQuestion/merge_chunks', data, { timeout: 180000 })
+          .then(res => {
+            console.log('Upload Successful');
+            // alert(res.data);
+            // alert(res.data.seccess);
+            // alert(res.status);
+            // alert(typeof res.status);
+            // alert(res.statusCode);
+            // alert(res.statusText);
+            if (res.status == 200) {
+              return true;
+            } else {
+              return false;
+            }
+            // alert(file.name);
+            // SetselectedFileName(file.name);
+            // return file.name;
+          })
+          .catch(err => {
+            alert('مجددا تلاش کنید');
+            // alert(err);
+          });
+      }
+          ////////////////////////////////////////////
+    };
+    //////////////////////////////////////////
     const [innerColumns, setInnerColumns] = useState([
         // {title:'ردیف',field:'questionID' , editable: 'never'},
         // {
@@ -206,7 +351,7 @@ const TrueAndFalse = (props) => {
                 />
 
                 <Button color="promary" variant="contained" component="span">
-                    <CloudUploadIcon/>
+                    {/* <BackupIcon/> */}
                 </Button>
             </label>
           ),
@@ -421,7 +566,7 @@ const TrueAndFalse = (props) => {
                 />
 
                 <Button color="promary" variant="contained" component="span">
-                    <CloudUploadIcon/>
+                    {/* <BackupIcon/> */}
                 </Button>
             </label>
           ),
@@ -513,35 +658,12 @@ const TrueAndFalse = (props) => {
           // }
         ]}
         editable={{
-          // onRowUpdateCancelled: rowData => {
-          //   loadVariable.load = false;
-          //   console.log('onRowUpdateCancelled',loadVariable.load);
-          // },
-          // onEditingCanceled :(mode, rowData) => {
-              
-          //   // this.cancelAdd();
 
-          //   // props.onEditingCanceled(mode);
-          //   loadVariable.load = false;
-          //   console.log('onRowUpdateCancelled',loadVariable.load);
-          // },
           onRowUpdateCancelled: rowData => {
             loadVariable.load = true;
             console.log('onRowUpdateCancelled',loadVariable.load);
           },
-          // onRowDeleteCancelled: rowData => {
-          //   loadVariable.load = true;
-          //   console.log('onRowDeleteCancelled',loadVariable.load);
-          // },
-        //   onRowAdd: newData =>
-        //     new Promise((resolve, reject) => {
-        //       setTimeout(() => {
-        //         setInnerData([...innerData, newData]);
-                
-        //         resolve();
-                
-        //       }, 1000)
-        //     }),
+
           onRowUpdate: (newData, oldData) =>
             new Promise((resolve, reject) => {
               setTimeout(() => {
@@ -555,34 +677,9 @@ const TrueAndFalse = (props) => {
                   ) {
                     if (
                       selectedFile &&
-                      ((imageQuestion == true && QuestionPic == true) ||
-                        (imageQuestion == true && QuestionPic == false))
+                      ((textImage == true && questionImage == true) ||
+                        (questionImage == true && textImage == false))
                     ) {
-                    //   var fileIdL = selectedFile.name.split('.');
-                    //   const format = fileIdL[fileIdL.length - 1].toLowerCase();
-                    //   ///////////////
-                    //   var mimetype = '';
-                    //   ///////////////////////////////
-                    //   switch (format) {
-                    //     case 'jpeg':
-                    //       // JPEG Image
-                    //       mimetype = 'image/jpeg';
-                    //       break;
-                    //     case 'jpg':
-                    //       // JPEG Image
-                    //       mimetype = 'image/jpg';
-                    //       break;
-                    //     case 'jpgv':
-                    //       // JPGVideo
-                    //       mimetype = 'video/jpeg';
-                    //       break;
-                    //     case 'png':
-                    //       // Portable Network Graphics (PNG)
-                    //       mimetype = 'image/png';
-                    //       break;
-                    //     default:
-                    //       break;
-                    //   }
                       //////////////////////
                       var file = new File(
                         [selectedFile],
@@ -665,8 +762,6 @@ const TrueAndFalse = (props) => {
                       handleSendToserver();
                       async function handleSendToserver() {
                         var responseCode = await uploadfileToserver(file, format);
-                        // alert(responseCode);
-                        // alert(typeof responseCode);
                         if (file.name && responseCode) {
                           fetch(graphql_server_uri, {
                             method: 'POST',
@@ -676,8 +771,8 @@ const TrueAndFalse = (props) => {
                                           mutation{
                                               addNewQuestion(
                                                 axamQuestion_input: {
-                                                    questionID: "${questionId}"
-                                                      axamQuestions_id: "${axamIdProps}"
+                                                    questionID: "${'1'}"
+                                                      axamQuestions_id: "${'1'}"
                                                       question: "${''}"
                                                       question_link: "${file.name
                                 }"
@@ -702,10 +797,7 @@ const TrueAndFalse = (props) => {
                           })
                             .then(res => res.json())
                             .then(res => {
-                              // SetselectedFileName('');
-                              // setSumScore(prevState => prevState + parseFloat(newScore));
-                              setLoading(false);
-                              setImageQuestion(false);
+                              setQuestionImage(false);
                               if (
                                 res.data &&
                                 res.data.addNewQuestion
@@ -714,68 +806,68 @@ const TrueAndFalse = (props) => {
                               ) {
                                 // if (res.data.addNewQuestion && res.data.addNewQuestion.axamQuestions_id) {
                                 // setQuestionId(data.length)
-                                setQuestionId(prevState => prevState + 1);
+                                // setQuestionId(prevState => prevState + 1);
                                 // setMessage('اطلاعاتی به درستی ثبت شد');
                                 // setStatus(0);
                                 // setShowPopup(true);
-                                refteshData();
+                                // refteshData();
                                 // return res.data;
                               } else {
-                                setMessage('اطلاعاتی به درستی ثبت نشد');
-                                setStatus(1);
-                                setShowPopup(true);
-                                refteshData();
+                                alert('اطلاعاتی به درستی ثبت نشد');
+                                // setStatus(1);
+                                // setShowPopup(true);
+                                // refteshData();
                               }
                             });
                           // return { ...state, data };
                         } else {
-                          setLoading(false);
-                          setMessage('اطلاعاتی به درستی ثبت نشد');
-                          setStatus(1);
-                          setShowPopup(true);
-                          refteshData();
+                          // setLoading(false);
+                          alert('اطلاعاتی به درستی ثبت نشد');
+                          // setStatus(1);
+                          // setShowPopup(true);
+                          // refteshData();
                         }
                       }
                       // });
                     } else if (
                       selectedFile &&
-                      imageQuestion == false &&
-                      QuestionPic == true
+                      questionImage == false &&
+                      textImage == true
                     ) {
                       // setState(async(prevState) => {
                       //   const data = [...prevState.data];
                       //   data.push(newData);
-                      var fileIdL = selectedFile.name.split('.');
-                      const format = fileIdL[fileIdL.length - 1].toLowerCase();
-                      ///////////////
-                      var mimetype = '';
-                      ///////////////////////////////
-                      switch (format) {
-                        case 'jpeg':
-                          // JPEG Image
-                          mimetype = 'image/jpeg';
-                          break;
-                        case 'jpg':
-                          // JPEG Image
-                          mimetype = 'image/jpg';
-                          break;
-                        case 'jpgv':
-                          // JPGVideo
-                          mimetype = 'video/jpeg';
-                          break;
-                        case 'png':
-                          // Portable Network Graphics (PNG)
-                          mimetype = 'image/png';
-                          break;
-                        default:
-                          break;
-                      }
+                      // var fileIdL = selectedFile.name.split('.');
+                      // const format = fileIdL[fileIdL.length - 1].toLowerCase();
+                      // ///////////////
+                      // var mimetype = '';
+                      // ///////////////////////////////
+                      // switch (format) {
+                      //   case 'jpeg':
+                      //     // JPEG Image
+                      //     mimetype = 'image/jpeg';
+                      //     break;
+                      //   case 'jpg':
+                      //     // JPEG Image
+                      //     mimetype = 'image/jpg';
+                      //     break;
+                      //   case 'jpgv':
+                      //     // JPGVideo
+                      //     mimetype = 'video/jpeg';
+                      //     break;
+                      //   case 'png':
+                      //     // Portable Network Graphics (PNG)
+                      //     mimetype = 'image/png';
+                      //     break;
+                      //   default:
+                      //     break;
+                      // }
                       //////////////////////
                       var file = new File(
                         [selectedFile],
                         uuidv4() + `.${format}`,
                         {
-                          type: mimetype,
+                          type: mimeTypeFile,
                         },
                       );
   
@@ -862,8 +954,8 @@ const TrueAndFalse = (props) => {
                                           mutation{
                                               addNewQuestion(
                                                 axamQuestion_input: {
-                                                    questionID: "${questionId}"
-                                                      axamQuestions_id: "${axamIdProps}"
+                                                    questionID: "${'1'}"
+                                                      axamQuestions_id: "${'1'}"
                                                       question: "${newQuestion22}"
                                                       question_link: "${''}"
                                                       question__optionOne: "${newOption111}"
@@ -889,9 +981,9 @@ const TrueAndFalse = (props) => {
                             .then(res => {
                               // SetselectedFileName('');
                               // setSumScore(prevState => prevState + parseFloat(newScore));
-                              setLoading(false);
-                              setImageQuestion(false);
-                              setQuestionPic(false);
+                              // tesetLoading(false);
+                              setTextImage(false);
+                              setQuestionImage(false);
                               if (
                                 res.data &&
                                 res.data.addNewQuestion
@@ -900,26 +992,26 @@ const TrueAndFalse = (props) => {
                               ) {
                                 // if (res.data.addNewQuestion && res.data.addNewQuestion.axamQuestions_id) {
                                 // setQuestionId(data.length)
-                                setQuestionId(prevState => prevState + 1);
+                                // setQuestionId(prevState => prevState + 1);
                                 // setMessage('اطلاعاتی به درستی ثبت شد');
                                 // setStatus(0);
                                 // setShowPopup(true);
-                                refteshData();
+                                // refteshData();
                                 // return res.data;
                               } else {
-                                setMessage('اطلاعاتی به درستی ثبت نشد');
-                                setStatus(1);
-                                setShowPopup(true);
-                                refteshData();
+                                alert('اطلاعاتی به درستی ثبت نشد');
+                                // setStatus(1);
+                                // setShowPopup(true);
+                                // refteshData();
                               }
                             });
                           // return { ...prevState, data };
                         } else {
-                          setLoading(false);
-                          setMessage('اطلاعاتی به درستی ثبت نشد');
-                          setStatus(1);
-                          setShowPopup(true);
-                          refteshData();
+                          // setLoading(false);
+                          alert('اطلاعاتی به درستی ثبت نشد');
+                          // setStatus(1);
+                          // setShowPopup(true);
+                          // refteshData();
                         }
                         // else{
                         //   alert('نیست!!!!!');
@@ -1014,8 +1106,8 @@ const TrueAndFalse = (props) => {
                                           mutation{
                                               addNewQuestion(
                                                 axamQuestion_input: {
-                                                    questionID: "${questionId}"
-                                                      axamQuestions_id: "${axamIdProps}"
+                                                    questionID: "${'1'}"
+                                                      axamQuestions_id: "${'1'}"
                                                       question: "${newQuestion22}"
                                                       question_link: "${''}"
                                                       question__optionOne: "${newOption111}"
@@ -1040,9 +1132,9 @@ const TrueAndFalse = (props) => {
                         .then(res => res.json())
                         .then(res => {
                           // SetselectedFileName('');
-                          setLoading(false);
-                          setImageQuestion(false);
-                          setQuestionPic(false);
+                          // setLoading(false);
+                          setTextImage(false);
+                          setQuestionImage(false);
                           // setSumScore(prevState => prevState + parseFloat(newScore));
                           if (
                             res.data &&
@@ -1052,17 +1144,17 @@ const TrueAndFalse = (props) => {
                           ) {
                             // if (res.data.addNewQuestion && res.data.addNewQuestion.axamQuestions_id) {
                             // setQuestionId(data.length)
-                            setQuestionId(prevState => prevState + 1);
+                            // setQuestionId(prevState => prevState + 1);
                             // setMessage('اطلاعاتی به درستی ثبت شد');
                             // setStatus(0);
                             // setShowPopup(true);
-                            refteshData();
+                            // refteshData();
                             // return res.data;
                           } else {
-                            setMessage('اطلاعاتی به درستی ثبت نشد');
-                            setStatus(1);
-                            setShowPopup(true);
-                            refteshData();
+                            alert('اطلاعاتی به درستی ثبت نشد');
+                            // setStatus(1);
+                            // setShowPopup(true);
+                            // refteshData();
                           }
                           // return res.data;
                         });
@@ -1070,13 +1162,13 @@ const TrueAndFalse = (props) => {
                       // });
                     }
                   } else {
-                    setLoading(false);
-                    setImageQuestion(false);
-                    setQuestionPic(false);
-                    setMessage('ابتدا فیلد های موردنظر را پر کنید!!');
-                    setStatus(1);
-                    setShowPopup(true);
-                    refteshData();
+                    // setLoading(false);
+                    setTextImage(false);
+                    setQuestionImage(false);
+                    alert('ابتدا فیلد های موردنظر را پر کنید!!');
+                    // setStatus(1);
+                    // setShowPopup(true);
+                    // refteshData();
                   }
                 ////////////////////////////
                 dataUpdate[index] = newData;
