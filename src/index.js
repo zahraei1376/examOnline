@@ -3,11 +3,33 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import { ApolloProvider } from 'react-apollo';
+import {createHttpLink } from 'apollo-link-http';
+import { InMemoryCache } from 'apollo-cache-inmemory';
+import { ApolloClient } from 'apollo-boost';
+
+
+const cache =new InMemoryCache();
+
+const httpsLink = createHttpLink({
+  uri:'http://localhost:9001',
+  
+});
+
+
+const client =new ApolloClient({
+  link:httpsLink,
+  cache,
+})
+
 
 ReactDOM.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
+  <ApolloProvider client={client}>
+    <React.StrictMode>
+      <App />
+    </React.StrictMode>
+  </ApolloProvider>
+  ,
   document.getElementById('root')
 );
 

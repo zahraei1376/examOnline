@@ -1,7 +1,8 @@
 import React ,{useState , useEffect} from "react";
-import SparkMD5 from 'spark-md5';
+// import SparkMD5 from 'spark-md5';
 import { v4 as uuidv4 } from 'uuid';
-import axios from 'axios';
+import {UploadfileToserver} from '../uploadToserver/uploadToserver.component';
+// import axios from 'axios';
 import MaterialTable from 'material-table';
 import TextField from '@material-ui/core/TextField';
 import {Input,Button} from '@material-ui/core';
@@ -145,144 +146,7 @@ const TrueAndFalse = (props) => {
         // }
     };
     ////////////////////////////////////
-    async function hashFile(file, chunkSize, blobSlice) {
-      return await new Promise((resolve, reject) => {
-        const chunks = Math.ceil(file.size / chunkSize);
-        let currentChunk = 0;
-        const spark = new SparkMD5.ArrayBuffer();
-        const fileReader = new FileReader();
-        function loadNext() {
-          const start = currentChunk * chunkSize;
-          const end =
-            start + chunkSize >= file.size ? file.size : start + chunkSize;
-          fileReader.readAsArrayBuffer(blobSlice.call(file, start, end));
-        }
-        fileReader.onload = e => {
-          spark.append(e.target.result); // Append array buffer
-          currentChunk += 1;
-          if (currentChunk < chunks) {
-            loadNext();
-          } else {
-            console.log('finished loading');
-            const result = spark.end();
-            // If result s are used as hash values only, if the contents of the file are the same and the names are different
-            // You cannot keep two files if you want to.So add the file name.
-            const sparkMd5 = new SparkMD5();
-            sparkMd5.append(result);
-            sparkMd5.append(file.name);
-            const hexHash = sparkMd5.end();
-            resolve(hexHash);
-          }
-        };
-        fileReader.onerror = () => {
-          console.warn('File reading failed!');
-        };
-        loadNext();
-      }).catch(err => {
-        console.log(err);
-      });
-    }
-    ///////////////////////////////////////////
-  
-    const uploadfileToserver = async (file) => {
-      const chunkSize = 8 * 1024 * 1024; // The size of each chunk, set to 1 Megabyte
-      var blobSlice =
-        File.prototype.slice ||
-        File.prototype.mozSlice ||
-        File.prototype.webkitSlice;
-      ///////////////
-      ////////////////////////////////////////////////
 
-      if (!file) {
-        alert('فایلی وجود ندارد!!!');
-        return;
-      }
-      ///////////////////////////////
-      var maxUploadTries = 5;
-      var count = 0;
-      const sendToServerFilePart = async (
-        data,
-        axiosOptions,
-        maxUploadTries,
-      ) => {
-        var tryNum = 0;
-        try {
-          await axios.post(
-            '/fileQuestion/uploadQuestion',
-            data,
-            axiosOptions,
-          );
-        } catch {
-          if (tryNum < maxUploadTries) {
-            tryNum++;
-            sendToServerFilePart(data, axiosOptions, maxUploadTries);
-          } else {
-            alert('پس از مدتی مجددا امتحان نمایید!!!');
-          }
-        }
-      };
-
-      const blockCount = Math.ceil(file.size / chunkSize); // Total number of slices
-      const hash = await hashFile(file, chunkSize, blobSlice); //File hash
-      for (let i = 0; i < blockCount; i++) {
-        count++;
-        const start = i * chunkSize;
-        const end = Math.min(file.size, start + chunkSize);
-        var fileSlice = blobSlice.call(file, start, end);
-        const axiosOptions = {
-          timeout: 1800000,
-          onUploadProgress: ProgressEvent => {
-            // setCompleted(
-            //   (ProgressEvent.loaded /
-            //     ProgressEvent.total /
-            //     blockCount) *
-            //   100,
-            // );
-            console.log(blockCount, i, ProgressEvent, file);
-          },
-        };
-        const form = new FormData();
-        form.append('file', fileSlice);
-        form.append('name', file.name);
-        form.append('total', blockCount);
-        form.append('index', i);
-        form.append('size', file.size);
-        form.append('hash', hash);
-        await sendToServerFilePart(form, axiosOptions, maxUploadTries);
-      }
-      if (count == blockCount) {
-        const data = {
-          size: file.size,
-          name: file.name,
-          total: blockCount,
-          hash,
-        };
-        return await axios
-          .post('/fileQuestion/merge_chunks', data, { timeout: 180000 })
-          .then(res => {
-            console.log('Upload Successful');
-            // alert(res.data);
-            // alert(res.data.seccess);
-            // alert(res.status);
-            // alert(typeof res.status);
-            // alert(res.statusCode);
-            // alert(res.statusText);
-            if (res.status == 200) {
-              return true;
-            } else {
-              return false;
-            }
-            // alert(file.name);
-            // SetselectedFileName(file.name);
-            // return file.name;
-          })
-          .catch(err => {
-            alert('مجددا تلاش کنید');
-            // alert(err);
-          });
-      }
-          ////////////////////////////////////////////
-    };
     //////////////////////////////////////////
     const [innerColumns, setInnerColumns] = useState([
         // {title:'ردیف',field:'questionID' , editable: 'never'},
@@ -605,6 +469,20 @@ const TrueAndFalse = (props) => {
     //   //   lookup: { 34: 'İstanbul', 63: 'Şanlıurfa' },
     //   // },
     // ]);
+
+    function convertText(text){
+      var new1Text = text
+      ? text.split('\r\n').join('%0A')
+      : text;
+      var new2Text = new1Text
+      ? new1Text.split('\n').join('%0A')
+      : new1Text;
+      var new3Text = new2Text
+      ? new2Text.split('"').join("'")
+      : '';
+
+      return new3Text;
+    }
   
 
   
@@ -637,11 +515,63 @@ const TrueAndFalse = (props) => {
           {
             icon: 'delete',
             tooltip: 'حذف',
-            onClick: (event, rowData) => {
+            // onClick: (event, rowData) => {
+              onClick: (event, rowData) => {
               // Do save operation
                 const dataDelete = [...innerData];
                 const index = rowData.tableData.id;
                 dataDelete.splice(index, 1);
+                ////////////////////////////////////
+              fetch(graphql_server_uri, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                  query: `
+                    mutation{
+                        deleteQuestion(
+                            axamQuestion_input: {
+                                questionID: "${'1'}"
+                                axamQuestions_id: "${'1'}"
+                                question: "${convertText(rowData.question)}"
+                                question_link: "${rowData.question_link ? rowData.question_link : ''}"
+                                question__optionOne: "${convertText(rowData.question__optionOne)}"
+                                question__optionTwo:"${convertText(rowData.question__optionTwo)}"
+                                question__currentOption: "${rowData.question__currentOption}"
+                                question__timeTosolveProblem: "${convertText(rowData.question__timeTosolveProblem)}"
+                                question__score: "${rowData.question__score ? rowData.question__score : ''}"
+                                question__explane: "${convertText(rowData.question__explane)}"
+                                exam_link: "${rowData.exam_link ? rowData.exam_link : ''}"
+                          },
+                      ){
+                        axamQuestions_id
+                      }
+                    }                      
+                  `,
+                }),
+              })
+                .then(res => res.json())
+                .then(res => {
+                  // setSumScore(prevState => (prevState - parseFloat(oldScore)));
+                  if (
+                    res.data &&
+                    res.data.deleteQuestion &&
+                    res.data.deleteQuestion.axamQuestions_id
+                  ) {
+                    /////
+                    alert('اطلاعاتی به درستی حذف نشد');
+                    // setStatus(1);
+                    // setShowPopup(true);
+                  } else {
+                    // setQuestionId(data.length)
+                    // setMessage('اطلاعاتی به درستی حذف شد');
+                    // setStatus(0);
+                    // setShowPopup(true);
+                    // refteshData();
+                    //   return res.data;
+                  }
+                  // return res.data;
+                });
+                //////////////////////////////////////////
                 setInnerData([...dataDelete]);
             }
           },
@@ -688,80 +618,10 @@ const TrueAndFalse = (props) => {
                           type: mimeTypeFile,
                         },
                       );
-  
-                      var newQuestion = newData.question
-                        ? newData.question.split('\r\n').join('%0A')
-                        : '';
-                      var newQuestion2 = newQuestion
-                        ? newQuestion.split('\n').join('%0A')
-                        : '';
-                      /////////////
-                      var newOption1 = newData.question__optionOne
-                        ? newData.question__optionOne.split('\r\n').join('%0A')
-                        : '';
-                      var newOption11 = newOption1
-                        ? newOption1.split('\n').join('%0A')
-                        : '';
-                      var newOption111 = newOption11
-                        ? newOption11.split('"').join("'")
-                        : '';
-                      ////////////////////////////////
-                      var newOption2 = newData.question__optionTwo
-                        ? newData.question__optionTwo.split('\r\n').join('%0A')
-                        : '';
-                      var newOption22 = newOption2
-                        ? newOption2.split('\n').join('%0A')
-                        : '';
-                      var newOption222 = newOption22
-                        ? newOption22.split('"').join("'")
-                        : '';
-                      ///////////////////////////
-                      var newOption3 = newData.question__optionTree
-                        ? newData.question__optionTree.split('\r\n').join('%0A')
-                        : '';
-                      var newOption33 = newOption3
-                        ? newOption3.split('\n').join('%0A')
-                        : '';
-                      var newOption333 = newOption33
-                        ? newOption33.split('"').join("'")
-                        : '';
-                      /////////////////////
-                      var newOption4 = newData.question__optionFour
-                        ? newData.question__optionFour.split('\r\n').join('%0A')
-                        : '';
-                      var newOption44 = newOption4
-                        ? newOption4.split('\n').join('%0A')
-                        : '';
-                      var newOption444 = newOption44
-                        ? newOption44.split('"').join("'")
-                        : '';
-                      //////////////////////
-                      var newExplane = newData.question__explane
-                        ? newData.question__explane.split('\r\n').join('%0A')
-                        : '';
-                      var newExplane2 = newExplane
-                        ? newExplane.split('\n').join('%0A')
-                        : '';
-                      var newExplane22 = newExplane2
-                        ? newExplane2.split('"').join("'")
-                        : '';
-                      var newTime = newData.question__timeTosolveProblem
-                        ? newData.question__timeTosolveProblem
-                          .split('\r\n')
-                          .join('%0A')
-                        : '';
-                      var newTime2 = newTime
-                        ? newTime.split('\n').join('%0A')
-                        : '';
-
-                      var newScore = newData.question__score
-                        ? newData.question__score
-                        : '';
-
                     //////////////////////////////////////////
                       handleSendToserver();
                       async function handleSendToserver() {
-                        var responseCode = await uploadfileToserver(file, format);
+                        var responseCode = await UploadfileToserver(file, format);
                         if (file.name && responseCode) {
                           fetch(graphql_server_uri, {
                             method: 'POST',
@@ -776,18 +636,31 @@ const TrueAndFalse = (props) => {
                                                       question: "${''}"
                                                       question_link: "${file.name
                                 }"
-                                                      question__optionOne: "${newOption111}"
-                                                      question__optionTwo:"${newOption222}"
-                                                      question__optionTree: "${newOption333}"
-                                                      question__optionFour: "${newOption444}"
-                                                      question__currentOption: "${newData.question__currentOption
+                                                      question__optionOne: "${convertText(newData.question__optionOne)}"
+                                                      question__optionTwo:"${convertText(newData.question__optionTwo)}"
+                                                      question__currentOption: "${newData.question__currentOption ? newData.question__currentOption: ''
                                 }"
-                                                      question__timeTosolveProblem: "${newTime2}"
-                                                      question__score: "${newData.question__score
+                                                      question__timeTosolveProblem: "${convertText(newData.question__timeTosolveProblem)}"
+                                                      question__score: "${newData.question__score ? newData.question__score : ''
                                 }"
-                                                      question__explane: "${newExplane22}"
+                                                      question__explane: "${convertText(newData.question__explane)}"
                                                       exam_link: "${''}"
-                                              }
+                                              },
+                                              axamQuestion_input_old: {
+                                                questionID: "${'1'}"
+                                                axamQuestions_id: "${'1'}"
+                                                question: "${convertText(oldData.question__optionOne)}"
+                                                question_link: "${convertText(oldData.question_link)}"
+                                                question__optionOne: "${convertText(oldData.question__optionOne)}"
+                                                question__optionTwo:"${convertText(oldData.question__optionTwo)}"
+                                                question__currentOption: "${oldData.question__currentOption ? oldData.question__currentOption : ''
+                                    }"
+                                                question__timeTosolveProblem: "${convertText(oldData.question__timeTosolveProblem)}"
+                                                question__score: "${ oldData.question__score ? oldData.question__score : ''
+                                    }"
+                                                question__explane: "${convertText(oldData.question__explane)}"
+                                                exam_link: "${oldData.exam_link}"
+                                          }
                                             ){
                                               axamQuestions_id
                                             }
@@ -871,79 +744,10 @@ const TrueAndFalse = (props) => {
                         },
                       );
   
-                      var newQuestion = newData.question
-                        ? newData.question.split('\r\n').join('%0A')
-                        : '';
-                      var newQuestion2 = newQuestion
-                        ? newQuestion.split('\n').join('%0A')
-                        : '';
-                      var newQuestion22 = newQuestion2
-                        ? newQuestion2.split('"').join("'")
-                        : '';
-                      /////////////
-                      var newOption1 = newData.question__optionOne
-                        ? newData.question__optionOne.split('\r\n').join('%0A')
-                        : '';
-                      var newOption11 = newOption1
-                        ? newOption1.split('\n').join('%0A')
-                        : '';
-                      var newOption111 = newOption11
-                        ? newOption11.split('"').join("'")
-                        : '';
-                      ////////////////////////////////
-                      var newOption2 = newData.question__optionTwo
-                        ? newData.question__optionTwo.split('\r\n').join('%0A')
-                        : '';
-                      var newOption22 = newOption2
-                        ? newOption2.split('\n').join('%0A')
-                        : '';
-                      var newOption222 = newOption22
-                        ? newOption22.split('"').join("'")
-                        : '';
-                      ///////////////////////////
-                      var newOption3 = newData.question__optionTree
-                        ? newData.question__optionTree.split('\r\n').join('%0A')
-                        : '';
-                      var newOption33 = newOption3
-                        ? newOption3.split('\n').join('%0A')
-                        : '';
-                      var newOption333 = newOption33
-                        ? newOption33.split('"').join("'")
-                        : '';
-                      /////////////////////
-                      var newOption4 = newData.question__optionFour
-                        ? newData.question__optionFour.split('\r\n').join('%0A')
-                        : '';
-                      var newOption44 = newOption4
-                        ? newOption4.split('\n').join('%0A')
-                        : '';
-                      var newOption444 = newOption44
-                        ? newOption44.split('"').join("'")
-                        : '';
                       //////////////////////
-                      var newExplane = newData.question__explane
-                        ? newData.question__explane.split('\r\n').join('%0A')
-                        : '';
-                      var newExplane2 = newExplane
-                        ? newExplane.split('\n').join('%0A')
-                        : '';
-                      var newExplane22 = newExplane2
-                        ? newExplane2.split('"').join("'")
-                        : '';
-                      var newTime = newData.question__timeTosolveProblem
-                        ? newData.question__timeTosolveProblem
-                          .split('\r\n')
-                          .join('%0A')
-                        : '';
-                      var newTime2 = newTime
-                        ? newTime.split('\n').join('%0A')
-                        : '';
-                      var newScore = newData.question__score
-                        ? newData.question__score
-                        : '';
                       handleSendToserver();
                       async function handleSendToserver() {
-                        var responseCode = await uploadfileToserver(file, format);
+                        var responseCode = await UploadfileToserver(file, format);
                         // alert(selectedFileName);
                         if (file.name && responseCode) {
                           fetch(graphql_server_uri, {
@@ -956,20 +760,32 @@ const TrueAndFalse = (props) => {
                                                 axamQuestion_input: {
                                                     questionID: "${'1'}"
                                                       axamQuestions_id: "${'1'}"
-                                                      question: "${newQuestion22}"
+                                                      question: "${convertText(newData.question)}"
                                                       question_link: "${''}"
-                                                      question__optionOne: "${newOption111}"
-                                                      question__optionTwo:"${newOption222}"
-                                                      question__optionTree: "${newOption333}"
-                                                      question__optionFour: "${newOption444}"
-                                                      question__currentOption: "${newData.question__currentOption
+                                                      question__optionOne: "${convertText(newData.question__optionOne)}"
+                                                      question__optionTwo:"${convertText(newData.question__optionTwo)}"
+                                                      question__currentOption: "${newData.question__currentOption ? newData.question__currentOption : ''
                                 }"
-                                                      question__timeTosolveProblem: "${newTime2}"
-                                                      question__score: "${newData.question__score
+                                                      question__timeTosolveProblem: "${convertText(newData.question__timeTosolveProblem)}"
+                                                      question__score: "${newData.question__score ? newData.question__score: ''
                                 }"
-                                                      question__explane: "${newExplane22}"
+                                                      question__explane: "${convertText(newData.question__explane)}"
                                                       exam_link: "${file.name}"
-                                              }
+                                              },    axamQuestion_input_old: {
+                                                questionID: "${'1'}"
+                                                axamQuestions_id: "${'1'}"
+                                                question: "${convertText(oldData.question__optionOne)}"
+                                                question_link: "${convertText(oldData.question_link)}"
+                                                question__optionOne: "${convertText(oldData.question__optionOne)}"
+                                                question__optionTwo:"${convertText(oldData.question__optionTwo)}"
+                                                question__currentOption: "${oldData.question__currentOption ? oldData.question__currentOption : ''
+                                    }"
+                                                question__timeTosolveProblem: "${convertText(oldData.question__timeTosolveProblem)}"
+                                                question__score: "${ oldData.question__score ? oldData.question__score : ''
+                                    }"
+                                                question__explane: "${convertText(oldData.question__explane)}"
+                                                exam_link: "${oldData.exam_link}"
+                                          }
                                             ){
                                               axamQuestions_id
                                             }
@@ -1020,84 +836,6 @@ const TrueAndFalse = (props) => {
                       // });
                     } else {
                       
-                      
-                      ////////////////////////////////////
-                      var newQuestion = newData.question
-                        ? newData.question.split('\r\n').join('%0A')
-                        : '';
-                      var newQuestion2 = newQuestion
-                        ? newQuestion.split('\n').join('%0A')
-                        : '';
-                      var newQuestion22 = newQuestion2
-                        ? newQuestion2.split('"').join("'")
-                        : '';
-                      /////////////
-                      var newOption1 = newData.question__optionOne
-                        ? newData.question__optionOne.split('\r\n').join('%0A')
-                        : '';
-                      var newOption11 = newOption1
-                        ? newOption1.split('\n').join('%0A')
-                        : '';
-                      var newOption111 = newOption11
-                        ? newOption11.split('"').join("'")
-                        : '';
-                      ////////////////////////////////
-                      var newOption2 = newData.question__optionTwo
-                        ? newData.question__optionTwo.split('\r\n').join('%0A')
-                        : '';
-                      var newOption22 = newOption2
-                        ? newOption2.split('\n').join('%0A')
-                        : '';
-                      var newOption222 = newOption22
-                        ? newOption22.split('"').join("'")
-                        : '';
-                      ///////////////////////////
-                      var newOption3 = newData.question__optionTree
-                        ? newData.question__optionTree.split('\r\n').join('%0A')
-                        : '';
-                      var newOption33 = newOption3
-                        ? newOption3.split('\n').join('%0A')
-                        : '';
-                      var newOption333 = newOption33
-                        ? newOption33.split('"').join("'")
-                        : '';
-                      /////////////////////
-                      var newOption4 = newData.question__optionFour
-                        ? newData.question__optionFour.split('\r\n').join('%0A')
-                        : '';
-                      var newOption44 = newOption4
-                        ? newOption4.split('\n').join('%0A')
-                        : '';
-                      var newOption444 = newOption44
-                        ? newOption44.split('"').join("'")
-                        : '';
-                      //////////////////////
-                      var newExplane = newData.question__explane
-                        ? newData.question__explane.split('\r\n').join('%0A')
-                        : '';
-                      var newExplane2 = newExplane
-                        ? newExplane.split('\n').join('%0A')
-                        : '';
-                      var newExplane22 = newExplane2
-                        ? newExplane2.split('"').join("'")
-                        : '';
-                      var newTime = newData.question__timeTosolveProblem
-                        ? newData.question__timeTosolveProblem
-                          .split('\r\n')
-                          .join('%0A')
-                        : '';
-                      var newTime2 = newTime
-                        ? newTime.split('\n').join('%0A')
-                        : '';
-                      // var newOption1 = newData.question__optionOne ? newData.question__optionOne.split('\n').join('%0A') : '';
-                      // var newOption2 = newData.question__optionTwo ? newData.question__optionTwo.split('\n').join('%0A') : '';
-                      // var newOption3 = newData.question__optionTree ? newData.question__optionTree.split('\n').join('%0A') : '';
-                      // var newOption4 = newData.question__optionFour ? newData.question__optionFour.split('\n').join('%0A') : '';
-                      // var newExplane = newData.question__explane ? newData.question__explane.split('\n').join('%0A') : '';
-                      // var newTime = newData.question__timeTosolveProblem ? newData.question__timeTosolveProblem.split('\n').join('%0A') : '';
-                      var newScore = newData.question__score
-                        ? newData.question__score
-                        : '';
                       fetch(graphql_server_uri, {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
@@ -1108,20 +846,32 @@ const TrueAndFalse = (props) => {
                                                 axamQuestion_input: {
                                                     questionID: "${'1'}"
                                                       axamQuestions_id: "${'1'}"
-                                                      question: "${newQuestion22}"
+                                                      question: "${convertText(newData.question)}"
                                                       question_link: "${''}"
-                                                      question__optionOne: "${newOption111}"
-                                                      question__optionTwo:"${newOption222}"
-                                                      question__optionTree: "${newOption333}"
-                                                      question__optionFour: "${newOption444}"
-                                                      question__currentOption: "${newData.question__currentOption
+                                                      question__optionOne: "${convertText(newData.question__optionOne)}"
+                                                      question__optionTwo:"${convertText(newData.question__optionTwo)}"
+                                                      question__currentOption: "${newData.question__currentOption ? newData.question__currentOption : ''
                             }"
-                                                      question__timeTosolveProblem: "${newTime2}"
-                                                      question__score: "${newData.question__score
+                                                      question__timeTosolveProblem: "${convertText(newData.question__timeTosolveProblem)}"
+                                                      question__score: "${newData.question__score ? newData.question__score : ''
                             }"
-                                                      question__explane: "${newExplane22}"
+                                                      question__explane: "${convertText(newData.question__explane)}"
                                                       exam_link: "${''}"
-                                              }
+                                              },    axamQuestion_input_old: {
+                                                questionID: "${'1'}"
+                                                axamQuestions_id: "${'1'}"
+                                                question: "${convertText(oldData.question__optionOne)}"
+                                                question_link: "${convertText(oldData.question_link)}"
+                                                question__optionOne: "${convertText(oldData.question__optionOne)}"
+                                                question__optionTwo:"${convertText(oldData.question__optionTwo)}"
+                                                question__currentOption: "${oldData.question__currentOption ? oldData.question__currentOption : ''
+                                    }"
+                                                question__timeTosolveProblem: "${convertText(oldData.question__timeTosolveProblem)}"
+                                                question__score: "${ oldData.question__score ? oldData.question__score : ''
+                                    }"
+                                                question__explane: "${convertText(oldData.question__explane)}"
+                                                exam_link: "${oldData.exam_link}"
+                                          }
                                             ){
                                               axamQuestions_id
                                             }
