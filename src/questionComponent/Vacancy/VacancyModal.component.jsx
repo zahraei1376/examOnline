@@ -1,10 +1,11 @@
 import React , {useEffect} from 'react';
 import { makeStyles } from '@material-ui/core/styles';
+import TextField from '@material-ui/core/TextField';
 import Modal from '@material-ui/core/Modal';
-import {ComparativeButton , ComparativeButtonSave} from './ComparativeModal.styles';
+import {ComparativeButton , ComparativeButtonSave} from './VacancyModal.styles';
 import {Button} from '@material-ui/core';
 // import AddCircleIcon from '@material-ui/icons/AddCircle';
-import ComparativeModalItems from './ComparativeModalItems.component';
+// import ComparativeModalItems from './ComparativeModalItems.component';
 
 function rand() {
   return Math.round(Math.random() * 20) - 10;
@@ -24,7 +25,7 @@ function getModalStyle() {
     flexDirection:'column',
     overflow: 'scroll',
     position:'relative',
-    height:'90vh',
+    height:'50vh',
     marginBottom:'50px',
     width:'55vw',
   };
@@ -41,16 +42,24 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function ComparativeModal({PropsItems}) {
+const useStylesTextBox = makeStyles((theme) => ({
+    root: {
+      '& > *': {
+        margin: theme.spacing(1),
+        width: '25ch',
+      },
+    },
+  }));
+
+export default function VacancyModal({PropsItems}) {
   const classes = useStyles();
+  const classesTextBox = useStylesTextBox();
   // getModalStyle is not a pure function, we roll the style only on the first render
   const [modalStyle] = React.useState(getModalStyle);
   const [open, setOpen] = React.useState(false);
   const [count,setCount] = React.useState(1)
-  // const [items,setItems] = React.useState([Array.from({length: n})]);
-  const [items,setItems] = React.useState(Array(count).fill(0).map(row => new Array(2).fill('')));
+  const [items,setItems] = React.useState('');
   const [indexDelete,setIndexDelete] = React.useState(-1);
-  // const [items,setItems] = React.useState(Array.from({length: n},()=> Array.from({length: n}, () => null)));
 
   useEffect(()=>{
     console.log('items',items);
@@ -104,12 +113,12 @@ export default function ComparativeModal({PropsItems}) {
             setCount(prev => prev + 1);
           }}
         >
-          اضافه کردن
+        اضافه کردن جای خالی
         </ComparativeButton>
       </div>
-      {items ? items.map((item , index) =>(
+      {/* {items ? items.map((item , index) =>(
         <ComparativeModalItems key={index} myIndex={index} item={item} handleIndexDelete={handleIndexDelete} handleIndexSet={handleIndexSet} />
-      )) : ''}
+      )) : ''} */}
       {items.length > 0 ? <ComparativeButtonSave variant="contained" component="span"
         onClick={SeveData}
         >
@@ -121,7 +130,7 @@ export default function ComparativeModal({PropsItems}) {
   return (
     <div>
       <button type="button" onClick={handleOpen}>
-        افزودن گزینه
+        ایجاد سوال جای خالی
       </button>
       <Modal
         open={open}
