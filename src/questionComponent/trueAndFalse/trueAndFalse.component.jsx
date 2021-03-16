@@ -214,7 +214,7 @@ const TrueAndFalse = (props) => {
                     onChange={e => uploadFileQuestion(e)}
                 />
 
-                <Button color="promary" variant="contained" component="span">
+                <Button color="primary" variant="contained" component="span">
                     {/* <BackupIcon/> */}
                 </Button>
             </label>
@@ -429,7 +429,7 @@ const TrueAndFalse = (props) => {
                     onChange={e => uploadFile(e)}
                 />
 
-                <Button color="promary" variant="contained" component="span">
+                <Button color="primary" variant="contained" component="span">
                     {/* <BackupIcon/> */}
                 </Button>
             </label>

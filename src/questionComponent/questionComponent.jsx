@@ -251,17 +251,17 @@ const Questions = () =>{
                   resolve();
                 }, 1000)
               }),
-            onRowUpdate: (newData, oldData) =>
-              new Promise((resolve, reject) => {
-                setTimeout(() => {
-                  const dataUpdate = [...data];
-                  const index = oldData.tableData.id;
-                  dataUpdate[index] = newData;
-                  setData([...dataUpdate]);
+            // onRowUpdate: (newData, oldData) =>
+            //   new Promise((resolve, reject) => {
+            //     setTimeout(() => {
+            //       const dataUpdate = [...data];
+            //       const index = oldData.tableData.id;
+            //       dataUpdate[index] = newData;
+            //       setData([...dataUpdate]);
     
-                  resolve();
-                }, 1000)
-              }),
+            //       resolve();
+            //     }, 1000)
+            //   }),
             onRowDelete: oldData =>
               new Promise((resolve, reject) => {
                 setTimeout(() => {

@@ -1,10 +1,10 @@
 import React , {useEffect} from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Modal from '@material-ui/core/Modal';
-import {ComparativeButton , ComparativeButtonSave} from './ComparativeModal.styles';
+import {VacancyButton , VacancyButtonSave , VacancyInputContainer ,VacancyInput ,VacancyShowText} from './VacancyModal.styles';
 import {Button} from '@material-ui/core';
 // import AddCircleIcon from '@material-ui/icons/AddCircle';
-import ComparativeModalItems from './ComparativeModalItems.component';
+// import ComparativeModalItems from './ComparativeModalItems.component';
 
 function rand() {
   return Math.round(Math.random() * 20) - 10;
@@ -24,7 +24,7 @@ function getModalStyle() {
     flexDirection:'column',
     overflow: 'scroll',
     position:'relative',
-    height:'90vh',
+    height:'50vh',
     marginBottom:'50px',
     width:'55vw',
   };
@@ -38,32 +38,35 @@ const useStyles = makeStyles((theme) => ({
     border: '2px solid #000',
     boxShadow: theme.shadows[5],
     padding: theme.spacing(2, 4, 3),
+    direction:'rtl',
   },
 }));
 
-export default function ComparativeModal({PropsItems}) {
+export default function VacancyModal({PropsItems}) {
   const classes = useStyles();
   // getModalStyle is not a pure function, we roll the style only on the first render
   const [modalStyle] = React.useState(getModalStyle);
   const [open, setOpen] = React.useState(false);
-  const [count,setCount] = React.useState(4)
-  // const [items,setItems] = React.useState([Array.from({length: n})]);
-  // const [items,setItems] = React.useState(Array(4).fill(0).map(row => new Array(2).fill('')));
-  const [items,setItems] = React.useState([]);
-  // const [items,setItems] = React.useState(Array.from({length: n},()=> Array.from({length: n}, () => null)));
-//  var cn =1;
-  // useEffect(()=>{
-  //   setItems(Array(cn).fill(0).map(row => new Array(2).fill('')))
-  // },[]);
+//   const [count,setCount] = React.useState(1)
+  const [items,setItems] = React.useState('');
+  const [indexDelete,setIndexDelete] = React.useState(-1);
 
+  useEffect(()=>{
+    console.log('items',items);
+  },[items]);
 
-  const handleChange = (row, column, event) => {
-    let copy = [...items];
-    copy[row][column] = +event.target.value;
-    setItems(copy);
+//   useEffect(()=>{
+//     setItems(Array(count).fill(0).map(row => new Array(2).fill('')))
+//   },[count]);
 
-    console.log(items);
+  const handleChange = (event) => {
+    setItems(event.target.value);
   };
+
+  const addVancy = () =>{
+    setItems(items + '$%A');
+    document.getElementById("Text1").focus();
+  }
 
   const handleOpen = () => {
     setOpen(true);
@@ -73,21 +76,13 @@ export default function ComparativeModal({PropsItems}) {
     setOpen(false);
   };
 
-  const handleIndexDelete =(index)=>{
-     console.log('index',index);
-     var temp = [...items];
-     temp.splice(index,1);
-     console.log('temp2',temp);
-     setItems([...temp]);
-    //  setCount(prev => prev - 1);
-  }
+//   const handleIndexDelete =(index)=>{
+//      var temp = [...items];
+//      temp.splice(index,1);
+//      setItems(temp);
+//      setCount(prev => prev - 1);
+//   }
 
-  const handleAddRow =()=>{
-      var temp =[...items];
-      var tt = ['', ''];
-      temp.push(tt);
-      setItems(temp);
-  };
 
   const handleIndexSet =(index,num , value)=>{
     var temp = [...items];
@@ -103,31 +98,29 @@ export default function ComparativeModal({PropsItems}) {
 
   const body = (
     <div style={modalStyle} className={classes.paper}>
-      <div>
-        <ComparativeButton variant="contained" component="span" style={{float:'right',}}
-          onClick={()=>{
-              handleAddRow()
-            // setCount(prev => prev + 1);
-          }}
+      
+        <VacancyButton variant="contained" component="span" style={{float:'right',}}
+          onClick={addVancy}
         >
-          اضافه کردن
-        </ComparativeButton>
-      </div>
-      {items.map((item , index) =>(
-        <ComparativeModalItems key={index} myIndex={index} item={item} handleIndexDelete={handleIndexDelete} handleIndexSet={handleIndexSet} />
-      ))}
-      {items.length > 0 ? <ComparativeButtonSave variant="contained" component="span"
+        اضافه کردن جای خالی
+        </VacancyButton>
+      
+      <VacancyInputContainer>
+      <VacancyInput id="Text1" cols="60" rows="5"  value={items.split('$%A').join('..............')} onChange={(e) =>handleChange(e)}></VacancyInput>
+      </VacancyInputContainer>
+      {/* <VacancyShowText>{items.split('$%A').join('..............')}</VacancyShowText> */}
+      {items.length > 0 ? <VacancyButtonSave variant="contained" component="span"
         onClick={SeveData}
         >
         ثبت
-      </ComparativeButtonSave> : ''}
+      </VacancyButtonSave> : ''}
     </div>
   );
 
   return (
     <div>
       <button type="button" onClick={handleOpen}>
-        افزودن گزینه
+        ایجاد سوال جای خالی
       </button>
       <Modal
         open={open}
