@@ -46,19 +46,16 @@ export default function ComparativeModal({PropsItems}) {
   // getModalStyle is not a pure function, we roll the style only on the first render
   const [modalStyle] = React.useState(getModalStyle);
   const [open, setOpen] = React.useState(false);
-  const [count,setCount] = React.useState(1)
+  const [count,setCount] = React.useState(4)
   // const [items,setItems] = React.useState([Array.from({length: n})]);
-  const [items,setItems] = React.useState(Array(count).fill(0).map(row => new Array(2).fill('')));
-  const [indexDelete,setIndexDelete] = React.useState(-1);
+  // const [items,setItems] = React.useState(Array(4).fill(0).map(row => new Array(2).fill('')));
+  const [items,setItems] = React.useState([]);
   // const [items,setItems] = React.useState(Array.from({length: n},()=> Array.from({length: n}, () => null)));
+//  var cn =1;
+  // useEffect(()=>{
+  //   setItems(Array(cn).fill(0).map(row => new Array(2).fill('')))
+  // },[]);
 
-  useEffect(()=>{
-    console.log('items',items);
-  },[items]);
-
-  useEffect(()=>{
-    setItems(Array(count).fill(0).map(row => new Array(2).fill('')))
-  },[count]);
 
   const handleChange = (row, column, event) => {
     let copy = [...items];
@@ -77,12 +74,20 @@ export default function ComparativeModal({PropsItems}) {
   };
 
   const handleIndexDelete =(index)=>{
+     console.log('index',index);
      var temp = [...items];
      temp.splice(index,1);
-     setItems(temp);
-     setCount(prev => prev - 1);
+     console.log('temp2',temp);
+     setItems([...temp]);
+    //  setCount(prev => prev - 1);
   }
 
+  const handleAddRow =()=>{
+      var temp =[...items];
+      var tt = ['', ''];
+      temp.push(tt);
+      setItems(temp);
+  };
 
   const handleIndexSet =(index,num , value)=>{
     var temp = [...items];
@@ -101,15 +106,16 @@ export default function ComparativeModal({PropsItems}) {
       <div>
         <ComparativeButton variant="contained" component="span" style={{float:'right',}}
           onClick={()=>{
-            setCount(prev => prev + 1);
+              handleAddRow()
+            // setCount(prev => prev + 1);
           }}
         >
           اضافه کردن
         </ComparativeButton>
       </div>
-      {items ? items.map((item , index) =>(
+      {items.map((item , index) =>(
         <ComparativeModalItems key={index} myIndex={index} item={item} handleIndexDelete={handleIndexDelete} handleIndexSet={handleIndexSet} />
-      )) : ''}
+      ))}
       {items.length > 0 ? <ComparativeButtonSave variant="contained" component="span"
         onClick={SeveData}
         >
