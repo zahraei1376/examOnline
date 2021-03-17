@@ -3,6 +3,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import Modal from '@material-ui/core/Modal';
 import {VacancyButton , VacancyButtonSave , VacancyInputContainer ,VacancyInput ,VacancyShowText} from './VacancyModal.styles';
 import {Button} from '@material-ui/core';
+import AddCircleIcon from '@material-ui/icons/AddCircle';
 // import AddCircleIcon from '@material-ui/icons/AddCircle';
 // import ComparativeModalItems from './ComparativeModalItems.component';
 
@@ -99,11 +100,12 @@ export default function VacancyModal({PropsItems}) {
   const body = (
     <div style={modalStyle} className={classes.paper}>
       
-        <VacancyButton variant="contained" component="span" style={{float:'right',}}
+        {/* <VacancyButton variant="contained" component="span" style={{float:'right',}}
           onClick={addVancy}
         >
         اضافه کردن جای خالی
-        </VacancyButton>
+        </VacancyButton> */}
+         <AddCircleIcon style={{fontSize:'40px', color:'#009688',cursor:'pointer'}} onClick={addVancy} />
       
       <VacancyInputContainer>
       <VacancyInput id="Text1" cols="60" rows="5"  value={items.split('$%A').join('..............')} onChange={(e) =>handleChange(e)}></VacancyInput>

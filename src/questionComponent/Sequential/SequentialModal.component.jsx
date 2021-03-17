@@ -6,6 +6,7 @@ import Modal from '@material-ui/core/Modal';
 import {SequentialButton , SequentialButtonSave , SequentialInputContainer ,SequentialInput ,SequentialShowText ,SequentialItemContainer} from './SequentialModal.styles';
 // import AddCircleIcon from '@material-ui/icons/AddCircle';
 import SequentialModalItems from './SequentialModalItem.component';
+import AddCircleIcon from '@material-ui/icons/AddCircle';
 
 function rand() {
   return Math.round(Math.random() * 20) - 10;
@@ -23,7 +24,7 @@ function getModalStyle() {
     transform: `translate(-${top}%, -${left}%)`,
     display:'flex',
     flexDirection:'column',
-    overflow: 'scroll',
+    // overflow: 'scroll',
     position:'relative',
     height:'50vh',
     marginBottom:'50px',
@@ -103,11 +104,12 @@ export default function SequentialModal({PropsItems}) {
   const body = (
     <div style={modalStyle} className={classes.paper}>
       
-        <SequentialButton variant="contained" component="span" style={{float:'right',}}
+        {/* <SequentialButton variant="contained" component="span" style={{float:'right',}}
           onClick={addItem}
-        >
-        اضافه کردن گزینه
-        </SequentialButton>
+        > */}
+          <AddCircleIcon onClick={addItem} style={{ cursor:'pointer',fontSize:'35px',color:'#009688'}}/>
+        {/* اضافه کردن گزینه */}
+        {/* </SequentialButton> */}
     <SequentialItemContainer>
         {items.map((item , index) =>(
             // <SequentialItemContainer>

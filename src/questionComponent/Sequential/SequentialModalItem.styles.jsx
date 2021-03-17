@@ -19,11 +19,12 @@ export const InputContainerIcon =styled(Icon)`
 `;
 
 export const InputContainerButton =styled(Button)`
-    // display:none;
-    position:absolute;
-    top: -17px;
-    right: 10px;
-    transition:al .2s;
+    position:absolute !important;
+    // top: -17px;
+    // right: 10px;
+    top: 35px;
+    right: 0;
+    transition:all .2s;
     &:hover{
         color:red;
     }
@@ -32,10 +33,6 @@ export const InputContainerButton =styled(Button)`
 export const Input =styled.input`
     text-align:right;
     height:40px;
-
-    // &:hover + ${InputContainerButton}{
-    //     display:block;
-    // }
 `;
 
 

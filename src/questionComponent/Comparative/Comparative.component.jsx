@@ -8,9 +8,12 @@ import {UploadfileToserver} from '../uploadToserver/uploadToserver.component';
 // import axios from 'axios';
 import MaterialTable from 'material-table';
 import TextField from '@material-ui/core/TextField';
-import {Input,Button} from '@material-ui/core';
+import {ComparativeButton} from './Comparative.styles';
+// import {Input,Button} from '@material-ui/core';
 import {loadVariable} from '../questionComponent';
 import ComparativeModal from './ComparativeModal.component';
+import DeleteIcon from '../../assets/img/iconDelete.png';
+import BackupIcon from '@material-ui/icons/Backup';
 // import AddIcon from '@material-ui/icons/Add';
 // import BackupIcon from '@material-ui/icons/Backup';
 // import {CloudUploadIcon} from '@material-ui/icons';
@@ -210,7 +213,7 @@ const Comparative = (props) => {
           defaultFilter: '',
           minWidth: 150,
           editComponent: props => (
-            <label htmlFor="upload-photo">
+            <label htmlFor="upload-photo" style={{textAlign:'center'}}>
                 <input
                     style={{ display: 'none' }}
                     defaultValue=""
@@ -220,9 +223,11 @@ const Comparative = (props) => {
                     onChange={e => uploadFileQuestion(e)}
                 />
 
-                <Button color="primary" variant="contained" component="span">
-                    {/* <BackupIcon/> */}
-                </Button>
+                <ComparativeButton variant="contained" component="span">
+                    <BackupIcon 
+                    // style={{color:'#009688'}}
+                     />
+                </ComparativeButton>
             </label>
           ),
         },
@@ -496,7 +501,7 @@ const Comparative = (props) => {
           defaultFilter: '',
           editComponent: props => (
             // <input type="file" defaultValue="" onChange={e => uploadFile(e)} />
-            <label htmlFor="upload-photo">
+            <label htmlFor="upload-photo"  style={{textAlign:'center'}}>
                 <input
                     style={{ display: 'none' }}
                     defaultValue=""
@@ -506,9 +511,11 @@ const Comparative = (props) => {
                     onChange={e => uploadFile(e)}
                 />
 
-                <Button color="primary" variant="contained" component="span">
-                    {/* <BackupIcon/> */}
-                </Button>
+                <ComparativeButton variant="contained" component="span">
+                    <BackupIcon 
+                    // style={{color:'#009688'}}
+                     />
+                </ComparativeButton>
             </label>
           ),
         },
@@ -628,6 +635,9 @@ const Comparative = (props) => {
               backgroundColor: '#009688',
               color:'#fff',
               textAlign:'center',
+            },
+            rowStyle:{
+              backgroundColor: '#fff',
             }
             
           }}

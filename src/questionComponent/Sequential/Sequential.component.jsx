@@ -9,8 +9,9 @@ import TextField from '@material-ui/core/TextField';
 import {Input,Button} from '@material-ui/core';
 import {loadVariable} from '../questionComponent';
 import SequentialModal from './SequentialModal.component';
+import {ComparativeButton} from '../Comparative/Comparative.styles';
 // import AddIcon from '@material-ui/icons/Add';
-// import BackupIcon from '@material-ui/icons/Backup';
+import BackupIcon from '@material-ui/icons/Backup';
 // import {CloudUploadIcon} from '@material-ui/icons';
 // var load = false;
 const graphql_server_uri ='/qraphql';
@@ -218,9 +219,9 @@ const Sequential = (props) => {
                     onChange={e => uploadFileQuestion(e)}
                 />
 
-                <Button color="primary" variant="contained" component="span">
-                    {/* <BackupIcon/> */}
-                </Button>
+                <ComparativeButton variant="contained" component="span">
+                    <BackupIcon/>
+                </ComparativeButton>
             </label>
           ),
         },
@@ -504,9 +505,9 @@ const Sequential = (props) => {
                     onChange={e => uploadFile(e)}
                 />
 
-                <Button color="primary" variant="contained" component="span">
-                    {/* <BackupIcon/> */}
-                </Button>
+                <ComparativeButton variant="contained" component="span">
+                    <BackupIcon/>
+                </ComparativeButton>
             </label>
           ),
         },
@@ -626,6 +627,9 @@ const Sequential = (props) => {
               backgroundColor: '#009688',
               color:'#fff',
               textAlign:'center',
+            },
+            rowStyle:{
+              backgroundColor: '#fff',
             }
             
           }}
