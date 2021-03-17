@@ -1,9 +1,9 @@
 import React , {useEffect} from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Modal from '@material-ui/core/Modal';
-import {ComparativeButton , ComparativeButtonSave} from './ComparativeModal.styles';
+import {ComparativeButton , ComparativeButtonSave ,ComparativeItemContainer} from './ComparativeModal.styles';
 import {Button} from '@material-ui/core';
-// import AddCircleIcon from '@material-ui/icons/AddCircle';
+import AddCircleIcon from '@material-ui/icons/AddCircle';
 import ComparativeModalItems from './ComparativeModalItems.component';
 
 function rand() {
@@ -22,11 +22,11 @@ function getModalStyle() {
     transform: `translate(-${top}%, -${left}%)`,
     display:'flex',
     flexDirection:'column',
-    overflow: 'scroll',
     position:'relative',
     height:'90vh',
     marginBottom:'50px',
     width:'55vw',
+    direction:'rtl',
   };
 }
 
@@ -92,6 +92,7 @@ export default function ComparativeModal({PropsItems}) {
   const handleIndexSet =(index,num , value)=>{
     var temp = [...items];
     temp[index][num] = value;
+    console.log('temp' , temp);
     setItems(temp);
  }
 
@@ -103,19 +104,22 @@ export default function ComparativeModal({PropsItems}) {
 
   const body = (
     <div style={modalStyle} className={classes.paper}>
-      <div>
-        <ComparativeButton variant="contained" component="span" style={{float:'right',}}
+      
+        {/* <ComparativeButton variant="contained" component="span" 
           onClick={()=>{
               handleAddRow()
-            // setCount(prev => prev + 1);
           }}
-        >
-          اضافه کردن
-        </ComparativeButton>
-      </div>
+        > */}
+          <AddCircleIcon style={{fontSize:'40px', color:'#009688',cursor:'pointer'}} onClick={()=>{
+              handleAddRow()
+          }} />
+          {/* اضافه کردن */}
+        {/* </ComparativeButton> */}
+        <ComparativeItemContainer>
       {items.map((item , index) =>(
         <ComparativeModalItems key={index} myIndex={index} item={item} handleIndexDelete={handleIndexDelete} handleIndexSet={handleIndexSet} />
       ))}
+      </ComparativeItemContainer>
       {items.length > 0 ? <ComparativeButtonSave variant="contained" component="span"
         onClick={SeveData}
         >

@@ -3,13 +3,13 @@ import styled from 'styled-components';
 
 export const SequentialButton = styled(Button)`
     width:200px;
-    background-color:#ccc;
+    background-color:#009688 !important;
     float:right;
     color:#000;
 `;
 
 export const SequentialButtonSave = styled(Button)`
-    background-color:#000;
+    background-color:#009688 !important;
     color:#fff;
     bottom: 0;
     transition:all .3s;
@@ -19,6 +19,8 @@ export const SequentialButtonSave = styled(Button)`
 `;
 
 export const SequentialItemContainer = styled.div`
+    height:80%;
+    overflow:scroll;
    display:grid;
    grid-template-columns: auto auto auto auto auto auto;
 `;

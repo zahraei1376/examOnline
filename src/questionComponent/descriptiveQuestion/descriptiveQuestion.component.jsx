@@ -5,6 +5,8 @@ import MaterialTable from 'material-table';
 import TextField from '@material-ui/core/TextField';
 import {Input,Button} from '@material-ui/core';
 import {loadVariable} from '../questionComponent';
+import { ComparativeButton } from "../Comparative/Comparative.styles";
+import BackupIcon from '@material-ui/icons/Backup';
 // import AddIcon from '@material-ui/icons/Add';
 // import BackupIcon from '@material-ui/icons/Backup';
 // import {CloudUploadIcon} from '@material-ui/icons';
@@ -169,9 +171,11 @@ const DescriptiveQuestion = (props) => {
                     onChange={e => uploadFileQuestion(e)}
                 />
 
-                <Button color="primary" variant="contained" component="span">
-                    {/* <BackupIcon/> */}
-                </Button>
+                <ComparativeButton variant="contained" component="span">
+                    <BackupIcon 
+                    // style={{color:'#009688'}}
+                     />
+                </ComparativeButton>
             </label>
           ),
         },
@@ -287,9 +291,11 @@ const DescriptiveQuestion = (props) => {
                     onChange={e => uploadFile(e)}
                 />
 
-                <Button color="primary" variant="contained" component="span">
-                    {/* <BackupIcon/> */}
-                </Button>
+                <ComparativeButton variant="contained" component="span">
+                    <BackupIcon 
+                    // style={{color:'#009688'}}
+                     />
+                </ComparativeButton>
             </label>
           ),
         },
@@ -319,7 +325,6 @@ const DescriptiveQuestion = (props) => {
         data={innerData}
         options={{
           pageSize: 1,
-          
           pageSizeOptions: [1,],
           sorting: true,
           paging: false,
@@ -333,6 +338,9 @@ const DescriptiveQuestion = (props) => {
               backgroundColor: '#009688',
               color:'#fff',
               textAlign:'center',
+            },
+            rowStyle:{
+              backgroundColor: '#fff',
             }
             
           }}

@@ -7,6 +7,21 @@ import TrueAndFalse from './trueAndFalse/trueAndFalse.component';
 import Comparative from './Comparative/Comparative.component';//تطبیقی
 import Vacancy from './Vacancy/Vacancy.component';//جای خالی
 import Sequential from './Sequential/Sequential.component';//ترتیبی
+import {QuestionImageIconContainer ,QuestionImageIcon ,QuestionImageIconText,QuestionImageIconTextV} from './questionComponent.styles';
+import DeleteIcon from '../assets/img/iconDelete.png';
+import descriptiveIcon from '../assets/img/descriptiveQuestion.png';
+import descriptiveIcon2 from '../assets/img/descriptiveQuestion2.png';
+import multiChoice from '../assets/img/multiChoice.png';
+import multiChoice2 from '../assets/img/multiChoice2.png';
+import trueFalse from '../assets/img/trueFalse.png';
+import trueFalse2 from '../assets/img/trueFalse2.png';
+import ellipsis from '../assets/img/ellipsis.png';
+import ellipsis2 from '../assets/img/ellipsis2.png';
+import compareIcon from '../assets/img/compare.png';
+import compareIcon2 from '../assets/img/compare2.png';
+import SequentialIcon from '../assets/img/SequentialIcon.png';
+import SequentialIcon2 from '../assets/img/SequentialIcon2.png';
+
 
 
 export var loadVariable = {
@@ -74,13 +89,18 @@ const Questions = () =>{
     tempAray.push(item);
     return tempAray;
   }
+  const [selectedRow, setSelectedRow] = useState(null);
     
   return (
     <MaterialTable
       title="سوالات"
       tableRef={tableRef}
+      onRowClick={((evt, selectedRow) => setSelectedRow(selectedRow.tableData.id))}
       options={{
         search: true,
+        // paging: false,
+            // search: false,
+            // toolbar:false,
         actionsColumnIndex: -1,
         actionsCellStyle:{
           padding:'0 40px',
@@ -91,7 +111,16 @@ const Questions = () =>{
         },
         headerStyle: {
           textAlign:'center',
-        }
+        },
+        
+        // rowStyle: rowData => ({
+        //   border: (selectedRow === rowData.tableData.id) ? '1px solid #ff6542' : '1px solid inherit'
+        // })
+        // rowStyle: rowData => ({
+        //   backgroundColor: this.state.selected && rowData.tableData.id === this.state.selectedRowId 
+        //   ?   '#000'
+        //       : "#fff" 
+        //   })
       }}
       
       columns={[
@@ -100,8 +129,12 @@ const Questions = () =>{
       data={data}
       detailPanel={[
         {
-          icon: 'account_circle',
-          openIcon: 'favorite',
+          icon: () => (<QuestionImageIconContainer><QuestionImageIcon src={descriptiveIcon}/>
+          {/* <QuestionImageIconText>تشریحی</QuestionImageIconText> */}
+          </QuestionImageIconContainer>),
+          openIcon: () => (<QuestionImageIconContainer><QuestionImageIcon src={descriptiveIcon2}/>
+            {/* <QuestionImageIconTextV>تشریحی</QuestionImageIconTextV> */}
+            </QuestionImageIconContainer>),
           tooltip: 'سوال تشریحی',
           render: rowData => {
             return (
@@ -116,6 +149,7 @@ const Questions = () =>{
                 {/* {rowData.question} */}
                 {(() => {
                     setTypeQuestion(1);
+                    setSelectedRow(rowData.tableData.id);
                     return <DescriptiveQuestion rowData={createArray(rowData)} typeQuestion={typeQuestion} />
                 })()}
               </div>
@@ -123,8 +157,14 @@ const Questions = () =>{
           },
         },
         {
+          // icon: () => (<QuestionImageIconContainer src={multiChoice}/>),
+          icon: () => (<QuestionImageIconContainer><QuestionImageIcon src={multiChoice}/>
+          {/* <QuestionImageIconText>چهار گزینه ای</QuestionImageIconText> */}
+          </QuestionImageIconContainer>),
           tooltip: 'سوال چهار گزینه ای',
-          openIcon: 'favorite',
+          openIcon: () => (<QuestionImageIconContainer><QuestionImageIcon src={multiChoice2}/>
+            {/* <QuestionImageIconTextV>چهار گزینه ای</QuestionImageIconTextV> */}
+            </QuestionImageIconContainer>),
           render: rowData => {
             return (
               <div
@@ -137,6 +177,7 @@ const Questions = () =>{
               >
                 {(() => {
                   setTypeQuestion(2);
+                  setSelectedRow(rowData.tableData.id);
                     return <MultipleChoice rowData={createArray(rowData)} typeQuestion={typeQuestion}/>
                 })()}
 
@@ -145,8 +186,13 @@ const Questions = () =>{
           },
         },
         {
-          icon: 'favorite_border',
-          openIcon: 'favorite',
+          // icon: () => (<QuestionImageIconContainer src={trueFalse}/>),
+          icon: () => (<QuestionImageIconContainer><QuestionImageIcon src={trueFalse}/>
+          {/* <QuestionImageIconText>دو گزینه ای</QuestionImageIconText> */}
+          </QuestionImageIconContainer>),
+          openIcon: () => (<QuestionImageIconContainer><QuestionImageIcon src={trueFalse2}/>
+            {/* <QuestionImageIconTextV>دو گزینه ای</QuestionImageIconTextV> */}
+            </QuestionImageIconContainer>),
           tooltip: 'سوال دو گزینه ای',
           render: rowData => {
             return (
@@ -162,6 +208,7 @@ const Questions = () =>{
                 
                 {(() => {
                   setTypeQuestion(3);
+                  setSelectedRow(rowData.tableData.id);
                     return <TrueAndFalse rowData={createArray(rowData)} typeQuestion={typeQuestion}/>
                 })()}
               </div>
@@ -169,8 +216,13 @@ const Questions = () =>{
           },
         },
         {
-          icon: 'favorite_border',
-          openIcon: 'favorite',
+          // icon: () => (<QuestionImageIconContainer src={ellipsis}/>),
+          icon: () => (<QuestionImageIconContainer><QuestionImageIcon src={ellipsis}/>
+          {/* <QuestionImageIconText>جای خالی</QuestionImageIconText> */}
+          </QuestionImageIconContainer>),
+          openIcon: () => (<QuestionImageIconContainer><QuestionImageIcon src={ellipsis2}/>
+            {/* <QuestionImageIconTextV>جای خالی</QuestionImageIconTextV> */}
+            </QuestionImageIconContainer>),
           tooltip: 'سوال جای خالی',
           render: rowData => {
             return (
@@ -186,6 +238,7 @@ const Questions = () =>{
                 
                 {(() => {
                   setTypeQuestion(4);
+                  setSelectedRow(rowData.tableData.id);
                     return <Vacancy rowData={createArray(rowData)} typeQuestion={typeQuestion}/>
                 })()}
               </div>
@@ -193,8 +246,13 @@ const Questions = () =>{
           },
         },
         {
-          icon: 'favorite_border',
-          openIcon: 'favorite',
+          // icon: () => (<QuestionImageIconContainer src={compareIcon}/>),
+          icon: () => (<QuestionImageIconContainer><QuestionImageIcon src={compareIcon}/>
+          {/* <QuestionImageIconText>تطبیقی</QuestionImageIconText> */}
+          </QuestionImageIconContainer>),
+          openIcon: () => (<QuestionImageIconContainer><QuestionImageIcon src={compareIcon2}/>
+            {/* <QuestionImageIconTextV>تطبیقی</QuestionImageIconTextV> */}
+            </QuestionImageIconContainer>),
           tooltip: 'سوال تطبیقی',
           render: rowData => {
             return (
@@ -210,6 +268,7 @@ const Questions = () =>{
                 
                 {(() => {
                   setTypeQuestion(5);
+                  setSelectedRow(rowData.tableData.id);
                     return <Comparative rowData={createArray(rowData)} typeQuestion={typeQuestion}/>
                 })()}
               </div>
@@ -217,8 +276,13 @@ const Questions = () =>{
           },
         },
         {
-          icon: 'favorite_border',
-          openIcon: 'favorite',
+          // icon: () => (<QuestionImageIcon src={SequentialIcon}/>),
+          icon: () => (<QuestionImageIconContainer><QuestionImageIcon src={SequentialIcon}/>
+          {/* <QuestionImageIconText>ترتیبی</QuestionImageIconText> */}
+          </QuestionImageIconContainer>),
+          openIcon: () => (<QuestionImageIconContainer><QuestionImageIcon src={SequentialIcon2}/>
+            {/* <QuestionImageIconTextV>ترتیبی</QuestionImageIconTextV> */}
+            </QuestionImageIconContainer>),
           tooltip: 'سوال ترتیبی',
           render: rowData => {
             return (
@@ -234,6 +298,7 @@ const Questions = () =>{
                 
                 {(() => {
                   setTypeQuestion(6);
+                  setSelectedRow(rowData.tableData.id);
                     return <Sequential rowData={createArray(rowData)} typeQuestion={typeQuestion}/>
                 })()}
               </div>

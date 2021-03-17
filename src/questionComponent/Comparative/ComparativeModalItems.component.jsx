@@ -13,8 +13,8 @@ const ComparativeModalItems =({myIndex , item ,handleIndexDelete , handleIndexSe
 
     return(
         <InputDivContainer>
-            <Input type="text" value={item[1]} onChange={(e) => handleIndexSet(myIndex , 1 ,e.target.value)} />
-            <Input type="text" value={item[0]} onChange={(e) => handleIndexSet(myIndex , 0 ,e.target.value)}/>
+            <Input type="text" value={item[0]} onChange={(e) => handleIndexSet(myIndex , 0 ,e.target.value)} />
+            <Input type="text" value={item[1]} onChange={(e) => handleIndexSet(myIndex , 1 ,e.target.value)}/>
             <InputContainerButton onClick={handleDelete}><InputContainerIcon>delete</InputContainerIcon></InputContainerButton>
         </InputDivContainer>
     )

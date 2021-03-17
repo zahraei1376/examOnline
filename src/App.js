@@ -1,12 +1,12 @@
 import './App.css';
-import Questions from './questionComponent/questionComponent';
+import QuestionPageContainer from './pages/questionPage.component';
 ///////////////////////////
 
 
 const App = () => {
   return (
     <div className="App">
-     <Questions />
+     <QuestionPageContainer />
     </div>
   );
 }
