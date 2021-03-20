@@ -22,8 +22,8 @@ export const InputContainerButton =styled(Button)`
     position:absolute !important;
     // top: -17px;
     // right: 10px;
-    top: 35px;
-    right: 0;
+    top: -1rem;
+    right: -1rem;
     transition:all .2s;
     &:hover{
         color:red;

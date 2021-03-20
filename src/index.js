@@ -7,6 +7,9 @@ import { ApolloProvider } from 'react-apollo';
 import {createHttpLink } from 'apollo-link-http';
 import { InMemoryCache } from 'apollo-cache-inmemory';
 import { ApolloClient } from 'apollo-boost';
+////////////////////////////////////////////////////
+import {Provider } from 'react-redux';
+import {Store} from './redux/store';
 
 
 const cache =new InMemoryCache();
@@ -24,11 +27,13 @@ const client =new ApolloClient({
 
 
 ReactDOM.render(
-  <ApolloProvider client={client}>
+  // <ApolloProvider client={client}>
+  <Provider store ={Store}>
     <React.StrictMode>
       <App />
     </React.StrictMode>
-  </ApolloProvider>
+  {/* // </ApolloProvider> */}
+  </Provider>
   ,
   document.getElementById('root')
 );

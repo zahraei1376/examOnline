@@ -14,13 +14,15 @@ import {loadVariable} from '../questionComponent';
 import ComparativeModal from './ComparativeModal.component';
 import DeleteIcon from '../../assets/img/iconDelete.png';
 import BackupIcon from '@material-ui/icons/Backup';
+import {connect} from 'react-redux';
+import setToggle from '../../redux/toggleQuesion/toggleQuestion.action';
 // import AddIcon from '@material-ui/icons/Add';
 // import BackupIcon from '@material-ui/icons/Backup';
 // import {CloudUploadIcon} from '@material-ui/icons';
 // var load = false;
 const graphql_server_uri ='/qraphql';
 
-const Comparative = (props) => {
+const Comparative = ({setToggle , ...props}) => {
     const [innerData, setInnerData] = useState([]);
     /////////////////////////////////////////
     // const [imageQuestion, setImageQuestion] = useState(false);
@@ -35,13 +37,19 @@ const Comparative = (props) => {
 
     useEffect(()=>{
 
+      // loadVariable.disable = true;
+      
+
       if(!loadVariable.load){
         loadVariable.load = true;
+        setToggle(true);
         setInnerData(props.rowData);
       }
 
       return ()=>{
         loadVariable.load = false;
+        // setToggle(false);
+        // loadVariable.disable = false;
       }
 
     },[]);
@@ -723,14 +731,20 @@ const Comparative = (props) => {
 
           onRowUpdateCancelled: rowData => {
             loadVariable.load = true;
+            setToggle(false);
+            // loadVariable.disable = false;
             console.log('onRowUpdateCancelled',loadVariable.load);
+            // console.log('loadVariable.disable',loadVariable.disable);
           },
 
           onRowUpdate: (newData, oldData) =>
             new Promise((resolve, reject) => {
+              
+              // loadVariable.disable = false;
               setTimeout(() => {
                 const dataUpdate = [...innerData];
                 const index = oldData.tableData.id;
+                // setToggle(false);
                 /////////////myCode
                 if (
                     // axamIdProps != '' &&
@@ -1064,8 +1078,10 @@ const Comparative = (props) => {
                 dataUpdate[index] = newData;
                 setInnerData([...dataUpdate]);
   
-                resolve();
-                reject(loadVariable.load = false);
+                resolve(setToggle(false));
+                // reject(loadVariable.load = false);
+                // resolve();
+                // reject();
               }, 1000)
             }),
           // onRowDelete: oldData =>
@@ -1086,4 +1102,8 @@ const Comparative = (props) => {
     )
 };
 
-export default Comparative;
+const mapDispatchToProps = dispatch =>({
+  setToggle: toggle => dispatch(setToggle(toggle)),
+});
+
+export default connect(null , mapDispatchToProps)(Comparative);

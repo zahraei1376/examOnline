@@ -19,6 +19,7 @@ export const SequentialButtonSave = styled(Button)`
 `;
 
 export const SequentialItemContainer = styled.div`
+    width:100%;
     height:80%;
     overflow:scroll;
    display:grid;

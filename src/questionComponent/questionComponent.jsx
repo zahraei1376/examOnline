@@ -21,22 +21,32 @@ import compareIcon from '../assets/img/compare.png';
 import compareIcon2 from '../assets/img/compare2.png';
 import SequentialIcon from '../assets/img/SequentialIcon.png';
 import SequentialIcon2 from '../assets/img/SequentialIcon2.png';
+///////////////////////////////////////////////
+import {connect} from 'react-redux';
+
 
 
 
 export var loadVariable = {
   load:false,
+  // disable:false,
 };
 
-const Questions = () =>{
+const Questions = ({toggle}) =>{
   // const [innerData, setInnerData] = useState([]);
   const [typeQuestion,setTypeQuestion] =useState('');
-  var tableRef = React.createRef();
+  // const [disable,setDisable] =useState(false);
   useEffect(()=>{
     // fetchData();
     console.log('typeQuestion' , typeQuestion);
     
-  },[typeQuestion])
+  },[typeQuestion]);
+
+  // useEffect(()=>{
+  //   // fetchData();
+  //   console.log('toggle' , toggle);
+    
+  // })
   ///////////////////////////////////
   async function fetchData(){
     await fetch('http://localhost:9001',{
@@ -90,11 +100,15 @@ const Questions = () =>{
     return tempAray;
   }
   const [selectedRow, setSelectedRow] = useState(null);
+
+  // useEffect(()=>{
+  //     console.log('toggle',toggle);
+  // },[toggle])
     
   return (
     <MaterialTable
       title="سوالات"
-      tableRef={tableRef}
+      // tableRef={tableRef}
       onRowClick={((evt, selectedRow) => setSelectedRow(selectedRow.tableData.id))}
       options={{
         search: true,
@@ -129,6 +143,7 @@ const Questions = () =>{
       data={data}
       detailPanel={[
         {
+          disabled:toggle,
           icon: () => (<QuestionImageIconContainer><QuestionImageIcon src={descriptiveIcon}/>
           {/* <QuestionImageIconText>تشریحی</QuestionImageIconText> */}
           </QuestionImageIconContainer>),
@@ -157,6 +172,7 @@ const Questions = () =>{
           },
         },
         {
+          disabled:toggle,
           // icon: () => (<QuestionImageIconContainer src={multiChoice}/>),
           icon: () => (<QuestionImageIconContainer><QuestionImageIcon src={multiChoice}/>
           {/* <QuestionImageIconText>چهار گزینه ای</QuestionImageIconText> */}
@@ -186,6 +202,7 @@ const Questions = () =>{
           },
         },
         {
+          disabled:toggle,
           // icon: () => (<QuestionImageIconContainer src={trueFalse}/>),
           icon: () => (<QuestionImageIconContainer><QuestionImageIcon src={trueFalse}/>
           {/* <QuestionImageIconText>دو گزینه ای</QuestionImageIconText> */}
@@ -216,6 +233,7 @@ const Questions = () =>{
           },
         },
         {
+          disabled:toggle,
           // icon: () => (<QuestionImageIconContainer src={ellipsis}/>),
           icon: () => (<QuestionImageIconContainer><QuestionImageIcon src={ellipsis}/>
           {/* <QuestionImageIconText>جای خالی</QuestionImageIconText> */}
@@ -246,6 +264,7 @@ const Questions = () =>{
           },
         },
         {
+          disabled:toggle,
           // icon: () => (<QuestionImageIconContainer src={compareIcon}/>),
           icon: () => (<QuestionImageIconContainer><QuestionImageIcon src={compareIcon}/>
           {/* <QuestionImageIconText>تطبیقی</QuestionImageIconText> */}
@@ -276,6 +295,7 @@ const Questions = () =>{
           },
         },
         {
+          disabled:toggle,
           // icon: () => (<QuestionImageIcon src={SequentialIcon}/>),
           icon: () => (<QuestionImageIconContainer><QuestionImageIcon src={SequentialIcon}/>
           {/* <QuestionImageIconText>ترتیبی</QuestionImageIconText> */}
@@ -343,5 +363,9 @@ const Questions = () =>{
   )
 }
 
+const mapStateToProps = state =>({
+    toggle : state.toggle.toggle,
+})
 
-  export default Questions;
+
+export default connect(mapStateToProps)(Questions);
