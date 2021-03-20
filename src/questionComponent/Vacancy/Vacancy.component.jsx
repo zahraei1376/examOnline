@@ -13,11 +13,13 @@ import VacancyModal from './VacancyModal.component';
 import {ComparativeButton} from '../Comparative/Comparative.styles';
 // import AddIcon from '@material-ui/icons/Add';
 import BackupIcon from '@material-ui/icons/Backup';
+import {connect} from 'react-redux';
+import setToggle from '../../redux/toggleQuesion/toggleQuestion.action';
 // import {CloudUploadIcon} from '@material-ui/icons';
 // var load = false;
 const graphql_server_uri ='/qraphql';
 
-const Vacancy = (props) => {
+const Vacancy = ({setToggle , ...props}) => {
     const [innerData, setInnerData] = useState([]);
     /////////////////////////////////////////
     // const [imageQuestion, setImageQuestion] = useState(false);
@@ -34,11 +36,13 @@ const Vacancy = (props) => {
 
       if(!loadVariable.load){
         loadVariable.load = true;
+        setToggle(true);
         setInnerData(props.rowData);
       }
 
       return ()=>{
         loadVariable.load = false;
+        // setToggle(false);
       }
 
     },[]);
@@ -716,15 +720,18 @@ const Vacancy = (props) => {
           //   }
           // }
         ]}
+        
         editable={{
 
           onRowUpdateCancelled: rowData => {
             loadVariable.load = true;
+            setToggle(false);
             console.log('onRowUpdateCancelled',loadVariable.load);
           },
 
           onRowUpdate: (newData, oldData) =>
             new Promise((resolve, reject) => {
+              // setToggle(true);
               setTimeout(() => {
                 const dataUpdate = [...innerData];
                 const index = oldData.tableData.id;
@@ -1061,8 +1068,8 @@ const Vacancy = (props) => {
                 dataUpdate[index] = newData;
                 setInnerData([...dataUpdate]);
   
-                resolve();
-                reject(loadVariable.load = false);
+                resolve(setToggle(false));
+                // reject(loadVariable.load = false);
               }, 1000)
             }),
           // onRowDelete: oldData =>
@@ -1083,4 +1090,9 @@ const Vacancy = (props) => {
     )
 };
 
-export default Vacancy;
+// export default Vacancy;
+const mapDispatchToProps = dispatch =>({
+  setToggle: toggle => dispatch(setToggle(toggle)),
+});
+
+export default connect(null,mapDispatchToProps)(Vacancy);

@@ -12,11 +12,13 @@ import SequentialModal from './SequentialModal.component';
 import {ComparativeButton} from '../Comparative/Comparative.styles';
 // import AddIcon from '@material-ui/icons/Add';
 import BackupIcon from '@material-ui/icons/Backup';
+import {connect} from 'react-redux';
+import setToggle from '../../redux/toggleQuesion/toggleQuestion.action';
 // import {CloudUploadIcon} from '@material-ui/icons';
 // var load = false;
 const graphql_server_uri ='/qraphql';
 
-const Sequential = (props) => {
+const Sequential = ({setToggle , ...props}) => {
     const [innerData, setInnerData] = useState([]);
     /////////////////////////////////////////
     // const [imageQuestion, setImageQuestion] = useState(false);
@@ -33,11 +35,13 @@ const Sequential = (props) => {
 
       if(!loadVariable.load){
         loadVariable.load = true;
+        setToggle(true);
         setInnerData(props.rowData);
       }
 
       return ()=>{
         loadVariable.load = false;
+        // setToggle(false);
       }
 
     },[]);
@@ -715,6 +719,7 @@ const Sequential = (props) => {
 
           onRowUpdateCancelled: rowData => {
             loadVariable.load = true;
+            setToggle(false);
             console.log('onRowUpdateCancelled',loadVariable.load);
           },
 
@@ -1056,8 +1061,8 @@ const Sequential = (props) => {
                 dataUpdate[index] = newData;
                 setInnerData([...dataUpdate]);
   
-                resolve();
-                reject(loadVariable.load = false);
+                resolve(setToggle(false));
+                // reject(loadVariable.load = false);
               }, 1000)
             }),
           // onRowDelete: oldData =>
@@ -1078,4 +1083,9 @@ const Sequential = (props) => {
     )
 };
 
-export default Sequential;
+// export default Sequential;
+const mapDispatchToProps = dispatch =>({
+  setToggle: toggle => dispatch(setToggle(toggle)),
+});
+
+export default connect(null,mapDispatchToProps)(Sequential);
