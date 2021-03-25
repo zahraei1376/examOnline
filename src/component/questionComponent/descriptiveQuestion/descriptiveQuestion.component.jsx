@@ -1,8 +1,6 @@
 import React ,{useState , useEffect} from "react";
-// import SparkMD5 from 'spark-md5';
 import { v4 as uuidv4 } from 'uuid';
 import {UploadfileToserver} from '../uploadToserver/uploadToserver.component';
-// import axios from 'axios';
 import MaterialTable from 'material-table';
 import TextField from '@material-ui/core/TextField';
 import {Input,Button} from '@material-ui/core';
@@ -10,18 +8,16 @@ import {loadVariable} from '../questionComponent';
 import { ComparativeButton } from "../Comparative/Comparative.styles";
 import BackupIcon from '@material-ui/icons/Backup';
 import {connect} from 'react-redux';
-import setToggle from '../../redux/toggleQuesion/toggleQuestion.action';
+import setToggle from '../../../redux/toggleQuesion/toggleQuestion.action';
 // import AddIcon from '@material-ui/icons/Add';
 // import BackupIcon from '@material-ui/icons/Backup';
 // import {CloudUploadIcon} from '@material-ui/icons';
 // var load = false;
 const graphql_server_uri ='/qraphql';
 
-const TrueAndFalse = ({setToggle , ...props}) => {
+const DescriptiveQuestion = ({setToggle , ...props}) => {
     const [innerData, setInnerData] = useState([]);
     /////////////////////////////////////////
-    // const [imageQuestion, setImageQuestion] = useState(false);
-    // const [QuestionPic, setQuestionPic] = useState(false);
     const [textImage, setTextImage] = useState(false); //pic with text
     const [questionImage, setQuestionImage] = useState(false); //pic instanse text
     const [selectedFile, SetselectedFile] = useState(null);
@@ -32,7 +28,7 @@ const TrueAndFalse = ({setToggle , ...props}) => {
 
       if(!loadVariable.load){
         loadVariable.load = true;
-        setToggle(true);
+        // setToggle(true);
         setInnerData(props.rowData);
       }
 
@@ -92,40 +88,13 @@ const TrueAndFalse = ({setToggle , ...props}) => {
         } else {
             setTextImage(true);
             var file = event.target.files[0];
-            // SetselectedFile(null);
-            // setQuestionImage(true);
-            // setTextImage(false);
+
             if(CheckFile(file)){
                 SetselectedFile(file);
             }
-            // var file = event.target.files[0];
-            // var fileName = file ?  file.name : '';
-            // var fileIdL = fileName ? fileName.split('.') : '';
-            // const format = fileIdL[fileIdL.length - 1].toLowerCase();
-            // if (file.size < 10485760) {
-            //     if (format == 'png' || format == 'jpg' || format == 'jpeg') {
-            //         SetselectedFile(file);
-            //     } else {
-            //         alert('فایل ارسالی باید با فرمت png , jpg  یا jpeg باشد!!!');
-            //         // setStatus(0);
-            //         // setShowPopup(true);
-            //     // setMessage('فایل ارسالی باید با فرمت png , jpg  یا jpeg باشد!!!');
-            //     // setStatus(0);
-            //     // setShowPopup(true);
-            //     }
-            // } else {
-            //     alert('حجم فایل ارسالی باید کمتر از 10 مگابایت باشد!!!');
-            //     // setMessage('حجم فایل ارسالی باید کمتر از 10 مگابایت باشد!!!');
-            //     // setStatus(0);
-            //     // setShowPopup(true);
-            // }
+            
         }
-    
-        // alert('imageQuestion');
-        // alert(imageQuestion);
-        // alert('QuestionPic');
-        // alert(QuestionPic);
-        // SetselectedFileName('');
+
     };
     //////////////////////////////////////////
     const uploadFileQuestion = event => { //picQuestion
@@ -136,20 +105,6 @@ const TrueAndFalse = ({setToggle , ...props}) => {
         if(CheckFile(file)){
             SetselectedFile(file);
         }
-    
-        // var file = event.target.files[0];
-        // var fileName = event.target.files[0].name;
-        // var fileIdL = fileName.split('.');
-        // const format = fileIdL[fileIdL.length - 1].toLowerCase();
-        // if (file.size < 10485760) {
-        //   if (format == 'png' || format == 'jpg' || format == 'jpeg') {
-        //     SetselectedFile(file);
-        //   } else {
-        //     alert('فایل ارسالی باید با فرمت png , jpg  یا jpeg باشد!!!');
-        //   }
-        // } else {
-        //     alert('حجم فایل ارسالی باید کمتر از 10 مگابایت باشد!!!');
-        // }
     };
     ////////////////////////////////////
 
@@ -171,7 +126,7 @@ const TrueAndFalse = ({setToggle , ...props}) => {
             <TextField
               style={{ minWidth: '500px', textAlign:'right',direction:'rtl' }}
               value={props.value}
-              defaultValue=""
+              // defaultValue=""
               fullWidth={true}
               multiline={true}
             //   var newQuestion = newData.question
@@ -213,7 +168,7 @@ const TrueAndFalse = ({setToggle , ...props}) => {
             <label htmlFor="upload-photo">
                 <input
                     style={{ display: 'none' }}
-                    defaultValue=""
+                    // defaultValue=""
                     id="upload-photo"
                     name="upload-photo"
                     type="file"
@@ -227,103 +182,6 @@ const TrueAndFalse = ({setToggle , ...props}) => {
                 </ComparativeButton>
             </label>
           ),
-        },
-        {
-          title: 'گزینه 1',
-          textAlign: 'center',
-          field: 'question__optionOne',
-          minWidth: 200,
-          editComponent: props => (
-            <TextField
-              style={{ minWidth: '200px' }}
-              value={props.value}
-              fullWidth={true}
-              multiline={true}
-              defaultValue=""
-              onChange={e => props.onChange(e.target.value)}
-            />
-          ),
-          render: data => {
-            return (
-              <pre
-                style={{
-                  fontSize: '20px',
-                  wordBreak: 'break-word',
-                  overflowWrap: 'break-word',
-                  whiteSpace: 'pre-wrap',
-                  textAlign: 'center',
-                  width: '200px',
-                  fontFamily: 'BNazanin',
-                  fontSize: 16,
-                }}
-              >
-                {data.question__optionOne}
-              </pre>
-            );
-          },
-        },
-        {
-          title: 'گزینه 2',
-          textAlign: 'center',
-          field: 'question__optionTwo',
-          minWidth: 200,
-          editComponent: props => (
-            <TextField
-              style={{ minWidth: '200px' }}
-              value={props.value}
-              defaultValue=""
-              fullWidth={true}
-              multiline={true}
-              onChange={e => props.onChange(e.target.value)}
-            />
-          ),
-          render: data => {
-            return (
-              <pre
-                style={{
-                  fontSize: '20px',
-                  wordBreak: 'break-word',
-                  overflowWrap: 'break-word',
-                  whiteSpace: 'pre-wrap',
-                  textAlign: 'center',
-                  width: '200px',
-                  fontFamily: 'BNazanin',
-                  fontSize: 16,
-                }}
-              >
-                {data.question__optionTwo}
-              </pre>
-            );
-          },
-        },
-        {
-          title: 'گزینه صحیح',
-          textAlign: 'center',
-          field: 'question__currentOption',
-          lookup: {
-            1: '1',
-            2: '2',
-            3: '3',
-            4: '4',
-          },
-          minWidth: 150,
-        //   validate: rowData =>
-        //     rowData.question__currentOption === '' ? 'Name cannot be empty' : '',
-          render: data => {
-            return (
-              <p
-                style={{
-                  fontFamily: 'BNazanin',
-                  fontSize: 16,
-                  textAlign: 'center',
-                  width: '50px',
-                }}
-              >
-                {data.question__currentOption}
-              </p>
-            );
-          },
-          // <input type="file" onChange={e => uploadFile(e)} />
         },
         {
           title: 'زمان تقریبی',
@@ -415,7 +273,7 @@ const TrueAndFalse = ({setToggle , ...props}) => {
               value={props.value}
               fullWidth={true}
               multiline={true}
-              defaultValue=""
+              // defaultValue=""
               onChange={e => props.onChange(e.target.value)}
             />
           ),
@@ -430,7 +288,7 @@ const TrueAndFalse = ({setToggle , ...props}) => {
             <label htmlFor="upload-photo">
                 <input
                     style={{ display: 'none' }}
-                    defaultValue=""
+                    // defaultValue=""
                     id="upload-photo"
                     name="upload-photo"
                     type="file"
@@ -445,40 +303,7 @@ const TrueAndFalse = ({setToggle , ...props}) => {
             </label>
           ),
         },
-        // {
-        //   title: 'عکس',
-        //   field: 'news_link',
-        //   editComponent: props => (
-        //     <input type="file" onChange={e => uploadFile(e)} />
-        //   ),
-        // },
       ]);
-    //   const [data, setData] = useState([]);
-      ////////////////////////////////////////////////
-
-  
-    // const [innerColumns, setInnerColumns] = useState([
-    //   {
-    //     title: 'questionID', field: 'questionID',
-    //     // editComponent: props => (
-    //     //   <input
-    //     //     type="text"
-    //     //     value={props.value}
-    //     //     onChange={e => props.onChange(e.target.value)}
-    //     //   />
-    //     // )
-    //   },
-    //   { title: 'axamQuestions_id', field: 'axamQuestions_id' },
-    //   { title: 'question', field: 'question' },
-    //   ///////////////////////////////////////
-    //   // { title: 'Surname', field: 'surname' },
-    //   // { title: 'Birth Year', field: 'birthYear', type: 'numeric' },
-    //   // {
-    //   //   title: 'Birth Place',
-    //   //   field: 'birthCity',
-    //   //   lookup: { 34: 'İstanbul', 63: 'Şanlıurfa' },
-    //   // },
-    // ]);
 
     function convertText(text){
       var new1Text = text
@@ -504,7 +329,6 @@ const TrueAndFalse = ({setToggle , ...props}) => {
         data={innerData}
         options={{
           pageSize: 1,
-          
           pageSizeOptions: [1,],
           sorting: true,
           paging: false,
@@ -535,56 +359,54 @@ const TrueAndFalse = ({setToggle , ...props}) => {
                 const index = rowData.tableData.id;
                 dataDelete.splice(index, 1);
                 ////////////////////////////////////
-              fetch(graphql_server_uri, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                  query: `
-                    mutation{
-                        deleteQuestion(
-                            axamQuestion_input: {
-                                questionID: "${'1'}"
-                                axamQuestions_id: "${'1'}"
-                                question: "${convertText(rowData.question)}"
-                                question_link: "${rowData.question_link ? rowData.question_link : ''}"
-                                question__optionOne: "${convertText(rowData.question__optionOne)}"
-                                question__optionTwo:"${convertText(rowData.question__optionTwo)}"
-                                question__currentOption: "${rowData.question__currentOption}"
-                                question__timeTosolveProblem: "${convertText(rowData.question__timeTosolveProblem)}"
-                                question__score: "${rowData.question__score ? rowData.question__score : ''}"
-                                question__explane: "${convertText(rowData.question__explane)}"
-                                exam_link: "${rowData.exam_link ? rowData.exam_link : ''}"
-                          },
-                      ){
-                        axamQuestions_id
-                      }
-                    }                      
-                  `,
-                }),
-              })
-                .then(res => res.json())
-                .then(res => {
-                  // setSumScore(prevState => (prevState - parseFloat(oldScore)));
-                  if (
-                    res.data &&
-                    res.data.deleteQuestion &&
-                    res.data.deleteQuestion.axamQuestions_id
-                  ) {
-                    /////
-                    alert('اطلاعاتی به درستی حذف نشد');
-                    // setStatus(1);
-                    // setShowPopup(true);
-                  } else {
-                    // setQuestionId(data.length)
-                    // setMessage('اطلاعاتی به درستی حذف شد');
-                    // setStatus(0);
-                    // setShowPopup(true);
-                    // refteshData();
-                    //   return res.data;
-                  }
-                  // return res.data;
-                });
+              // fetch(graphql_server_uri, {
+              //   method: 'POST',
+              //   headers: { 'Content-Type': 'application/json' },
+              //   body: JSON.stringify({
+              //     query: `
+              //       mutation{
+              //           deleteQuestion(
+              //               axamQuestion_input: {
+              //                   questionID: "${'1'}"
+              //                   axamQuestions_id: "${'1'}"
+              //                   question: "${convertText(rowData.question)}"
+              //                   question_link: "${rowData.question_link ? rowData.question_link : ''}"
+              //                   question__timeTosolveProblem: "${convertText(rowData.question__timeTosolveProblem)}"
+              //                   question__score: "${rowData.question__score ? rowData.question__score : ''}"
+              //                   question__explane: "${convertText(rowData.question__explane)}"
+              //                   exam_link: "${rowData.exam_link ? rowData.exam_link : ''}"
+              //             },
+              //         ){
+              //           axamQuestions_id
+              //         }
+              //       }                      
+              //     `,
+              //   }),
+              // })
+              //   .then(res => res.json())
+              //   .then(res => {
+              //     // setSumScore(prevState => (prevState - parseFloat(oldScore)));
+              //     if (
+              //       res.data &&
+              //       res.data.deleteQuestion &&
+              //       res.data.deleteQuestion.axamQuestions_id
+              //     ) {
+              //       /////
+              //       alert('اطلاعاتی به درستی حذف نشد');
+              //       // setStatus(1);
+              //       // setShowPopup(true);
+              //     } else {
+              //       // setQuestionId(data.length)
+              //       // setMessage('اطلاعاتی به درستی حذف شد');
+              //       // setStatus(0);
+              //       // setShowPopup(true);
+              //       // refteshData();
+              //       //   return res.data;
+              //     }
+              //     // return res.data;
+              //   });
                 //////////////////////////////////////////
+                setToggle(false);
                 setInnerData([...dataDelete]);
             }
           },
@@ -635,7 +457,7 @@ const TrueAndFalse = ({setToggle , ...props}) => {
                     //////////////////////////////////////////
                       handleSendToserver();
                       async function handleSendToserver() {
-                        var responseCode = await UploadfileToserver(file, format);
+                        var responseCode = await UploadfileToserver(file, format ,mimeTypeFile);
                         if (file.name && responseCode) {
                           fetch(graphql_server_uri, {
                             method: 'POST',
@@ -650,10 +472,6 @@ const TrueAndFalse = ({setToggle , ...props}) => {
                                                       question: "${''}"
                                                       question_link: "${file.name
                                 }"
-                                                      question__optionOne: "${convertText(newData.question__optionOne)}"
-                                                      question__optionTwo:"${convertText(newData.question__optionTwo)}"
-                                                      question__currentOption: "${newData.question__currentOption ? newData.question__currentOption: ''
-                                }"
                                                       question__timeTosolveProblem: "${convertText(newData.question__timeTosolveProblem)}"
                                                       question__score: "${newData.question__score ? newData.question__score : ''
                                 }"
@@ -665,10 +483,6 @@ const TrueAndFalse = ({setToggle , ...props}) => {
                                                 axamQuestions_id: "${'1'}"
                                                 question: "${convertText(oldData.question__optionOne)}"
                                                 question_link: "${convertText(oldData.question_link)}"
-                                                question__optionOne: "${convertText(oldData.question__optionOne)}"
-                                                question__optionTwo:"${convertText(oldData.question__optionTwo)}"
-                                                question__currentOption: "${oldData.question__currentOption ? oldData.question__currentOption : ''
-                                    }"
                                                 question__timeTosolveProblem: "${convertText(oldData.question__timeTosolveProblem)}"
                                                 question__score: "${ oldData.question__score ? oldData.question__score : ''
                                     }"
@@ -761,7 +575,7 @@ const TrueAndFalse = ({setToggle , ...props}) => {
                       //////////////////////
                       handleSendToserver();
                       async function handleSendToserver() {
-                        var responseCode = await UploadfileToserver(file, format);
+                        var responseCode = await UploadfileToserver(file, format ,mimeTypeFile);
                         // alert(selectedFileName);
                         if (file.name && responseCode) {
                           fetch(graphql_server_uri, {
@@ -776,10 +590,6 @@ const TrueAndFalse = ({setToggle , ...props}) => {
                                                       axamQuestions_id: "${'1'}"
                                                       question: "${convertText(newData.question)}"
                                                       question_link: "${''}"
-                                                      question__optionOne: "${convertText(newData.question__optionOne)}"
-                                                      question__optionTwo:"${convertText(newData.question__optionTwo)}"
-                                                      question__currentOption: "${newData.question__currentOption ? newData.question__currentOption : ''
-                                }"
                                                       question__timeTosolveProblem: "${convertText(newData.question__timeTosolveProblem)}"
                                                       question__score: "${newData.question__score ? newData.question__score: ''
                                 }"
@@ -790,10 +600,6 @@ const TrueAndFalse = ({setToggle , ...props}) => {
                                                 axamQuestions_id: "${'1'}"
                                                 question: "${convertText(oldData.question__optionOne)}"
                                                 question_link: "${convertText(oldData.question_link)}"
-                                                question__optionOne: "${convertText(oldData.question__optionOne)}"
-                                                question__optionTwo:"${convertText(oldData.question__optionTwo)}"
-                                                question__currentOption: "${oldData.question__currentOption ? oldData.question__currentOption : ''
-                                    }"
                                                 question__timeTosolveProblem: "${convertText(oldData.question__timeTosolveProblem)}"
                                                 question__score: "${ oldData.question__score ? oldData.question__score : ''
                                     }"
@@ -862,10 +668,6 @@ const TrueAndFalse = ({setToggle , ...props}) => {
                                                       axamQuestions_id: "${'1'}"
                                                       question: "${convertText(newData.question)}"
                                                       question_link: "${''}"
-                                                      question__optionOne: "${convertText(newData.question__optionOne)}"
-                                                      question__optionTwo:"${convertText(newData.question__optionTwo)}"
-                                                      question__currentOption: "${newData.question__currentOption ? newData.question__currentOption : ''
-                            }"
                                                       question__timeTosolveProblem: "${convertText(newData.question__timeTosolveProblem)}"
                                                       question__score: "${newData.question__score ? newData.question__score : ''
                             }"
@@ -876,10 +678,6 @@ const TrueAndFalse = ({setToggle , ...props}) => {
                                                 axamQuestions_id: "${'1'}"
                                                 question: "${convertText(oldData.question__optionOne)}"
                                                 question_link: "${convertText(oldData.question_link)}"
-                                                question__optionOne: "${convertText(oldData.question__optionOne)}"
-                                                question__optionTwo:"${convertText(oldData.question__optionTwo)}"
-                                                question__currentOption: "${oldData.question__currentOption ? oldData.question__currentOption : ''
-                                    }"
                                                 question__timeTosolveProblem: "${convertText(oldData.question__timeTosolveProblem)}"
                                                 question__score: "${ oldData.question__score ? oldData.question__score : ''
                                     }"
@@ -959,9 +757,8 @@ const TrueAndFalse = ({setToggle , ...props}) => {
     )
 };
 
-// export default TrueAndFalse;
 const mapDispatchToProps = dispatch =>({
   setToggle: toggle => dispatch(setToggle(toggle)),
 });
 
-export default connect(null,mapDispatchToProps)(TrueAndFalse);
+export default connect(null,mapDispatchToProps)(DescriptiveQuestion);

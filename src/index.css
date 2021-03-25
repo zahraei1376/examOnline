@@ -1,3 +1,26 @@
+*,
+*::after,
+*::before{
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-size: 62.5%;
+  box-sizing: border-box; }
+  @media only screen and (max-width: 75em) {
+    html {
+      font-size: 56.25%; } }
+  @media only screen and (max-width: 56.25em) {
+    html {
+      font-size: 50%; } }
+  @media only screen and (max-width: 37.5em) {
+    html {
+      font-size: 30%; } }
+  @media only screen and (min-width: 112.5) {
+    html {
+      font-size: 75%; } }
+
 body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
@@ -5,9 +28,51 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
 }
 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+/* ////////////////////////////////////fonts */
+@font-face {
+  font-family: 'Bnazanin';
+  src: url(./assets/fonts/B_NAZANIN/B-NAZANIN.TTF) format('ttf');
+}
+
+@font-face {
+  font-family: 'Helal';
+  src: url(./assets/fonts/B-Helal/B-Helal.ttf) format('ttf');
+}
+
+@font-face {
+  font-family: 'Abdoullah';
+  src: url(./assets/fonts/Far_Abdoullah/Far_Abdoullah.ttf) format('ttf');
+}
+
+@font-face {
+  font-family: 'Nazanin';
+  src: url(./assets/fonts/Far_Nazanin/Far_Nazanin.ttf) format('ttf');
+}
+
+@font-face {
+  font-family: 'tabssom';
+  src: url(./assets/fonts/Far_Tabssom/Far_Tabssom.ttf) format('ttf');
+}
+
+@font-face {
+  font-family: 'gol';
+  src: url(./assets/fonts/gol/gol.ttf) format('ttf');
+}
+
+@font-face {
+  font-family: 'Nastaliq';
+  src: url(./assets/fonts/IranNastaliq.ttf) format('ttf');
+}
+
+
+
+
+

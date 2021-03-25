@@ -1,6 +1,6 @@
 import React from 'react';
 import { QuestionPageContainer } from './questionPage.styles';
-import Questions from '../questionComponent/questionComponent';
+import Questions from '../component/questionComponent/questionComponent';
 
 
 const QuestionPage = () =>{

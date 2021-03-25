@@ -8,19 +8,19 @@ import Comparative from './Comparative/Comparative.component';//تطبیقی
 import Vacancy from './Vacancy/Vacancy.component';//جای خالی
 import Sequential from './Sequential/Sequential.component';//ترتیبی
 import {QuestionImageIconContainer ,QuestionImageIcon ,QuestionImageIconText,QuestionImageIconTextV} from './questionComponent.styles';
-import DeleteIcon from '../assets/img/iconDelete.png';
-import descriptiveIcon from '../assets/img/descriptiveQuestion.png';
-import descriptiveIcon2 from '../assets/img/descriptiveQuestion2.png';
-import multiChoice from '../assets/img/multiChoice.png';
-import multiChoice2 from '../assets/img/multiChoice2.png';
-import trueFalse from '../assets/img/trueFalse.png';
-import trueFalse2 from '../assets/img/trueFalse2.png';
-import ellipsis from '../assets/img/ellipsis.png';
-import ellipsis2 from '../assets/img/ellipsis2.png';
-import compareIcon from '../assets/img/compare.png';
-import compareIcon2 from '../assets/img/compare2.png';
-import SequentialIcon from '../assets/img/SequentialIcon.png';
-import SequentialIcon2 from '../assets/img/SequentialIcon2.png';
+import DeleteIcon from '../../assets/img/iconDelete.png';
+import descriptiveIcon from '../../assets/img/descriptiveQuestion.png';
+import descriptiveIcon2 from '../../assets/img/descriptiveQuestion2.png';
+import multiChoice from '../../assets/img/multiChoice.png';
+import multiChoice2 from '../../assets/img/multiChoice2.png';
+import trueFalse from '../../assets/img/trueFalse.png';
+import trueFalse2 from '../../assets/img/trueFalse2.png';
+import ellipsis from '../../assets/img/ellipsis.png';
+import ellipsis2 from '../../assets/img/ellipsis2.png';
+import compareIcon from '../../assets/img/compare.png';
+import compareIcon2 from '../../assets/img/compare2.png';
+import SequentialIcon from '../../assets/img/SequentialIcon.png';
+import SequentialIcon2 from '../../assets/img/SequentialIcon2.png';
 ///////////////////////////////////////////////
 import {connect} from 'react-redux';
 
@@ -109,7 +109,7 @@ const Questions = ({toggle}) =>{
     <MaterialTable
       title="سوالات"
       // tableRef={tableRef}
-      onRowClick={((evt, selectedRow) => setSelectedRow(selectedRow.tableData.id))}
+      // onRowClick={((evt, selectedRow) => setSelectedRow(selectedRow.tableData.id))}
       options={{
         search: true,
         // paging: false,
@@ -150,21 +150,22 @@ const Questions = ({toggle}) =>{
           openIcon: () => (<QuestionImageIconContainer><QuestionImageIcon src={descriptiveIcon2}/>
             {/* <QuestionImageIconTextV>تشریحی</QuestionImageIconTextV> */}
             </QuestionImageIconContainer>),
-          tooltip: 'سوال تشریحی',
+          // tooltip: 'سوال تشریحی',
+          // tooltip: toggle ? 'سوال تشریحی' : null,
           render: rowData => {
             return (
               <div
                 style={{
                   // fontSize: 100,
                   textAlign: 'center',
-                  color: 'white',
-                  backgroundColor: '#E53935',
+                  // color: 'white',
+                  // backgroundColor: '#E53935',
                 }}
               >
                 {/* {rowData.question} */}
                 {(() => {
-                    setTypeQuestion(1);
-                    setSelectedRow(rowData.tableData.id);
+                    // setTypeQuestion(1);
+                    // setSelectedRow(rowData.tableData.id);
                     return <DescriptiveQuestion rowData={createArray(rowData)} typeQuestion={typeQuestion} />
                 })()}
               </div>
@@ -177,7 +178,8 @@ const Questions = ({toggle}) =>{
           icon: () => (<QuestionImageIconContainer><QuestionImageIcon src={multiChoice}/>
           {/* <QuestionImageIconText>چهار گزینه ای</QuestionImageIconText> */}
           </QuestionImageIconContainer>),
-          tooltip: 'سوال چهار گزینه ای',
+          // tooltip: 'سوال چهار گزینه ای',
+          // tooltip: toggle ? 'سوال چهار گزینه ای' : null,
           openIcon: () => (<QuestionImageIconContainer><QuestionImageIcon src={multiChoice2}/>
             {/* <QuestionImageIconTextV>چهار گزینه ای</QuestionImageIconTextV> */}
             </QuestionImageIconContainer>),
@@ -187,13 +189,13 @@ const Questions = ({toggle}) =>{
                 style={{
                   // fontSize: 100,
                   textAlign: 'center',
-                  color: 'white',
-                  backgroundColor: '#43A047',
+                  // color: 'white',
+                  // backgroundColor: '#43A047',
                 }}
               >
                 {(() => {
-                  setTypeQuestion(2);
-                  setSelectedRow(rowData.tableData.id);
+                  // setTypeQuestion(2);
+                  // setSelectedRow(rowData.tableData.id);
                     return <MultipleChoice rowData={createArray(rowData)} typeQuestion={typeQuestion}/>
                 })()}
 
@@ -210,22 +212,23 @@ const Questions = ({toggle}) =>{
           openIcon: () => (<QuestionImageIconContainer><QuestionImageIcon src={trueFalse2}/>
             {/* <QuestionImageIconTextV>دو گزینه ای</QuestionImageIconTextV> */}
             </QuestionImageIconContainer>),
-          tooltip: 'سوال دو گزینه ای',
+          // tooltip: 'سوال دو گزینه ای',
+          // tooltip: toggle ? 'سوال دو گزینه ای' : null,
           render: rowData => {
             return (
               <div
                 style={{
                   // fontSize: 100,
                   textAlign: 'center',
-                  color: 'white',
-                  backgroundColor: '#FDD835',
+                  // color: 'white',
+                  // backgroundColor: '#FDD835',
                 }}
               >
                 {/* {rowData.question} {rowData.axamQuestions_id} */}
                 
                 {(() => {
-                  setTypeQuestion(3);
-                  setSelectedRow(rowData.tableData.id);
+                  // setTypeQuestion(3);
+                  // setSelectedRow(rowData.tableData.id);
                     return <TrueAndFalse rowData={createArray(rowData)} typeQuestion={typeQuestion}/>
                 })()}
               </div>
@@ -241,22 +244,22 @@ const Questions = ({toggle}) =>{
           openIcon: () => (<QuestionImageIconContainer><QuestionImageIcon src={ellipsis2}/>
             {/* <QuestionImageIconTextV>جای خالی</QuestionImageIconTextV> */}
             </QuestionImageIconContainer>),
-          tooltip: 'سوال جای خالی',
+          // tooltip: toggle ? 'سوال جای خالی' : null,
           render: rowData => {
             return (
               <div
                 style={{
                   // fontSize: 100,
                   textAlign: 'center',
-                  color: 'white',
-                  backgroundColor: '#FDD835',
+                  // color: 'white',
+                  // backgroundColor: '#FDD835',
                 }}
               >
                 {/* {rowData.question} {rowData.axamQuestions_id} */}
                 
                 {(() => {
-                  setTypeQuestion(4);
-                  setSelectedRow(rowData.tableData.id);
+                  // setTypeQuestion(4);
+                  // setSelectedRow(rowData.tableData.id);
                     return <Vacancy rowData={createArray(rowData)} typeQuestion={typeQuestion}/>
                 })()}
               </div>
@@ -272,22 +275,23 @@ const Questions = ({toggle}) =>{
           openIcon: () => (<QuestionImageIconContainer><QuestionImageIcon src={compareIcon2}/>
             {/* <QuestionImageIconTextV>تطبیقی</QuestionImageIconTextV> */}
             </QuestionImageIconContainer>),
-          tooltip: 'سوال تطبیقی',
+          // tooltip: 'سوال تطبیقی',
+          // tooltip: toggle ? 'سوال تطبیقی' : null,
           render: rowData => {
             return (
               <div
                 style={{
                   // fontSize: 100,
                   textAlign: 'center',
-                  color: 'white',
-                  backgroundColor: '#FDD835',
+                  // color: 'white',
+                  // backgroundColor: '#FDD835',
                 }}
               >
                 {/* {rowData.question} {rowData.axamQuestions_id} */}
                 
                 {(() => {
-                  setTypeQuestion(5);
-                  setSelectedRow(rowData.tableData.id);
+                  // setTypeQuestion(5);
+                  // setSelectedRow(rowData.tableData.id);
                     return <Comparative rowData={createArray(rowData)} typeQuestion={typeQuestion}/>
                 })()}
               </div>
@@ -303,22 +307,23 @@ const Questions = ({toggle}) =>{
           openIcon: () => (<QuestionImageIconContainer><QuestionImageIcon src={SequentialIcon2}/>
             {/* <QuestionImageIconTextV>ترتیبی</QuestionImageIconTextV> */}
             </QuestionImageIconContainer>),
-          tooltip: 'سوال ترتیبی',
+          // tooltip: 'سوال ترتیبی',
+          // tooltip: toggle ? 'سوال ترتیبی' : null,
           render: rowData => {
             return (
               <div
                 style={{
                   // fontSize: 100,
                   textAlign: 'center',
-                  color: 'white',
-                  backgroundColor: '#FDD835',
+                  // color: 'white',
+                  // backgroundColor: '#FDD835',
                 }}
               >
                 {/* {rowData.question} {rowData.axamQuestions_id} */}
                 
                 {(() => {
-                  setTypeQuestion(6);
-                  setSelectedRow(rowData.tableData.id);
+                  // setTypeQuestion(6);
+                  // setSelectedRow(rowData.tableData.id);
                     return <Sequential rowData={createArray(rowData)} typeQuestion={typeQuestion}/>
                 })()}
               </div>

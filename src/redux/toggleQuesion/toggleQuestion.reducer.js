@@ -9,7 +9,8 @@ const ToggleReducer = (state = INITIAL_STATE , action) =>{
         case ToggleQuestionTypes.SET_TOGGLE:
             return{
                 ...state,
-                toggle: !state.toggle,
+                // toggle: !state.toggle,
+                toggle: action.payload,
             }
     
         default:
