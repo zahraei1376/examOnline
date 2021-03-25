@@ -34,6 +34,66 @@ export const GroupDiv = styled.div`
     border-bottom:1px solid #1f6f8b;
 `;
 
+export const DatesDiv = styled.div`
+    width:100%;
+    display:flex;
+    justify-content:space-evenly;
+    align-items:center;
+    padding:30px 0;
+    // border-bottom:1px solid #f69d3c;
+    border-bottom:1px solid #1f6f8b;
+`;
+
+export const DateDiv = styled.div`
+width:50%;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    // padding:30px 0;
+`;
+
+export const ClocksDivContainer = styled.div`
+    width:100%;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    align-items:center;
+    padding:30px 0;
+    // border-bottom:1px solid #f69d3c;
+    border-bottom:1px solid #1f6f8b;
+`;
+
+
+export const ClocksDiv = styled.div`
+    width:100%;
+    display:flex;
+    justify-content:space-evenly;
+    align-items:center;
+    margin-bottom:30px;
+    // padding:30px 0;
+    // border-bottom:1px solid #f69d3c;
+    // border-bottom:1px solid #1f6f8b;
+`;
+
+export const ClockDiv = styled.div`
+width:50%;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    // padding:30px 0;
+`;
+
+export const TimeDiv = styled.div`
+    width:100%;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    margin-top:30px;
+    // padding:30px 0;
+    // border-top:1px dashed #f69d3c;
+    // border-bottom:1px solid #1f6f8b;
+`;
+
 export const SelectDiv = styled.div`
     text-align:right;
     width:70%
@@ -63,13 +123,42 @@ export const LabelGroup = styled.label`
     font-size:1.8rem;
 `;
 
+export const LabelTime = styled.label`
+    width:50%;
+    text-align:left;
+    padding:0 10px;
+    font-family:Bnazanin;
+    font-size:1.8rem;
+`;
+
 export const InputGroup = styled.input`
     border-radius:10px;
+    // padding:1rem;
     font-family:Bnazanin;
     font-size:1.8rem;
     width:70%;
     text-align:right;
     direction:rtl;
+    border:1px solid rgb(118, 118, 118);
+    &:focus{
+        outline:none;
+    }
+`;
+export const InputTimeContainer = styled.div`
+    width:50%;
+    text-align:right;
+    margin:0 1rem 0 0;
+`;
+
+
+export const InputTime = styled.input`
+    border-radius:10px;
+    font-family:Bnazanin;
+    font-size:1.8rem;
+    // width:70%;
+    text-align:right;
+    direction:rtl;
+    padding:0 1rem;
     border:1px solid rgb(118, 118, 118);
     &:focus{
         outline:none;

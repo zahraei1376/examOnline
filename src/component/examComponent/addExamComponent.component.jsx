@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import {GroupDiv , SelectDiv , Select , LabelGroup , InputGroup,BtnGroupContainer,BtnSend,Option,ContainerForm,Form} from './addExamComponent.styles';
+import {GroupDiv ,DatesDiv,DateDiv,ClocksDivContainer ,ClocksDiv,ClockDiv,TimeDiv,InputTimeContainer,InputTime,LabelTime, SelectDiv , Select , LabelGroup , InputGroup,BtnGroupContainer,BtnSend,Option,ContainerForm,Form} from './addExamComponent.styles';
 // import './addAxamForTeacher.scss';
 // import PopUp from '@components/UI/popUp/popup';
 import { MuiPickersUtilsProvider, TimePicker } from '@material-ui/pickers';
@@ -28,8 +28,10 @@ var moment = require('moment-jalaali');
 const AddExamForTeacher = () => {
   // const appContext = useContext(AppContext);
   // const user = useSelector(({ auth }) => auth.user);
-  const [selectedDate, handleDateChange] = useState(moment());
-  const [newSelectedDate, setNewSelectedDate] = useState('');
+  const [selectedStatrtDate, handleStartDateChange] = useState(moment());
+  const [selectedEndDate, handleEndDateChange] = useState(moment());
+  const [newSelectedStartDate, setNewSelectedStartDate] = useState('');
+  const [newSelectedEndDate, setNewSelectedEndDate] = useState('');
   /////////////////////////////
   // const [selectedstartTime, handleSelectedStartTime] = useState(realeTime.toLocaleTimeString([], {
   //   timeZone: 'Asia/Tehran',
@@ -83,9 +85,14 @@ const AddExamForTeacher = () => {
   // const [method, setMethod] = useState('');
 
   useEffect(() => {
-    setNewSelectedDate(fixNumbers(moment(selectedDate,
+    setNewSelectedStartDate(fixNumbers(moment(selectedStatrtDate,
     ).format('jYYYY/jMM/jDD')));
-  }, [selectedDate]);
+  }, [selectedStatrtDate]);
+
+  useEffect(() => {
+    setNewSelectedEndDate(fixNumbers(moment(selectedEndDate,
+    ).format('jYYYY/jMM/jDD')));
+  }, [selectedEndDate]);
 
   useEffect(() => {
     // if (typeOfPerson === 'teacher') {
@@ -269,15 +276,82 @@ const AddExamForTeacher = () => {
       <Grid container spacing={3}>
         <Grid item sm={12} md={12}>
           <Form>
-          <GroupDiv>
-            <SelectDiv>
-              <PersianDatePicker selectedDate={selectedDate} handleDateChange={handleDateChange} />
-              </SelectDiv>
-              <LabelGroup>
-                تاریخ امتحان
+            <DatesDiv>
+              <DateDiv>
+                  <PersianDatePicker selectedDate={selectedStatrtDate} handleDateChange={handleStartDateChange} />
+                <LabelGroup>
+                    تاریخ شروع امتحان
+                </LabelGroup>
+              </DateDiv>
+              <DateDiv>
+                  <PersianDatePicker selectedDate={selectedEndDate} handleDateChange={handleEndDateChange} />
+                  <LabelGroup>
+                    تاریخ پایان امتحان
+                  </LabelGroup>
+              </DateDiv>
+          </DatesDiv>
+          {/* / */}
+          <ClocksDivContainer>
+            <ClocksDiv>
+                <ClockDiv>
+                  <MuiPickersUtilsProvider moment={moment2} utils={MomentUtils}>
+                  <TimePicker
+                    okLabel="تأیید"
+                    cancelLabel="لغو"
+                    clearLabel="پاک کردن"
+                    clearable
+                    labelFunc={date => (date ? moment2(date).tz('Asia/Tehran').format('HH:mm:00')
+                      : "")}
+                    ampm={false}
+                    label="24 hours"
+                    value={selectedstartTime}
+                    onChange={handleSelectedStartTime}
+                  />
+                </MuiPickersUtilsProvider>
+                  <LabelGroup>
+                      ساعت شروع امتحان
+                  </LabelGroup>
+                </ClockDiv>
+                <ClockDiv>
+                    <MuiPickersUtilsProvider moment={moment2} utils={MomentUtils}>
+                
+                      <TimePicker
+                        okLabel="تأیید"
+                        cancelLabel="لغو"
+                        clearLabel="پاک کردن"
+                        clearable
+                        labelFunc={date => (date ? moment2(date).tz('Asia/Tehran').format('HH:mm:00')
+                          : "")}
+                        ampm={false}
+                        label="24 hours"
+                        value={selectedEndTime}
+                        onChange={handleSelectedEndTime}
+                      />
+                    </MuiPickersUtilsProvider>
+                    <LabelGroup>
+                      ساعت پایان امتحان
                     </LabelGroup>
-            </GroupDiv>
-            <GroupDiv>
+                </ClockDiv>
+            </ClocksDiv>
+            <TimeDiv>
+              <InputTimeContainer>
+              <InputTime
+                type="text"
+                // readOnly
+                // value={state.examTopic}
+                // onChange={e => 
+                //   setState({examTopic:e.target.value})
+                // }
+              />
+              </InputTimeContainer>
+              <LabelTime>
+                مدت زمان امتحان
+                    </LabelTime>
+            </TimeDiv>
+          </ClocksDivContainer>
+          {/*  */}
+            
+          {/* <GroupDiv>
               <SelectDiv>
               <MuiPickersUtilsProvider moment={moment2} utils={MomentUtils}>
                 <TimePicker
@@ -319,7 +393,7 @@ const AddExamForTeacher = () => {
               <LabelGroup>
                 ساعت پایان امتحان
                     </LabelGroup>
-            </GroupDiv>
+            </GroupDiv> */}
             <GroupDiv>
               <SelectDiv>
                 <Select
