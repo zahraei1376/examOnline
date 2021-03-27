@@ -1,14 +1,16 @@
 import './App.css';
 import QuestionPageContainer from './pages/questionPage.component';
-import AddExamForTeacher from './component/examComponent/addExamComponent.component';
+import AddExamForTeacher from './component/addExamComponent/addExamComponent.component';
+import ExamPageForStudent from './component/examPageForStudent/examPageForStudent.component';
 ///////////////////////////
 
 
 const App = () => {
   return (
     <div className="App">
-      <AddExamForTeacher/>
+      {/* <AddExamForTeacher/> */}
      {/* <QuestionPageContainer /> */}
+     <ExamPageForStudent/>
     </div>
   );
 }

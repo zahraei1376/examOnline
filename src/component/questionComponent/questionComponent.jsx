@@ -164,7 +164,7 @@ const Questions = ({toggle}) =>{
               >
                 {/* {rowData.question} */}
                 {(() => {
-                    // setTypeQuestion(1);
+                    setTypeQuestion(1);
                     // setSelectedRow(rowData.tableData.id);
                     return <DescriptiveQuestion rowData={createArray(rowData)} typeQuestion={typeQuestion} />
                 })()}
@@ -194,7 +194,7 @@ const Questions = ({toggle}) =>{
                 }}
               >
                 {(() => {
-                  // setTypeQuestion(2);
+                  setTypeQuestion(2);
                   // setSelectedRow(rowData.tableData.id);
                     return <MultipleChoice rowData={createArray(rowData)} typeQuestion={typeQuestion}/>
                 })()}
@@ -227,7 +227,7 @@ const Questions = ({toggle}) =>{
                 {/* {rowData.question} {rowData.axamQuestions_id} */}
                 
                 {(() => {
-                  // setTypeQuestion(3);
+                  setTypeQuestion(3);
                   // setSelectedRow(rowData.tableData.id);
                     return <TrueAndFalse rowData={createArray(rowData)} typeQuestion={typeQuestion}/>
                 })()}
@@ -258,7 +258,7 @@ const Questions = ({toggle}) =>{
                 {/* {rowData.question} {rowData.axamQuestions_id} */}
                 
                 {(() => {
-                  // setTypeQuestion(4);
+                  setTypeQuestion(4);
                   // setSelectedRow(rowData.tableData.id);
                     return <Vacancy rowData={createArray(rowData)} typeQuestion={typeQuestion}/>
                 })()}
@@ -290,7 +290,7 @@ const Questions = ({toggle}) =>{
                 {/* {rowData.question} {rowData.axamQuestions_id} */}
                 
                 {(() => {
-                  // setTypeQuestion(5);
+                  setTypeQuestion(5);
                   // setSelectedRow(rowData.tableData.id);
                     return <Comparative rowData={createArray(rowData)} typeQuestion={typeQuestion}/>
                 })()}
@@ -322,7 +322,7 @@ const Questions = ({toggle}) =>{
                 {/* {rowData.question} {rowData.axamQuestions_id} */}
                 
                 {(() => {
-                  // setTypeQuestion(6);
+                  setTypeQuestion(6);
                   // setSelectedRow(rowData.tableData.id);
                     return <Sequential rowData={createArray(rowData)} typeQuestion={typeQuestion}/>
                 })()}
