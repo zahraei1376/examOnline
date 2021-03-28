@@ -10,7 +10,7 @@ import {loadVariable} from '../questionComponent';
 import { ComparativeButton } from "../Comparative/Comparative.styles";
 import BackupIcon from '@material-ui/icons/Backup';
 import {connect} from 'react-redux';
-import setToggle from '../../redux/toggleQuesion/toggleQuestion.action';
+import setToggle from '../../../redux/toggleQuesion/toggleQuestion.action';
 // import AddIcon from '@material-ui/icons/Add';
 // import BackupIcon from '@material-ui/icons/Backup';
 // import {CloudUploadIcon} from '@material-ui/icons';
@@ -32,7 +32,7 @@ const MultipleChoice = ({setToggle , ...props}) => {
 
       if(!loadVariable.load){
         loadVariable.load = true;
-        setToggle(true);
+        // setToggle(true);
         setInnerData(props.rowData);
       }
 
@@ -171,7 +171,7 @@ const MultipleChoice = ({setToggle , ...props}) => {
             <TextField
               style={{ minWidth: '500px', textAlign:'right',direction:'rtl' }}
               value={props.value}
-              defaultValue=""
+              // defaultValue=""
               fullWidth={true}
               multiline={true}
             //   var newQuestion = newData.question
@@ -213,7 +213,7 @@ const MultipleChoice = ({setToggle , ...props}) => {
             <label htmlFor="upload-photo">
                 <input
                     style={{ display: 'none' }}
-                    defaultValue=""
+                    // defaultValue=""
                     id="upload-photo"
                     name="upload-photo"
                     type="file"
@@ -239,7 +239,7 @@ const MultipleChoice = ({setToggle , ...props}) => {
               value={props.value}
               fullWidth={true}
               multiline={true}
-              defaultValue=""
+              // defaultValue=""
               onChange={e => props.onChange(e.target.value)}
             />
           ),
@@ -271,7 +271,7 @@ const MultipleChoice = ({setToggle , ...props}) => {
             <TextField
               style={{ minWidth: '200px' }}
               value={props.value}
-              defaultValue=""
+              // defaultValue=""
               fullWidth={true}
               multiline={true}
               onChange={e => props.onChange(e.target.value)}
@@ -307,7 +307,7 @@ const MultipleChoice = ({setToggle , ...props}) => {
               value={props.value}
               fullWidth={true}
               multiline={true}
-              defaultValue=""
+              // defaultValue=""
               onChange={e => props.onChange(e.target.value)}
             />
           ),
@@ -343,7 +343,7 @@ const MultipleChoice = ({setToggle , ...props}) => {
               value={props.value}
               fullWidth={true}
               multiline={true}
-              defaultValue=""
+              // defaultValue=""
               onChange={e => props.onChange(e.target.value)}
             />
           ),
@@ -486,7 +486,7 @@ const MultipleChoice = ({setToggle , ...props}) => {
               value={props.value}
               fullWidth={true}
               multiline={true}
-              defaultValue=""
+              // defaultValue=""
               onChange={e => props.onChange(e.target.value)}
             />
           ),
@@ -501,7 +501,7 @@ const MultipleChoice = ({setToggle , ...props}) => {
             <label htmlFor="upload-photo">
                 <input
                     style={{ display: 'none' }}
-                    defaultValue=""
+                    // defaultValue=""
                     id="upload-photo"
                     name="upload-photo"
                     type="file"
@@ -606,58 +606,59 @@ const MultipleChoice = ({setToggle , ...props}) => {
                 const index = rowData.tableData.id;
                 dataDelete.splice(index, 1);
                 ////////////////////////////////////
-              fetch(graphql_server_uri, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                  query: `
-                    mutation{
-                        deleteQuestion(
-                            axamQuestion_input: {
-                                questionID: "${'1'}"
-                                axamQuestions_id: "${'1'}"
-                                question: "${convertText(rowData.question)}"
-                                question_link: "${rowData.question_link ? rowData.question_link : ''}"
-                                question__optionOne: "${convertText(rowData.question__optionOne)}"
-                                question__optionTwo:"${convertText(rowData.question__optionTwo)}"
-                                question__optionTree: "${convertText(rowData.question__optionTree)}"
-                                question__optionFour: "${convertText(rowData.question__optionFour)}"
-                                question__currentOption: "${rowData.question__currentOption}"
-                                question__timeTosolveProblem: "${convertText(rowData.question__timeTosolveProblem)}"
-                                question__score: "${rowData.question__score ? rowData.question__score : ''}"
-                                question__explane: "${convertText(rowData.question__explane)}"
-                                exam_link: "${rowData.exam_link ? rowData.exam_link : ''}"
-                          },
-                      ){
-                        axamQuestions_id
-                      }
-                    }                      
-                  `,
-                }),
-              })
-                .then(res => res.json())
-                .then(res => {
-                  // setSumScore(prevState => (prevState - parseFloat(oldScore)));
-                  if (
-                    res.data &&
-                    res.data.deleteQuestion &&
-                    res.data.deleteQuestion.axamQuestions_id
-                  ) {
-                    /////
-                    alert('اطلاعاتی به درستی حذف نشد');
-                    // setStatus(1);
-                    // setShowPopup(true);
-                  } else {
-                    // setQuestionId(data.length)
-                    // setMessage('اطلاعاتی به درستی حذف شد');
-                    // setStatus(0);
-                    // setShowPopup(true);
-                    // refteshData();
-                    //   return res.data;
-                  }
-                  // return res.data;
-                });
+              // fetch(graphql_server_uri, {
+              //   method: 'POST',
+              //   headers: { 'Content-Type': 'application/json' },
+              //   body: JSON.stringify({
+              //     query: `
+              //       mutation{
+              //           deleteQuestion(
+              //               axamQuestion_input: {
+              //                   questionID: "${'1'}"
+              //                   axamQuestions_id: "${'1'}"
+              //                   question: "${convertText(rowData.question)}"
+              //                   question_link: "${rowData.question_link ? rowData.question_link : ''}"
+              //                   question__optionOne: "${convertText(rowData.question__optionOne)}"
+              //                   question__optionTwo:"${convertText(rowData.question__optionTwo)}"
+              //                   question__optionTree: "${convertText(rowData.question__optionTree)}"
+              //                   question__optionFour: "${convertText(rowData.question__optionFour)}"
+              //                   question__currentOption: "${rowData.question__currentOption}"
+              //                   question__timeTosolveProblem: "${convertText(rowData.question__timeTosolveProblem)}"
+              //                   question__score: "${rowData.question__score ? rowData.question__score : ''}"
+              //                   question__explane: "${convertText(rowData.question__explane)}"
+              //                   exam_link: "${rowData.exam_link ? rowData.exam_link : ''}"
+              //             },
+              //         ){
+              //           axamQuestions_id
+              //         }
+              //       }                      
+              //     `,
+              //   }),
+              // })
+              //   .then(res => res.json())
+              //   .then(res => {
+              //     // setSumScore(prevState => (prevState - parseFloat(oldScore)));
+              //     if (
+              //       res.data &&
+              //       res.data.deleteQuestion &&
+              //       res.data.deleteQuestion.axamQuestions_id
+              //     ) {
+              //       /////
+              //       alert('اطلاعاتی به درستی حذف نشد');
+              //       // setStatus(1);
+              //       // setShowPopup(true);
+              //     } else {
+              //       // setQuestionId(data.length)
+              //       // setMessage('اطلاعاتی به درستی حذف شد');
+              //       // setStatus(0);
+              //       // setShowPopup(true);
+              //       // refteshData();
+              //       //   return res.data;
+              //     }
+              //     // return res.data;
+              //   });
                 //////////////////////////////////////////
+                setToggle(false);
                 setInnerData([...dataDelete]);
             }
           },

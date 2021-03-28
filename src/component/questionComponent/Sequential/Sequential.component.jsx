@@ -1,6 +1,4 @@
-
-//تطبیقی
-
+//ترتیبی 
 import React ,{useState , useEffect} from "react";
 // import SparkMD5 from 'spark-md5';
 import { v4 as uuidv4 } from 'uuid';
@@ -8,21 +6,19 @@ import {UploadfileToserver} from '../uploadToserver/uploadToserver.component';
 // import axios from 'axios';
 import MaterialTable from 'material-table';
 import TextField from '@material-ui/core/TextField';
-import {ComparativeButton} from './Comparative.styles';
-// import {Input,Button} from '@material-ui/core';
+import {Input,Button} from '@material-ui/core';
 import {loadVariable} from '../questionComponent';
-import ComparativeModal from './ComparativeModal.component';
-import DeleteIcon from '../../assets/img/iconDelete.png';
+import SequentialModal from './SequentialModal.component';
+import {ComparativeButton} from '../Comparative/Comparative.styles';
+// import AddIcon from '@material-ui/icons/Add';
 import BackupIcon from '@material-ui/icons/Backup';
 import {connect} from 'react-redux';
-import setToggle from '../../redux/toggleQuesion/toggleQuestion.action';
-// import AddIcon from '@material-ui/icons/Add';
-// import BackupIcon from '@material-ui/icons/Backup';
+import setToggle from '../../../redux/toggleQuesion/toggleQuestion.action';
 // import {CloudUploadIcon} from '@material-ui/icons';
 // var load = false;
 const graphql_server_uri ='/qraphql';
 
-const Comparative = ({setToggle , ...props}) => {
+const Sequential = ({setToggle , ...props}) => {
     const [innerData, setInnerData] = useState([]);
     /////////////////////////////////////////
     // const [imageQuestion, setImageQuestion] = useState(false);
@@ -37,19 +33,15 @@ const Comparative = ({setToggle , ...props}) => {
 
     useEffect(()=>{
 
-      // loadVariable.disable = true;
-      
-
       if(!loadVariable.load){
         loadVariable.load = true;
-        setToggle(true);
+        // setToggle(true);
         setInnerData(props.rowData);
       }
 
       return ()=>{
         loadVariable.load = false;
         // setToggle(false);
-        // loadVariable.disable = false;
       }
 
     },[]);
@@ -182,7 +174,7 @@ const Comparative = ({setToggle , ...props}) => {
             <TextField
               style={{ minWidth: '500px', textAlign:'right',direction:'rtl' }}
               value={props.value}
-              defaultValue=""
+              // defaultValue=""
               fullWidth={true}
               multiline={true}
             //   var newQuestion = newData.question
@@ -221,7 +213,7 @@ const Comparative = ({setToggle , ...props}) => {
           defaultFilter: '',
           minWidth: 150,
           editComponent: props => (
-            <label htmlFor="upload-photo" style={{textAlign:'center'}}>
+            <label htmlFor="upload-photo">
                 <input
                     style={{ display: 'none' }}
                     defaultValue=""
@@ -232,9 +224,7 @@ const Comparative = ({setToggle , ...props}) => {
                 />
 
                 <ComparativeButton variant="contained" component="span">
-                    <BackupIcon 
-                    // style={{color:'#009688'}}
-                     />
+                    <BackupIcon/>
                 </ComparativeButton>
             </label>
           ),
@@ -497,7 +487,7 @@ const Comparative = ({setToggle , ...props}) => {
               value={props.value}
               fullWidth={true}
               multiline={true}
-              defaultValue=""
+              // defaultValue=""
               onChange={e => props.onChange(e.target.value)}
             />
           ),
@@ -509,10 +499,10 @@ const Comparative = ({setToggle , ...props}) => {
           defaultFilter: '',
           editComponent: props => (
             // <input type="file" defaultValue="" onChange={e => uploadFile(e)} />
-            <label htmlFor="upload-photo"  style={{textAlign:'center'}}>
+            <label htmlFor="upload-photo">
                 <input
                     style={{ display: 'none' }}
-                    defaultValue=""
+                    // defaultValue=""
                     id="upload-photo"
                     name="upload-photo"
                     type="file"
@@ -520,9 +510,7 @@ const Comparative = ({setToggle , ...props}) => {
                 />
 
                 <ComparativeButton variant="contained" component="span">
-                    <BackupIcon 
-                    // style={{color:'#009688'}}
-                     />
+                    <BackupIcon/>
                 </ComparativeButton>
             </label>
           ),
@@ -536,7 +524,7 @@ const Comparative = ({setToggle , ...props}) => {
         //   validate: rowData =>
         //     rowData.question__score !== '' ? 'Name cannot be empty' : '',
           editComponent: props => (
-            <ComparativeModal/>
+            <SequentialModal/>
             
           ),
           render: data => {
@@ -660,58 +648,59 @@ const Comparative = ({setToggle , ...props}) => {
                 const index = rowData.tableData.id;
                 dataDelete.splice(index, 1);
                 ////////////////////////////////////
-              fetch(graphql_server_uri, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                  query: `
-                    mutation{
-                        deleteQuestion(
-                            axamQuestion_input: {
-                                questionID: "${'1'}"
-                                axamQuestions_id: "${'1'}"
-                                question: "${convertText(rowData.question)}"
-                                question_link: "${rowData.question_link ? rowData.question_link : ''}"
-                                question__optionOne: "${convertText(rowData.question__optionOne)}"
-                                question__optionTwo:"${convertText(rowData.question__optionTwo)}"
-                                question__optionTree: "${convertText(rowData.question__optionTree)}"
-                                question__optionFour: "${convertText(rowData.question__optionFour)}"
-                                question__currentOption: "${rowData.question__currentOption}"
-                                question__timeTosolveProblem: "${convertText(rowData.question__timeTosolveProblem)}"
-                                question__score: "${rowData.question__score ? rowData.question__score : ''}"
-                                question__explane: "${convertText(rowData.question__explane)}"
-                                exam_link: "${rowData.exam_link ? rowData.exam_link : ''}"
-                          },
-                      ){
-                        axamQuestions_id
-                      }
-                    }                      
-                  `,
-                }),
-              })
-                .then(res => res.json())
-                .then(res => {
-                  // setSumScore(prevState => (prevState - parseFloat(oldScore)));
-                  if (
-                    res.data &&
-                    res.data.deleteQuestion &&
-                    res.data.deleteQuestion.axamQuestions_id
-                  ) {
-                    /////
-                    alert('اطلاعاتی به درستی حذف نشد');
-                    // setStatus(1);
-                    // setShowPopup(true);
-                  } else {
-                    // setQuestionId(data.length)
-                    // setMessage('اطلاعاتی به درستی حذف شد');
-                    // setStatus(0);
-                    // setShowPopup(true);
-                    // refteshData();
-                    //   return res.data;
-                  }
-                  // return res.data;
-                });
+              // fetch(graphql_server_uri, {
+              //   method: 'POST',
+              //   headers: { 'Content-Type': 'application/json' },
+              //   body: JSON.stringify({
+              //     query: `
+              //       mutation{
+              //           deleteQuestion(
+              //               axamQuestion_input: {
+              //                   questionID: "${'1'}"
+              //                   axamQuestions_id: "${'1'}"
+              //                   question: "${convertText(rowData.question)}"
+              //                   question_link: "${rowData.question_link ? rowData.question_link : ''}"
+              //                   question__optionOne: "${convertText(rowData.question__optionOne)}"
+              //                   question__optionTwo:"${convertText(rowData.question__optionTwo)}"
+              //                   question__optionTree: "${convertText(rowData.question__optionTree)}"
+              //                   question__optionFour: "${convertText(rowData.question__optionFour)}"
+              //                   question__currentOption: "${rowData.question__currentOption}"
+              //                   question__timeTosolveProblem: "${convertText(rowData.question__timeTosolveProblem)}"
+              //                   question__score: "${rowData.question__score ? rowData.question__score : ''}"
+              //                   question__explane: "${convertText(rowData.question__explane)}"
+              //                   exam_link: "${rowData.exam_link ? rowData.exam_link : ''}"
+              //             },
+              //         ){
+              //           axamQuestions_id
+              //         }
+              //       }                      
+              //     `,
+              //   }),
+              // })
+              //   .then(res => res.json())
+              //   .then(res => {
+              //     // setSumScore(prevState => (prevState - parseFloat(oldScore)));
+              //     if (
+              //       res.data &&
+              //       res.data.deleteQuestion &&
+              //       res.data.deleteQuestion.axamQuestions_id
+              //     ) {
+              //       /////
+              //       alert('اطلاعاتی به درستی حذف نشد');
+              //       // setStatus(1);
+              //       // setShowPopup(true);
+              //     } else {
+              //       // setQuestionId(data.length)
+              //       // setMessage('اطلاعاتی به درستی حذف شد');
+              //       // setStatus(0);
+              //       // setShowPopup(true);
+              //       // refteshData();
+              //       //   return res.data;
+              //     }
+              //     // return res.data;
+              //   });
                 //////////////////////////////////////////
+                setToggle(false);
                 setInnerData([...dataDelete]);
             }
           },
@@ -732,19 +721,14 @@ const Comparative = ({setToggle , ...props}) => {
           onRowUpdateCancelled: rowData => {
             loadVariable.load = true;
             setToggle(false);
-            // loadVariable.disable = false;
             console.log('onRowUpdateCancelled',loadVariable.load);
-            // console.log('loadVariable.disable',loadVariable.disable);
           },
 
           onRowUpdate: (newData, oldData) =>
             new Promise((resolve, reject) => {
-              
-              // loadVariable.disable = false;
               setTimeout(() => {
                 const dataUpdate = [...innerData];
                 const index = oldData.tableData.id;
-                // setToggle(false);
                 /////////////myCode
                 if (
                     // axamIdProps != '' &&
@@ -1080,8 +1064,6 @@ const Comparative = ({setToggle , ...props}) => {
   
                 resolve(setToggle(false));
                 // reject(loadVariable.load = false);
-                // resolve();
-                // reject();
               }, 1000)
             }),
           // onRowDelete: oldData =>
@@ -1097,13 +1079,14 @@ const Comparative = ({setToggle , ...props}) => {
           //   }),
         }}
       /> : ''}
-      {clieckedButton ? <ComparativeModal/> : ''}
+      {clieckedButton ? <SequentialModal/> : ''}
       </div>
     )
 };
 
+// export default Sequential;
 const mapDispatchToProps = dispatch =>({
   setToggle: toggle => dispatch(setToggle(toggle)),
 });
 
-export default connect(null , mapDispatchToProps)(Comparative);
+export default connect(null,mapDispatchToProps)(Sequential);
