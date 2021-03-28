@@ -1,4 +1,4 @@
-import React from 'react';
+import React,{useState,useEffect} from 'react';
 import {BodyContainer,BodyQuestion,BodyQuestionBox,BodyDiv,ImageQuestion,ImageQuestionContainer,
     ImageWithQuestionContainer , ImageWithQuestion,ScoreTag,ImageQuestionMainContainer,
     FooterQuestionContainer,FooterBtnsContainer , FooterBtn} from './showBodyQuestion.styles';
@@ -10,27 +10,76 @@ import Tooltip from '@material-ui/core/Tooltip';
 import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
 // import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
 import ArrowForwardIosIcon from '@material-ui/icons/ArrowForwardIos';
+import ShowImage from '../../imageShow/showImage.component';
 // import AddIcon from '@material-ui/icons/Add';
 
 
-const ShowBodyQuestions = ({question,number}) =>{
+const ShowBodyQuestions = ({question,number,children}) =>{
+
+    const [state,setState] =useState({
+        type:false,
+        imageSrc:null,
+        captionImage:'',
+        showImage:false,
+    });
+    // const [type, setType] = useState(false);
+    // const [imageSrc, setImageSrc] = useState('');
+    // const [captionImage, setCaptionImage] = useState(false);
+    // const [showImage, setShowImage] = useState(false);
+
+
+    // useEffect(()=>{
+    //     console.log('captionImage',captionImage);
+    //   },[captionImage]);
+    
+  const showPic = () => {
+    // setShowImage(!showImage);
+      setState({...state,showImage:! state.showImage});
+  }
+
+  const handleShowPic = link => {
+    if (question.question) {
+        console.log('question.question1',question.question);
+        setState({...state,type:true});
+    //   setType(true);
+        setState({...state,captionImage:`${question.question.split('%0A').join('\r\n')}(نمره : ${question.question__score
+        })`});
+    //   setCaptionImage(
+    //     `${question.question.split('%0A').join('\r\n')}(نمره : ${question.question__score
+    //     })`,
+    //   );
+    // setState({imageSrc:link});
+    setState({...state,imageSrc:MyPic2});
+    //   setImageSrc(link);
+    // setImageSrc(MyPic2);
+      showPic();
+    } else {
+        console.log('question.question2');
+        // setState({type:false});
+        // setState({captionImage:''});
+        // // captionImage('');
+        // setState({imageSrc:link});
+    //   setType(false);
+    //   setCaptionImage('');
+    //   setImageSrc(link);
+    // setImageSrc(MyPic);
+    //   showPic();
+    }
+  };
+
+
     return(
     <BodyContainer>
         <BodyQuestionBox>
             {question.exam_link ? (
                  <ImageWithQuestionContainer>
                  <ImageWithQuestion
+                 onClick={() => handleShowPic(`https://kamal-exam.s3.ir-thr-at1.arvanstorage.com/${question.exam_link}`)}
                  // onClick={() => handleShowPic(`https://kamal-exam.s3.ir-thr-at1.arvanstorage.com/${question.question_link}`)}
                  // src={question.question_link}
                  src={MyPic2}
                  // src={`https://kamal-exam.s3.ir-thr-at1.arvanstorage.com/${question.question_link}`}
                  />
-                  {/* <ExplainQuestion number={number} explain={question.question__explane} time={question.question__timeTosolveProblem}/>
-                 <br />
-                 <ScoreTag
-                 >
-                 (نمره {question.question__score})
-                 </ScoreTag> */}
              </ImageWithQuestionContainer>
              ///////////////////////
                
@@ -41,11 +90,11 @@ const ShowBodyQuestions = ({question,number}) =>{
                  <ImageQuestionMainContainer>
                  <ImageQuestionContainer>
                      <ImageQuestion
-                     // onClick={() =>
-                     //     handleShowPic(
-                     //     `https://kamal-exam.s3.ir-thr-at1.arvanstorage.com/${question.exam_link}`,
-                     //     )
-                     // }
+                     onClick={() =>
+                         handleShowPic(
+                         `https://kamal-exam.s3.ir-thr-at1.arvanstorage.com/${question.question_link}`,
+                         )
+                     }
                      src={MyPic}
                      // src={question.exam_link}
                      // src={`https://kamal-exam.s3.ir-thr-at1.arvanstorage.com/${question.exam_link}`}
@@ -78,6 +127,8 @@ const ShowBodyQuestions = ({question,number}) =>{
                 ''
                 )}
         </BodyQuestionBox>
+        {/* //////////////////////////////////////////////children */}
+        {children}
         {/* /////////////////////////////////footer */}
         <FooterQuestionContainer>
             <FooterBtnsContainer>
@@ -95,6 +146,9 @@ const ShowBodyQuestions = ({question,number}) =>{
 
             </FooterBtnsContainer>
         </FooterQuestionContainer>
+        {
+            state.showImage ? <ShowImage imageSrc={state.imageSrc} caption={state.captionImage} close={showPic} type={state.type} /> : ''
+        }
     </BodyContainer>
     )
 };

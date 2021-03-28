@@ -7,12 +7,13 @@ export const BodyContainer = styled.div`
     height:80vh;
     box-shadow:0 1px 10px 2px rgba(0,0,0,.3);
     margin:30px auto;
-    padding:3rem 3rem;
+    padding:3rem 3rem 0 3rem;
     position:relative;
     display:flex;
     flex-direction:column;
     // justify-content:center;
     align-items:center;
+    overflow-y:scroll;
 
 `;
 
@@ -64,6 +65,9 @@ export const ImageQuestionContainer = styled.div`
 export const ImageQuestion = styled.img`
     width:80%;
     height:auto;
+    &:hover{
+        cursor:zoom-in;
+    }
 `;
 
 export const ImageWithQuestionContainer = styled.div`
@@ -74,6 +78,9 @@ export const ImageWithQuestionContainer = styled.div`
 export const ImageWithQuestion = styled.img`
     width:100%;
     height:auto;
+    &:hover{
+        cursor:zoom-in;
+    }
 `;
 
 export const ScoreTag = styled.p`
@@ -84,8 +91,9 @@ export const ScoreTag = styled.p`
 
 export const FooterQuestionContainer = styled.div`
     width:100%;
-    position:absolute;
-    bottom:0;
+    margin-top:3rem;
+    // position:absolute;
+    // bottom:0;
 `;
 
 // export const FooterBtnsContainer = styled.div`
