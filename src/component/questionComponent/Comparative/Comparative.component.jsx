@@ -206,7 +206,7 @@ const Comparative = ({setToggle , ...props}) => {
                   textAlign: 'center',
                   width: '500px',
                   fontFamily: 'BNazanin',
-                  fontSize: 16,
+                  fontSize: '16px',
                 }}
               >
                 {data.question}
@@ -422,7 +422,7 @@ const Comparative = ({setToggle , ...props}) => {
               <p
                 style={{
                   fontFamily: 'BNazanin',
-                  fontSize: 16,
+                  fontSize: '16px',
                   textAlign: 'center',
                   width: '50px',
                 }}
@@ -458,7 +458,7 @@ const Comparative = ({setToggle , ...props}) => {
               <p
                 style={{
                   fontFamily: 'BNazanin',
-                  fontSize: 16,
+                  fontSize: '16px',
                   textAlign: 'center',
                   width: '50px',
                 }}
@@ -484,7 +484,7 @@ const Comparative = ({setToggle , ...props}) => {
                   textAlign: 'center',
                   width: '200px',
                   fontFamily: 'BNazanin',
-                  fontSize: 16,
+                  fontSize: '16px',
                 }}
               >
                 {data.question__explane}
@@ -562,7 +562,7 @@ const Comparative = ({setToggle , ...props}) => {
                   textAlign: 'center',
                   width: '200px',
                   fontFamily: 'BNazanin',
-                  fontSize: 16,
+                  fontSize: '16px',
                 }}
               >
                 گزینه ها
