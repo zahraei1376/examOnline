@@ -1,201 +1,142 @@
-import React from "react";
-import {DescriptiveContainer,DescriptiveQuestion,DescriptiveQuestionBox,ImageQuestion,ImageQuestionContainer,
-    ImageWithQuestionContainer , ImageWithQuestion,ScoreTag} from './ShowDescriptiveQuestion.styles';
-import ExplainQuestion from '../../../explainQuestionComponent/explainQuestionComponent.component';
+import React,{useEffect, useState} from "react";
+import {MultipleChoiceConatiner,MultipleChoiceitemDiv,Item,InputRadio,InputLabel} from './ShowMultipleChoice.styles';
+import ShowBodyQuestions from '../showBodyQuestion.component';
+// import ShowComparativeItem from './compareItem/ShowComparativeItem.component';
+/////////////
+const ShowMultipleChoiceItems = ({number,item})=>{
 
-const ShowDescriptiveQuestion = ({question, number}) =>{
+    // const [questionRes,setQuestionRes] = useState(Array(items.length).fill(0).map(row => new Array(2).fill('')));
+
+    // const handleRes = (i , text) =>{
+    //     var temp =[...questionRes];
+    //     temp[i][0]=i;
+    //     temp[i][1]=text;
+    //     setQuestionRes(temp);
+    // }
+
+    // useEffect(()=>{
+    //     console.log('questionRes',questionRes);
+    // },[questionRes])
+
     return(
-        <DescriptiveContainer>
-            <DescriptiveQuestionBox>
-                {question.exam_link ? (
-                    <ImageQuestionContainer>
-                        <ImageQuestion
-                        // onClick={() =>
-                        //     handleShowPic(
-                        //     `https://kamal-exam.s3.ir-thr-at1.arvanstorage.com/${question.exam_link}`,
-                        //     )
-                        // }
-                        src={`https://kamal-exam.s3.ir-thr-at1.arvanstorage.com/${question.exam_link}`}
-                        />
-                    </ImageQuestionContainer>
-                    ) : (
-                        ''
-                )}
-                {question.question_link ? (
-                <ImageWithQuestionContainer>
-                    <ImageWithQuestion
-                    // onClick={() => handleShowPic(`https://kamal-exam.s3.ir-thr-at1.arvanstorage.com/${question.question_link}`)}
-                    src={`https://kamal-exam.s3.ir-thr-at1.arvanstorage.com/${question.question_link}`}
-                    />
-                    <br />
-                    <ScoreTag
-                    >
-                    (نمره {question.question__score})
-                    </ScoreTag>
-                </ImageWithQuestionContainer>
-                ) : question.question ? (
-                <DescriptiveQuestion
-                    // className={
-                    // question.exam_link
-                    //     ? 'questionComponent__question'
-                    //     : 'questionComponent__questionwidth'
-                    // }
+        <MultipleChoiceConatiner>
+            {item.question__optionOne && item.question__optionOne != 'undefined' ? (
+              <MultipleChoiceitemDiv>
+                <Item>1 </Item>
+                <InputRadio
+                  type="radio"
+                  id={`optionOne${number}`}
+                  name={number}
+                  value={number < 9 ? `0${number + 1},1` : `${number + 1},1`}
+                  // onChange={e => setOneAnswer(e)}
+                  // defaultChecked={checked == '1' ? true : false}
+                />
+                <InputLabel
+                  // htmlFor="optionOne"
+                  htmlFor={`optionOne${number}`}
+                  // style={{
+                  //   fontSize: '20px',
+                  //   paddingRight: '10px',
+                  //   paddingTop: '5px',
+                  //   width:'100%',
+                  //   borderRadius:'10px'
+                  // }}
+                // style={{
+                //   fontSize: '20px',
+                //   paddingRight: '10px',
+                //   paddingTop: '5px',
+                //   width:'100%',
+                //   borderRadius:'10px'
+                // }}
                 >
-                    {question.question.split('%0A').join('\r\n')}(
-                    {question.question__score} نمره)
-                </DescriptiveQuestion>
-                ) : (
-                    ''
-                    )}
-                {/* <div className="explainQuestion_btnDiv"> */}
-                    <ExplainQuestion number={number} explain={question.question__explane} time={question.question__timeTosolveProblem}/>
-                {/* <button className="explainQuestion_btn" onClick={handleShowExplain}>
-                    <div className="showNumber">{number + 1}</div>
-                    <div className="showArr">
-                    {!showExplain ? (
-                        <i className="fa fa-arrow-down btnIcon" aria-hidden="true"></i>
-                    ) : (
-                        <i
-                            className="fa fa-arrow-up btnIcon btnIconcolor"
-                            aria-hidden="true"
-                        ></i>
-                        )}
-                    </div>
-                </button>
-                <i className="fa fa-arrow-left arrowToLeft"></i>
-                </div> */}
-
-            
-            </DescriptiveQuestionBox>
-      {/* <div className="explainQuestion" id="explain">
-        {showExplain ? (
-          <div className="explainQuestion_explainBox">
-            {question.question__explane != 'undefined' ? (
-              <pre className="questionComponent_explain-p">
-                توضیحات : {question.question__explane.split('%0A').join('\r\n')}
-              </pre>
+                  {item.question__optionOne.split('%0A').join('\r\n')}
+                </InputLabel>
+              </MultipleChoiceitemDiv>
             ) : (
                 ''
               )}
-            {question.question__timeTosolveProblem != 'undefined' ? (
-              <p className="questionComponent_explain-p">
-                زمان : {question.question__timeTosolveProblem}
-              </p>
+            {item.question__optionTwo && item.question__optionTwo != 'undefined' ? (
+              <MultipleChoiceitemDiv>
+                <Item>2</Item>
+                <InputRadio
+                  type="radio"
+                  id={`optionTwo${number}`}
+                  name={number}
+                  value={number < 9 ? `0${number + 1},2` : `${number + 1},2`}
+                  // onChange={e => setOneAnswer(e)}
+                  // defaultChecked={checked == '2' ? true : false}
+                />
+                <InputLabel
+                  // htmlFor="optionTwo"
+                  htmlFor={`optionTwo${number}`}
+                >
+                  {item.question__optionTwo.split('%0A').join('\r\n')}
+                </InputLabel>
+                {/* <div className="questionComponent_questionSquare"></div>
+        <div className="questionComponent_questionItem">
+          {question.question__optionTwo}
+        </div> */}
+              </MultipleChoiceitemDiv>
             ) : (
                 ''
               )}
-          </div>
-        ) : (
-            ''
-          )}
-      </div>
-      <div className="questionComponent__itemBox">
-        {question.question__optionOne != 'undefined' ? (
-          <div className="questionComponent__itemDiv">
-            <h6 className="item">1 </h6>
-            <input
-              type="radio"
-              id={`optionOne${number}`}
-              name={number}
-              className="questionComponent__checkbox"
-              value={number < 9 ? `0${number + 1},1` : `${number + 1},1`}
-              onChange={e => setOneAnswer(e)}
-              defaultChecked={checked == '1' ? true : false}
-            />
-            <label
-              // htmlFor="optionOne"
-              htmlFor={`optionOne${number}`}
-              // style={{
-              //   fontSize: '20px',
-              //   paddingRight: '10px',
-              //   paddingTop: '5px',
-              //   width:'100%',
-              //   borderRadius:'10px'
-              // }}
-            // style={{
-            //   fontSize: '20px',
-            //   paddingRight: '10px',
-            //   paddingTop: '5px',
-            //   width:'100%',
-            //   borderRadius:'10px'
-            // }}
-            >
-              {question.question__optionOne.split('%0A').join('\r\n')}
-            </label>
-          </div>
-        ) : (
-            ''
-          )}
-        {question.question__optionTwo != 'undefined' ? (
-          <div className="questionComponent__itemDiv">
-            <h6 className="item">2</h6>
-            <input
-              type="radio"
-              id={`optionTwo${number}`}
-              name={number}
-              className="questionComponent__checkbox"
-              value={number < 9 ? `0${number + 1},2` : `${number + 1},2`}
-              onChange={e => setOneAnswer(e)}
-              defaultChecked={checked == '2' ? true : false}
-            />
-            <label
-              // htmlFor="optionTwo"
-              htmlFor={`optionTwo${number}`}
-            >
-              {question.question__optionTwo.split('%0A').join('\r\n')}
-            </label>
-          </div>
-        ) : (
-            ''
-          )}
-        {question.question__optionTree != 'undefined' ? (
-          <div className="questionComponent__itemDiv">
-            <h6 className="item">3</h6>
-            <input
-              type="radio"
-              id={`optionTree${number}`}
-              name={number}
-              className="questionComponent__checkbox"
-              value={number < 9 ? `0${number + 1},3` : `${number + 1},3`}
-              onChange={e => setOneAnswer(e)}
-              defaultChecked={checked == '3' ? true : false}
-            />
-            <label
-              // htmlFor="optionTree"
-              htmlFor={`optionTree${number}`}
-            >
-              {question.question__optionTree.split('%0A').join('\r\n')}
-            </label>
-          </div>
-        ) : (
-            ''
-          )}
-        {question.question__optionFour != 'undefined' ? (
-          <div className="questionComponent__itemDiv">
-            <h6 className="item">4</h6>
-            <input
-              type="radio"
-              id={`optionFour${number}`}
-              name={number}
-              className="questionComponent__checkbox"
-              value={number < 9 ? `0${number + 1},4` : `${number + 1},4`}
-              onChange={e => setOneAnswer(e)}
-              defaultChecked={checked == '4' ? true : false}
-            />
-            <label
-              htmlFor={`optionFour${number}`}
-            >
-              {question.question__optionFour.split('%0A').join('\r\n')}
-            </label>
-          </div>
-        ) : (
-            ''
-          )}
-      </div> */}
+            {item.question__optionTree && item.question__optionTree != 'undefined' ? (
+              <MultipleChoiceitemDiv>
+                <Item>3</Item>
+                <InputRadio
+                  type="radio"
+                  id={`optionTree${number}`}
+                  name={number}
+                  value={number < 9 ? `0${number + 1},3` : `${number + 1},3`}
+                  // onChange={e => setOneAnswer(e)}
+                  // defaultChecked={checked == '3' ? true : false}
+                />
+                <InputLabel
+                  // htmlFor="optionTree"
+                  htmlFor={`optionTree${number}`}
+                >
+                  {item.question__optionTree.split('%0A').join('\r\n')}
+                </InputLabel>
+                {/* <div className="questionComponent_questionSquare"></div>
+            <div className="questionComponent_questionItem">
+              {question.question__optionTree}
+            </div> */}
+              </MultipleChoiceitemDiv>
+            ) : (
+                ''
+              )}
+            {item.question__optionFour && item.question__optionFour != 'undefined' ? (
+              <MultipleChoiceitemDiv>
+                <Item>4</Item>
+                <InputRadio
+                  type="radio"
+                  id={`optionFour${number}`}
+                  name={number}
+                  value={number < 9 ? `0${number + 1},4` : `${number + 1},4`}
+                  // onChange={e => setOneAnswer(e)}
+                  // defaultChecked={checked == '4' ? true : false}
+                />
+                <InputLabel
+                  htmlFor={`optionFour${number}`}
+                >
+                  {item.question__optionFour.split('%0A').join('\r\n')}
+                </InputLabel>
+                {/* <div className="questionComponent_questionSquare"></div>
+            <div className="questionComponent_questionItem">
+              {question.question__optionFour}
+            </div> */}
+              </MultipleChoiceitemDiv>
+            ) : (
+                ''
+              )}            
+        </MultipleChoiceConatiner>
+    )
+}
 
-
-        </DescriptiveContainer>
+const ShowMultipleChoiceQuestion = ({question, number,items}) =>{
+    return(
+        <ShowBodyQuestions question={question} number={number}><ShowMultipleChoiceItems number={number} item={question}/></ShowBodyQuestions>
     )
 };
 
-export default ShowDescriptiveQuestion;
+export default ShowMultipleChoiceQuestion;
