@@ -1,7 +1,8 @@
 import React , {useEffect} from 'react';
 import ShowDescriptiveQuestion from './showQuestions/ShowDescriptiveQuestion/ShowDescriptiveQuestion.component';
 import ShowComparativeQuestion from './showQuestions/ShowComparativeQuestion/ShowComparativeQuestion.component';
-
+import MultipleChoiceConatiner from './showQuestions/ShowMultipleChoice/ShowMultipleChoice.component';
+import ShowTrueAndFalseQuestion from './showQuestions/ShowTrueAndFalse/ShowTrueAndFalse.component';
 const Item ={
     'question':' گلمممم گلممممسلام به همه دوستای گلمممم سلام به همه دوستای گلمممم سلام به همه دوستای گلمممم سلام به همه دوستای گلمممم سلام به همه دوستای گلمممم سلام به همه دوستای گلمممم سلام به همه دوستای گلمممم سلام به همه دوستای گلمممم',
     'question__score':'2',
@@ -15,6 +16,10 @@ const Item ={
         ['توضیحات مربوط به امتحان درس ریاضی پایه هشتم','توضیحات مربوط به امتحان درس ریاضی پایه هفتم'],
         // [1,2],[3,4],[5,6],[7,8]
     ],
+    'question__optionOne':'سلام',
+    'question__optionTwo':'hello',
+    // 'question__optionTree':'hi',
+    // 'question__optionFour':'آنیو',
     // 'question_link':'https://www.woonwinkelhome.com/products/slim-pen-gold',
 
 }
@@ -104,7 +109,9 @@ const  ExamPageForStudent = () =>{
     return(
         <div>
             {/* <ShowDescriptiveQuestion question={Item} number={48}/> */}
-            <ShowComparativeQuestion question={Item} number={48} items={RandomArray(Item.items)} />
+            {/* <ShowComparativeQuestion question={Item} number={48} items={RandomArray(Item.items)} /> */}
+            {/* <MultipleChoiceConatiner question={Item} number={48}/> */}
+            <ShowTrueAndFalseQuestion question={Item} number={48} />
         </div>
     )
 };
