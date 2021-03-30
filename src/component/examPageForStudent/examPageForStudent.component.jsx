@@ -9,11 +9,11 @@ const Item ={
     'question__timeTosolveProblem':'20 دقیقه',
     'exam_link':'https://www.woonwinkelhome.com/products/slim-pen-gold',
     'items':[
-        // ['للللللللللللللللللللللللللللللللللللللللللللللللللللتوضیحات مربوط به امتحان درس ریاضی پایه دوم','توضیحات مربوط به امتحان درس ریاضی پایه اول'],
-        // ['توضیحات مربوط به امتحان درس ریاضی پایه چهارم','توضیحات مربوط به امتحان درس ریاضی پایه سوم'],
-        // ['توضیحات مربوط به امتحان درس ریاضی پایه ششم','توضیحات مربوط به امتحان درس ریاضی پایه پنجم'],
-        // ['توضیحات مربوط به امتحان درس ریاضی پایه هشتم','توضیحات مربوط به امتحان درس ریاضی پایه هفتم'],
-        [1,2],[3,4],[5,6],[7,8]
+        ['توضیحات مربوط به امتحان درس ریاضی پایه دوم','توضیحات مربوط به امتحان درس ریاضی پایه اول'],
+        ['توضیحات مربوط به امتحان درس ریاضی پایه چهارم','توضیحات مربوط به امتحان درس ریاضی پایه سوم'],
+        ['توضیحات مربوط به امتحان درس ریاضی پایه ششم','توضیحات مربوط به امتحان درس ریاضی پایه پنجم'],
+        ['توضیحات مربوط به امتحان درس ریاضی پایه هشتم','توضیحات مربوط به امتحان درس ریاضی پایه هفتم'],
+        // [1,2],[3,4],[5,6],[7,8]
     ],
     // 'question_link':'https://www.woonwinkelhome.com/products/slim-pen-gold',
 
@@ -27,7 +27,26 @@ const  ExamPageForStudent = () =>{
     // },[]);
 
     const existence = (list , item) => {
+        var flag=false;
+        for (let j = 0; j < list.length; j++) {
+            if(list[j] === item){
+                flag=true;
+            }
+            
+        }
 
+        if(!flag){
+            // temp.push(second);
+            return true;
+        }else{
+            return false;
+        }
+    }
+
+
+    const createRandom = (len) =>{
+        var second = Math.floor(Math.random() * len);
+        return second;
     }
 
 
@@ -39,7 +58,17 @@ const  ExamPageForStudent = () =>{
         //    var element1 = list[index][0];
            newItem[index][0]=list[index][0];
            console.log('element1',list[index][0]);
-           var second = Math.floor(Math.random() * list.length);
+           var randomItem = createRandom(list.length);
+        //    var second = Math.floor(Math.random() * list.length);
+
+           if(existence(temp,randomItem)){
+                temp.push(randomItem);
+                var element2 = list[randomItem][1];
+        // newItem[index][0]=element1;
+                newItem[index][1]=element2;
+           }else{
+                index --;
+           }
         //    var flag=false;
         //    for (let j = 0; j < temp.length; j++) {
         //        if(temp[j] === second){
@@ -60,9 +89,7 @@ const  ExamPageForStudent = () =>{
                
         //    }
 
-        var element2 = list[second][1];
-        // newItem[index][0]=element1;
-        newItem[index][1]=element2;
+        
         // newItem.push([element1,element2]);
         
            

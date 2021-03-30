@@ -7,7 +7,7 @@ import {InputDivContainer , InputPre ,FirstSideContainer,SecondSideContainer,
      InputContainerButton ,InputContainerIcon} from './ShowComparativeItem.styles';
 // import Icon from '@material-ui/core/Icon';
 
-const ShowComparativeItem =({myIndex , item ,handleIndexDelete , handleIndexSet})=>{
+const ShowComparativeItem =({myIndex , item ,handleIndexDelete , handleIndexSet,handleRes})=>{
     // const handleDelete = () =>{
     //     handleIndexDelete(myIndex);
     // }
@@ -23,7 +23,7 @@ const ShowComparativeItem =({myIndex , item ,handleIndexDelete , handleIndexSet}
                     {item[0]}
                 </InputPre>
                 <FirstSideResContainer>
-                    <FirstSideRes type="text" />
+                    <FirstSideRes type="number" onChange={e => handleRes(myIndex , e.target.value)} />
                 </FirstSideResContainer>
                 
 
