@@ -12,9 +12,12 @@ import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
 import ArrowForwardIosIcon from '@material-ui/icons/ArrowForwardIos';
 import ShowImage from '../../imageShow/showImage.component';
 // import AddIcon from '@material-ui/icons/Add';
+///////////////////////////////////////////////////////
+import { connect} from 'react-redux';
+import {IncreaseIndex , DecreaseIndex} from '../../../redux/questionIndex/questionIndex.sction';
 
 
-const ShowBodyQuestions = ({question,number,children}) =>{
+const ShowBodyQuestions = ({question,number,children,IncreaseIndexQuestion,DecreaseIndexQuestion}) =>{
 
     // const [state,setState] =useState({
     //     type:false,
@@ -132,13 +135,13 @@ const ShowBodyQuestions = ({question,number,children}) =>{
         {/* /////////////////////////////////footer */}
         <FooterQuestionContainer>
             <FooterBtnsContainer>
-                <Tooltip title="سوال قبلی" aria-label="سوال قبلی"  style={{ fontSize:'3rem'}}>
+                <Tooltip title="سوال قبلی" aria-label="سوال قبلی"  style={{ fontSize:'3rem'}} onClick={DecreaseIndexQuestion}>
                     <FooterBtn>
                         <ArrowBackIosIcon style={{ fontSize:'3rem'}} />
                     </FooterBtn>
                 </Tooltip>
                 
-                <Tooltip title="سوال بعدی" aria-label="سوال بعدی" style={{ fontSize:'3rem'}}>
+                <Tooltip title="سوال بعدی" aria-label="سوال بعدی" style={{ fontSize:'3rem'}} onClick={IncreaseIndexQuestion}>
                     <FooterBtn>
                         <ArrowForwardIosIcon style={{ fontSize:'3rem'}} />
                     </FooterBtn>
@@ -153,4 +156,13 @@ const ShowBodyQuestions = ({question,number,children}) =>{
     )
 };
 
-export default ShowBodyQuestions;
+const mapStateToProps = state =>({
+    questionIndex:state.questionIndex.indexQuestion
+});
+
+const mapDispatchToProps = dispatch =>({
+    IncreaseIndexQuestion: () => dispatch(IncreaseIndex()),
+    DecreaseIndexQuestion: () => dispatch(DecreaseIndex()),
+  });
+
+export default connect(mapStateToProps,mapDispatchToProps)(ShowBodyQuestions);
