@@ -25,9 +25,7 @@ import SequentialIcon2 from '../../assets/img/SequentialIcon2.png';
 import {connect} from 'react-redux';
 import { createStructuredSelector} from 'reselect';
 import {ToggleQuestion} from '../../redux/toggleQuesion/toggleQuestion.selector';
-
-
-
+// import setToggle from "../../redux/toggleQuesion/toggleQuestion.action.js";
 
 export var loadVariable = {
   load:false,
@@ -36,6 +34,7 @@ export var loadVariable = {
 
 const Questions = ({toggle}) =>{
   // const [innerData, setInnerData] = useState([]);
+  // const tableRef = React.useRef(null);
   const [typeQuestion,setTypeQuestion] =useState('');
   // const [disable,setDisable] =useState(false);
   useEffect(()=>{
@@ -176,6 +175,7 @@ const Questions = ({toggle}) =>{
         },
         {
           disabled:toggle,
+          // disabled: typeQuestion == 2 ? false : toggle,
           // icon: () => (<QuestionImageIconContainer src={multiChoice}/>),
           icon: () => (<QuestionImageIconContainer><QuestionImageIcon src={multiChoice}/>
           {/* <QuestionImageIconText>چهار گزینه ای</QuestionImageIconText> */}
@@ -207,6 +207,7 @@ const Questions = ({toggle}) =>{
         },
         {
           disabled:toggle,
+          // disabled: typeQuestion == 3 ? false : toggle,
           // icon: () => (<QuestionImageIconContainer src={trueFalse}/>),
           icon: () => (<QuestionImageIconContainer><QuestionImageIcon src={trueFalse}/>
           {/* <QuestionImageIconText>دو گزینه ای</QuestionImageIconText> */}
@@ -239,6 +240,7 @@ const Questions = ({toggle}) =>{
         },
         {
           disabled:toggle,
+          // disabled: typeQuestion == 4 ? false : toggle,
           // icon: () => (<QuestionImageIconContainer src={ellipsis}/>),
           icon: () => (<QuestionImageIconContainer><QuestionImageIcon src={ellipsis}/>
           {/* <QuestionImageIconText>جای خالی</QuestionImageIconText> */}
@@ -270,6 +272,7 @@ const Questions = ({toggle}) =>{
         },
         {
           disabled:toggle,
+          // disabled: typeQuestion == 5 ? false : toggle,
           // icon: () => (<QuestionImageIconContainer src={compareIcon}/>),
           icon: () => (<QuestionImageIconContainer><QuestionImageIcon src={compareIcon}/>
           {/* <QuestionImageIconText>تطبیقی</QuestionImageIconText> */}
@@ -302,6 +305,7 @@ const Questions = ({toggle}) =>{
         },
         {
           disabled:toggle,
+          // disabled: typeQuestion == 6 ? false : toggle,
           // icon: () => (<QuestionImageIcon src={SequentialIcon}/>),
           icon: () => (<QuestionImageIconContainer><QuestionImageIcon src={SequentialIcon}/>
           {/* <QuestionImageIconText>ترتیبی</QuestionImageIconText> */}
@@ -372,6 +376,10 @@ const Questions = ({toggle}) =>{
 
 // const mapStateToProps = state =>({
 //     toggle : state.toggle.toggle,
+// })
+
+// const mapDispatchToProps = dispatch =>({
+//   setToggle: tog => dispatch(setToggle(tog)),
 // })
 
 const mapStateToProps = createStructuredSelector({

@@ -9,8 +9,8 @@ const App = () => {
   return (
     <div className="App">
       {/* <AddExamForTeacher/> */}
-     {/* <QuestionPageContainer /> */}
-     <ExamPageForStudent/>
+     <QuestionPageContainer />
+     {/* <ExamPageForStudent/> */}
     </div>
   );
 }

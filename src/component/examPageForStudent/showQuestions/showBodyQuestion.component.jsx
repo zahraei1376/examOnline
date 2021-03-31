@@ -17,7 +17,7 @@ import { connect} from 'react-redux';
 import {IncreaseIndex , DecreaseIndex} from '../../../redux/questionIndex/questionIndex.sction';
 import {selectIndex} from '../../../redux/questionIndex/questionIndex.selector';
 import { createStructuredSelector} from 'reselect';
-const ShowBodyQuestions = ({question,number,children,IncreaseIndexQuestion,DecreaseIndexQuestion}) =>{
+const ShowBodyQuestions = ({question,number,children,IncreaseIndexQuestion,DecreaseIndexQuestion,questionIndex}) =>{
 
     // const [state,setState] =useState({
     //     type:false,
@@ -135,14 +135,14 @@ const ShowBodyQuestions = ({question,number,children,IncreaseIndexQuestion,Decre
         {/* /////////////////////////////////footer */}
         <FooterQuestionContainer>
             <FooterBtnsContainer>
-                <Tooltip title="سوال قبلی" aria-label="سوال قبلی"  style={{ fontSize:'3rem'}} onClick={DecreaseIndexQuestion}>
-                    <FooterBtn>
+                <Tooltip title="سوال قبلی" aria-label="سوال قبلی"  style={{ fontSize:'3rem'}} >
+                    <FooterBtn disabled={questionIndex == 0 ? true :false} onClick={DecreaseIndexQuestion}>
                         <ArrowBackIosIcon style={{ fontSize:'3rem'}} />
                     </FooterBtn>
                 </Tooltip>
                 
-                <Tooltip title="سوال بعدی" aria-label="سوال بعدی" style={{ fontSize:'3rem'}} onClick={IncreaseIndexQuestion}>
-                    <FooterBtn>
+                <Tooltip title="سوال بعدی" aria-label="سوال بعدی" style={{ fontSize:'3rem'}} >
+                    <FooterBtn disabled={questionIndex == 5 ? true :false} onClick={IncreaseIndexQuestion}>
                         <ArrowForwardIosIcon style={{ fontSize:'3rem'}} />
                     </FooterBtn>
                 </Tooltip>
@@ -160,7 +160,7 @@ const ShowBodyQuestions = ({question,number,children,IncreaseIndexQuestion,Decre
 //     questionIndex:state.questionIndex.indexQuestion
 // });
 
-const mapStateToProps =createStructuredSelector({
+const mapStateToProps = createStructuredSelector({
     questionIndex:selectIndex
 });
 

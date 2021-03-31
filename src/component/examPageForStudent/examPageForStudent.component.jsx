@@ -5,7 +5,124 @@ import MultipleChoiceConatiner from './showQuestions/ShowMultipleChoice/ShowMult
 import ShowTrueAndFalseQuestion from './showQuestions/ShowTrueAndFalse/ShowTrueAndFalse.component';
 import ShowSequentialQuestion from './showQuestions/ShowSequentialQuestion/ShowSequentialQuestion.component';
 import ShowVacancyQuestion from './showQuestions/ShowVacancyQuestion/ShowVacancyuestion.component';
-const Item ={
+import {connect} from 'react-redux';
+import {selectIndex} from '../../redux/questionIndex/questionIndex.selector';
+import {setLengthQuestions} from '../../redux/questionIndex/questionIndex.sction';
+import { createStructuredSelector} from 'reselect';
+
+const Item =[
+{
+    'question':' گلمممم گلممممسلام به همه دوستای گلمممم سلام به همه دوستای گلمممم سلام به همه دوستای گلمممم سلام به همه دوستای گلمممم سلام به همه دوستای گلمممم سلام به همه دوستای گلمممم سلام به همه دوستای گلمممم سلام به همه دوستای گلمممم',
+    'question__score':'2',
+    'question__explane':'توضیحات مربوط به امتحان درس ریاضی پایه اول',
+    'question__timeTosolveProblem':'20 دقیقه',
+    'exam_link':'https://www.woonwinkelhome.com/products/slim-pen-gold',
+    'items':[
+        ['توضیحات مربوط به امتحان درس ریاضی پایه دوم','توضیحات مربوط به امتحان درس ریاضی پایه اول'],
+        ['توضیحات مربوط به امتحان درس ریاضی پایه چهارم','توضیحات مربوط به امتحان درس ریاضی پایه سوم'],
+        ['توضیحات مربوط به امتحان درس ریاضی پایه ششم','توضیحات مربوط به امتحان درس ریاضی پایه پنجم'],
+        ['توضیحات مربوط به امتحان درس ریاضی پایه هشتم','توضیحات مربوط به امتحان درس ریاضی پایه هفتم'],
+        // [1,2],[3,4],[5,6],[7,8]
+    ],
+    'question__optionOne':'سلام',
+    'question__optionTwo':'hello',
+    'question__optionTree':'سلام',
+    'question__optionFour':'hello',
+    'SeqItems':[
+        ['توضیحات مربوط به امتحان درس ریاضی پایه اول'],
+        ['توضیحات مربوط به امتحان درس ریاضی پایه دوم'],
+        ['توضیحات مربوط به امتحان درس ریاضی پایه سوم'],
+        ['توضیحات مربوط به امتحان درس ریاضی پایه چهارم'],
+        ['توضیحات مربوط به امتحان درس ریاضی پایه پنجم '],
+        ['توضیحات مربوط به امتحان درس ریاضی پایه ششم'],
+        ['توضیحات مربوط به امتحان درس ریاضی پایه هفتم'],
+        ['توضیحات مربوط به امتحان درس ریاضی پایه هشتم'],
+        // [1,2],[3,4],[5,6],[7,8]
+    ],
+    'vancyItems':'سلام بر همه دوستان $%A و محترم عید $%A بر همه $%A مبارک باد',
+    'question_type':'1',
+    // 'vancyItems':'سلام بر همه دوستان $%A و محترم عید $%A بر همه $%A مبارک باد سلام بر همه دوستان $%A و محترم عید $%A بر همه $%A مبارک باد سلام بر همه دوستان $%A و محترم عید $%A بر همه $%A مبارک باد سلام بر همه دوستان $%A و محترم عید $%A بر همه $%A مبارک باد',
+  
+    // 'question__optionTree':'hi',
+    // 'question__optionFour':'آنیو',
+    // 'question_link':'https://www.woonwinkelhome.com/products/slim-pen-gold',
+
+},
+{
+    'question':' وستای گلمممم سلام به همه دوستای گلمممم سلام به همه دوستای گلمممم',
+    'question__score':'2',
+    'question__explane':'توضیحات مربوط به امتحان درس ریاضی پایه اول',
+    'question__timeTosolveProblem':'20 دقیقه',
+    'exam_link':'https://www.woonwinkelhome.com/products/slim-pen-gold',
+    'items':[
+        ['توضیحات مربوط به امتحان درس ریاضی پایه دوم','توضیحات مربوط به امتحان درس ریاضی پایه اول'],
+        ['توضیحات مربوط به امتحان درس ریاضی پایه چهارم','توضیحات مربوط به امتحان درس ریاضی پایه سوم'],
+        ['توضیحات مربوط به امتحان درس ریاضی پایه ششم','توضیحات مربوط به امتحان درس ریاضی پایه پنجم'],
+        ['توضیحات مربوط به امتحان درس ریاضی پایه هشتم','توضیحات مربوط به امتحان درس ریاضی پایه هفتم'],
+        // [1,2],[3,4],[5,6],[7,8]
+    ],
+    'question__optionOne':'سلام',
+    'question__optionTwo':'hello',
+    'question__optionTree':'سلام',
+    'question__optionFour':'hello',
+    'SeqItems':[
+        ['توضیحات مربوط به امتحان درس ریاضی پایه اول'],
+        ['توضیحات مربوط به امتحان درس ریاضی پایه دوم'],
+        ['توضیحات مربوط به امتحان درس ریاضی پایه سوم'],
+        ['توضیحات مربوط به امتحان درس ریاضی پایه چهارم'],
+        ['توضیحات مربوط به امتحان درس ریاضی پایه پنجم '],
+        ['توضیحات مربوط به امتحان درس ریاضی پایه ششم'],
+        ['توضیحات مربوط به امتحان درس ریاضی پایه هفتم'],
+        ['توضیحات مربوط به امتحان درس ریاضی پایه هشتم'],
+        // [1,2],[3,4],[5,6],[7,8]
+    ],
+    'vancyItems':'سلام بر همه دوستان $%A و محترم عید $%A بر همه $%A مبارک باد',
+    'question_type':'2',
+    // 'vancyItems':'سلام بر همه دوستان $%A و محترم عید $%A بر همه $%A مبارک باد سلام بر همه دوستان $%A و محترم عید $%A بر همه $%A مبارک باد سلام بر همه دوستان $%A و محترم عید $%A بر همه $%A مبارک باد سلام بر همه دوستان $%A و محترم عید $%A بر همه $%A مبارک باد',
+  
+    // 'question__optionTree':'hi',
+    // 'question__optionFour':'آنیو',
+    // 'question_link':'https://www.woonwinkelhome.com/products/slim-pen-gold',
+
+},
+{
+    'question':' گلمممم گلممممسلام به همه دوستای گلمممم سلام به همه دوستای گلمممم سلام به همه دوستای گلمممم سلام به همه دوستای گلمممم سلام به همه دوستای گلمممم سلام به همه دوستای گلمممم سلام به همه دوستای گلمممم سلام به همه دوستای گلمممم',
+    'question__score':'2',
+    'question__explane':'توضیحات مربوط به امتحان درس ریاضی پایه اول',
+    'question__timeTosolveProblem':'20 دقیقه',
+    'exam_link':'https://www.woonwinkelhome.com/products/slim-pen-gold',
+    'items':[
+        ['توضیحات مربوط به امتحان درس ریاضی پایه دوم','توضیحات مربوط به امتحان درس ریاضی پایه اول'],
+        ['توضیحات مربوط به امتحان درس ریاضی پایه چهارم','توضیحات مربوط به امتحان درس ریاضی پایه سوم'],
+        ['توضیحات مربوط به امتحان درس ریاضی پایه ششم','توضیحات مربوط به امتحان درس ریاضی پایه پنجم'],
+        ['توضیحات مربوط به امتحان درس ریاضی پایه هشتم','توضیحات مربوط به امتحان درس ریاضی پایه هفتم'],
+        // [1,2],[3,4],[5,6],[7,8]
+    ],
+    'question__optionOne':'سلام',
+    'question__optionTwo':'hello',
+    'question__optionTree':'سلام',
+    'question__optionFour':'hello',
+    'SeqItems':[
+        ['توضیحات مربوط به امتحان درس ریاضی پایه اول'],
+        ['توضیحات مربوط به امتحان درس ریاضی پایه دوم'],
+        ['توضیحات مربوط به امتحان درس ریاضی پایه سوم'],
+        ['توضیحات مربوط به امتحان درس ریاضی پایه چهارم'],
+        ['توضیحات مربوط به امتحان درس ریاضی پایه پنجم '],
+        ['توضیحات مربوط به امتحان درس ریاضی پایه ششم'],
+        ['توضیحات مربوط به امتحان درس ریاضی پایه هفتم'],
+        ['توضیحات مربوط به امتحان درس ریاضی پایه هشتم'],
+        // [1,2],[3,4],[5,6],[7,8]
+    ],
+    'vancyItems':'سلام بر همه دوستان $%A و محترم عید $%A بر همه $%A مبارک باد',
+    'question_type':'3',
+    // 'vancyItems':'سلام بر همه دوستان $%A و محترم عید $%A بر همه $%A مبارک باد سلام بر همه دوستان $%A و محترم عید $%A بر همه $%A مبارک باد سلام بر همه دوستان $%A و محترم عید $%A بر همه $%A مبارک باد سلام بر همه دوستان $%A و محترم عید $%A بر همه $%A مبارک باد',
+  
+    // 'question__optionTree':'hi',
+    // 'question__optionFour':'آنیو',
+    // 'question_link':'https://www.woonwinkelhome.com/products/slim-pen-gold',
+
+},
+{
     'question':' گلمممم گلممممسلام به همه دوستای گلمممم سلام به همه دوستای گلمممم سلام به همه دوستای گلمممم سلام به همه دوستای گلمممم سلام به همه دوستای گلمممم سلام به همه دوستای گلمممم سلام به همه دوستای گلمممم سلام به همه دوستای گلمممم',
     'question__score':'2',
     'question__explane':'توضیحات مربوط به امتحان درس ریاضی پایه اول',
@@ -32,20 +149,95 @@ const Item ={
         // [1,2],[3,4],[5,6],[7,8]
     ],
     'vancyItems':'سلام بر همه دوستان $%A و محترم عید $%A بر همه $%A مبارک باد',
+    'question_type':'4',
     // 'vancyItems':'سلام بر همه دوستان $%A و محترم عید $%A بر همه $%A مبارک باد سلام بر همه دوستان $%A و محترم عید $%A بر همه $%A مبارک باد سلام بر همه دوستان $%A و محترم عید $%A بر همه $%A مبارک باد سلام بر همه دوستان $%A و محترم عید $%A بر همه $%A مبارک باد',
   
     // 'question__optionTree':'hi',
     // 'question__optionFour':'آنیو',
     // 'question_link':'https://www.woonwinkelhome.com/products/slim-pen-gold',
 
-}
-const  ExamPageForStudent = () =>{
+},
+{
+    'question':' گلمممم گلممممسلام به همه دوستای گلمممم سلام به همه دوستای گلمممم سلام به همه دوستای گلمممم سلام به همه دوستای گلمممم سلام به همه دوستای گلمممم سلام به همه دوستای گلمممم سلام به همه دوستای گلمممم سلام به همه دوستای گلمممم',
+    'question__score':'2',
+    'question__explane':'توضیحات مربوط به امتحان درس ریاضی پایه اول',
+    'question__timeTosolveProblem':'20 دقیقه',
+    'exam_link':'https://www.woonwinkelhome.com/products/slim-pen-gold',
+    'items':[
+        ['توضیحات مربوط به امتحان درس ریاضی پایه دوم','توضیحات مربوط به امتحان درس ریاضی پایه اول'],
+        ['توضیحات مربوط به امتحان درس ریاضی پایه چهارم','توضیحات مربوط به امتحان درس ریاضی پایه سوم'],
+        ['توضیحات مربوط به امتحان درس ریاضی پایه ششم','توضیحات مربوط به امتحان درس ریاضی پایه پنجم'],
+        ['توضیحات مربوط به امتحان درس ریاضی پایه هشتم','توضیحات مربوط به امتحان درس ریاضی پایه هفتم'],
+        // [1,2],[3,4],[5,6],[7,8]
+    ],
+    'question__optionOne':'سلام',
+    'question__optionTwo':'hello',
+    'question__optionTree':'سلام',
+    'question__optionFour':'hello',
+    'SeqItems':[
+        ['توضیحات مربوط به امتحان درس ریاضی پایه اول'],
+        ['توضیحات مربوط به امتحان درس ریاضی پایه دوم'],
+        ['توضیحات مربوط به امتحان درس ریاضی پایه سوم'],
+        ['توضیحات مربوط به امتحان درس ریاضی پایه چهارم'],
+        ['توضیحات مربوط به امتحان درس ریاضی پایه پنجم '],
+        ['توضیحات مربوط به امتحان درس ریاضی پایه ششم'],
+        ['توضیحات مربوط به امتحان درس ریاضی پایه هفتم'],
+        ['توضیحات مربوط به امتحان درس ریاضی پایه هشتم'],
+        // [1,2],[3,4],[5,6],[7,8]
+    ],
+    'vancyItems':'سلام بر همه دوستان $%A و محترم عید $%A بر همه $%A مبارک باد',
+    'question_type':'5',
+    // 'vancyItems':'سلام بر همه دوستان $%A و محترم عید $%A بر همه $%A مبارک باد سلام بر همه دوستان $%A و محترم عید $%A بر همه $%A مبارک باد سلام بر همه دوستان $%A و محترم عید $%A بر همه $%A مبارک باد سلام بر همه دوستان $%A و محترم عید $%A بر همه $%A مبارک باد',
+  
+    // 'question__optionTree':'hi',
+    // 'question__optionFour':'آنیو',
+    // 'question_link':'https://www.woonwinkelhome.com/products/slim-pen-gold',
 
-    // useEffect(()=>{
-    //     Item.items.forEach(item=>(
+},
+{
+    'question':' گلمممم گلممممسلام به همه دوستای گلمممم سلام به همه دوستای گلمممم سلام به همه دوستای گلمممم سلام به همه دوستای گلمممم سلام به همه دوستای گلمممم سلام به همه دوستای گلمممم سلام به همه دوستای گلمممم سلام به همه دوستای گلمممم',
+    'question__score':'2',
+    'question__explane':'توضیحات مربوط به امتحان درس ریاضی پایه اول',
+    'question__timeTosolveProblem':'20 دقیقه',
+    'exam_link':'https://www.woonwinkelhome.com/products/slim-pen-gold',
+    'items':[
+        ['توضیحات مربوط به امتحان درس ریاضی پایه دوم','توضیحات مربوط به امتحان درس ریاضی پایه اول'],
+        ['توضیحات مربوط به امتحان درس ریاضی پایه چهارم','توضیحات مربوط به امتحان درس ریاضی پایه سوم'],
+        ['توضیحات مربوط به امتحان درس ریاضی پایه ششم','توضیحات مربوط به امتحان درس ریاضی پایه پنجم'],
+        ['توضیحات مربوط به امتحان درس ریاضی پایه هشتم','توضیحات مربوط به امتحان درس ریاضی پایه هفتم'],
+        // [1,2],[3,4],[5,6],[7,8]
+    ],
+    'question__optionOne':'سلام',
+    'question__optionTwo':'hello',
+    'question__optionTree':'سلام',
+    'question__optionFour':'hello',
+    'SeqItems':[
+        ['توضیحات مربوط به امتحان درس ریاضی پایه اول'],
+        ['توضیحات مربوط به امتحان درس ریاضی پایه دوم'],
+        ['توضیحات مربوط به امتحان درس ریاضی پایه سوم'],
+        ['توضیحات مربوط به امتحان درس ریاضی پایه چهارم'],
+        ['توضیحات مربوط به امتحان درس ریاضی پایه پنجم '],
+        ['توضیحات مربوط به امتحان درس ریاضی پایه ششم'],
+        ['توضیحات مربوط به امتحان درس ریاضی پایه هفتم'],
+        ['توضیحات مربوط به امتحان درس ریاضی پایه هشتم'],
+        // [1,2],[3,4],[5,6],[7,8]
+    ],
+    'vancyItems':'سلام بر همه دوستان $%A و محترم عید $%A بر همه $%A مبارک باد',
+    'question_type':'6',
+    // 'vancyItems':'سلام بر همه دوستان $%A و محترم عید $%A بر همه $%A مبارک باد سلام بر همه دوستان $%A و محترم عید $%A بر همه $%A مبارک باد سلام بر همه دوستان $%A و محترم عید $%A بر همه $%A مبارک باد سلام بر همه دوستان $%A و محترم عید $%A بر همه $%A مبارک باد',
+  
+    // 'question__optionTree':'hi',
+    // 'question__optionFour':'آنیو',
+    // 'question_link':'https://www.woonwinkelhome.com/products/slim-pen-gold',
 
-    //     ))
-    // },[]);
+},
+]
+
+const  ExamPageForStudent = ({questionIndex ,setLengthQuestions}) =>{
+
+    useEffect(()=>{
+        setLengthQuestions(Item.length)
+    },[])
 
     const existence = (list , item) => {
         var flag=false;
@@ -64,12 +256,10 @@ const  ExamPageForStudent = () =>{
         }
     }
 
-
     const createRandom = (len) =>{
         var second = Math.floor(Math.random() * len);
         return second;
     }
-
 
     const RandomArray = (list) =>{
         var newItem = Array(list.length).fill(0).map(row => new Array(2).fill(''))
@@ -90,7 +280,6 @@ const  ExamPageForStudent = () =>{
        return newItem;
     }
 
-    // //////////////////////////////////
     const SeqExistence = (list , item) => {
         var flag=false;
         for (let j = 0; j < list.length; j++) {
@@ -127,20 +316,46 @@ const  ExamPageForStudent = () =>{
        console.log('newItem',newItem);
        return newItem;
     }
-    
-
 
     return(
         <div>
-            {/* <ShowDescriptiveQuestion question={Item} number={48}/> */}
-            {/* <ShowComparativeQuestion question={Item} number={48} items={RandomArray(Item.items)} /> */}
-            {/* <MultipleChoiceConatiner question={Item} number={48}/> */}
-            {/* <ShowTrueAndFalseQuestion question={Item} number={48} /> */}
-            {/* <ShowSequentialQuestion question={Item} number={48} SeqItems={SeqRandomArray(Item.SeqItems)} /> */}
-            <ShowVacancyQuestion question={Item} number={48} Vitems={Item.vancyItems}/>
+            {/* <ShowDescriptiveQuestion question={Item[questionIndex]} number={48}/> */}
+            {/* <ShowComparativeQuestion question={Item[questionIndex]} number={48} items={RandomArray(Item[questionIndex].items)} /> */}
+            {/* <MultipleChoiceConatiner question={Item[questionIndex]} number={48}/> */}
+            {/* <ShowTrueAndFalseQuestion question={Item[questionIndex]} number={48} /> */}
+            {/* <ShowSequentialQuestion question={Item[questionIndex]} number={48} SeqItems={SeqRandomArray(Item[questionIndex].SeqItems)} /> */}
+            {/* <ShowVacancyQuestion question={Item[questionIndex]} number={48} Vitems={Item[questionIndex].vancyItems}/> */}
+
+            {(() => {
+                if(Item[questionIndex].question_type == '1'){
+                    return <ShowDescriptiveQuestion question={Item[questionIndex]} number={questionIndex}/> 
+                }else if(Item[questionIndex].question_type == '2'){
+                    return <ShowComparativeQuestion question={Item[questionIndex]} number={questionIndex} items={RandomArray(Item[questionIndex].items)} /> 
+                }
+                else if(Item[questionIndex].question_type == '3'){
+                    return <MultipleChoiceConatiner question={Item[questionIndex]} number={questionIndex}/>
+                }
+                else if(Item[questionIndex].question_type == '4'){
+                    return <ShowTrueAndFalseQuestion question={Item[questionIndex]} number={questionIndex} />
+                }
+                else if(Item[questionIndex].question_type == '5'){
+                    return <ShowSequentialQuestion question={Item[questionIndex]} number={questionIndex} SeqItems={SeqRandomArray(Item[questionIndex].SeqItems)} />
+                }
+                else if(Item[questionIndex].question_type == '6'){
+                    return <ShowVacancyQuestion question={Item[questionIndex]} number={questionIndex} Vitems={Item[questionIndex].vancyItems}/>
+                }
+            })()}
+
         </div>
     )
 };
 
+const mapStateToProps = createStructuredSelector({
+    questionIndex:selectIndex
+});
 
-export default ExamPageForStudent;
+const mapDispatchToProps = dispatch =>({
+    setLengthQuestions: len => dispatch(setLengthQuestions(len)),
+})
+
+export default connect(mapStateToProps ,mapDispatchToProps)(ExamPageForStudent);

@@ -16,6 +16,11 @@ import ComparativeModal from './ComparativeModal.component';
 import BackupIcon from '@material-ui/icons/Backup';
 import {connect} from 'react-redux';
 import setToggle from '../../../redux/toggleQuesion/toggleQuestion.action';
+/////////////////edit
+var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
+var _objectSpread2 = _interopRequireDefault(
+  require("@babel/runtime/helpers/objectSpread")
+);
 // import {ToggleQuestion} from '../../../redux/toggleQuesion/toggleQuestion.selector';
 // import { createStructuredSelector} from 'reselect';
 //////////////////////
@@ -30,12 +35,18 @@ const Comparative = ({setToggle , ...props}) => {
     /////////////////////////////////////////
     // const [imageQuestion, setImageQuestion] = useState(false);
     // const [QuestionPic, setQuestionPic] = useState(false);
+    const tableRef = React.useRef(null);
     const [textImage, setTextImage] = useState(false); //pic with text
     const [questionImage, setQuestionImage] = useState(false); //pic instanse text
     const [selectedFile, SetselectedFile] = useState(null);
     const [mimeTypeFile, SetMimeTypeFile] = useState('');
     const [clieckedButton, setClieckedButton] = useState(false);
+    const [Temp, setTemp] = useState(false);
     
+    useEffect(()=>{
+      console.log('Temp', Temp);
+      setToggle(Temp);
+    },[Temp])
     var format = '';
 
     useEffect(()=>{
@@ -630,6 +641,7 @@ const Comparative = ({setToggle , ...props}) => {
         title=""
         columns={innerColumns}
         data={innerData}
+        tableRef={tableRef}
         options={{
           pageSize: 1,
           
@@ -719,17 +731,26 @@ const Comparative = ({setToggle , ...props}) => {
                 setInnerData([...dataDelete]);
             }
           },
-          // {
-          //   icon: 'edit',
-          //   tooltip: 'ویرایش',
-          //   onClick: (event, rowData) => {
-          //     // Do save operation
-          //       const dataDelete = [...innerData];
-          //       const index = rowData.tableData.id;
-          //       dataDelete.splice(index, 1);
-          //       setInnerData([...dataDelete]);
-          //   }
-          // }
+          {
+            icon: "edit",
+            tooltip: "ویرایش",
+            onClick: (event, rowData) => {
+              console.log("RRRRRRRRR", rowData);
+              setTemp(true);
+              // setTemp1(true);
+              tableRef.current.dataManager.changeRowEditing(rowData, "update");
+  
+              tableRef.current.setState(
+                (0, _objectSpread2["default"])(
+                  {},
+                  tableRef.current.dataManager.getRenderState(),
+                  {
+                    showAddRow: false,
+                  }
+                )
+              );
+            },
+          },
         ]}
         editable={{
 
@@ -741,353 +762,353 @@ const Comparative = ({setToggle , ...props}) => {
             // console.log('loadVariable.disable',loadVariable.disable);
           },
 
-          onRowUpdate: (newData, oldData) =>
-            new Promise((resolve, reject) => {
+          // onRowUpdate: (newData, oldData) =>
+          //   new Promise((resolve, reject) => {
               
-              // loadVariable.disable = false;
-              setTimeout(() => {
-                const dataUpdate = [...innerData];
-                const index = oldData.tableData.id;
-                // setToggle(false);
-                /////////////myCode
-                if (
-                    // axamIdProps != '' &&
-                    newData.question__score !== undefined &&
-                    newData.question__currentOption !== undefined
-                  ) {
-                    if (
-                      selectedFile &&
-                      ((textImage == true && questionImage == true) ||
-                        (questionImage == true && textImage == false))
-                    ) {
-                      //////////////////////
-                      var file = new File(
-                        [selectedFile],
-                        uuidv4() + `.${format}`,
-                        {
-                          type: mimeTypeFile,
-                        },
-                      );
-                    //////////////////////////////////////////
-                      handleSendToserver();
-                      async function handleSendToserver() {
-                        var responseCode = await UploadfileToserver(file, format);
-                        if (file.name && responseCode) {
-                          fetch(graphql_server_uri, {
-                            method: 'POST',
-                            headers: { 'Content-Type': 'application/json' },
-                            body: JSON.stringify({
-                              query: `
-                                          mutation{
-                                              addNewQuestion(
-                                                axamQuestion_input: {
-                                                    questionID: "${'1'}"
-                                                      axamQuestions_id: "${'1'}"
-                                                      question: "${''}"
-                                                      question_link: "${file.name
-                                }"
-                                                      question__optionOne: "${convertText(newData.question__optionOne)}"
-                                                      question__optionTwo:"${convertText(newData.question__optionTwo)}"
-                                                      question__currentOption: "${newData.question__currentOption ? newData.question__currentOption: ''
-                                }"
-                                                    question__optionTree: "${convertText(newData.question__optionTree)}"
-                                                    question__optionFour: "${convertText(newData.question__optionFour)}"
-                                                      question__timeTosolveProblem: "${convertText(newData.question__timeTosolveProblem)}"
-                                                      question__score: "${newData.question__score ? newData.question__score : ''
-                                }"
-                                                      question__explane: "${convertText(newData.question__explane)}"
-                                                      exam_link: "${''}"
-                                              },
-                                              axamQuestion_input_old: {
-                                                questionID: "${'1'}"
-                                                axamQuestions_id: "${'1'}"
-                                                question: "${convertText(oldData.question__optionOne)}"
-                                                question_link: "${convertText(oldData.question_link)}"
-                                                question__optionOne: "${convertText(oldData.question__optionOne)}"
-                                                question__optionTwo:"${convertText(oldData.question__optionTwo)}"
-                                                question__optionTree: "${convertText(oldData.question__optionTree)}"
-                                                question__optionFour: "${convertText(oldData.question__optionFour)}"
-                                                question__currentOption: "${oldData.question__currentOption ? oldData.question__currentOption : ''
-                                    }"
-                                                question__timeTosolveProblem: "${convertText(oldData.question__timeTosolveProblem)}"
-                                                question__score: "${ oldData.question__score ? oldData.question__score : ''
-                                    }"
-                                                question__explane: "${convertText(oldData.question__explane)}"
-                                                exam_link: "${oldData.exam_link}"
-                                          }
-                                            ){
-                                              axamQuestions_id
-                                            }
-                                          }                      
-                                        `,
-                            }),
-                          })
-                            .then(res => res.json())
-                            .then(res => {
-                              setQuestionImage(false);
-                              if (
-                                res.data &&
-                                res.data.addNewQuestion
-                                // &&
-                                // res.data.addNewQuestion.axamQuestions_id
-                              ) {
-                                // if (res.data.addNewQuestion && res.data.addNewQuestion.axamQuestions_id) {
-                                // setQuestionId(data.length)
-                                // setQuestionId(prevState => prevState + 1);
-                                // setMessage('اطلاعاتی به درستی ثبت شد');
-                                // setStatus(0);
-                                // setShowPopup(true);
-                                // refteshData();
-                                // return res.data;
-                              } else {
-                                alert('اطلاعاتی به درستی ثبت نشد');
-                                // setStatus(1);
-                                // setShowPopup(true);
-                                // refteshData();
-                              }
-                            });
-                          // return { ...state, data };
-                        } else {
-                          // setLoading(false);
-                          alert('اطلاعاتی به درستی ثبت نشد');
-                          // setStatus(1);
-                          // setShowPopup(true);
-                          // refteshData();
-                        }
-                      }
-                      // });
-                    } else if (
-                      selectedFile &&
-                      questionImage == false &&
-                      textImage == true
-                    ) {
-                      // setState(async(prevState) => {
-                      //   const data = [...prevState.data];
-                      //   data.push(newData);
-                      // var fileIdL = selectedFile.name.split('.');
-                      // const format = fileIdL[fileIdL.length - 1].toLowerCase();
-                      // ///////////////
-                      // var mimetype = '';
-                      // ///////////////////////////////
-                      // switch (format) {
-                      //   case 'jpeg':
-                      //     // JPEG Image
-                      //     mimetype = 'image/jpeg';
-                      //     break;
-                      //   case 'jpg':
-                      //     // JPEG Image
-                      //     mimetype = 'image/jpg';
-                      //     break;
-                      //   case 'jpgv':
-                      //     // JPGVideo
-                      //     mimetype = 'video/jpeg';
-                      //     break;
-                      //   case 'png':
-                      //     // Portable Network Graphics (PNG)
-                      //     mimetype = 'image/png';
-                      //     break;
-                      //   default:
-                      //     break;
-                      // }
-                      //////////////////////
-                      var file = new File(
-                        [selectedFile],
-                        uuidv4() + `.${format}`,
-                        {
-                          type: mimeTypeFile,
-                        },
-                      );
+          //     // loadVariable.disable = false;
+          //     setTimeout(() => {
+          //       const dataUpdate = [...innerData];
+          //       const index = oldData.tableData.id;
+          //       // setToggle(false);
+          //       /////////////myCode
+          //       if (
+          //           // axamIdProps != '' &&
+          //           newData.question__score !== undefined &&
+          //           newData.question__currentOption !== undefined
+          //         ) {
+          //           if (
+          //             selectedFile &&
+          //             ((textImage == true && questionImage == true) ||
+          //               (questionImage == true && textImage == false))
+          //           ) {
+          //             //////////////////////
+          //             var file = new File(
+          //               [selectedFile],
+          //               uuidv4() + `.${format}`,
+          //               {
+          //                 type: mimeTypeFile,
+          //               },
+          //             );
+          //           //////////////////////////////////////////
+          //             handleSendToserver();
+          //             async function handleSendToserver() {
+          //               var responseCode = await UploadfileToserver(file, format);
+          //               if (file.name && responseCode) {
+          //                 fetch(graphql_server_uri, {
+          //                   method: 'POST',
+          //                   headers: { 'Content-Type': 'application/json' },
+          //                   body: JSON.stringify({
+          //                     query: `
+          //                                 mutation{
+          //                                     addNewQuestion(
+          //                                       axamQuestion_input: {
+          //                                           questionID: "${'1'}"
+          //                                             axamQuestions_id: "${'1'}"
+          //                                             question: "${''}"
+          //                                             question_link: "${file.name
+          //                       }"
+          //                                             question__optionOne: "${convertText(newData.question__optionOne)}"
+          //                                             question__optionTwo:"${convertText(newData.question__optionTwo)}"
+          //                                             question__currentOption: "${newData.question__currentOption ? newData.question__currentOption: ''
+          //                       }"
+          //                                           question__optionTree: "${convertText(newData.question__optionTree)}"
+          //                                           question__optionFour: "${convertText(newData.question__optionFour)}"
+          //                                             question__timeTosolveProblem: "${convertText(newData.question__timeTosolveProblem)}"
+          //                                             question__score: "${newData.question__score ? newData.question__score : ''
+          //                       }"
+          //                                             question__explane: "${convertText(newData.question__explane)}"
+          //                                             exam_link: "${''}"
+          //                                     },
+          //                                     axamQuestion_input_old: {
+          //                                       questionID: "${'1'}"
+          //                                       axamQuestions_id: "${'1'}"
+          //                                       question: "${convertText(oldData.question__optionOne)}"
+          //                                       question_link: "${convertText(oldData.question_link)}"
+          //                                       question__optionOne: "${convertText(oldData.question__optionOne)}"
+          //                                       question__optionTwo:"${convertText(oldData.question__optionTwo)}"
+          //                                       question__optionTree: "${convertText(oldData.question__optionTree)}"
+          //                                       question__optionFour: "${convertText(oldData.question__optionFour)}"
+          //                                       question__currentOption: "${oldData.question__currentOption ? oldData.question__currentOption : ''
+          //                           }"
+          //                                       question__timeTosolveProblem: "${convertText(oldData.question__timeTosolveProblem)}"
+          //                                       question__score: "${ oldData.question__score ? oldData.question__score : ''
+          //                           }"
+          //                                       question__explane: "${convertText(oldData.question__explane)}"
+          //                                       exam_link: "${oldData.exam_link}"
+          //                                 }
+          //                                   ){
+          //                                     axamQuestions_id
+          //                                   }
+          //                                 }                      
+          //                               `,
+          //                   }),
+          //                 })
+          //                   .then(res => res.json())
+          //                   .then(res => {
+          //                     setQuestionImage(false);
+          //                     if (
+          //                       res.data &&
+          //                       res.data.addNewQuestion
+          //                       // &&
+          //                       // res.data.addNewQuestion.axamQuestions_id
+          //                     ) {
+          //                       // if (res.data.addNewQuestion && res.data.addNewQuestion.axamQuestions_id) {
+          //                       // setQuestionId(data.length)
+          //                       // setQuestionId(prevState => prevState + 1);
+          //                       // setMessage('اطلاعاتی به درستی ثبت شد');
+          //                       // setStatus(0);
+          //                       // setShowPopup(true);
+          //                       // refteshData();
+          //                       // return res.data;
+          //                     } else {
+          //                       alert('اطلاعاتی به درستی ثبت نشد');
+          //                       // setStatus(1);
+          //                       // setShowPopup(true);
+          //                       // refteshData();
+          //                     }
+          //                   });
+          //                 // return { ...state, data };
+          //               } else {
+          //                 // setLoading(false);
+          //                 alert('اطلاعاتی به درستی ثبت نشد');
+          //                 // setStatus(1);
+          //                 // setShowPopup(true);
+          //                 // refteshData();
+          //               }
+          //             }
+          //             // });
+          //           } else if (
+          //             selectedFile &&
+          //             questionImage == false &&
+          //             textImage == true
+          //           ) {
+          //             // setState(async(prevState) => {
+          //             //   const data = [...prevState.data];
+          //             //   data.push(newData);
+          //             // var fileIdL = selectedFile.name.split('.');
+          //             // const format = fileIdL[fileIdL.length - 1].toLowerCase();
+          //             // ///////////////
+          //             // var mimetype = '';
+          //             // ///////////////////////////////
+          //             // switch (format) {
+          //             //   case 'jpeg':
+          //             //     // JPEG Image
+          //             //     mimetype = 'image/jpeg';
+          //             //     break;
+          //             //   case 'jpg':
+          //             //     // JPEG Image
+          //             //     mimetype = 'image/jpg';
+          //             //     break;
+          //             //   case 'jpgv':
+          //             //     // JPGVideo
+          //             //     mimetype = 'video/jpeg';
+          //             //     break;
+          //             //   case 'png':
+          //             //     // Portable Network Graphics (PNG)
+          //             //     mimetype = 'image/png';
+          //             //     break;
+          //             //   default:
+          //             //     break;
+          //             // }
+          //             //////////////////////
+          //             var file = new File(
+          //               [selectedFile],
+          //               uuidv4() + `.${format}`,
+          //               {
+          //                 type: mimeTypeFile,
+          //               },
+          //             );
   
-                      //////////////////////
-                      handleSendToserver();
-                      async function handleSendToserver() {
-                        var responseCode = await UploadfileToserver(file, format);
-                        // alert(selectedFileName);
-                        if (file.name && responseCode) {
-                          fetch(graphql_server_uri, {
-                            method: 'POST',
-                            headers: { 'Content-Type': 'application/json' },
-                            body: JSON.stringify({
-                              query: `
-                                          mutation{
-                                              addNewQuestion(
-                                                axamQuestion_input: {
-                                                    questionID: "${'1'}"
-                                                      axamQuestions_id: "${'1'}"
-                                                      question: "${convertText(newData.question)}"
-                                                      question_link: "${''}"
-                                                      question__optionOne: "${convertText(newData.question__optionOne)}"
-                                                      question__optionTwo:"${convertText(newData.question__optionTwo)}"
-                                                      question__optionTree: "${convertText(newData.question__optionTree)}"
-                                                      question__optionFour: "${convertText(newData.question__optionFour)}"
-                                                      question__currentOption: "${newData.question__currentOption ? newData.question__currentOption : ''
-                                }"
-                                                      question__timeTosolveProblem: "${convertText(newData.question__timeTosolveProblem)}"
-                                                      question__score: "${newData.question__score ? newData.question__score: ''
-                                }"
-                                                      question__explane: "${convertText(newData.question__explane)}"
-                                                      exam_link: "${file.name}"
-                                              },    axamQuestion_input_old: {
-                                                questionID: "${'1'}"
-                                                axamQuestions_id: "${'1'}"
-                                                question: "${convertText(oldData.question__optionOne)}"
-                                                question_link: "${convertText(oldData.question_link)}"
-                                                question__optionOne: "${convertText(oldData.question__optionOne)}"
-                                                question__optionTwo:"${convertText(oldData.question__optionTwo)}"
-                                                question__optionTree: "${convertText(oldData.question__optionTree)}"
-                                                question__optionFour: "${convertText(oldData.question__optionFour)}"
-                                                question__currentOption: "${oldData.question__currentOption ? oldData.question__currentOption : ''
-                                    }"
-                                                question__timeTosolveProblem: "${convertText(oldData.question__timeTosolveProblem)}"
-                                                question__score: "${ oldData.question__score ? oldData.question__score : ''
-                                    }"
-                                                question__explane: "${convertText(oldData.question__explane)}"
-                                                exam_link: "${oldData.exam_link}"
-                                          }
-                                            ){
-                                              axamQuestions_id
-                                            }
-                                          }                      
-                                        `,
-                            }),
-                          })
-                            .then(res => res.json())
-                            .then(res => {
-                              // SetselectedFileName('');
-                              // setSumScore(prevState => prevState + parseFloat(newScore));
-                              // tesetLoading(false);
-                              setTextImage(false);
-                              setQuestionImage(false);
-                              if (
-                                res.data &&
-                                res.data.addNewQuestion
-                                //  &&
-                                // res.data.addNewQuestion.axamQuestions_id
-                              ) {
-                                // if (res.data.addNewQuestion && res.data.addNewQuestion.axamQuestions_id) {
-                                // setQuestionId(data.length)
-                                // setQuestionId(prevState => prevState + 1);
-                                // setMessage('اطلاعاتی به درستی ثبت شد');
-                                // setStatus(0);
-                                // setShowPopup(true);
-                                // refteshData();
-                                // return res.data;
-                              } else {
-                                alert('اطلاعاتی به درستی ثبت نشد');
-                                // setStatus(1);
-                                // setShowPopup(true);
-                                // refteshData();
-                              }
-                            });
-                          // return { ...prevState, data };
-                        } else {
-                          // setLoading(false);
-                          alert('اطلاعاتی به درستی ثبت نشد');
-                          // setStatus(1);
-                          // setShowPopup(true);
-                          // refteshData();
-                        }
-                        // else{
-                        //   alert('نیست!!!!!');
-                        // }
-                      }
-                      // });
-                    } else {
+          //             //////////////////////
+          //             handleSendToserver();
+          //             async function handleSendToserver() {
+          //               var responseCode = await UploadfileToserver(file, format);
+          //               // alert(selectedFileName);
+          //               if (file.name && responseCode) {
+          //                 fetch(graphql_server_uri, {
+          //                   method: 'POST',
+          //                   headers: { 'Content-Type': 'application/json' },
+          //                   body: JSON.stringify({
+          //                     query: `
+          //                                 mutation{
+          //                                     addNewQuestion(
+          //                                       axamQuestion_input: {
+          //                                           questionID: "${'1'}"
+          //                                             axamQuestions_id: "${'1'}"
+          //                                             question: "${convertText(newData.question)}"
+          //                                             question_link: "${''}"
+          //                                             question__optionOne: "${convertText(newData.question__optionOne)}"
+          //                                             question__optionTwo:"${convertText(newData.question__optionTwo)}"
+          //                                             question__optionTree: "${convertText(newData.question__optionTree)}"
+          //                                             question__optionFour: "${convertText(newData.question__optionFour)}"
+          //                                             question__currentOption: "${newData.question__currentOption ? newData.question__currentOption : ''
+          //                       }"
+          //                                             question__timeTosolveProblem: "${convertText(newData.question__timeTosolveProblem)}"
+          //                                             question__score: "${newData.question__score ? newData.question__score: ''
+          //                       }"
+          //                                             question__explane: "${convertText(newData.question__explane)}"
+          //                                             exam_link: "${file.name}"
+          //                                     },    axamQuestion_input_old: {
+          //                                       questionID: "${'1'}"
+          //                                       axamQuestions_id: "${'1'}"
+          //                                       question: "${convertText(oldData.question__optionOne)}"
+          //                                       question_link: "${convertText(oldData.question_link)}"
+          //                                       question__optionOne: "${convertText(oldData.question__optionOne)}"
+          //                                       question__optionTwo:"${convertText(oldData.question__optionTwo)}"
+          //                                       question__optionTree: "${convertText(oldData.question__optionTree)}"
+          //                                       question__optionFour: "${convertText(oldData.question__optionFour)}"
+          //                                       question__currentOption: "${oldData.question__currentOption ? oldData.question__currentOption : ''
+          //                           }"
+          //                                       question__timeTosolveProblem: "${convertText(oldData.question__timeTosolveProblem)}"
+          //                                       question__score: "${ oldData.question__score ? oldData.question__score : ''
+          //                           }"
+          //                                       question__explane: "${convertText(oldData.question__explane)}"
+          //                                       exam_link: "${oldData.exam_link}"
+          //                                 }
+          //                                   ){
+          //                                     axamQuestions_id
+          //                                   }
+          //                                 }                      
+          //                               `,
+          //                   }),
+          //                 })
+          //                   .then(res => res.json())
+          //                   .then(res => {
+          //                     // SetselectedFileName('');
+          //                     // setSumScore(prevState => prevState + parseFloat(newScore));
+          //                     // tesetLoading(false);
+          //                     setTextImage(false);
+          //                     setQuestionImage(false);
+          //                     if (
+          //                       res.data &&
+          //                       res.data.addNewQuestion
+          //                       //  &&
+          //                       // res.data.addNewQuestion.axamQuestions_id
+          //                     ) {
+          //                       // if (res.data.addNewQuestion && res.data.addNewQuestion.axamQuestions_id) {
+          //                       // setQuestionId(data.length)
+          //                       // setQuestionId(prevState => prevState + 1);
+          //                       // setMessage('اطلاعاتی به درستی ثبت شد');
+          //                       // setStatus(0);
+          //                       // setShowPopup(true);
+          //                       // refteshData();
+          //                       // return res.data;
+          //                     } else {
+          //                       alert('اطلاعاتی به درستی ثبت نشد');
+          //                       // setStatus(1);
+          //                       // setShowPopup(true);
+          //                       // refteshData();
+          //                     }
+          //                   });
+          //                 // return { ...prevState, data };
+          //               } else {
+          //                 // setLoading(false);
+          //                 alert('اطلاعاتی به درستی ثبت نشد');
+          //                 // setStatus(1);
+          //                 // setShowPopup(true);
+          //                 // refteshData();
+          //               }
+          //               // else{
+          //               //   alert('نیست!!!!!');
+          //               // }
+          //             }
+          //             // });
+          //           } else {
                       
-                      fetch(graphql_server_uri, {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({
-                          query: `
-                                          mutation{
-                                              addNewQuestion(
-                                                axamQuestion_input: {
-                                                    questionID: "${'1'}"
-                                                      axamQuestions_id: "${'1'}"
-                                                      question: "${convertText(newData.question)}"
-                                                      question_link: "${''}"
-                                                      question__optionOne: "${convertText(newData.question__optionOne)}"
-                                                      question__optionTwo:"${convertText(newData.question__optionTwo)}"
-                                                      question__currentOption: "${newData.question__currentOption ? newData.question__currentOption : ''
-                            }"
-                                                      question__timeTosolveProblem: "${convertText(newData.question__timeTosolveProblem)}"
-                                                      question__score: "${newData.question__score ? newData.question__score : ''
-                            }"
-                                                      question__explane: "${convertText(newData.question__explane)}"
-                                                      exam_link: "${''}"
-                                              },    axamQuestion_input_old: {
-                                                questionID: "${'1'}"
-                                                axamQuestions_id: "${'1'}"
-                                                question: "${convertText(oldData.question__optionOne)}"
-                                                question_link: "${convertText(oldData.question_link)}"
-                                                question__optionOne: "${convertText(oldData.question__optionOne)}"
-                                                question__optionTwo:"${convertText(oldData.question__optionTwo)}"
-                                                question__currentOption: "${oldData.question__currentOption ? oldData.question__currentOption : ''
-                                    }"
-                                                question__timeTosolveProblem: "${convertText(oldData.question__timeTosolveProblem)}"
-                                                question__score: "${ oldData.question__score ? oldData.question__score : ''
-                                    }"
-                                                question__explane: "${convertText(oldData.question__explane)}"
-                                                exam_link: "${oldData.exam_link}"
-                                          }
-                                            ){
-                                              axamQuestions_id
-                                            }
-                                          }                      
-                                        `,
-                        }),
-                      })
-                        .then(res => res.json())
-                        .then(res => {
-                          // SetselectedFileName('');
-                          // setLoading(false);
-                          setTextImage(false);
-                          setQuestionImage(false);
-                          // setSumScore(prevState => prevState + parseFloat(newScore));
-                          if (
-                            res.data &&
-                            res.data.addNewQuestion
-                            // &&
-                            // res.data.addNewQuestion.axamQuestions_id
-                          ) {
-                            // if (res.data.addNewQuestion && res.data.addNewQuestion.axamQuestions_id) {
-                            // setQuestionId(data.length)
-                            // setQuestionId(prevState => prevState + 1);
-                            // setMessage('اطلاعاتی به درستی ثبت شد');
-                            // setStatus(0);
-                            // setShowPopup(true);
-                            // refteshData();
-                            // return res.data;
-                          } else {
-                            alert('اطلاعاتی به درستی ثبت نشد');
-                            // setStatus(1);
-                            // setShowPopup(true);
-                            // refteshData();
-                          }
-                          // return res.data;
-                        });
-                      // return { ...prevState, data };
-                      // });
-                    }
-                  } else {
-                    // setLoading(false);
-                    setTextImage(false);
-                    setQuestionImage(false);
-                    alert('ابتدا فیلد های موردنظر را پر کنید!!');
-                    // setStatus(1);
-                    // setShowPopup(true);
-                    // refteshData();
-                  }
-                ////////////////////////////
-                dataUpdate[index] = newData;
-                setInnerData([...dataUpdate]);
+          //             fetch(graphql_server_uri, {
+          //               method: 'POST',
+          //               headers: { 'Content-Type': 'application/json' },
+          //               body: JSON.stringify({
+          //                 query: `
+          //                                 mutation{
+          //                                     addNewQuestion(
+          //                                       axamQuestion_input: {
+          //                                           questionID: "${'1'}"
+          //                                             axamQuestions_id: "${'1'}"
+          //                                             question: "${convertText(newData.question)}"
+          //                                             question_link: "${''}"
+          //                                             question__optionOne: "${convertText(newData.question__optionOne)}"
+          //                                             question__optionTwo:"${convertText(newData.question__optionTwo)}"
+          //                                             question__currentOption: "${newData.question__currentOption ? newData.question__currentOption : ''
+          //                   }"
+          //                                             question__timeTosolveProblem: "${convertText(newData.question__timeTosolveProblem)}"
+          //                                             question__score: "${newData.question__score ? newData.question__score : ''
+          //                   }"
+          //                                             question__explane: "${convertText(newData.question__explane)}"
+          //                                             exam_link: "${''}"
+          //                                     },    axamQuestion_input_old: {
+          //                                       questionID: "${'1'}"
+          //                                       axamQuestions_id: "${'1'}"
+          //                                       question: "${convertText(oldData.question__optionOne)}"
+          //                                       question_link: "${convertText(oldData.question_link)}"
+          //                                       question__optionOne: "${convertText(oldData.question__optionOne)}"
+          //                                       question__optionTwo:"${convertText(oldData.question__optionTwo)}"
+          //                                       question__currentOption: "${oldData.question__currentOption ? oldData.question__currentOption : ''
+          //                           }"
+          //                                       question__timeTosolveProblem: "${convertText(oldData.question__timeTosolveProblem)}"
+          //                                       question__score: "${ oldData.question__score ? oldData.question__score : ''
+          //                           }"
+          //                                       question__explane: "${convertText(oldData.question__explane)}"
+          //                                       exam_link: "${oldData.exam_link}"
+          //                                 }
+          //                                   ){
+          //                                     axamQuestions_id
+          //                                   }
+          //                                 }                      
+          //                               `,
+          //               }),
+          //             })
+          //               .then(res => res.json())
+          //               .then(res => {
+          //                 // SetselectedFileName('');
+          //                 // setLoading(false);
+          //                 setTextImage(false);
+          //                 setQuestionImage(false);
+          //                 // setSumScore(prevState => prevState + parseFloat(newScore));
+          //                 if (
+          //                   res.data &&
+          //                   res.data.addNewQuestion
+          //                   // &&
+          //                   // res.data.addNewQuestion.axamQuestions_id
+          //                 ) {
+          //                   // if (res.data.addNewQuestion && res.data.addNewQuestion.axamQuestions_id) {
+          //                   // setQuestionId(data.length)
+          //                   // setQuestionId(prevState => prevState + 1);
+          //                   // setMessage('اطلاعاتی به درستی ثبت شد');
+          //                   // setStatus(0);
+          //                   // setShowPopup(true);
+          //                   // refteshData();
+          //                   // return res.data;
+          //                 } else {
+          //                   alert('اطلاعاتی به درستی ثبت نشد');
+          //                   // setStatus(1);
+          //                   // setShowPopup(true);
+          //                   // refteshData();
+          //                 }
+          //                 // return res.data;
+          //               });
+          //             // return { ...prevState, data };
+          //             // });
+          //           }
+          //         } else {
+          //           // setLoading(false);
+          //           setTextImage(false);
+          //           setQuestionImage(false);
+          //           alert('ابتدا فیلد های موردنظر را پر کنید!!');
+          //           // setStatus(1);
+          //           // setShowPopup(true);
+          //           // refteshData();
+          //         }
+          //       ////////////////////////////
+          //       dataUpdate[index] = newData;
+          //       setInnerData([...dataUpdate]);
   
-                resolve(setToggle(false));
-                // reject(loadVariable.load = false);
-                // resolve();
-                // reject();
-              }, 1000)
-            }),
+          //       resolve(setToggle(false));
+          //       // reject(loadVariable.load = false);
+          //       // resolve();
+          //       // reject();
+          //     }, 1000)
+          //   }),
           // onRowDelete: oldData =>
           //   new Promise((resolve, reject) => {
           //     setTimeout(() => {
