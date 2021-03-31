@@ -12,20 +12,23 @@ import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
 import ArrowForwardIosIcon from '@material-ui/icons/ArrowForwardIos';
 import ShowImage from '../../imageShow/showImage.component';
 // import AddIcon from '@material-ui/icons/Add';
+///////////////////////////////////////////////////////
+import { connect} from 'react-redux';
+import {IncreaseIndex , DecreaseIndex} from '../../../redux/questionIndex/questionIndex.sction';
 
 
-const ShowBodyQuestions = ({question,number,children}) =>{
+const ShowBodyQuestions = ({question,number,children,IncreaseIndexQuestion,DecreaseIndexQuestion}) =>{
 
-    const [state,setState] =useState({
-        type:false,
-        imageSrc:null,
-        captionImage:'',
-        showImage:false,
-    });
-    // const [type, setType] = useState(false);
-    // const [imageSrc, setImageSrc] = useState('');
-    // const [captionImage, setCaptionImage] = useState(false);
-    // const [showImage, setShowImage] = useState(false);
+    // const [state,setState] =useState({
+    //     type:false,
+    //     imageSrc:null,
+    //     captionImage:'',
+    //     showImage:false,
+    // });
+    const [type, setType] = useState(false);
+    const [imageSrc, setImageSrc] = useState('');
+    const [captionImage, setCaptionImage] = useState(false);
+    const [showImage, setShowImage] = useState(false);
 
 
     // useEffect(()=>{
@@ -33,25 +36,25 @@ const ShowBodyQuestions = ({question,number,children}) =>{
     //   },[captionImage]);
     
   const showPic = () => {
-    // setShowImage(!showImage);
-      setState({...state,showImage:! state.showImage});
+    setShowImage(!showImage);
+    //   setState({...state,showImage:! state.showImage});
   }
 
   const handleShowPic = link => {
     if (question.question) {
         console.log('question.question1',question.question);
-        setState({...state,type:true});
-    //   setType(true);
-        setState({...state,captionImage:`${question.question.split('%0A').join('\r\n')}(نمره : ${question.question__score
-        })`});
-    //   setCaptionImage(
-    //     `${question.question.split('%0A').join('\r\n')}(نمره : ${question.question__score
-    //     })`,
-    //   );
+        // setState({...state,type:true});
+      setType(true);
+        // setState({...state,captionImage:`${question.question.split('%0A').join('\r\n')}(نمره : ${question.question__score
+        // })`});
+      setCaptionImage(
+        `${question.question.split('%0A').join('\r\n')}(نمره : ${question.question__score
+        })`,
+      );
     // setState({imageSrc:link});
-    setState({...state,imageSrc:MyPic2});
+    // setState({...state,imageSrc:MyPic2});
     //   setImageSrc(link);
-    // setImageSrc(MyPic2);
+    setImageSrc(MyPic2);
       showPic();
     } else {
         console.log('question.question2');
@@ -59,11 +62,11 @@ const ShowBodyQuestions = ({question,number,children}) =>{
         // setState({captionImage:''});
         // // captionImage('');
         // setState({imageSrc:link});
-    //   setType(false);
-    //   setCaptionImage('');
+      setType(false);
+      setCaptionImage('');
     //   setImageSrc(link);
-    // setImageSrc(MyPic);
-    //   showPic();
+        setImageSrc(MyPic);
+      showPic();
     }
   };
 
@@ -132,13 +135,13 @@ const ShowBodyQuestions = ({question,number,children}) =>{
         {/* /////////////////////////////////footer */}
         <FooterQuestionContainer>
             <FooterBtnsContainer>
-                <Tooltip title="سوال قبلی" aria-label="سوال قبلی"  style={{ fontSize:'3rem'}}>
+                <Tooltip title="سوال قبلی" aria-label="سوال قبلی"  style={{ fontSize:'3rem'}} onClick={DecreaseIndexQuestion}>
                     <FooterBtn>
                         <ArrowBackIosIcon style={{ fontSize:'3rem'}} />
                     </FooterBtn>
                 </Tooltip>
                 
-                <Tooltip title="سوال بعدی" aria-label="سوال بعدی" style={{ fontSize:'3rem'}}>
+                <Tooltip title="سوال بعدی" aria-label="سوال بعدی" style={{ fontSize:'3rem'}} onClick={IncreaseIndexQuestion}>
                     <FooterBtn>
                         <ArrowForwardIosIcon style={{ fontSize:'3rem'}} />
                     </FooterBtn>
@@ -147,10 +150,19 @@ const ShowBodyQuestions = ({question,number,children}) =>{
             </FooterBtnsContainer>
         </FooterQuestionContainer>
         {
-            state.showImage ? <ShowImage imageSrc={state.imageSrc} caption={state.captionImage} close={showPic} type={state.type} /> : ''
+            showImage ? <ShowImage imageSrc={imageSrc} caption={captionImage} close={showPic} type={type} /> : ''
         }
     </BodyContainer>
     )
 };
 
-export default ShowBodyQuestions;
+const mapStateToProps = state =>({
+    questionIndex:state.questionIndex.indexQuestion
+});
+
+const mapDispatchToProps = dispatch =>({
+    IncreaseIndexQuestion: () => dispatch(IncreaseIndex()),
+    DecreaseIndexQuestion: () => dispatch(DecreaseIndex()),
+  });
+
+export default connect(mapStateToProps,mapDispatchToProps)(ShowBodyQuestions);

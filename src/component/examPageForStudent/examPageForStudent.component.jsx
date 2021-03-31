@@ -31,6 +31,9 @@ const Item ={
         ['توضیحات مربوط به امتحان درس ریاضی پایه هشتم'],
         // [1,2],[3,4],[5,6],[7,8]
     ],
+    'vancyItems':'سلام بر همه دوستان $%A و محترم عید $%A بر همه $%A مبارک باد',
+    // 'vancyItems':'سلام بر همه دوستان $%A و محترم عید $%A بر همه $%A مبارک باد سلام بر همه دوستان $%A و محترم عید $%A بر همه $%A مبارک باد سلام بر همه دوستان $%A و محترم عید $%A بر همه $%A مبارک باد سلام بر همه دوستان $%A و محترم عید $%A بر همه $%A مبارک باد',
+  
     // 'question__optionTree':'hi',
     // 'question__optionFour':'آنیو',
     // 'question_link':'https://www.woonwinkelhome.com/products/slim-pen-gold',
@@ -134,7 +137,7 @@ const  ExamPageForStudent = () =>{
             {/* <MultipleChoiceConatiner question={Item} number={48}/> */}
             {/* <ShowTrueAndFalseQuestion question={Item} number={48} /> */}
             {/* <ShowSequentialQuestion question={Item} number={48} SeqItems={SeqRandomArray(Item.SeqItems)} /> */}
-            <ShowVacancyQuestion question={Item} number={48} />
+            <ShowVacancyQuestion question={Item} number={48} Vitems={Item.vancyItems}/>
         </div>
     )
 };
