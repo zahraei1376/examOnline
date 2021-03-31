@@ -293,6 +293,7 @@ export const ShowImageCaption = styled.p`
 		font-size: 18px;
 		color: white;
 		margin-top: 10px;
+		margin-bottom:30px;
 		//   height: 30%;
 		//   position: absolute;
 		//   top: 30px;
