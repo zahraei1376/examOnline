@@ -15,8 +15,8 @@ import ShowImage from '../../imageShow/showImage.component';
 ///////////////////////////////////////////////////////
 import { connect} from 'react-redux';
 import {IncreaseIndex , DecreaseIndex} from '../../../redux/questionIndex/questionIndex.sction';
-
-
+import {selectIndex} from '../../../redux/questionIndex/questionIndex.selector';
+import { createStructuredSelector} from 'reselect';
 const ShowBodyQuestions = ({question,number,children,IncreaseIndexQuestion,DecreaseIndexQuestion}) =>{
 
     // const [state,setState] =useState({
@@ -156,13 +156,19 @@ const ShowBodyQuestions = ({question,number,children,IncreaseIndexQuestion,Decre
     )
 };
 
-const mapStateToProps = state =>({
-    questionIndex:state.questionIndex.indexQuestion
+// const mapStateToProps = state =>({
+//     questionIndex:state.questionIndex.indexQuestion
+// });
+
+const mapStateToProps =createStructuredSelector({
+    questionIndex:selectIndex
 });
+
+// selectIndex
 
 const mapDispatchToProps = dispatch =>({
     IncreaseIndexQuestion: () => dispatch(IncreaseIndex()),
     DecreaseIndexQuestion: () => dispatch(DecreaseIndex()),
-  });
+});
 
 export default connect(mapStateToProps,mapDispatchToProps)(ShowBodyQuestions);

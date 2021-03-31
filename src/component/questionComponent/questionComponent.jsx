@@ -8,7 +8,7 @@ import Comparative from './Comparative/Comparative.component';//تطبیقی
 import Vacancy from './Vacancy/Vacancy.component';//جای خالی
 import Sequential from './Sequential/Sequential.component';//ترتیبی
 import {QuestionImageIconContainer ,QuestionImageIcon ,QuestionImageIconText,QuestionImageIconTextV} from './questionComponent.styles';
-import DeleteIcon from '../../assets/img/iconDelete.png';
+// import DeleteIcon from '../../assets/img/iconDelete.png';
 import descriptiveIcon from '../../assets/img/descriptiveQuestion.png';
 import descriptiveIcon2 from '../../assets/img/descriptiveQuestion2.png';
 import multiChoice from '../../assets/img/multiChoice.png';
@@ -23,6 +23,8 @@ import SequentialIcon from '../../assets/img/SequentialIcon.png';
 import SequentialIcon2 from '../../assets/img/SequentialIcon2.png';
 ///////////////////////////////////////////////
 import {connect} from 'react-redux';
+import { createStructuredSelector} from 'reselect';
+import {ToggleQuestion} from '../../redux/toggleQuesion/toggleQuestion.selector';
 
 
 
@@ -368,9 +370,13 @@ const Questions = ({toggle}) =>{
   )
 }
 
-const mapStateToProps = state =>({
-    toggle : state.toggle.toggle,
-})
+// const mapStateToProps = state =>({
+//     toggle : state.toggle.toggle,
+// })
+
+const mapStateToProps = createStructuredSelector({
+  toggle:ToggleQuestion
+});
 
 
 export default connect(mapStateToProps)(Questions);

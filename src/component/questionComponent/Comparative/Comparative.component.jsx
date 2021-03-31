@@ -12,10 +12,13 @@ import {ComparativeButton} from './Comparative.styles';
 // import {Input,Button} from '@material-ui/core';
 import {loadVariable} from '../questionComponent';
 import ComparativeModal from './ComparativeModal.component';
-import DeleteIcon from '../../../assets/img/iconDelete.png';
+// import DeleteIcon from '../../../assets/img/iconDelete.png';
 import BackupIcon from '@material-ui/icons/Backup';
 import {connect} from 'react-redux';
 import setToggle from '../../../redux/toggleQuesion/toggleQuestion.action';
+// import {ToggleQuestion} from '../../../redux/toggleQuesion/toggleQuestion.selector';
+// import { createStructuredSelector} from 'reselect';
+//////////////////////
 // import AddIcon from '@material-ui/icons/Add';
 // import BackupIcon from '@material-ui/icons/Backup';
 // import {CloudUploadIcon} from '@material-ui/icons';
