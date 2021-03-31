@@ -3,6 +3,7 @@ import {AddIndexQuestion ,LowOffIndexQuestion} from './questionIndex.utils';
 
 const INITIALSTATE = {
     indexQuestion: 0,
+    questionsLenght:0,
 }
 
 
@@ -17,16 +18,23 @@ const QuestionIndexReducer = (state = INITIALSTATE ,action)=>{
         case QuestionIndexTypes.INCREASE_INDEX:
             return {
                 ...state,
-                indexQuestion:AddIndexQuestion(state.indexQuestion,3),
+                indexQuestion:AddIndexQuestion(state.indexQuestion,state.questionsLenght),
                 // indexQuestion:state.indexQuestion + 1,
             }
             // break;
-            case QuestionIndexTypes.DECREASE_INDEX:
-        return {
-            ...state,
-            indexQuestion:LowOffIndexQuestion(state.indexQuestion),
-            // indexQuestion:state.indexQuestion - 1,
-        }
+        case QuestionIndexTypes.DECREASE_INDEX:
+            return {
+                ...state,
+                indexQuestion:LowOffIndexQuestion(state.indexQuestion),
+                // indexQuestion:state.indexQuestion - 1,
+            }
+
+        case QuestionIndexTypes.SET_LENGTH:
+            return {
+                ...state,
+                questionsLenght:action.payload,
+                // indexQuestion:state.indexQuestion - 1,
+            }
             // break;
         default:
             return state;
