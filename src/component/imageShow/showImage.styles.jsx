@@ -294,6 +294,7 @@ export const ShowImageCaption = styled.p`
 		color: white;
 		margin-top: 10px;
 		margin-bottom:30px;
+		padding:0 6rem;
 		//   height: 30%;
 		//   position: absolute;
 		//   top: 30px;

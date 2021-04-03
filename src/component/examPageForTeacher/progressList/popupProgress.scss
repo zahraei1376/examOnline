@@ -1,0 +1,132 @@
+@import '@components/Messages/ChatComponents/sass/abstract/_variable';
+@import '@components/Messages/ChatComponents/sass/base/_animations';
+
+.popUpProgress {
+	height: 100vh;
+	width: 100%;
+	font-family: 'BNazanin';
+	position: fixed;
+	top: 5%;
+	left: 0;
+	background-color: rgba(#000, 0.5);
+	z-index: 9999;
+	transition: all 0.3s;
+	animation-name: load;
+	animation-duration: 1s;
+	direction: ltr;
+
+	@supports (-webkit-backdrop-filter: blur(5px)) or (backdrop-filter: blur(5px)) {
+		-webkit-backdrop-filter: blur(5px);
+		backdrop-filter: blur(5px);
+		background-color: rgba(#000, 0.3);
+		direction: ltr;
+	}
+
+	&__content {
+		width: 80%;
+		// height: 90vh;
+		// scroll-behavior: smooth;
+		// overflow-y: scroll;
+		// z-index: 45789;
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%, -50%);
+		margin: auto;
+		background-color: #f0f3f5;
+		box-shadow: 0 2rem 4rem rgba(#000, 0.2);
+		border-radius: 3px;
+		color: black;
+		// display: table;
+		// overflow: hidden;
+		// opacity: 0;
+		// transform: translate(-50%, -50%) scale(.25);
+		transition: all 0.5s 0.2s;
+		@media only screen and (max-width: 769px) {
+			width: 100%;
+		}
+	}
+	///////////////
+	&__header {
+		margin: 10px;
+		padding: 20px;
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		border: 3px solid #797a7c;
+		font-family: 'BNazanin';
+		border-radius: 10px;
+		@media only screen and (max-width: 769px) {
+			flex-direction: column;
+		}
+
+		&-timeDiv {
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+			font-family: 'BNazanin';
+		}
+
+		&-score {
+			color: black;
+		}
+
+		&-time {
+			color: black;
+			font-size: 16px;
+			text-align: center;
+			font-family: 'BNazanin';
+		}
+	}
+
+	&__delay {
+		color: red;
+		font-size: 18px;
+		text-align: center;
+	}
+
+	&__user {
+		font-size: 2.5rem;
+		text-align: center;
+		margin-top: 2rem;
+	}
+
+	&__btnClose {
+		font-family: 'BNazanin';
+		font-size: large;
+		width: 5rem;
+		height: 5rem;
+		background-color: rgba(#000, 0.5);
+		color: #fff;
+		border-radius: 50%;
+		outline: none;
+		position: absolute;
+		top: 10%;
+		right: 10%;
+		z-index: 100;
+		///////////
+	}
+	&__btnSend {
+		width: 100px;
+		height: 50px;
+		border-radius: 5px;
+		color: #fff;
+		font-size: 22px;
+		background-color: #004d40;
+		margin: 20px 0 20px 20px;
+		transition: all 0.2s;
+		&:hover {
+			color: black;
+			border: 1px solid #004d40;
+			background-color: rgb(163, 231, 189);
+		}
+	}
+
+	&__pageQuesion {
+		margin: 10px;
+		// border: 1px solid #797a7c;
+		border: 3px solid #797a7c;
+		border-radius: 10px;
+		// padding-right: 10px;
+	}
+}

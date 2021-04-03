@@ -433,10 +433,11 @@ const DescriptiveQuestion = ({setToggle , ...props}) => {
                   tableRef.current.dataManager.getRenderState(),
                   {
                     showAddRow: false,
-                  }
+                  },
+                  // setToggle(true)
                 )
               );
-              setToggle(true);
+              // setToggle(true);
             },
           },
           // {

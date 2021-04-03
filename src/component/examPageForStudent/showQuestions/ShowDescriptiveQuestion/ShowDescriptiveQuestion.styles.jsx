@@ -49,6 +49,7 @@ export const TextArea = styled.textarea`
     text-align:right;
     margin:2rem 0;
     box-sizing:border-box;
+    border-radius:1rem;
 `;
 
 // export const DescriptiveContainer = styled.div`

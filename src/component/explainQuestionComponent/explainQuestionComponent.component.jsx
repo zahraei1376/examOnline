@@ -9,7 +9,7 @@ import MuiDialogActions from '@material-ui/core/DialogActions';
 // import CloseIcon from '@material-ui/icons/Close';
 import Typography from '@material-ui/core/Typography';
 ////////////////
-import {ExplainDiv , TimeDiv ,MyTypography , MyButton , MyMainButton} from './explainQuestionComponent.styles';
+import {ExplainDivContainer,ExplainDiv , TimeDiv ,MyTypography , MyButton , MyMainButton} from './explainQuestionComponent.styles';
 
 const styles = (theme) => ({
   root: {
@@ -73,7 +73,7 @@ function ExplainQuestion({number , explain , time}) {
   };
 
   return (
-    <div>
+    <ExplainDivContainer>
       <MyMainButton variant="outlined" color="primary" onClick={handleClickOpen}>
       {number + 1}
       </MyMainButton>
@@ -114,7 +114,7 @@ function ExplainQuestion({number , explain , time}) {
           </MyButton>
         </DialogActions>
       </Dialog>
-    </div>
+    </ExplainDivContainer>
   );
 }
 

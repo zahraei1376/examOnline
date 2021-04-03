@@ -45,7 +45,7 @@ const Comparative = ({setToggle , ...props}) => {
     
     useEffect(()=>{
       console.log('Temp', Temp);
-      setToggle(Temp);
+      // setToggle(Temp);
     },[Temp])
     var format = '';
 
@@ -734,21 +734,24 @@ const Comparative = ({setToggle , ...props}) => {
           {
             icon: "edit",
             tooltip: "ویرایش",
-            onClick: (event, rowData) => {
+            onClick: async(event, rowData) => {
               console.log("RRRRRRRRR", rowData);
-              setTemp(true);
+              
               // setTemp1(true);
               tableRef.current.dataManager.changeRowEditing(rowData, "update");
   
-              tableRef.current.setState(
+              await tableRef.current.setState(
                 (0, _objectSpread2["default"])(
                   {},
                   tableRef.current.dataManager.getRenderState(),
                   {
                     showAddRow: false,
-                  }
+                  },
+                  // setToggle(true)
                 )
               );
+              // setToggle(true)
+              // setTemp(true);
             },
           },
         ]}

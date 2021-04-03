@@ -1,0 +1,53 @@
+.titr {
+	width: 100%;
+	margin: 0;
+	padding: 0;
+	display: flex;
+	direction: ltr;
+	// justify-content: space-between;
+	align-items: center;
+	background-color: rgb(121, 119, 119);
+	padding: 20px 0;
+	&_tem {
+		display: flex;
+		justify-content: space-evenly;
+		align-items: center;
+		text-align: center;
+		width: 90%;
+
+		// background-color: rgba(0, 0, 0, 0.03);
+	}
+	&_num {
+		width: 10%;
+		font-family: 'BNazanin';
+		text-align: center;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		color: #fff;
+		// color: #888c9c;
+		font-size: 22px;
+	}
+	&_img {
+		width: 20%;
+		font-family: 'BNazanin';
+		text-align: center;
+		color: #fff;
+		font-size: 22px;
+	}
+	&_score {
+		width: 20%;
+		font-family: 'BNazanin';
+		text-align: center;
+		color: #fff;
+		font-size: 22px;
+	}
+
+	&_name {
+		font-size: 22px;
+		font-family: 'BNazanin';
+		text-align: center;
+		color: #fff;
+		width: 50%;
+	}
+}

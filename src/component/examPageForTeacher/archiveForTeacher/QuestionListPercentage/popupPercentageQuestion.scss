@@ -1,0 +1,210 @@
+@import '@components/Messages/ChatComponents/sass/base/_animations';
+@import '@components/Messages/ChatComponents/sass/abstract/_variable';
+
+.popupPercentageQuestion {
+	height: 100vh;
+	width: 100%;
+	font-family: 'BNazanin';
+	position: fixed;
+	top: 0;
+	left: 0;
+	background-color: rgba(#000, 0.5);
+	z-index: 9999;
+	transition: all 0.3s;
+	animation-name: load;
+	animation-duration: 1s;
+	direction: ltr;
+	// scroll-behavior: smooth;
+	// overflow-y: scroll;
+	// border-radius: 5px;
+
+	@supports (-webkit-backdrop-filter: blur(5px)) or (backdrop-filter: blur(5px)) {
+		-webkit-backdrop-filter: blur(5px);
+		backdrop-filter: blur(5px);
+		background-color: rgba(#000, 0.3);
+		direction: ltr;
+	}
+
+	&__content {
+		width: 80%;
+		height: 100%;
+		// position: relative;
+		// scroll-behavior: smooth;
+		// overflow-y: scroll;
+		position: relative;
+		// scroll-behavior: smooth;
+		// overflow-y: scroll;
+		// position: relative;
+		// z-index: 45789;
+
+		// position: absolute;
+		// top: 50%;
+		// left: 50%;
+		// transform: translate(-50%, -50%);
+		margin: auto;
+		margin-top: 100px;
+		// margin-top: 100px;
+		background-color: #f0f3f5;
+		box-shadow: 0 2rem 4rem rgba(#000, 0.2);
+		border-radius: 5px;
+		color: black;
+		// display: table;
+		// overflow: hidden;
+		// opacity: 0;
+		// transform: translate(-50%, -50%) scale(.25);
+		transition: all 0.5s 0.2s;
+		border-top-left-radius: 12px;
+		border-top-right-radius: 12px;
+
+		@media only screen and (max-width: 769px) {
+			width: 100%;
+			margin-top: 150px;
+		}
+		// @media only screen and (max-width: 321px) {
+		// 	margin-top: 80px;
+		// }
+	}
+	///////////////
+	&__header {
+		margin: 10px;
+		padding: 20px;
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		border: 3px solid #797a7c;
+		font-family: 'BNazanin';
+		border-radius: 10px;
+		@media only screen and (max-width: 769px) {
+			flex-direction: column;
+		}
+
+		&-timeDiv {
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+			font-family: 'BNazanin';
+		}
+
+		&-score {
+			color: black;
+		}
+
+		&-time {
+			color: black;
+			font-size: 16px;
+			text-align: center;
+			font-family: 'BNazanin';
+		}
+	}
+
+	&__delay {
+		color: red;
+		font-size: 18px;
+		text-align: center;
+	}
+
+	&__user {
+		font-size: 2.5rem;
+		text-align: center;
+		margin-top: 2rem;
+	}
+
+	&__btnClose {
+		font-size: 17px;
+		width: 50px;
+		height: 50px;
+		background-color: rgba(#000, 0.5);
+		color: #fff;
+		border-radius: 50%;
+		outline: none;
+		position: absolute;
+		top: 5px;
+		right: 75px;
+		z-index: 100;
+		margin-top: 100px;
+		@media only screen and (max-width: 769px) {
+			margin-top: 70px;
+			right: 30px;
+		}
+		// @media only screen and (max-width: 321px) {
+		// 	margin-top: 80px;
+		// }
+		///////////
+		// width: 3rem;
+		// height: 3rem;
+		// background-color: rgba(#000, 0.5);
+		// color: #fff;
+		// border-radius: 50%;
+		// outline: none;
+		// position: absolute;
+		// top: 5px;
+		// right: 5px;
+	}
+	&__btnSend {
+		width: 100px;
+		height: 50px;
+		border-radius: 5px;
+		color: #fff;
+		font-size: 22px;
+		background-color: #004d40;
+		margin: 20px 0 20px 20px;
+		transition: all 0.2s;
+		&:hover {
+			color: black;
+			border: 1px solid #004d40;
+			background-color: rgb(163, 231, 189);
+		}
+	}
+
+	&__pageQuesion {
+		margin: 10px;
+		// border: 1px solid #797a7c;
+		border: 3px solid #797a7c;
+		border-radius: 10px;
+		// padding-right: 10px;
+	}
+
+	&__noticeDiv {
+		text-align: right;
+		direction: rtl;
+		list-style-type: decimal;
+		// box-shadow: 0 1px 2px 1px #000;
+		border-bottom: 1px solid #000;
+		border-radius: 3px;
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		align-items: flex-start;
+		margin: 0;
+		background-color: teal;
+		color: white;
+		border-top-left-radius: 12px;
+		border-top-right-radius: 12px;
+		padding-right: 30px;
+		max-height: 20%;
+		// height: 40px;
+	}
+
+	&__Chart {
+		max-height: 70%;
+		position: relative;
+		overflow-y: scroll !important;
+	}
+
+	&__notice {
+		font-size: 18px;
+		font-family: BNazanin;
+		text-align: right;
+		padding: 10px;
+	}
+	&__h1 {
+		min-height: 200px;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		text-align: center;
+		font-size: 25px;
+		font-family: BNazanin;
+		color: red;
+	}
+}

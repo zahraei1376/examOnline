@@ -17,9 +17,20 @@ export const BodyContainer = styled.div`
 
 `;
 
+export const BodyQuestionBoxWithChildren =styled.div`
+    width:100%;
+    border-radius:1rem;
+    border:1px solid rgb(118, 118, 118);
+    // border:1px solid #999;
+    margin-bottom:3rem;
+    padding:2rem;
+    box-sizing:border-box;
+`;
+
 
 export const BodyQuestionBox = styled.div`
     width:100%;
+    border-bottom:1px solid #999;
     display:flex;
     justify-content: space-between;
     // align-items: flex-start;
@@ -91,9 +102,13 @@ export const ScoreTag = styled.p`
 
 export const FooterQuestionContainer = styled.div`
     width:100%;
-    margin-top:3rem;
+    margin-top:auto;
+    // margin-top:3rem;
     // position:absolute;
     // bottom:0;
+    // display: table-cell;
+    // vertical-align: bottom;
+    // align-self:end;
 `;
 
 // export const FooterBtnsContainer = styled.div`
@@ -125,7 +140,8 @@ export const FooterBtn = styled(IconButton)`
     border:1px solid #3f87a6 !important;
     &:hover{
         // color:rgba(0,0,0,.8);
-        // background: linear-gradient(to left, #3f87a6, #ebf8e1);
+        background: linear-gradient(to left, #3f87a6, #ebf8e1);
+        color:#000;
         // background-color:#3f87a6 !important;
     }
 `;
