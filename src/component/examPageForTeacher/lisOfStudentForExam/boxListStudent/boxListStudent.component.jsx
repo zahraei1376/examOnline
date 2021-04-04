@@ -6,6 +6,7 @@ import {Card ,CardHeader,CardImage,CardName,LikeContainer,LikeBtn,DislikeBtn,Spa
 import user from '../../../../assets/img/user.png';
 import CheckCircleIcon from '@material-ui/icons/CheckCircle';
 
+
 const BoxListStudent = props => {
   const [currentNumber, setCurrentNumber] = useState(0);
   const [wrongNumber, setWrongNumber] = useState(0);
@@ -23,9 +24,9 @@ const BoxListStudent = props => {
 
   return (
     // <Grid key={props.key} item xs={12} sm={5} md={5}>
-    <Card key={props.key}>
+    <Card key={props.key} onClick={() => props.getScore(props.student)}>
       
-      <CardHeader onClick={() => props.getScore(props.student)}>
+      <CardHeader >
         <CardImage src={user} alt="" />
         <CardName className="card_header-name">{props.student.person_name + ' ' + props.student.person_surname}</CardName>
         <LikeContainer>

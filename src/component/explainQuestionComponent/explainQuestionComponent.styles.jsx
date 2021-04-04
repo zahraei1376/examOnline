@@ -11,6 +11,7 @@ export const ExplainDivContainer = styled.div`
     display:flex;
     align-items: center;
     height: 66%;
+
 `;
 
 export const ExplainDiv = styled.pre`

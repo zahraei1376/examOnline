@@ -11,6 +11,12 @@ const useStyles = makeStyles((theme) => ({
     width: '100%',
     // marginBottom: '30px',
     fontFamily: 'BNazanin',
+    // boxShadow:'0 0 1px 1px rgba(0,0,0,.2)',
+    // border:'1px solid #000',
+    // borderRadius:'1rem',
+    borderBottom:'1px solid #000',
+    color:'#000',
+    marginBottom:'4rem',
   },
   heading: {
     // fontSize: theme.typography.pxToRem(15),
@@ -25,7 +31,9 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: 'center',
     alignItems: 'center',
     flexBasis: '100%',
-    color: theme.palette.text.secondary,
+    color:'#000',
+    fontSize:'2rem',
+    // color: theme.palette.text.secondary,
   },
 }));
 
@@ -54,6 +62,7 @@ export default function ListStudentHeader({ numberTakeAnExam, topStudent, averag
           justifyContent: 'center',
           alignItems: 'center',
           fontFamily: 'BNazanin',
+          fontSize:'1.3rem',
           direction: 'rtl'
         }}>
           {remainingTime !== 0 ? <Typography style={{
@@ -62,6 +71,7 @@ export default function ListStudentHeader({ numberTakeAnExam, topStudent, averag
             justifyContent: 'center',
             alignItems: 'center',
             fontFamily: 'BNazanin',
+            fontSize:'1.3rem',
           }}>
 
             زمان باقی مانده تا پایان امتحان <span style={{ color: 'green', padding: '0 5px', }}>{remainingTime} دقیقه</span> است.
@@ -71,6 +81,7 @@ export default function ListStudentHeader({ numberTakeAnExam, topStudent, averag
               justifyContent: 'center',
               alignItems: 'center',
               fontFamily: 'BNazanin',
+              fontSize:'1.3rem',
             }}>
 
               امتحان پایان یافته است.
@@ -83,6 +94,7 @@ export default function ListStudentHeader({ numberTakeAnExam, topStudent, averag
             alignItems: 'center',
             fontFamily: 'BNazanin',
             marginTop: '10px',
+            fontSize:'1.3rem',
           }}>
             تعداد افراد شرکت کننده در امتحان <span style={{ color: 'green', padding: '0 5px', }}>{numberTakeAnExam}</span> نفراست.
           </Typography>
@@ -93,6 +105,7 @@ export default function ListStudentHeader({ numberTakeAnExam, topStudent, averag
             alignItems: 'center',
             marginTop: '10px',
             fontFamily: 'BNazanin',
+            fontSize:'1.3rem',
           }}>
             بالا ترین نمره برای دانش آموز <span style={{ color: 'green', padding: '0 5px', }}>{topStudent ? topStudent.split('/')[0] : '-'} </span> با نمره <span style={{ color: 'green', padding: '0 5px', }}>{topStudent ? topStudent.split('/')[1] : '-'} </span> است.
           </Typography>
@@ -103,6 +116,7 @@ export default function ListStudentHeader({ numberTakeAnExam, topStudent, averag
             alignItems: 'center',
             marginTop: '10px',
             fontFamily: 'BNazanin',
+            fontSize:'1.3rem',
           }}>
             میانگین امتحان <span style={{ color: 'green', padding: '0 5px', }}>{averageScore}</span> نمره است.
           </Typography>

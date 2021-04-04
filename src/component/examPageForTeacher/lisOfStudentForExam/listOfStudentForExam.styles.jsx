@@ -174,20 +174,42 @@
 import styled from 'styled-components';
 import { Grid } from '@material-ui/core';
 
-export const GridContainer = styled(Grid)`
+// export const GridContainer = styled(Grid)`
+// 	// padding:3rem;
+//     margin:3rem;
+//     border:1px solid #000;
+//     box-sizing:border-box;
+// `;
+
+export const GridStudentList = styled(Grid)`
 	// padding:3rem;
+    // margin:3rem;
+    // border:1px solid #000;
+    box-sizing: border-box;
+`;
+
+
+
+export const GridContainer = styled.div`
+	padding:1rem 3rem 3rem 3rem;
     margin:3rem;
-    border:1px solid #000;
+	border-radius:2rem;
+    // border:1px solid #000;
     box-sizing:border-box;
+	box-shadow: 0 3px 20px 3px rgba(0,0,0,0.5);
+	// box-sizing: border-box;
+	// display:grid;
+	// grid-template-columns:auto auto auto;
 `;
 
 export const MyGrid = styled(Grid)`
+	box-sizing: border-box;
 	list-style: none;
 	margin-top: 30px;
-	padding: 0 30 30 30px;
+	// padding: 0 30px 30px 30px;
 	border-radius: 10px;
 	// border: 1px solid #000;
-	box-shadow: 0 3px 20px 3px rgba($color: #000000, $alpha: 0.5);
+	// box-shadow: 0 3px 20px 3px rgba(0,0,0,0.5);
 	@media only screen and (max-width: 280px) {
 		padding: 0;
 	}

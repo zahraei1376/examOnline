@@ -184,15 +184,28 @@ export const DislikeBtn = styled.div`
 
 
 export const Card = styled.div`
+  // width:90%;
+  margin:0 1rem;
   font-weight: 400;
   border: 0;
   -webkit-box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16),
     0 2px 10px 0 rgba(0, 0, 0, 0.12);
   box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
+  cursor:pointer;
+  box-sizing: border-box;
+  border-radius:1rem;
+  border:1px solid transparent;
+  // -webkit-backface-visibility: hidden;
+  // backface-visibility: hidden;
   &:hover{
+    border:1px solid rgba(0,0,0,.4);
+
+    
     ${CardHeader}{
       background-color: #009688;
       color:#fff;
+      border-top-left-radius:1rem;
+      border-top-right-radius:1rem;
     }
 
     ${LikeBtn}{
@@ -253,7 +266,7 @@ export const CardBodyIcon =styled(CheckCircleIcon)`
   // cursor: pointer;
   font-size:3rem;
   &:hover{
-    color:green;
+    color:#009688;
   }
 `;
 

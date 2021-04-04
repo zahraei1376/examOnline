@@ -4,6 +4,7 @@ import MaterialTable from 'material-table';
 import moment from 'moment';
 // import { ConvertToString } from '@components/ConvertToString/ConvertToString';
 import { useSelector } from 'react-redux';
+import { Grid } from '@material-ui/core';
 // import AppContext from 'app/AppContext';
 
 const graphql_server_uri = '/graphql';
@@ -309,7 +310,7 @@ const MaterialTableAxams = ({
   }
 
   return (
-    <div dir="rtl">
+    <Grid dir="rtl" xs={12} sm={12} md={11} style={{margin:'0 auto'}}>
       <MaterialTable
         title="امتحانات"
         columns={columns}
@@ -325,11 +326,11 @@ const MaterialTableAxams = ({
             tooltip: 'رنکینگ',
             onClick: (event, rowData) => handleRankStudent(rowData),
           },
-          {
-            icon: 'equalizer',
-            tooltip: 'گزارش جزییات امتحان',
-            onClick: (event, rowData) => handleDetailsQuestions(rowData),
-          },
+          // {
+          //   icon: 'equalizer',
+          //   tooltip: 'گزارش جزییات امتحان',
+          //   onClick: (event, rowData) => handleDetailsQuestions(rowData),
+          // },
         ]}
         options={{
           toolbar: false,
@@ -346,16 +347,22 @@ const MaterialTableAxams = ({
             color: '#000',
             lineHeight:'20px',
             zIndex: 0,
-            fontSize: '12px'
+            fontSize: '12px',
+            // :last-child 
+            // {
+            //   borderTopLeftRadius:'1rem',
+            // }
+            // borderRadius:'1rem',
           },
           rowStyle: rowData => ({
             backgroundColor: rowData.tableData.id % 2 === 0 ? '#EEE' : '#FFF',
             fontFamily: 'BNazaninBold',
             fontSize: 24,
             marginTop: '2px',
-            borderStyle: 'double',
+            // borderStyle: 'solid',
+            // borderStyle: 'double',
             marginTop: '2px',
-            borderStyle: 'double',
+            // borderStyle: 'double',
           }),
           cellStyle: {
             fontFamily: 'BNazaninBold',
@@ -368,7 +375,7 @@ const MaterialTableAxams = ({
       {/* {ShowPopup ? (
         <PopUp message={message} status={status} closePopup={togglePopup} />
       ) : null} */}
-    </div>
+    </Grid>
   );
 };
 export default React.memo(MaterialTableAxams);

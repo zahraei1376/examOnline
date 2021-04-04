@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import {GridContainer,MyGrid} from './listOfStudentForExam.styles.jsx';
-// import PopUpScore from '../popUpScore/popUpScore';
+import {GridContainer,MyGrid,GridStudentList} from './listOfStudentForExam.styles.jsx';
+import PopUpScore from '../popUpScore/popUpScore.component';
 import BoxListStudent from './boxListStudent/boxListStudent.component';
 import ListStudentHeader from './listStudentHeader/listStudentHeader.component';
 import moment from 'moment';
@@ -185,13 +185,20 @@ const ListOfStudentForExam = ({
   };
 
   return (
-    <GridContainer container spacing={3}>
+    <GridContainer 
+    // item 
+    // xs={12} 
+    // sm={11} md={11}
+    // container 
+    // spacing={3}
+    >
       <MyGrid item xs={12} sm={12} md={12}>
         <ListStudentHeader numberTakeAnExam={numberTakeAnExam} topStudent={topStudent} averageScore={averageScore} 
         // remainingTime={remainingTime}
         remainingTime={0}
          />
       </MyGrid>
+      <GridStudentList container >
       {listOfStudents
         ? listOfStudents.map((student, index) => (
           <MyGrid item xs={12} sm={6} md={4} key={index}>
@@ -207,27 +214,28 @@ const ListOfStudentForExam = ({
           </MyGrid>
         ))
         : ''}
+        </GridStudentList>
       {listOfStudents.length > 0 ? (
         <br />
       ) : (
           ''
         )}
-      {/* {
+      {
         showPopUpScore ? (
           <PopUpScore
             popUpScoreStudent={popUpScoreStudent}
             closePopUp={togglePopup}
             axamIdProps={axamId}
-            startTime={startTime}
-            endTime={endTime}
-            teacherName={teacherName}
-            courseName={courseName}
-            examTopic={examTopic}
+            // startTime={startTime}
+            // endTime={endTime}
+            // teacherName={teacherName}
+            // courseName={courseName}
+            // examTopic={examTopic}
           />
         ) : (
             ''
           )
-      } */}
+      }
     </GridContainer >
   );
 };

@@ -59,6 +59,7 @@ const DialogActions = withStyles((theme) => ({
     textAlign:'right',
     fontSize:'1.8rem',
     fontFamily:'Bnazanin',
+    zIndex:'300000',
   },
 }))(MuiDialogActions);
 
