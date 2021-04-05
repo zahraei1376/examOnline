@@ -266,7 +266,7 @@ const  ExamPageForStudent = ({questionIndex ,setLengthQuestions}) =>{
         var temp =[];
        for (let index = 0; index < list.length; index++) {
            newItem[index][0]=list[index][0];
-           console.log('element1',list[index][0]);
+        //    console.log('element1',list[index][0]);
            var randomItem = createRandom(list.length);
            if(existence(temp,randomItem)){
                 temp.push(randomItem);
@@ -276,7 +276,7 @@ const  ExamPageForStudent = ({questionIndex ,setLengthQuestions}) =>{
                 index --;
            }
        }
-       console.log('newItem',newItem);
+    //    console.log('newItem',newItem);
        return newItem;
     }
 

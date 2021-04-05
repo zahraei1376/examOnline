@@ -11,6 +11,7 @@ export const ExplainDivContainer = styled.div`
     display:flex;
     align-items: center;
     height: 66%;
+    z-index:10;
 
 `;
 

@@ -114,7 +114,7 @@ export const SequentialResInput = styled.input`
     border-radius:1rem;
     border:1px solid #999;
     // direction:rtl;
-    text-align:right;
+    text-align:center;
     // margin:2rem 0;
     // box-sizing:border-box;
     // overflow-X:scroll;

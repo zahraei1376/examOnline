@@ -6,9 +6,9 @@ const SequentialModalItems =({myIndex , item ,handleIndexDelete , handleIndexSet
     const handleDelete = () =>{
         handleIndexDelete(myIndex);
     }
-    useEffect(()=>{
-        console.log('zzzzzzzzzzzzzzzzzzzzzz',item);
-    },[])
+    // useEffect(()=>{
+    //     console.log('zzzzzzzzzzzzzzzzzzzzzz',item);
+    // },[])
 
 
     return(

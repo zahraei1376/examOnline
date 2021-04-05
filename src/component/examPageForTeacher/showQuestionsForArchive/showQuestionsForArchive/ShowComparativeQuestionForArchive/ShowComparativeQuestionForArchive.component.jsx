@@ -5,7 +5,7 @@ import ShowComparativeItemForArchive from './compareItemForArchive/ShowComparati
 /////////////
 const ShowComparativeItemsForArchive = ({number,items})=>{
 
-    const [questionRes,setQuestionRes] = useState(Array(items.length).fill(0).map(row => new Array(2).fill('')));
+    const [questionRes,setQuestionRes] = useState(Array(items.items.length).fill(0).map(row => new Array(2).fill('')));
 
     const handleRes = (i , text) =>{
         var temp =[...questionRes];
@@ -33,7 +33,7 @@ const ShowComparativeItemsForArchive = ({number,items})=>{
 const ShowComparativeQuestionForArchive = ({question, number,items}) =>{
     return(
         <ShowBodyQuestionsForArchive question={question} number={number}>
-            <ShowComparativeItemsForArchive number={number} items={items}/>
+            <ShowComparativeItemsForArchive number={number} items={question}/>
         </ShowBodyQuestionsForArchive>
     )
 };

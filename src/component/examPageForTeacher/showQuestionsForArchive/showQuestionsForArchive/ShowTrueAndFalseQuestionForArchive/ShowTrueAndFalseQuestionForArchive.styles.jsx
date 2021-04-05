@@ -38,3 +38,29 @@ export const InputLabel = styled.label`
     font-family:Bnazanin;
     margin-right:2rem;
 `;
+
+export const QuestionSquare = styled.div`
+    width:2rem;
+    height:2rem;
+    border-radius:50%;
+    position:relative;
+    // outline: 1px solid #000;
+    // outline-offset: 3px;
+    // outline-style: solid;
+
+    // &:before{
+    //     content:'';
+    //     position:absolute;
+    //     border-radius:50%;
+    //     border:2px solid #000;
+    //     box-sizing:border-box;
+    //     width:3rem;
+    //     height:3rem;
+    //     z-index:1;
+    //     top:-4px;
+    //     right:-4px;
+    //     // bottom:-1px;
+    //     // left:-1px;
+    //     pointer-events:none;
+    //   }
+`;

@@ -45,7 +45,7 @@ export const PopUpScoreContainer =styled.div`
 	top: 0;
 	left: 0;
 	background-color: rgba(0,0,0, 0.5);
-	z-index: 9999;
+	z-index: 1;
 	transition: all 0.3s;
 	// animation-name: load;
 	// animation-duration: 1s;

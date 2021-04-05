@@ -1,40 +1,40 @@
 import React,{useEffect, useState} from "react";
 import {SequentialConatiner,SequentialResContainer,SequentialItemConatiner,SequentialInput,SequentialInputContainer,SequentialNum,
-    SequentialResInputContainer,SequentialResInput,SequentialResTitleContainer,SequentialResTitle} from './ShowSequentialQuestion.styles';
+    SequentialResInputContainer,SequentialResInput,SequentialResTitleContainer,SequentialResTitle} from './ShowSequentialQuestionForArchive.styles';
 // import {DescriptiveContainer,DescriptiveQuestion,DescriptiveQuestionBox,DescriptiveDiv,ImageQuestion,ImageQuestionContainer,
 //     ImageWithQuestionContainer , ImageWithQuestion,ScoreTag,ImageQuestionMainContainer} from './ShowDescriptiveQuestion.styles';
 // import ExplainQuestion from '../../../explainQuestionComponent/explainQuestionComponent.component';
 // import MyPic from '../../../../assets/img/images.jpg';
 // import MyPic2 from '../../../../assets/img/image2.jpg';
-import ShowBodyQuestions from '../showBodyQuestion.component';
+import ShowBodyQuestionsForArchive from '../showBodyQuestionForArchive.component';
 /////////////
 
 
 
-const SequentialItems = ({number,SeqItems})=>{
+const SequentialItemsForArchive = ({number,items})=>{
 
-    const [resSeqQuestion,setResSeqQuestion] = useState(Array(SeqItems.length).fill(0).map(row => new Array(1).fill('')));
+    // const [resSeqQuestion,setResSeqQuestion] = useState(Array(items.exam_SeqItems.length).fill(0).map(row => new Array(1).fill('')));
 
     // const handleChange = (e) =>{
     //     setResponseQuestion(e.target.value);
     // }
     // useEffect(()=>{
-    //     console.log('SeqItems',SeqItems)
-    // },[SeqItems]);
-
-    const handleSetRes = (i , value) =>{
+    //     console.log('items',items)
+    // },[items]);
+    // exam_SeqResponse
+    // const handleSetRes = (i , value) =>{
         
-        var temp =[...resSeqQuestion];
-        temp[i][0] = value;
-        console.log('temp',temp);
-        setResSeqQuestion(temp);
-    }
+    //     var temp =[...resSeqQuestion];
+    //     temp[i][0] = value;
+    //     console.log('temp',temp);
+    //     setResSeqQuestion(temp);
+    // }
 
     return(
         <SequentialConatiner>
              <SequentialItemConatiner>
             {
-                SeqItems.length > 0 ? SeqItems.map((item,index) =>(
+                items.exam_SeqItems.length > 0 ? items.exam_SeqItems.map((item,index) =>(
                     // console.log('item',item)
                     <SequentialInputContainer key={index}>
                         
@@ -52,24 +52,27 @@ const SequentialItems = ({number,SeqItems})=>{
             
         </SequentialItemConatiner>
         <SequentialResTitleContainer>
-            <SequentialResTitle>شماره های موردنظر خود را به ترتیب در کادر های پایین وارد کنید</SequentialResTitle>
+            <SequentialResTitle>شماره های موردنظر به ترتیب در کادر های پایین وارد شده اند</SequentialResTitle>
         </SequentialResTitleContainer>
         
         <SequentialResContainer>
             
                     
             {
-                SeqItems.length > 0 ? SeqItems.map((item,index) =>(
-                    // console.log('item',item)
+                items.exam_SeqItems.length > 0 ? items.exam_SeqItems.map((item,index) =>{
+                    var res =items.exam_SeqResponse[index];
+                     console.log('res',res)
+                    return(
+                   
                     <SequentialResInputContainer key={index}>
                         
-                         <SequentialResInput type="number" 
-                        value={resSeqQuestion[index] ? resSeqQuestion[index] : ''} 
-                        // readOnly
-                        onChange={(e) => handleSetRes(index ,e.target.value)} 
+                        <SequentialResInput type="text" 
+                            value={res ? res[1] : ''} 
+                            readOnly
+                        // onChange={(e) => handleSetRes(index ,e.target.value)} 
                         />
                     </SequentialResInputContainer>
-                )): ''
+                )}): ''
             }
             </SequentialResContainer>
         </SequentialConatiner>
@@ -77,10 +80,12 @@ const SequentialItems = ({number,SeqItems})=>{
     )
 }
 
-const ShowSequentialQuestion = ({question, number , SeqItems}) =>{
+const ShowSequentialQuestionForArchive = ({question, number }) =>{
     return(
-        <ShowBodyQuestions question={question} number={number}><SequentialItems number={number} SeqItems={SeqItems} /></ShowBodyQuestions>
+        <ShowBodyQuestionsForArchive question={question} number={number}>
+            <SequentialItemsForArchive number={number} items={question} />
+        </ShowBodyQuestionsForArchive>
     )
 };
 
-export default ShowSequentialQuestion;
+export default ShowSequentialQuestionForArchive;

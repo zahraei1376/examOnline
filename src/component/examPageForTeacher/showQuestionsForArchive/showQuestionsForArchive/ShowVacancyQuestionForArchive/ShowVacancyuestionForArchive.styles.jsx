@@ -59,14 +59,17 @@ export const VnacyTextDiv = styled.div`
 
 
 export const VnacyText = styled.input`
-    // width:80%;
+    // width:50%;
     // padding:2rem;
     // direction:rtl;
     // text-align:right;
     // margin:2rem 0;
     // box-sizing:border-box;
+    font-size:1.9rem;
+    font-family:Bnazanin;
+    box-sizing:border-box;
     height:3rem;
-    text-align:right;
+    text-align:center;
     @media only screen and (max-width: 767px) {
         width:18rem;
     }

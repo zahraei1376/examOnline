@@ -13,7 +13,7 @@ import IamgeRes  from '../../../../../assets/img/image2.jpg';
 
 
 
-const DescriptionItemForArchive = ({number,descriptionRes,descriptionResLink})=>{
+const DescriptionItemForArchive = ({number,descriptionRes,descriptionResLink,changeShowImage})=>{
 
     // const [responseQuestion,setResponseQuestion] = useState('');
 
@@ -34,6 +34,7 @@ const DescriptionItemForArchive = ({number,descriptionRes,descriptionResLink})=>
             {descriptionResLink ? <DescriptionResImageContainer>
                 <DescriptionResImage 
                     src={IamgeRes} 
+                    onClick={changeShowImage}
                     // src={descriptionResLink} 
                 />
             </DescriptionResImageContainer> : ''}
@@ -53,8 +54,14 @@ const DescriptionItemForArchive = ({number,descriptionRes,descriptionResLink})=>
 }
 
 const ShowDescriptiveQuestionForArchive = ({question, number}) =>{
+    const changeShowImage = () => {
+        //changedData
+    }
+
     return(
-        <ShowBodyQuestionsForArchive question={question} number={number}><DescriptionItemForArchive number={number} descriptionRes={question.exam_descriptionRes} descriptionResLink={question.exam_descriptionResImageLink}/></ShowBodyQuestionsForArchive>
+        <ShowBodyQuestionsForArchive changeShowImage = {changeShowImage()} question={question} number={number}>
+            <DescriptionItemForArchive changeShowImage = {changeShowImage()} number={number} descriptionRes={question.exam_descriptionRes} descriptionResLink={question.exam_descriptionResImageLink}/>
+        </ShowBodyQuestionsForArchive>
     )
 };
 

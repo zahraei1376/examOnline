@@ -38,3 +38,9 @@ export const InputLabel = styled.label`
     font-family:Bnazanin;
     margin-right:2rem;
 `;
+
+export const QuestionSquare = styled.div`
+    width:2rem;
+    height:2rem;
+    border-radius:50%;
+`;
