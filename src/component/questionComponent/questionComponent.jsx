@@ -144,7 +144,7 @@ const Questions = ({toggle}) =>{
       data={data}
       detailPanel={[
         {
-          disabled:toggle,
+          // disabled:toggle,
           icon: () => (<QuestionImageIconContainer><QuestionImageIcon src={descriptiveIcon}/>
           {/* <QuestionImageIconText>تشریحی</QuestionImageIconText> */}
           </QuestionImageIconContainer>),
@@ -174,7 +174,7 @@ const Questions = ({toggle}) =>{
           },
         },
         {
-          disabled:toggle,
+          // disabled:toggle,
           // disabled: typeQuestion == 2 ? false : toggle,
           // icon: () => (<QuestionImageIconContainer src={multiChoice}/>),
           icon: () => (<QuestionImageIconContainer><QuestionImageIcon src={multiChoice}/>
@@ -206,7 +206,7 @@ const Questions = ({toggle}) =>{
           },
         },
         {
-          disabled:toggle,
+          // disabled:toggle,
           // disabled: typeQuestion == 3 ? false : toggle,
           // icon: () => (<QuestionImageIconContainer src={trueFalse}/>),
           icon: () => (<QuestionImageIconContainer><QuestionImageIcon src={trueFalse}/>
@@ -239,7 +239,7 @@ const Questions = ({toggle}) =>{
           },
         },
         {
-          disabled:toggle,
+          // disabled:toggle,
           // disabled: typeQuestion == 4 ? false : toggle,
           // icon: () => (<QuestionImageIconContainer src={ellipsis}/>),
           icon: () => (<QuestionImageIconContainer><QuestionImageIcon src={ellipsis}/>
@@ -271,7 +271,7 @@ const Questions = ({toggle}) =>{
           },
         },
         {
-          disabled:toggle,
+          // disabled:toggle,
           // disabled: typeQuestion == 5 ? false : toggle,
           // icon: () => (<QuestionImageIconContainer src={compareIcon}/>),
           icon: () => (<QuestionImageIconContainer><QuestionImageIcon src={compareIcon}/>
@@ -304,7 +304,7 @@ const Questions = ({toggle}) =>{
           },
         },
         {
-          disabled:toggle,
+          // disabled:toggle,
           // disabled: typeQuestion == 6 ? false : toggle,
           // icon: () => (<QuestionImageIcon src={SequentialIcon}/>),
           icon: () => (<QuestionImageIconContainer><QuestionImageIcon src={SequentialIcon}/>

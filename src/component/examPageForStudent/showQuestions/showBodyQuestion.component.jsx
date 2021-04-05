@@ -1,5 +1,5 @@
 import React,{useState,useEffect} from 'react';
-import {BodyContainer,BodyQuestion,BodyQuestionBox,BodyDiv,ImageQuestion,ImageQuestionContainer,
+import {BodyContainer,BodyQuestion,BodyQuestionBoxWithChildren,BodyQuestionBox,BodyDiv,ImageQuestion,ImageQuestionContainer,
     ImageWithQuestionContainer , ImageWithQuestion,ScoreTag,ImageQuestionMainContainer,
     FooterQuestionContainer,FooterBtnsContainer , FooterBtn} from './showBodyQuestion.styles';
 import ExplainQuestion from '../../explainQuestionComponent/explainQuestionComponent.component';
@@ -73,6 +73,7 @@ const ShowBodyQuestions = ({question,number,children,IncreaseIndexQuestion,Decre
 
     return(
     <BodyContainer>
+        <BodyQuestionBoxWithChildren>
         <BodyQuestionBox>
             {question.exam_link ? (
                  <ImageWithQuestionContainer>
@@ -132,6 +133,7 @@ const ShowBodyQuestions = ({question,number,children,IncreaseIndexQuestion,Decre
         </BodyQuestionBox>
         {/* //////////////////////////////////////////////children */}
         {children}
+        </BodyQuestionBoxWithChildren>
         {/* /////////////////////////////////footer */}
         <FooterQuestionContainer>
             <FooterBtnsContainer>

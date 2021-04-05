@@ -4,7 +4,7 @@ import styled from 'styled-components';
 
 export const SequentialConatiner = styled.div`
     // floadt:right;
-    width:100%;
+    // width:100%;
     // min-height:20%;
     // overflow-X:scroll;
     padding:3rem;
@@ -37,7 +37,8 @@ export const SequentialItemConatiner = styled.div`
 `;
 
 export const SequentialResContainer = styled.div`
-    floadt:right;
+    // floadt:right;
+    overflow-x: scroll;
     width:100%;
     // min-height:20%;
     overflow-X:scroll;
@@ -73,9 +74,11 @@ export const SequentialInputContainer = styled.div`
     // margin:0 2rem;
     // overflow-X:scroll;
     border:1px solid #3f87a6;
+    border-radius:1rem;
 `;
 
 export const SequentialResInputContainer = styled.div`
+    // border-radius:1rem;
     // width:100%;
     // margin:0 2rem;
     // padding:2rem;
@@ -108,6 +111,8 @@ export const SequentialResInput = styled.input`
     width:6rem;
     // width:80%;
     padding:2rem;
+    border-radius:1rem;
+    border:1px solid #999;
     // direction:rtl;
     text-align:right;
     // margin:2rem 0;

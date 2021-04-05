@@ -15,8 +15,8 @@ const ShowComparativeItems = ({number,items})=>{
     }
 
     useEffect(()=>{
-        console.log('questionRes',questionRes);
-    },[questionRes])
+        console.log('items',items);//فرستادن مقدار رندوم شده
+    },[items])
 
     return(
         <ComparativeItemsConatiner>
@@ -32,7 +32,9 @@ const ShowComparativeItems = ({number,items})=>{
 
 const ShowComparativeQuestion = ({question, number,items}) =>{
     return(
-        <ShowBodyQuestions question={question} number={number}><ShowComparativeItems number={number} items={items}/></ShowBodyQuestions>
+        <ShowBodyQuestions question={question} number={number}>
+            <ShowComparativeItems number={number} items={items}/>
+        </ShowBodyQuestions>
     )
 };
 

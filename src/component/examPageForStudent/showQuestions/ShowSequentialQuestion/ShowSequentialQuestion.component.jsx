@@ -18,9 +18,9 @@ const SequentialItems = ({number,SeqItems})=>{
     // const handleChange = (e) =>{
     //     setResponseQuestion(e.target.value);
     // }
-    // useEffect(()=>{
-    //     console.log('SeqItems',SeqItems)
-    // },[SeqItems]);
+    useEffect(()=>{
+        console.log('SeqItems',SeqItems)//فرستادن رندوم شده
+    },[SeqItems]);
 
     const handleSetRes = (i , value) =>{
         

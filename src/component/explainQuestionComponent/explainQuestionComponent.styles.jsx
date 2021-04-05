@@ -4,6 +4,17 @@ import Button from '@material-ui/core/Button';
 // import MuiDialogTitle from '@material-ui/core/DialogTitle';
 import Typography from '@material-ui/core/Typography';
 
+export const ExplainDivContainer = styled.div`
+    border-left:2px solid #3f87a6;
+    // padding-left:1rem;
+    margin-left: 2rem;
+    display:flex;
+    align-items: center;
+    height: 66%;
+    z-index:10;
+
+`;
+
 export const ExplainDiv = styled.pre`
     white-space: pre-wrap;      
     white-space: -moz-pre-wrap;  
@@ -55,7 +66,7 @@ export const MyMainButton = styled.button`
     border:1px solid #3f87a6;
     cursor:pointer;
     transition:all .2s;
-    margin-left:2rem;
+    margin-left:1rem;
 
     &:focus{
         outline:none;
