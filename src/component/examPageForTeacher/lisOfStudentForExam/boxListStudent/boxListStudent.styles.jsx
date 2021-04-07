@@ -137,18 +137,28 @@ const LikeAndDisLikeCss = css`
 
 
 export const CardHeader = styled.div`
-    border-radius: calc(0.25rem - 1px) calc(0.25rem - 1px) 0 0;
-    background-color: rgba(0, 0, 0, 0.03);
+    // border-radius: calc(0.25rem - 1px) calc(0.25rem - 1px) 0 0;
+    border-top-left-radius:1rem;
+    border-top-right-radius:1rem;
+    // rgb(246,157,60)
+    // background-color: rgba(0, 0, 0, 0.03);
+    background-color:rgba(246,157,60,0.5);
+    // background-color:rgba(63,135,166,0.3);
+    // background-color:#3f87a6;
     display: flex;
-    justify-content: space-between;
+    // justify-content: space-between;
+    justify-content: end;
     align-items: center;
-    border-bottom: 1px solid #e4e9f2;
-    color: #888c9c;
+    // border-bottom: 1px solid #e4e9f2;
+    // border-bottom:1px solid #3f87a6;
+    color:#3f87a6;
+    // color: #888c9c;
     cursor: pointer;
     transition:all .3s;
 
     &:hover{
-      background-color: #009688;
+      // background-color: #009688;
+      background-color:rgba(246,157,60,1);
       color:#fff;
     }
 `;
@@ -202,7 +212,8 @@ export const Card = styled.div`
 
     
     ${CardHeader}{
-      background-color: #009688;
+      background-color:rgba(246,157,60,1);
+      // background-color: #009688;
       color:#fff;
       border-top-left-radius:1rem;
       border-top-right-radius:1rem;

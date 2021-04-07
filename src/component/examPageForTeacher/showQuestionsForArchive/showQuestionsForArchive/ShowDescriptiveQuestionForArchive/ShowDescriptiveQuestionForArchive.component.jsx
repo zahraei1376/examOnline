@@ -59,8 +59,8 @@ const ShowDescriptiveQuestionForArchive = ({question, number}) =>{
     }
 
     return(
-        <ShowBodyQuestionsForArchive changeShowImage = {changeShowImage()} question={question} number={number}>
-            <DescriptionItemForArchive changeShowImage = {changeShowImage()} number={number} descriptionRes={question.exam_descriptionRes} descriptionResLink={question.exam_descriptionResImageLink}/>
+        <ShowBodyQuestionsForArchive changeShowImage = {changeShowImage()} question={question} number={number} responseScore = {question.response_score} >
+            <DescriptionItemForArchive changeShowImage = {changeShowImage()} number={number} descriptionRes={question.response_descriptionQuestion} descriptionResLink={question.response_descriptionImageLink}/>
         </ShowBodyQuestionsForArchive>
     )
 };

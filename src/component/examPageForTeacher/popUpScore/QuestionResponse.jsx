@@ -3,10 +3,10 @@ import React, { useState } from 'react';
 // import ShowImage from '../imageShow/showImage';
 import './QuestionResponse.styles.jsx';
 // import '../axamPage/explainQuestion.scss';
-//   question__currentOption
-//   question__timeTosolveProblem
-//   question__score
-//   question__explane
+//   question_currentOption
+//   question_timeTosolveProblem
+//   question_score
+//   question_explane
 const QuestionResponse = ({
   key,
   question,
@@ -26,7 +26,7 @@ const QuestionResponse = ({
     if (question.question) {
       setType(true);
       setCaptionImage(
-        `${question.question.split('%0A').join('\r\n')}(نمره : ${question.question__score
+        `${question.question.split('%0A').join('\r\n')}(نمره : ${question.question_score
         })`,
       );
       setImageSrc(link);
@@ -72,7 +72,7 @@ const QuestionResponse = ({
                 marginTop: '10px',
               }}
             >
-              ({question.question__score} نمره)
+              ({question.question_score} نمره)
             </p>
           </div>
         ) : question.question ? (
@@ -84,12 +84,12 @@ const QuestionResponse = ({
             }
           >
             {question.question.split('%0A').join('\r\n')}(
-            {question.question__score} نمره)
+            {question.question_score} نمره)
           </pre>
         ) : (
               ''
             )}
-        {/* <pre className="questionResponse__question">{question.question.split('%0A').join('\r\n')}({question.question__score})</pre> */}
+        {/* <pre className="questionResponse__question">{question.question.split('%0A').join('\r\n')}({question.question_score})</pre> */}
         <div className="explainQuestion_btnDiv">
           <button className="explainQuestion_btn" onClick={handleShowExplain}>
             <div className="showNumber">{number + 1}</div>
@@ -109,21 +109,21 @@ const QuestionResponse = ({
       <div className="explainQuestion" id="explain">
         {showExplain ? (
           <div className="explainQuestion_explainBox">
-            {question.question__explane != 'undefined' ? (
+            {question.question_explane != 'undefined' ? (
               <pre className="questionResponse_explain-p">
-                توضیحات : {question.question__explane.split('%0A').join('\r\n')}
+                توضیحات : {question.question_explane.split('%0A').join('\r\n')}
               </pre>
             ) : (
                 ''
               )}
-            {question.question__timeTosolveProblem != 'undefined' ? (
+            {question.question_timeTosolveProblem != 'undefined' ? (
               <p className="questionResponse_explain-p">
-                زمان : {question.question__timeTosolveProblem}
+                زمان : {question.question_timeTosolveProblem}
               </p>
             ) : (
                 ''
               )}
-            {/* {question.question__score != "undefined" ? <p className="questionResponse_explain-p">نمره : {question.question__score}</p> : ''} */}
+            {/* {question.question_score != "undefined" ? <p className="questionResponse_explain-p">نمره : {question.question_score}</p> : ''} */}
           </div>
         ) : (
             ''
@@ -131,9 +131,9 @@ const QuestionResponse = ({
       </div>
       {/* <div className="questionResponse__questionExplainDiv">
         <div className="questionResponse_explain">
-          {question.question__explane != "undefined" ? question.question__explane : ''}
-          {question.question__timeTosolveProblem != "undefined" ? <p>زمان : {question.question__timeTosolveProblem}</p> : ''}
-          {question.question__score != "undefined" ? <p>نمره : {question.question__score}</p> : ''}
+          {question.question_explane != "undefined" ? question.question_explane : ''}
+          {question.question_timeTosolveProblem != "undefined" ? <p>زمان : {question.question_timeTosolveProblem}</p> : ''}
+          {question.question_score != "undefined" ? <p>نمره : {question.question_score}</p> : ''}
         </div>
         <div className="questionResponse__questionDiv">
           <div className="questionResponse__question">{question.question}</div>
@@ -141,101 +141,101 @@ const QuestionResponse = ({
         </div>
       </div> */}
       <div>
-        {question.question__optionOne != 'undefined' ? (
+        {question.question_optionOne != 'undefined' ? (
           <div className="questionResponse__itemDiv">
             <div
               className="questionResponse_questionSquare"
               style={{
                 backgroundColor:
-                  StudentItem == '1' && question.question__currentOption == '1'
+                  StudentItem == '1' && question.question_currentOption == '1'
                     ? 'green'
                     : StudentItem == '1' &&
-                      question.question__currentOption != '1'
+                      question.question_currentOption != '1'
                       ? 'red'
-                      : question.question__currentOption == '1'
+                      : question.question_currentOption == '1'
                         ? 'green'
                         : 'rgb(78, 76, 76)',
               }}
             ></div>
             <pre className="questionResponse_questionItem">
-              {question.question__optionOne.split('%0A').join('\r\n')}
+              {question.question_optionOne.split('%0A').join('\r\n')}
             </pre>
           </div>
         ) : (
             ''
           )}
-        {question.question__optionTwo != 'undefined' ? (
+        {question.question_optionTwo != 'undefined' ? (
           <div className="questionResponse__itemDiv">
             <div
               className="questionResponse_questionSquare"
               style={{
                 backgroundColor:
-                  StudentItem == '2' && question.question__currentOption == '2'
+                  StudentItem == '2' && question.question_currentOption == '2'
                     ? 'green'
                     : StudentItem == '2' &&
-                      question.question__currentOption != '2'
+                      question.question_currentOption != '2'
                       ? 'red'
-                      : question.question__currentOption == '2'
+                      : question.question_currentOption == '2'
                         ? 'green'
                         : 'rgb(78, 76, 76)',
               }}
             ></div>
             <pre className="questionResponse_questionItem">
-              {question.question__optionTwo.split('%0A').join('\r\n')}
+              {question.question_optionTwo.split('%0A').join('\r\n')}
             </pre>
           </div>
         ) : (
             ''
           )}
-        {question.question__optionTree != 'undefined' ? (
+        {question.question_optionThree != 'undefined' ? (
           <div className="questionResponse__itemDiv">
             <div
               className="questionResponse_questionSquare"
               style={{
                 backgroundColor:
-                  StudentItem == '3' && question.question__currentOption == '3'
+                  StudentItem == '3' && question.question_currentOption == '3'
                     ? 'green'
                     : StudentItem == '3' &&
-                      question.question__currentOption != '3'
+                      question.question_currentOption != '3'
                       ? 'red'
-                      : question.question__currentOption == '3'
+                      : question.question_currentOption == '3'
                         ? 'green'
                         : 'rgb(78, 76, 76)',
               }}
             ></div>
             <pre className="questionResponse_questionItem">
-              {question.question__optionTree.split('%0A').join('\r\n')}
+              {question.question_optionThree.split('%0A').join('\r\n')}
             </pre>
           </div>
         ) : (
             ''
           )}
-        {question.question__optionFour != 'undefined' ? (
+        {question.question_optionFour != 'undefined' ? (
           <div className="questionResponse__itemDiv">
             <div
               className="questionResponse_questionSquare"
               style={{
                 backgroundColor:
-                  StudentItem == '4' && question.question__currentOption == '4'
+                  StudentItem == '4' && question.question_currentOption == '4'
                     ? 'green'
                     : StudentItem == '4' &&
-                      question.question__currentOption != '4'
+                      question.question_currentOption != '4'
                       ? 'red'
-                      : question.question__currentOption == '4'
+                      : question.question_currentOption == '4'
                         ? 'green'
                         : 'rgb(78, 76, 76)',
               }}
             // style={{
             //   backgroundColor:
-            //     StudentItem != question.question__currentOption
+            //     StudentItem != question.question_currentOption
             //       ? 'red'
-            //       : StudentItem == question.question__currentOption
+            //       : StudentItem == question.question_currentOption
             //       ? 'green'
             //       : 'rgb(78, 76, 76)',
             // }}
             ></div>
             <pre className="questionResponse_questionItem">
-              {question.question__optionFour.split('%0A').join('\r\n')}
+              {question.question_optionFour.split('%0A').join('\r\n')}
             </pre>
           </div>
         ) : (

@@ -7,7 +7,7 @@ import {InputDivContainer , InputPre ,FirstSideContainer,SecondSideContainer,
      InputContainerButton ,InputContainerIcon} from './ShowComparativeItemForArchive.styles';
 // import Icon from '@material-ui/core/Icon';
 
-const ShowComparativeItemForArchive =({myIndex , item ,resItem,handleIndexDelete , handleIndexSet,handleRes})=>{
+const ShowComparativeItemForArchive =({myIndex , item ,resItem})=>{
     // const handleDelete = () =>{
     //     handleIndexDelete(myIndex);
     // }

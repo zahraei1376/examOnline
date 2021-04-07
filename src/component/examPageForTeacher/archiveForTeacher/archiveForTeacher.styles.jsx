@@ -43,6 +43,18 @@
 
 import styled from 'styled-components';
 
+export const TableContainer = styled.div`
+    width: 94%;
+    display:flex;
+    flex-direction:column;
+    // width:100%;
+    box-shadow: 0 3px 20px 3px rgba(0,0,0,0.5);
+    // border:1px solid #000;
+    border-radius:3rem;
+    margin:3rem;
+    padding-bottom:3rem;
+`;
+
 export const DateContainer = styled.div`
     display:flex;
     justify-content:center;

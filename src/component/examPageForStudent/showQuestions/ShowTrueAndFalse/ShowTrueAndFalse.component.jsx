@@ -20,7 +20,7 @@ const ShowTrueAndFalseItems = ({number,item})=>{
 
     return(
         <TrueAndFalseConatiner>
-            {item.question__optionOne && item.question__optionOne != 'undefined' ? (
+            {item.question_optionOne && item.question_optionOne != 'undefined' ? (
               <TrueAndFalseitemDiv>
                 <Item>1 </Item>
                 <InputRadio
@@ -49,13 +49,13 @@ const ShowTrueAndFalseItems = ({number,item})=>{
                 //   borderRadius:'10px'
                 // }}
                 >
-                  {item.question__optionOne.split('%0A').join('\r\n')}
+                  {item.question_optionOne.split('%0A').join('\r\n')}
                 </InputLabel>
               </TrueAndFalseitemDiv>
             ) : (
                 ''
               )}
-            {item.question__optionTwo && item.question__optionTwo != 'undefined' ? (
+            {item.question_optionTwo && item.question_optionTwo != 'undefined' ? (
               <TrueAndFalseitemDiv>
                 <Item>2</Item>
                 <InputRadio
@@ -70,17 +70,17 @@ const ShowTrueAndFalseItems = ({number,item})=>{
                   // htmlFor="optionTwo"
                   htmlFor={`optionTwo${number}`}
                 >
-                  {item.question__optionTwo.split('%0A').join('\r\n')}
+                  {item.question_optionTwo.split('%0A').join('\r\n')}
                 </InputLabel>
                 {/* <div className="questionComponent_questionSquare"></div>
         <div className="questionComponent_questionItem">
-          {question.question__optionTwo}
+          {question.question_optionTwo}
         </div> */}
               </TrueAndFalseitemDiv>
             ) : (
                 ''
               )}
-            {item.question__optionTree && item.question__optionTree != 'undefined' ? (
+            {item.question_optionThree && item.question_optionThree != 'undefined' ? (
               <TrueAndFalseitemDiv>
                 <Item>3</Item>
                 <InputRadio
@@ -95,13 +95,13 @@ const ShowTrueAndFalseItems = ({number,item})=>{
                   // htmlFor="optionTree"
                   htmlFor={`optionTree${number}`}
                 >
-                  {item.question__optionTree.split('%0A').join('\r\n')}
+                  {item.question_optionThree.split('%0A').join('\r\n')}
                 </InputLabel>
               </TrueAndFalseitemDiv>
             ) : (
                 ''
               )}
-            {item.question__optionFour && item.question__optionFour != 'undefined' ? (
+            {item.question_optionFour && item.question_optionFour != 'undefined' ? (
               <TrueAndFalseitemDiv>
                 <Item>4</Item>
                 <InputRadio
@@ -115,7 +115,7 @@ const ShowTrueAndFalseItems = ({number,item})=>{
                 <InputLabel
                   htmlFor={`optionFour${number}`}
                 >
-                  {item.question__optionFour.split('%0A').join('\r\n')}
+                  {item.question_optionFour.split('%0A').join('\r\n')}
                 </InputLabel>
               </TrueAndFalseitemDiv>
             ) : (

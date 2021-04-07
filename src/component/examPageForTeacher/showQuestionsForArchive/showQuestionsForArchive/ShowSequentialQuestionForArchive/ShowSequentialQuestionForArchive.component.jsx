@@ -11,7 +11,7 @@ import ShowBodyQuestionsForArchive from '../showBodyQuestionForArchive.component
 
 
 
-const SequentialItemsForArchive = ({number,items})=>{
+const SequentialItemsForArchive = ({number,items , SeqResponse})=>{
 
     // const [resSeqQuestion,setResSeqQuestion] = useState(Array(items.exam_SeqItems.length).fill(0).map(row => new Array(1).fill('')));
 
@@ -60,7 +60,7 @@ const SequentialItemsForArchive = ({number,items})=>{
                     
             {
                 items.exam_SeqItems.length > 0 ? items.exam_SeqItems.map((item,index) =>{
-                    var res =items.exam_SeqResponse[index];
+                    var res =SeqResponse[index];
                      console.log('res',res)
                     return(
                    
@@ -82,8 +82,8 @@ const SequentialItemsForArchive = ({number,items})=>{
 
 const ShowSequentialQuestionForArchive = ({question, number }) =>{
     return(
-        <ShowBodyQuestionsForArchive question={question} number={number}>
-            <SequentialItemsForArchive number={number} items={question} />
+        <ShowBodyQuestionsForArchive question={question} number={number} responseScore = {question.response_score}>
+            <SequentialItemsForArchive number={number} items={question} SeqResponse={question.response_sequentialQuestion} />
         </ShowBodyQuestionsForArchive>
     )
 };

@@ -28,10 +28,18 @@ export const BodyQuestionBoxWithChildren =styled.div`
     box-sizing:border-box;
 `;
 
+export const BodyQuestionBoxContainer =styled.div`
+    width:100%;
+    border-bottom:1px solid #999;
+    display:flex;
+    flex-direction:column;
+    justify-content: space-between;
+`;
+
 
 export const BodyQuestionBox = styled.div`
     width:100%;
-    border-bottom:1px solid #999;
+    // border-bottom:1px solid #999;
     display:flex;
     justify-content: space-between;
     // align-items: flex-start;
@@ -144,5 +152,47 @@ export const FooterBtn = styled(IconButton)`
         background: linear-gradient(to left, #3f87a6, #ebf8e1);
         color:#000;
         // background-color:#3f87a6 !important;
+    }
+`;
+
+export const InputScoreContainer = styled.div`
+    width:100%;
+    margin:3rem;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    // border-top:1px dashed #000;
+`;
+
+export const InputScoreLabel = styled.label`
+    font-size:2rem;
+    font-family:Bnazanin;
+`;
+
+export const InputScore = styled.input`
+    height:3rem;
+    margin: 0 3rem;
+    text-align:center;
+`;
+
+export const BtnOk =styled.button`
+    font-size:4rem !important;
+    text-align:center;
+    border:none;
+    border-bottom:1px solid #3f87a6 !important;
+    border-radius:50% !important;
+    padding:0 1rem;
+    box-sizing:border-box;
+    cursor:pointer;
+    transition:all .1s;
+    &:hover{
+        background: linear-gradient(to left, #3f87a6, #ebf8e1);
+        box-shadow:0 1rem 2rem 0 rgba(0,0,0,.3);
+        color:#000;
+        border-bottom:1px solid transparent !important;
+    }
+
+    &:focus{
+        outline:none;
     }
 `;
