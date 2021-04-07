@@ -256,7 +256,7 @@ const Comparative = ({setToggle , ...props}) => {
         // {
         //   title: 'گزینه 1',
         //   textAlign: 'center',
-        //   field: 'question__optionOne',
+        //   field: 'question_optionOne',
         //   minWidth: 200,
         //   editComponent: props => (
         //     <TextField
@@ -282,7 +282,7 @@ const Comparative = ({setToggle , ...props}) => {
         //           fontSize: 16,
         //         }}
         //       >
-        //         {data.question__optionOne}
+        //         {data.question_optionOne}
         //       </pre>
         //     );
         //   },
@@ -290,7 +290,7 @@ const Comparative = ({setToggle , ...props}) => {
         // {
         //   title: 'گزینه 2',
         //   textAlign: 'center',
-        //   field: 'question__optionTwo',
+        //   field: 'question_optionTwo',
         //   minWidth: 200,
         //   editComponent: props => (
         //     <TextField
@@ -316,7 +316,7 @@ const Comparative = ({setToggle , ...props}) => {
         //           fontSize: 16,
         //         }}
         //       >
-        //         {data.question__optionTwo}
+        //         {data.question_optionTwo}
         //       </pre>
         //     );
         //   },
@@ -324,7 +324,7 @@ const Comparative = ({setToggle , ...props}) => {
         // {
         //   title: 'گزینه 3',
         //   textAlign: 'center',
-        //   field: 'question__optionTree',
+        //   field: 'question_optionThree',
         //   minWidth: 200,
         //   editComponent: props => (
         //     <TextField
@@ -352,7 +352,7 @@ const Comparative = ({setToggle , ...props}) => {
         //           fontSize: 16,
         //         }}
         //       >
-        //         {data.question__optionTree}
+        //         {data.question_optionThree}
         //       </pre>
         //     );
         //   },
@@ -360,7 +360,7 @@ const Comparative = ({setToggle , ...props}) => {
         // {
         //   title: 'گزینه 4',
         //   textAlign: 'center',
-        //   field: 'question__optionFour',
+        //   field: 'question_optionFour',
         //   minWidth: 200,
         //   editComponent: props => (
         //     <TextField
@@ -387,7 +387,7 @@ const Comparative = ({setToggle , ...props}) => {
         //           fontSize: 16,
         //         }}
         //       >
-        //         {data.question__optionFour}
+        //         {data.question_optionFour}
         //       </pre>
         //     );
         //   },
@@ -395,7 +395,7 @@ const Comparative = ({setToggle , ...props}) => {
         // {
         //   title: 'گزینه صحیح',
         //   textAlign: 'center',
-        //   field: 'question__currentOption',
+        //   field: 'question_currentOption',
         //   lookup: {
         //     1: '1',
         //     2: '2',
@@ -404,7 +404,7 @@ const Comparative = ({setToggle , ...props}) => {
         //   },
         //   minWidth: 150,
         // //   validate: rowData =>
-        // //     rowData.question__currentOption === '' ? 'Name cannot be empty' : '',
+        // //     rowData.question_currentOption === '' ? 'Name cannot be empty' : '',
         //   render: data => {
         //     return (
         //       <p
@@ -415,7 +415,7 @@ const Comparative = ({setToggle , ...props}) => {
         //           width: '50px',
         //         }}
         //       >
-        //         {data.question__currentOption}
+        //         {data.question_currentOption}
         //       </p>
         //     );
         //   },
@@ -424,10 +424,10 @@ const Comparative = ({setToggle , ...props}) => {
         {
           title: 'زمان تقریبی',
           textAlign: 'center',
-          field: 'question__timeTosolveProblem',
+          field: 'question_timeTosolveProblem',
           minWidth: 150,
         //   validate: rowData =>
-        //     rowData.question__timeTosolveProblem !== ''
+        //     rowData.question_timeTosolveProblem !== ''
         //       ? 'Name cannot be empty'
         //       : '',
           render: data => {
@@ -441,7 +441,7 @@ const Comparative = ({setToggle , ...props}) => {
                   width: '50px',
                 }}
               >
-                {data.question__timeTosolveProblem}
+                {data.question_timeTosolveProblem}
               </p>
             );
           },
@@ -450,9 +450,9 @@ const Comparative = ({setToggle , ...props}) => {
           title: 'نمره',
           type: 'numeric',
           textAlign: 'center',
-          field: 'question__score',
+          field: 'question_score',
         //   validate: rowData =>
-        //     rowData.question__score !== '' ? 'Name cannot be empty' : '',
+        //     rowData.question_score !== '' ? 'Name cannot be empty' : '',
           editComponent: props => (
             <input
               style={{
@@ -477,7 +477,7 @@ const Comparative = ({setToggle , ...props}) => {
                   width: '50px',
                 }}
               >
-                {data.question__score}
+                {data.question_score}
               </p>
             );
           },
@@ -485,7 +485,7 @@ const Comparative = ({setToggle , ...props}) => {
         {
           title: 'توضیحات',
           textAlign: 'center',
-          field: 'question__explane',
+          field: 'question_explane',
           render: data => {
             // return moment(data.group_start_time).format('HH:mm:00');
             return (
@@ -501,7 +501,7 @@ const Comparative = ({setToggle , ...props}) => {
                   fontSize: '16px',
                 }}
               >
-                {data.question__explane}
+                {data.question_explane}
               </pre>
             );
           },
@@ -548,7 +548,7 @@ const Comparative = ({setToggle , ...props}) => {
           field: 'question__items',
           minWidth: 150,
         //   validate: rowData =>
-        //     rowData.question__score !== '' ? 'Name cannot be empty' : '',
+        //     rowData.question_score !== '' ? 'Name cannot be empty' : '',
           editComponent: props => (
             <ComparativeModal/>
             
@@ -687,14 +687,14 @@ const Comparative = ({setToggle , ...props}) => {
               //                   axamQuestions_id: "${'1'}"
               //                   question: "${convertText(rowData.question)}"
               //                   question_link: "${rowData.question_link ? rowData.question_link : ''}"
-              //                   question__optionOne: "${convertText(rowData.question__optionOne)}"
-              //                   question__optionTwo:"${convertText(rowData.question__optionTwo)}"
-              //                   question__optionTree: "${convertText(rowData.question__optionTree)}"
-              //                   question__optionFour: "${convertText(rowData.question__optionFour)}"
-              //                   question__currentOption: "${rowData.question__currentOption}"
-              //                   question__timeTosolveProblem: "${convertText(rowData.question__timeTosolveProblem)}"
-              //                   question__score: "${rowData.question__score ? rowData.question__score : ''}"
-              //                   question__explane: "${convertText(rowData.question__explane)}"
+              //                   question_optionOne: "${convertText(rowData.question_optionOne)}"
+              //                   question_optionTwo:"${convertText(rowData.question_optionTwo)}"
+              //                   question_optionThree: "${convertText(rowData.question_optionThree)}"
+              //                   question_optionFour: "${convertText(rowData.question_optionFour)}"
+              //                   question_currentOption: "${rowData.question_currentOption}"
+              //                   question_timeTosolveProblem: "${convertText(rowData.question_timeTosolveProblem)}"
+              //                   question_score: "${rowData.question_score ? rowData.question_score : ''}"
+              //                   question_explane: "${convertText(rowData.question_explane)}"
               //                   exam_link: "${rowData.exam_link ? rowData.exam_link : ''}"
               //             },
               //         ){
@@ -776,8 +776,8 @@ const Comparative = ({setToggle , ...props}) => {
           //       /////////////myCode
           //       if (
           //           // axamIdProps != '' &&
-          //           newData.question__score !== undefined &&
-          //           newData.question__currentOption !== undefined
+          //           newData.question_score !== undefined &&
+          //           newData.question_currentOption !== undefined
           //         ) {
           //           if (
           //             selectedFile &&
@@ -810,33 +810,33 @@ const Comparative = ({setToggle , ...props}) => {
           //                                             question: "${''}"
           //                                             question_link: "${file.name
           //                       }"
-          //                                             question__optionOne: "${convertText(newData.question__optionOne)}"
-          //                                             question__optionTwo:"${convertText(newData.question__optionTwo)}"
-          //                                             question__currentOption: "${newData.question__currentOption ? newData.question__currentOption: ''
+          //                                             question_optionOne: "${convertText(newData.question_optionOne)}"
+          //                                             question_optionTwo:"${convertText(newData.question_optionTwo)}"
+          //                                             question_currentOption: "${newData.question_currentOption ? newData.question_currentOption: ''
           //                       }"
-          //                                           question__optionTree: "${convertText(newData.question__optionTree)}"
-          //                                           question__optionFour: "${convertText(newData.question__optionFour)}"
-          //                                             question__timeTosolveProblem: "${convertText(newData.question__timeTosolveProblem)}"
-          //                                             question__score: "${newData.question__score ? newData.question__score : ''
+          //                                           question_optionThree: "${convertText(newData.question_optionThree)}"
+          //                                           question_optionFour: "${convertText(newData.question_optionFour)}"
+          //                                             question_timeTosolveProblem: "${convertText(newData.question_timeTosolveProblem)}"
+          //                                             question_score: "${newData.question_score ? newData.question_score : ''
           //                       }"
-          //                                             question__explane: "${convertText(newData.question__explane)}"
+          //                                             question_explane: "${convertText(newData.question_explane)}"
           //                                             exam_link: "${''}"
           //                                     },
           //                                     axamQuestion_input_old: {
           //                                       questionID: "${'1'}"
           //                                       axamQuestions_id: "${'1'}"
-          //                                       question: "${convertText(oldData.question__optionOne)}"
+          //                                       question: "${convertText(oldData.question_optionOne)}"
           //                                       question_link: "${convertText(oldData.question_link)}"
-          //                                       question__optionOne: "${convertText(oldData.question__optionOne)}"
-          //                                       question__optionTwo:"${convertText(oldData.question__optionTwo)}"
-          //                                       question__optionTree: "${convertText(oldData.question__optionTree)}"
-          //                                       question__optionFour: "${convertText(oldData.question__optionFour)}"
-          //                                       question__currentOption: "${oldData.question__currentOption ? oldData.question__currentOption : ''
+          //                                       question_optionOne: "${convertText(oldData.question_optionOne)}"
+          //                                       question_optionTwo:"${convertText(oldData.question_optionTwo)}"
+          //                                       question_optionThree: "${convertText(oldData.question_optionThree)}"
+          //                                       question_optionFour: "${convertText(oldData.question_optionFour)}"
+          //                                       question_currentOption: "${oldData.question_currentOption ? oldData.question_currentOption : ''
           //                           }"
-          //                                       question__timeTosolveProblem: "${convertText(oldData.question__timeTosolveProblem)}"
-          //                                       question__score: "${ oldData.question__score ? oldData.question__score : ''
+          //                                       question_timeTosolveProblem: "${convertText(oldData.question_timeTosolveProblem)}"
+          //                                       question_score: "${ oldData.question_score ? oldData.question_score : ''
           //                           }"
-          //                                       question__explane: "${convertText(oldData.question__explane)}"
+          //                                       question_explane: "${convertText(oldData.question_explane)}"
           //                                       exam_link: "${oldData.exam_link}"
           //                                 }
           //                                   ){
@@ -940,32 +940,32 @@ const Comparative = ({setToggle , ...props}) => {
           //                                             axamQuestions_id: "${'1'}"
           //                                             question: "${convertText(newData.question)}"
           //                                             question_link: "${''}"
-          //                                             question__optionOne: "${convertText(newData.question__optionOne)}"
-          //                                             question__optionTwo:"${convertText(newData.question__optionTwo)}"
-          //                                             question__optionTree: "${convertText(newData.question__optionTree)}"
-          //                                             question__optionFour: "${convertText(newData.question__optionFour)}"
-          //                                             question__currentOption: "${newData.question__currentOption ? newData.question__currentOption : ''
+          //                                             question_optionOne: "${convertText(newData.question_optionOne)}"
+          //                                             question_optionTwo:"${convertText(newData.question_optionTwo)}"
+          //                                             question_optionThree: "${convertText(newData.question_optionThree)}"
+          //                                             question_optionFour: "${convertText(newData.question_optionFour)}"
+          //                                             question_currentOption: "${newData.question_currentOption ? newData.question_currentOption : ''
           //                       }"
-          //                                             question__timeTosolveProblem: "${convertText(newData.question__timeTosolveProblem)}"
-          //                                             question__score: "${newData.question__score ? newData.question__score: ''
+          //                                             question_timeTosolveProblem: "${convertText(newData.question_timeTosolveProblem)}"
+          //                                             question_score: "${newData.question_score ? newData.question_score: ''
           //                       }"
-          //                                             question__explane: "${convertText(newData.question__explane)}"
+          //                                             question_explane: "${convertText(newData.question_explane)}"
           //                                             exam_link: "${file.name}"
           //                                     },    axamQuestion_input_old: {
           //                                       questionID: "${'1'}"
           //                                       axamQuestions_id: "${'1'}"
-          //                                       question: "${convertText(oldData.question__optionOne)}"
+          //                                       question: "${convertText(oldData.question_optionOne)}"
           //                                       question_link: "${convertText(oldData.question_link)}"
-          //                                       question__optionOne: "${convertText(oldData.question__optionOne)}"
-          //                                       question__optionTwo:"${convertText(oldData.question__optionTwo)}"
-          //                                       question__optionTree: "${convertText(oldData.question__optionTree)}"
-          //                                       question__optionFour: "${convertText(oldData.question__optionFour)}"
-          //                                       question__currentOption: "${oldData.question__currentOption ? oldData.question__currentOption : ''
+          //                                       question_optionOne: "${convertText(oldData.question_optionOne)}"
+          //                                       question_optionTwo:"${convertText(oldData.question_optionTwo)}"
+          //                                       question_optionThree: "${convertText(oldData.question_optionThree)}"
+          //                                       question_optionFour: "${convertText(oldData.question_optionFour)}"
+          //                                       question_currentOption: "${oldData.question_currentOption ? oldData.question_currentOption : ''
           //                           }"
-          //                                       question__timeTosolveProblem: "${convertText(oldData.question__timeTosolveProblem)}"
-          //                                       question__score: "${ oldData.question__score ? oldData.question__score : ''
+          //                                       question_timeTosolveProblem: "${convertText(oldData.question_timeTosolveProblem)}"
+          //                                       question_score: "${ oldData.question_score ? oldData.question_score : ''
           //                           }"
-          //                                       question__explane: "${convertText(oldData.question__explane)}"
+          //                                       question_explane: "${convertText(oldData.question_explane)}"
           //                                       exam_link: "${oldData.exam_link}"
           //                                 }
           //                                   ){
@@ -1030,28 +1030,28 @@ const Comparative = ({setToggle , ...props}) => {
           //                                             axamQuestions_id: "${'1'}"
           //                                             question: "${convertText(newData.question)}"
           //                                             question_link: "${''}"
-          //                                             question__optionOne: "${convertText(newData.question__optionOne)}"
-          //                                             question__optionTwo:"${convertText(newData.question__optionTwo)}"
-          //                                             question__currentOption: "${newData.question__currentOption ? newData.question__currentOption : ''
+          //                                             question_optionOne: "${convertText(newData.question_optionOne)}"
+          //                                             question_optionTwo:"${convertText(newData.question_optionTwo)}"
+          //                                             question_currentOption: "${newData.question_currentOption ? newData.question_currentOption : ''
           //                   }"
-          //                                             question__timeTosolveProblem: "${convertText(newData.question__timeTosolveProblem)}"
-          //                                             question__score: "${newData.question__score ? newData.question__score : ''
+          //                                             question_timeTosolveProblem: "${convertText(newData.question_timeTosolveProblem)}"
+          //                                             question_score: "${newData.question_score ? newData.question_score : ''
           //                   }"
-          //                                             question__explane: "${convertText(newData.question__explane)}"
+          //                                             question_explane: "${convertText(newData.question_explane)}"
           //                                             exam_link: "${''}"
           //                                     },    axamQuestion_input_old: {
           //                                       questionID: "${'1'}"
           //                                       axamQuestions_id: "${'1'}"
-          //                                       question: "${convertText(oldData.question__optionOne)}"
+          //                                       question: "${convertText(oldData.question_optionOne)}"
           //                                       question_link: "${convertText(oldData.question_link)}"
-          //                                       question__optionOne: "${convertText(oldData.question__optionOne)}"
-          //                                       question__optionTwo:"${convertText(oldData.question__optionTwo)}"
-          //                                       question__currentOption: "${oldData.question__currentOption ? oldData.question__currentOption : ''
+          //                                       question_optionOne: "${convertText(oldData.question_optionOne)}"
+          //                                       question_optionTwo:"${convertText(oldData.question_optionTwo)}"
+          //                                       question_currentOption: "${oldData.question_currentOption ? oldData.question_currentOption : ''
           //                           }"
-          //                                       question__timeTosolveProblem: "${convertText(oldData.question__timeTosolveProblem)}"
-          //                                       question__score: "${ oldData.question__score ? oldData.question__score : ''
+          //                                       question_timeTosolveProblem: "${convertText(oldData.question_timeTosolveProblem)}"
+          //                                       question_score: "${ oldData.question_score ? oldData.question_score : ''
           //                           }"
-          //                                       question__explane: "${convertText(oldData.question__explane)}"
+          //                                       question_explane: "${convertText(oldData.question_explane)}"
           //                                       exam_link: "${oldData.exam_link}"
           //                                 }
           //                                   ){

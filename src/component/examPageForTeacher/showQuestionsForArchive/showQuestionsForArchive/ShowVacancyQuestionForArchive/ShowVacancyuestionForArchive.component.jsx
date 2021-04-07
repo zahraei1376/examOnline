@@ -12,7 +12,7 @@ import ShowBodyQuestionsForArchive from '../showBodyQuestionForArchive.component
 
 
 
-const VacancyItemForArchive = ({number,items})=>{
+const VacancyItemForArchive = ({number,items ,vancyRes})=>{
 
     // const [responseVancyQuestion,setResponseVancyQuestion] = useState([]);
     const [NOfVancy,setNOfVancy] = useState([]);
@@ -64,7 +64,7 @@ const VacancyItemForArchive = ({number,items})=>{
             <VnacyTextsContainer>
                 {
                     NOfVancy.map((item,index)=>{
-                        var res =items.exam_vancyRes[index]
+                        var res =vancyRes[index]
                         return(
                             <VnacyTextDiv key={index}>
                             <VnacySpan>{index + 1}</VnacySpan>
@@ -81,10 +81,10 @@ const VacancyItemForArchive = ({number,items})=>{
     )
 }
 
-const ShowVacancyQuestionForArchive = ({question, number}) =>{
+const ShowVacancyQuestionForArchive = ({question, number }) =>{
     return(
-        <ShowBodyQuestionsForArchive question={question} number={number}>
-            <VacancyItemForArchive number={number} items={question} />
+        <ShowBodyQuestionsForArchive question={question} number={number} responseScore = {question.response_score}>
+            <VacancyItemForArchive number={number} items={question} vancyRes={question.response_vancyQuestion} />
         </ShowBodyQuestionsForArchive>
     )
 };

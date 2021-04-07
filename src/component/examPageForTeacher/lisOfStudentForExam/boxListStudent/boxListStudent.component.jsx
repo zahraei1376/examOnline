@@ -4,12 +4,12 @@ import {Card ,CardHeader,CardImage,CardName,LikeContainer,LikeBtn,DislikeBtn,Spa
   SpanIcon,CardBody,CardBodyInput,CardBodyIconConatiner,CardBodyIcon} from  './boxListStudent.styles.jsx';
 // import { Grid } from '@material-ui/core';
 import user from '../../../../assets/img/user.png';
-import CheckCircleIcon from '@material-ui/icons/CheckCircle';
+// import CheckCircleIcon from '@material-ui/icons/CheckCircle';
 
 
 const BoxListStudent = props => {
-  const [currentNumber, setCurrentNumber] = useState(0);
-  const [wrongNumber, setWrongNumber] = useState(0);
+  // const [currentNumber, setCurrentNumber] = useState(0);
+  // const [wrongNumber, setWrongNumber] = useState(0);
   const [score, setScore] = useState('');
   // useEffect(() => {
   //   if (props.studentsCurrentWroung) {
@@ -24,12 +24,12 @@ const BoxListStudent = props => {
 
   return (
     // <Grid key={props.key} item xs={12} sm={5} md={5}>
-    <Card key={props.key} onClick={() => props.getScore(props.student)}>
+    <Card key={props.key}>
       
-      <CardHeader >
+      <CardHeader  onClick={() => props.getScore(props.student,setScore)} >
         <CardImage src={user} alt="" />
         <CardName className="card_header-name">{props.student.person_name + ' ' + props.student.person_surname}</CardName>
-        <LikeContainer>
+        {/* <LikeContainer>
           <LikeBtn href="#" type="button" className="card_btn-green">
             <Span>{currentNumber !== 'undefined' ? currentNumber : '-'}</Span>
             <SpanIcon className="fa fa-thumbs-up" aria-hidden="true"></SpanIcon>
@@ -38,21 +38,23 @@ const BoxListStudent = props => {
             <Span>{wrongNumber !== 'undefined' ? wrongNumber : '-'}</Span>
             <SpanIcon className="fa fa-thumbs-down" aria-hidden="true"></SpanIcon>
           </DislikeBtn>
-        </LikeContainer>
+        </LikeContainer> */}
       </CardHeader>
       <CardBody>
-        <CardBodyIconConatiner
+        {/* <CardBodyIconConatiner
         // <CheckCircleIcon/></CardBody>
           // id={props.student.person_id}
           // className="fa fa-check"
           // onClick={() => props.setOneScore(props.student)}
         >
           <CardBodyIcon />
-        </CardBodyIconConatiner>
+        </CardBodyIconConatiner> */}
         <CardBodyInput
           type="number"
+          readOnly
           // onChange={e => props.handleScore(e)}
           defaultValue={score ? score : ''}
+          // value={score ? score : null}
         />
       </CardBody>
     </Card>

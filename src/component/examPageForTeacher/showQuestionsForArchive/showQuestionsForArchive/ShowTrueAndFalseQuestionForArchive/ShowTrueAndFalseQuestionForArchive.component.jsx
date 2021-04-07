@@ -3,22 +3,22 @@ import {TrueAndFalseConatiner,TrueAndFalseitemDiv,Item,InputLabel,QuestionSquare
 import ShowBodyQuestionsForArchive from '../showBodyQuestionForArchive.component';
 // import ShowComparativeItem from './compareItem/ShowComparativeItem.component';
 /////////////
-const ShowTrueAndFalseItemsForArchive = ({number,item})=>{
+const ShowTrueAndFalseItemsForArchive = ({number,item ,StudentItem})=>{
 
     return(
         <TrueAndFalseConatiner>
-            {item.question__optionOne && item.question__optionOne != 'undefined' ? (
+            {item.question_optionOne && item.question_optionOne != 'undefined' ? (
               <TrueAndFalseitemDiv>
                 <Item>1 </Item>
                 <QuestionSquare
                   style={{
                     backgroundColor:
-                      item.StudentItem == '1' && item.question__currentOption == '1'
+                      StudentItem == '1' && item.question_currentOption == '1'
                         ? 'green'
-                        : item.StudentItem == '1' &&
-                        item.question__currentOption != '1'
+                        : StudentItem == '1' &&
+                        item.question_currentOption != '1'
                           ? 'red'
-                          : item.question__currentOption == '1'
+                          : item.question_currentOption == '1'
                             ? 'green'
                             : 'rgb(78, 76, 76)',
                   }}
@@ -26,24 +26,24 @@ const ShowTrueAndFalseItemsForArchive = ({number,item})=>{
                 <InputLabel
                   htmlFor={`optionOne${number}`}
                 >
-                  {item.question__optionOne.split('%0A').join('\r\n')}
+                  {item.question_optionOne.split('%0A').join('\r\n')}
                 </InputLabel>
               </TrueAndFalseitemDiv>
             ) : (
                 ''
               )}
-            {item.question__optionTwo && item.question__optionTwo != 'undefined' ? (
+            {item.question_optionTwo && item.question_optionTwo != 'undefined' ? (
               <TrueAndFalseitemDiv>
                 <Item>2</Item>
                 <QuestionSquare
                   style={{
                     backgroundColor:
-                      item.StudentItem == '2' && item.question__currentOption == '2'
+                      StudentItem == '2' && item.question_currentOption == '2'
                         ? 'green'
-                        : item.StudentItem == '2' &&
-                        item.question__currentOption != '2'
+                        : StudentItem == '2' &&
+                        item.question_currentOption != '2'
                           ? 'red'
-                          : item.question__currentOption == '2'
+                          : item.question_currentOption == '2'
                             ? 'green'
                             : 'rgb(78, 76, 76)',
                   }}
@@ -51,24 +51,24 @@ const ShowTrueAndFalseItemsForArchive = ({number,item})=>{
                 <InputLabel
                   htmlFor={`optionTwo${number}`}
                 >
-                  {item.question__optionTwo.split('%0A').join('\r\n')}
+                  {item.question_optionTwo.split('%0A').join('\r\n')}
                 </InputLabel>
               </TrueAndFalseitemDiv>
             ) : (
                 ''
               )}
-            {/* {item.question__optionTree && item.question__optionTree != 'undefined' ? (
+            {/* {item.question_optionThree && item.question_optionThree != 'undefined' ? (
               <TrueAndFalseitemDiv>
                 <Item>3</Item>
                 <QuestionSquare
                   style={{
                     backgroundColor:
-                      item.StudentItem == '3' && item.question__currentOption == '3'
+                      StudentItem == '3' && item.question_currentOption == '3'
                         ? 'green'
-                        : item.StudentItem == '3' &&
-                        item.question__currentOption != '3'
+                        : StudentItem == '3' &&
+                        item.question_currentOption != '3'
                           ? 'red'
-                          : item.question__currentOption == '3'
+                          : item.question_currentOption == '3'
                             ? 'green'
                             : 'rgb(78, 76, 76)',
                   }}
@@ -76,24 +76,24 @@ const ShowTrueAndFalseItemsForArchive = ({number,item})=>{
                 <InputLabel
                   htmlFor={`optionTree${number}`}
                 >
-                  {item.question__optionTree.split('%0A').join('\r\n')}
+                  {item.question_optionThree.split('%0A').join('\r\n')}
                 </InputLabel>
               </TrueAndFalseitemDiv>
             ) : (
                 ''
               )}
-            {item.question__optionFour && item.question__optionFour != 'undefined' ? (
+            {item.question_optionFour && item.question_optionFour != 'undefined' ? (
               <TrueAndFalseitemDiv>
                 <Item>4</Item>
                 <QuestionSquare
                   style={{
                     backgroundColor:
-                      item.StudentItem == '4' && item.question__currentOption == '4'
+                      StudentItem == '4' && item.question_currentOption == '4'
                         ? 'green'
-                        : item.StudentItem == '4' &&
-                        item.question__currentOption != '4'
+                        : StudentItem == '4' &&
+                        item.question_currentOption != '4'
                           ? 'red'
-                          : item.question__currentOption == '4'
+                          : item.question_currentOption == '4'
                             ? 'green'
                             : 'rgb(78, 76, 76)',
                   }}
@@ -101,7 +101,7 @@ const ShowTrueAndFalseItemsForArchive = ({number,item})=>{
                 <InputLabel
                   htmlFor={`optionFour${number}`}
                 >
-                  {item.question__optionFour.split('%0A').join('\r\n')}
+                  {item.question_optionFour.split('%0A').join('\r\n')}
                 </InputLabel>
               </TrueAndFalseitemDiv>
             ) : (
@@ -111,10 +111,10 @@ const ShowTrueAndFalseItemsForArchive = ({number,item})=>{
     )
 }
 
-const ShowTrueAndFalseQuestionForArchive = ({question, number,items}) =>{
+const ShowTrueAndFalseQuestionForArchive = ({question, number}) =>{
     return(
-        <ShowBodyQuestionsForArchive question={question} number={number}>
-          <ShowTrueAndFalseItemsForArchive number={number} item={question} />
+        <ShowBodyQuestionsForArchive question={question} number={number} responseScore = {question.response_score}>
+          <ShowTrueAndFalseItemsForArchive number={number} item={question} StudentItem={question.response_studentItem} />
         </ShowBodyQuestionsForArchive>
     )
 };

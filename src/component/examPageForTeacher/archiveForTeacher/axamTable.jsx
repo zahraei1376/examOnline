@@ -321,11 +321,11 @@ const MaterialTableAxams = ({
             tooltip: 'لیست دانش آموزان',
             onClick: (event, rowData) => getStudentList(rowData),
           },
-          {
-            icon: 'trending_up',
-            tooltip: 'رنکینگ',
-            onClick: (event, rowData) => handleRankStudent(rowData),
-          },
+          // {
+          //   icon: 'trending_up',
+          //   tooltip: 'رنکینگ',
+          //   onClick: (event, rowData) => handleRankStudent(rowData),
+          // },
           // {
           //   icon: 'equalizer',
           //   tooltip: 'گزارش جزییات امتحان',

@@ -45,10 +45,10 @@ const ShowBodyQuestions = ({question,number,children,IncreaseIndexQuestion,Decre
         console.log('question.question1',question.question);
         // setState({...state,type:true});
       setType(true);
-        // setState({...state,captionImage:`${question.question.split('%0A').join('\r\n')}(نمره : ${question.question__score
+        // setState({...state,captionImage:`${question.question.split('%0A').join('\r\n')}(نمره : ${question.question_score
         // })`});
       setCaptionImage(
-        `${question.question.split('%0A').join('\r\n')}(نمره : ${question.question__score
+        `${question.question.split('%0A').join('\r\n')}(نمره : ${question.question_score
         })`,
       );
     // setState({imageSrc:link});
@@ -103,11 +103,11 @@ const ShowBodyQuestions = ({question,number,children,IncreaseIndexQuestion,Decre
                      // src={question.exam_link}
                      // src={`https://kamal-exam.s3.ir-thr-at1.arvanstorage.com/${question.exam_link}`}
                      />
-                     <ExplainQuestion number={number} explain={question.question__explane} time={question.question__timeTosolveProblem}/>
+                     <ExplainQuestion number={number} explain={question.question_explane} time={question.question_timeTosolveProblem}/>
                  </ImageQuestionContainer>
                  <ScoreTag
                  >
-                 (نمره {question.question__score})
+                 (نمره {question.question_score})
                  </ScoreTag>
                  
                  
@@ -123,9 +123,9 @@ const ShowBodyQuestions = ({question,number,children,IncreaseIndexQuestion,Decre
                     >
                         {question.question.split('%0A').join('\r\n')}
                         <br/> (
-                        {question.question__score} نمره)
+                        {question.question_score} نمره)
                     </BodyQuestion>
-                    <ExplainQuestion number={number} explain={question.question__explane} time={question.question__timeTosolveProblem}/>
+                    <ExplainQuestion number={number} explain={question.question_explane} time={question.question_timeTosolveProblem}/>
                 </BodyDiv>
             ) : (
                 ''

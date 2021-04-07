@@ -137,7 +137,8 @@ export const PopUpScoreBtnClose = styled.button`
 		font-size: 21px;
 		// background-color: rgba(#000, 0.5);
 		// color: #fff;
-		background-color:rgba( 0,77,64,0.7);
+		// background-color:rgba( 0,77,64,0.7);
+		background-color:rgba(63,135,166,0.7);
 		color: #fff;
 		border:1px solid #fff;
 		border-radius: 50%;

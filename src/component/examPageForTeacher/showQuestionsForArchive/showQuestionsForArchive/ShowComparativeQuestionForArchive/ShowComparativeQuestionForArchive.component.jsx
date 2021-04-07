@@ -3,9 +3,9 @@ import {ComparativeItemsConatiner} from './ShowComparativeQuestionForArchive.sty
 import ShowBodyQuestionsForArchive from '../showBodyQuestionForArchive.component';
 import ShowComparativeItemForArchive from './compareItemForArchive/ShowComparativeItemForArchive.component';
 /////////////
-const ShowComparativeItemsForArchive = ({number,items})=>{
+const ShowComparativeItemsForArchive = ({number,items,comparativeRes})=>{
 
-    const [questionRes,setQuestionRes] = useState(Array(items.items.length).fill(0).map(row => new Array(2).fill('')));
+    const [questionRes,setQuestionRes] = useState(Array(items.exam_compItems.length).fill(0).map(row => new Array(2).fill('')));
 
     const handleRes = (i , text) =>{
         var temp =[...questionRes];
@@ -21,8 +21,8 @@ const ShowComparativeItemsForArchive = ({number,items})=>{
     return(
         <ComparativeItemsConatiner>
             {
-                items.items.map((item , index) =>(
-                    <ShowComparativeItemForArchive item={item} resItem={items.resItems[index]} key={index} myIndex={index} handleRes={handleRes} />
+                items.exam_compItems.map((item , index) =>(
+                    <ShowComparativeItemForArchive item={item} resItem={comparativeRes[index]} key={index} myIndex={index} handleRes={handleRes} />
                 ))
             }
             
@@ -30,10 +30,13 @@ const ShowComparativeItemsForArchive = ({number,items})=>{
     )
 }
 
-const ShowComparativeQuestionForArchive = ({question, number,items}) =>{
+const ShowComparativeQuestionForArchive = ({question, number,}) =>{
     return(
-        <ShowBodyQuestionsForArchive question={question} number={number}>
-            <ShowComparativeItemsForArchive number={number} items={question}/>
+        <ShowBodyQuestionsForArchive question={question} number={number} 
+        responseScore = {question.response_score}
+        // responseScore = {responseQuestion.response_score}
+        >
+            <ShowComparativeItemsForArchive number={number} items={question} comparativeRes={question.response_comparativeQuestion}/>
         </ShowBodyQuestionsForArchive>
     )
 };

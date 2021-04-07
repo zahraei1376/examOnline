@@ -45,14 +45,14 @@ const PopUpScore = props => {
   //                           axamQuestions_id
   //                           question
   //                           question_link
-  //                           question__optionOne
-  //                           question__optionTwo
-  //                           question__optionTree
-  //                           question__optionFour
-  //                           question__currentOption
-  //                           question__timeTosolveProblem
-  //                           question__score
-  //                           question__explane
+  //                           question_optionOne
+  //                           question_optionTwo
+  //                           question_optionThree
+  //                           question_optionFour
+  //                           question_currentOption
+  //                           question_timeTosolveProblem
+  //                           question_score
+  //                           question_explane
   //                           exam_link
   //                       }
   //                   }
@@ -115,14 +115,14 @@ const PopUpScore = props => {
   //                           axamQuestions_id
   //                           question
   //                           question_link
-  //                           question__optionOne
-  //                           question__optionTwo
-  //                           question__optionTree
-  //                           question__optionFour
-  //                           question__currentOption
-  //                           question__timeTosolveProblem
-  //                           question__score
-  //                           question__explane
+  //                           question_optionOne
+  //                           question_optionTwo
+  //                           question_optionThree
+  //                           question_optionFour
+  //                           question_currentOption
+  //                           question_timeTosolveProblem
+  //                           question_score
+  //                           question_explane
   //                           exam_link
   //                       }
   //                   }

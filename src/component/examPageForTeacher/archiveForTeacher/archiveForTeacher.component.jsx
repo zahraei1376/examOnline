@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import MaterialTableAxams from './axamTable';
-import {DateContainer,LableDiv , Lable ,ListOfStudentContainer} from './archiveForTeacher.styles';
+import {DateContainer,LableDiv , Lable ,ListOfStudentContainer,TableContainer} from './archiveForTeacher.styles';
 // import PopUp from '@components/UI/popUp/popup';
 // import PopupPercentageQuestion from './QuestionListPercentage/popupPercentageQuestion';
 import ListOfStudentForExam from '../lisOfStudentForExam/listOfStudentForExam.component';
@@ -116,9 +116,10 @@ const ArchiveForTeacher = () => {
   return (
     <div>
       <Grid 
-      container spacing={3}
-      // style={{border:'1px solid #000'}}
+      // container spacing={3}
+      style={{border:'1px solid #000',margin:'3rem'}}
       >
+        <TableContainer >
         <DateContainer>
           <LableDiv>
             <Lable>
@@ -139,6 +140,7 @@ const ArchiveForTeacher = () => {
             handleSetExamID={handleSetExamID}
           />
         </Grid>
+        </TableContainer>
         <Grid item xs={12} sm={12} md={12}>
           {showStudentList ? 
             <ListOfStudentContainer style={{ marginTop: '60px' }}>

@@ -193,10 +193,10 @@ const DescriptiveQuestion = ({setToggle , ...props}) => {
         {
           title: 'زمان تقریبی',
           textAlign: 'center',
-          field: 'question__timeTosolveProblem',
+          field: 'question_timeTosolveProblem',
           minWidth: 150,
         //   validate: rowData =>
-        //     rowData.question__timeTosolveProblem !== ''
+        //     rowData.question_timeTosolveProblem !== ''
         //       ? 'Name cannot be empty'
         //       : '',
           render: data => {
@@ -210,7 +210,7 @@ const DescriptiveQuestion = ({setToggle , ...props}) => {
                   width: '50px',
                 }}
               >
-                {data.question__timeTosolveProblem}
+                {data.question_timeTosolveProblem}
               </p>
             );
           },
@@ -219,9 +219,9 @@ const DescriptiveQuestion = ({setToggle , ...props}) => {
           title: 'نمره',
           type: 'numeric',
           textAlign: 'center',
-          field: 'question__score',
+          field: 'question_score',
         //   validate: rowData =>
-        //     rowData.question__score !== '' ? 'Name cannot be empty' : '',
+        //     rowData.question_score !== '' ? 'Name cannot be empty' : '',
           editComponent: props => (
             <input
               style={{
@@ -246,7 +246,7 @@ const DescriptiveQuestion = ({setToggle , ...props}) => {
                   width: '50px',
                 }}
               >
-                {data.question__score}
+                {data.question_score}
               </p>
             );
           },
@@ -254,7 +254,7 @@ const DescriptiveQuestion = ({setToggle , ...props}) => {
         {
           title: 'توضیحات',
           textAlign: 'center',
-          field: 'question__explane',
+          field: 'question_explane',
           render: data => {
             // return moment(data.group_start_time).format('HH:mm:00');
             return (
@@ -270,7 +270,7 @@ const DescriptiveQuestion = ({setToggle , ...props}) => {
                   fontSize: 16,
                 }}
               >
-                {data.question__explane}
+                {data.question_explane}
               </pre>
             );
           },
@@ -379,9 +379,9 @@ const DescriptiveQuestion = ({setToggle , ...props}) => {
               //                   axamQuestions_id: "${'1'}"
               //                   question: "${convertText(rowData.question)}"
               //                   question_link: "${rowData.question_link ? rowData.question_link : ''}"
-              //                   question__timeTosolveProblem: "${convertText(rowData.question__timeTosolveProblem)}"
-              //                   question__score: "${rowData.question__score ? rowData.question__score : ''}"
-              //                   question__explane: "${convertText(rowData.question__explane)}"
+              //                   question_timeTosolveProblem: "${convertText(rowData.question_timeTosolveProblem)}"
+              //                   question_score: "${rowData.question_score ? rowData.question_score : ''}"
+              //                   question_explane: "${convertText(rowData.question_explane)}"
               //                   exam_link: "${rowData.exam_link ? rowData.exam_link : ''}"
               //             },
               //         ){
@@ -468,8 +468,8 @@ const DescriptiveQuestion = ({setToggle , ...props}) => {
           //       /////////////myCode
           //       if (
           //           // axamIdProps != '' &&
-          //           newData.question__score !== undefined &&
-          //           newData.question__currentOption !== undefined
+          //           newData.question_score !== undefined &&
+          //           newData.question_currentOption !== undefined
           //         ) {
           //           if (
           //             selectedFile &&
@@ -502,21 +502,21 @@ const DescriptiveQuestion = ({setToggle , ...props}) => {
           //                                             question: "${''}"
           //                                             question_link: "${file.name
           //                       }"
-          //                                             question__timeTosolveProblem: "${convertText(newData.question__timeTosolveProblem)}"
-          //                                             question__score: "${newData.question__score ? newData.question__score : ''
+          //                                             question_timeTosolveProblem: "${convertText(newData.question_timeTosolveProblem)}"
+          //                                             question_score: "${newData.question_score ? newData.question_score : ''
           //                       }"
-          //                                             question__explane: "${convertText(newData.question__explane)}"
+          //                                             question_explane: "${convertText(newData.question_explane)}"
           //                                             exam_link: "${''}"
           //                                     },
           //                                     axamQuestion_input_old: {
           //                                       questionID: "${'1'}"
           //                                       axamQuestions_id: "${'1'}"
-          //                                       question: "${convertText(oldData.question__optionOne)}"
+          //                                       question: "${convertText(oldData.question_optionOne)}"
           //                                       question_link: "${convertText(oldData.question_link)}"
-          //                                       question__timeTosolveProblem: "${convertText(oldData.question__timeTosolveProblem)}"
-          //                                       question__score: "${ oldData.question__score ? oldData.question__score : ''
+          //                                       question_timeTosolveProblem: "${convertText(oldData.question_timeTosolveProblem)}"
+          //                                       question_score: "${ oldData.question_score ? oldData.question_score : ''
           //                           }"
-          //                                       question__explane: "${convertText(oldData.question__explane)}"
+          //                                       question_explane: "${convertText(oldData.question_explane)}"
           //                                       exam_link: "${oldData.exam_link}"
           //                                 }
           //                                   ){
@@ -620,20 +620,20 @@ const DescriptiveQuestion = ({setToggle , ...props}) => {
           //                                             axamQuestions_id: "${'1'}"
           //                                             question: "${convertText(newData.question)}"
           //                                             question_link: "${''}"
-          //                                             question__timeTosolveProblem: "${convertText(newData.question__timeTosolveProblem)}"
-          //                                             question__score: "${newData.question__score ? newData.question__score: ''
+          //                                             question_timeTosolveProblem: "${convertText(newData.question_timeTosolveProblem)}"
+          //                                             question_score: "${newData.question_score ? newData.question_score: ''
           //                       }"
-          //                                             question__explane: "${convertText(newData.question__explane)}"
+          //                                             question_explane: "${convertText(newData.question_explane)}"
           //                                             exam_link: "${file.name}"
           //                                     },    axamQuestion_input_old: {
           //                                       questionID: "${'1'}"
           //                                       axamQuestions_id: "${'1'}"
-          //                                       question: "${convertText(oldData.question__optionOne)}"
+          //                                       question: "${convertText(oldData.question_optionOne)}"
           //                                       question_link: "${convertText(oldData.question_link)}"
-          //                                       question__timeTosolveProblem: "${convertText(oldData.question__timeTosolveProblem)}"
-          //                                       question__score: "${ oldData.question__score ? oldData.question__score : ''
+          //                                       question_timeTosolveProblem: "${convertText(oldData.question_timeTosolveProblem)}"
+          //                                       question_score: "${ oldData.question_score ? oldData.question_score : ''
           //                           }"
-          //                                       question__explane: "${convertText(oldData.question__explane)}"
+          //                                       question_explane: "${convertText(oldData.question_explane)}"
           //                                       exam_link: "${oldData.exam_link}"
           //                                 }
           //                                   ){
@@ -698,20 +698,20 @@ const DescriptiveQuestion = ({setToggle , ...props}) => {
           //                                             axamQuestions_id: "${'1'}"
           //                                             question: "${convertText(newData.question)}"
           //                                             question_link: "${''}"
-          //                                             question__timeTosolveProblem: "${convertText(newData.question__timeTosolveProblem)}"
-          //                                             question__score: "${newData.question__score ? newData.question__score : ''
+          //                                             question_timeTosolveProblem: "${convertText(newData.question_timeTosolveProblem)}"
+          //                                             question_score: "${newData.question_score ? newData.question_score : ''
           //                   }"
-          //                                             question__explane: "${convertText(newData.question__explane)}"
+          //                                             question_explane: "${convertText(newData.question_explane)}"
           //                                             exam_link: "${''}"
           //                                     },    axamQuestion_input_old: {
           //                                       questionID: "${'1'}"
           //                                       axamQuestions_id: "${'1'}"
-          //                                       question: "${convertText(oldData.question__optionOne)}"
+          //                                       question: "${convertText(oldData.question_optionOne)}"
           //                                       question_link: "${convertText(oldData.question_link)}"
-          //                                       question__timeTosolveProblem: "${convertText(oldData.question__timeTosolveProblem)}"
-          //                                       question__score: "${ oldData.question__score ? oldData.question__score : ''
+          //                                       question_timeTosolveProblem: "${convertText(oldData.question_timeTosolveProblem)}"
+          //                                       question_score: "${ oldData.question_score ? oldData.question_score : ''
           //                           }"
-          //                                       question__explane: "${convertText(oldData.question__explane)}"
+          //                                       question_explane: "${convertText(oldData.question_explane)}"
           //                                       exam_link: "${oldData.exam_link}"
           //                                 }
           //                                   ){
