@@ -41,7 +41,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function ComparativeModal({PropsItems}) {
+export default function ComparativeModal({compItems}) {
   const classes = useStyles();
   // getModalStyle is not a pure function, we roll the style only on the first render
   const [modalStyle] = React.useState(getModalStyle);
@@ -49,7 +49,8 @@ export default function ComparativeModal({PropsItems}) {
   const [count,setCount] = React.useState(4)
   // const [items,setItems] = React.useState([Array.from({length: n})]);
   // const [items,setItems] = React.useState(Array(4).fill(0).map(row => new Array(2).fill('')));
-  const [items,setItems] = React.useState([]);
+  // const [items,setItems] = React.useState([]);
+  const [items,setItems] = React.useState(compItems ? compItems : []);
   // const [items,setItems] = React.useState(Array.from({length: n},()=> Array.from({length: n}, () => null)));
 //  var cn =1;
   // useEffect(()=>{

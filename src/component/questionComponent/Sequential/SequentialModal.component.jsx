@@ -45,11 +45,11 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function SequentialModal({PropsItems}) {
+export default function SequentialModal({seqItems}) {
   const classes = useStyles();
   const [modalStyle] = React.useState(getModalStyle);
   const [open, setOpen] = React.useState(false);
-  const [items,setItems] = React.useState([]);
+  const [items,setItems] = React.useState(seqItems ? seqItems : []);
 
   const handleChange = (event) => {
     setItems(event.target.value);

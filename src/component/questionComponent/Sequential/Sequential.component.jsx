@@ -402,10 +402,10 @@ const Sequential = ({setToggle , ...props}) => {
         {
           title: 'زمان تقریبی',
           textAlign: 'center',
-          field: 'question_timeTosolveProblem',
+          field: 'question_timeToSolveProblem',
           minWidth: 150,
         //   validate: rowData =>
-        //     rowData.question_timeTosolveProblem !== ''
+        //     rowData.question_timeToSolveProblem !== ''
         //       ? 'Name cannot be empty'
         //       : '',
           render: data => {
@@ -419,7 +419,7 @@ const Sequential = ({setToggle , ...props}) => {
                   width: '50px',
                 }}
               >
-                {data.question_timeTosolveProblem}
+                {data.question_timeToSolveProblem}
               </p>
             );
           },
@@ -526,8 +526,7 @@ const Sequential = ({setToggle , ...props}) => {
         //   validate: rowData =>
         //     rowData.question_score !== '' ? 'Name cannot be empty' : '',
           editComponent: props => (
-            <SequentialModal/>
-            
+            <SequentialModal seqItems={props.rowData.exam_SeqItems} />
           ),
           render: data => {
             // return moment(data.group_start_time).format('HH:mm:00');
@@ -667,7 +666,7 @@ const Sequential = ({setToggle , ...props}) => {
               //                   question_optionThree: "${convertText(rowData.question_optionThree)}"
               //                   question_optionFour: "${convertText(rowData.question_optionFour)}"
               //                   question_currentOption: "${rowData.question_currentOption}"
-              //                   question_timeTosolveProblem: "${convertText(rowData.question_timeTosolveProblem)}"
+              //                   question_timeToSolveProblem: "${convertText(rowData.question_timeToSolveProblem)}"
               //                   question_score: "${rowData.question_score ? rowData.question_score : ''}"
               //                   question_explane: "${convertText(rowData.question_explane)}"
               //                   exam_link: "${rowData.exam_link ? rowData.exam_link : ''}"
@@ -774,7 +773,7 @@ const Sequential = ({setToggle , ...props}) => {
                                 }"
                                                     question_optionThree: "${convertText(newData.question_optionThree)}"
                                                     question_optionFour: "${convertText(newData.question_optionFour)}"
-                                                      question_timeTosolveProblem: "${convertText(newData.question_timeTosolveProblem)}"
+                                                      question_timeToSolveProblem: "${convertText(newData.question_timeToSolveProblem)}"
                                                       question_score: "${newData.question_score ? newData.question_score : ''
                                 }"
                                                       question_explane: "${convertText(newData.question_explane)}"
@@ -791,7 +790,7 @@ const Sequential = ({setToggle , ...props}) => {
                                                 question_optionFour: "${convertText(oldData.question_optionFour)}"
                                                 question_currentOption: "${oldData.question_currentOption ? oldData.question_currentOption : ''
                                     }"
-                                                question_timeTosolveProblem: "${convertText(oldData.question_timeTosolveProblem)}"
+                                                question_timeToSolveProblem: "${convertText(oldData.question_timeToSolveProblem)}"
                                                 question_score: "${ oldData.question_score ? oldData.question_score : ''
                                     }"
                                                 question_explane: "${convertText(oldData.question_explane)}"
@@ -904,7 +903,7 @@ const Sequential = ({setToggle , ...props}) => {
                                                       question_optionFour: "${convertText(newData.question_optionFour)}"
                                                       question_currentOption: "${newData.question_currentOption ? newData.question_currentOption : ''
                                 }"
-                                                      question_timeTosolveProblem: "${convertText(newData.question_timeTosolveProblem)}"
+                                                      question_timeToSolveProblem: "${convertText(newData.question_timeToSolveProblem)}"
                                                       question_score: "${newData.question_score ? newData.question_score: ''
                                 }"
                                                       question_explane: "${convertText(newData.question_explane)}"
@@ -920,7 +919,7 @@ const Sequential = ({setToggle , ...props}) => {
                                                 question_optionFour: "${convertText(oldData.question_optionFour)}"
                                                 question_currentOption: "${oldData.question_currentOption ? oldData.question_currentOption : ''
                                     }"
-                                                question_timeTosolveProblem: "${convertText(oldData.question_timeTosolveProblem)}"
+                                                question_timeToSolveProblem: "${convertText(oldData.question_timeToSolveProblem)}"
                                                 question_score: "${ oldData.question_score ? oldData.question_score : ''
                                     }"
                                                 question_explane: "${convertText(oldData.question_explane)}"
@@ -992,7 +991,7 @@ const Sequential = ({setToggle , ...props}) => {
                                                       question_optionTwo:"${convertText(newData.question_optionTwo)}"
                                                       question_currentOption: "${newData.question_currentOption ? newData.question_currentOption : ''
                             }"
-                                                      question_timeTosolveProblem: "${convertText(newData.question_timeTosolveProblem)}"
+                                                      question_timeToSolveProblem: "${convertText(newData.question_timeToSolveProblem)}"
                                                       question_score: "${newData.question_score ? newData.question_score : ''
                             }"
                                                       question_explane: "${convertText(newData.question_explane)}"
@@ -1006,7 +1005,7 @@ const Sequential = ({setToggle , ...props}) => {
                                                 question_optionTwo:"${convertText(oldData.question_optionTwo)}"
                                                 question_currentOption: "${oldData.question_currentOption ? oldData.question_currentOption : ''
                                     }"
-                                                question_timeTosolveProblem: "${convertText(oldData.question_timeTosolveProblem)}"
+                                                question_timeToSolveProblem: "${convertText(oldData.question_timeToSolveProblem)}"
                                                 question_score: "${ oldData.question_score ? oldData.question_score : ''
                                     }"
                                                 question_explane: "${convertText(oldData.question_explane)}"
