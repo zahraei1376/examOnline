@@ -14,12 +14,16 @@ import DoneIcon from '@material-ui/icons/Done';
 import ShowImageForArchive from '../../imageShowForArchive/showImageForArchive.component';
 // import AddIcon from '@material-ui/icons/Add';
 ///////////////////////////////////////////////////////
+import {connect} from 'react-redux';
+import {IncreaseScore} from '../../../../redux/scoresStudents/scoresStudents.action';
+import {getStudentId} from '../../../../redux/scoresStudents/scoresStudents.selector';
+import { createStructuredSelector } from 'reselect';
 const graphql_server_uri = '/graphql';
 // import { connect} from 'react-redux';
 // import {IncreaseIndex , DecreaseIndex} from '../../../redux/questionIndex/questionIndex.sction';
 // import {selectIndex} from '../../../redux/questionIndex/questionIndex.selector';
 // import { createStructuredSelector} from 'reselect';
-const ShowBodyQuestionsForArchive = ({question,number,children,responseScore,}) =>{
+const ShowBodyQuestionsForArchive = ({question,number,children,responseScore,addScore,studentId}) =>{
 
     // const [state,setState] =useState({
     //     type:false,
@@ -33,12 +37,15 @@ const ShowBodyQuestionsForArchive = ({question,number,children,responseScore,}) 
     const [captionImage, setCaptionImage] = useState(false);
     const [showImage, setShowImage] = useState(false);
 
-    const [score, setScore] = useState(false);
+    const [score, setScore] = useState(responseScore ? responseScore : '');
+    // const [score, setScore] = useState('');
 
 
-    // useEffect(()=>{
-    //     console.log('captionImage',captionImage);
-    //   },[captionImage]);
+    useEffect(()=>{
+        // index,score ,students ,studentId
+        // addScore(number, score , studentId)
+        addScore({'index':number, 'score':score , studentId: studentId})
+    },[score]);
     
   const showPic = () => {
     setShowImage(!showImage);
@@ -168,14 +175,14 @@ const ShowBodyQuestionsForArchive = ({question,number,children,responseScore,}) 
                 )}
             </BodyQuestionBox>
             <InputScoreContainer>
-                <Tooltip title="تایید" aria-label="تایید"  style={{ fontSize:'3rem'}} >
+                {/* <Tooltip title="تایید" aria-label="تایید"  style={{ fontSize:'3rem'}} >
                     <BtnOk 
                         onClick={sendScore}
                     >
                         <DoneIcon style={{ fontSize:'3rem'}} />
                     </BtnOk>
-                </Tooltip>
-                <InputScore type="number" value={responseScore} onChange={e => setScore(e.target.value)} />
+                </Tooltip> */}
+                <InputScore type="number" value={score} onChange={e => setScore(e.target.value)} />
                 <InputScoreLabel>نمره تخصیص داده شده</InputScoreLabel>
                 
             </InputScoreContainer>
@@ -225,4 +232,14 @@ const ShowBodyQuestionsForArchive = ({question,number,children,responseScore,}) 
 // });
 
 // export default connect(mapStateToProps,mapDispatchToProps)(ShowBodyQuestions);
-export default ShowBodyQuestionsForArchive;
+// export default ShowBodyQuestionsForArchive;
+const mapStateToProps = createStructuredSelector({
+    studentId : getStudentId
+});
+
+const mapDispatchToProps = dispatch =>({
+    // addScore : (index,score ,studentId) => dispatch(IncreaseScore(index,score ,studentId))
+    addScore : (scoreItem) => dispatch(IncreaseScore(scoreItem))
+})
+
+export default connect(mapStateToProps , mapDispatchToProps)(ShowBodyQuestionsForArchive);

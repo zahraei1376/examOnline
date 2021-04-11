@@ -24,5 +24,6 @@ export const SequentialItemContainer = styled.div`
     overflow:scroll;
    display:grid;
    grid-template-columns: auto auto auto auto auto auto;
+//    grid-column-gap:1rem;
 `;
 

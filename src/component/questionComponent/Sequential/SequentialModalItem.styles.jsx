@@ -3,10 +3,10 @@ import {Button} from '@material-ui/core';
 import Icon from '@material-ui/core/Icon';
 
 export const InputDivContainer =styled.div`
-    display:flex;
-    justify-content:space-evenly;
-    align-items:center;
-    margin:30px 20px;
+    // display:flex;
+    // justify-content:space-evenly;
+    // align-items:center;
+    margin:30px 0 0 0;
     position:relative;
 `;
 
@@ -33,6 +33,10 @@ export const InputContainerButton =styled(Button)`
 export const Input =styled.input`
     text-align:right;
     height:40px;
+    overflow-Y:scroll;
+    margin: 0 0 0 3rem;
+    // white-space: pre;
+    // text-overflow: clip;
 `;
 
 

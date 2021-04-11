@@ -157,7 +157,7 @@ export const InputTime = styled.input`
     font-size:1.8rem;
     // width:70%;
     text-align:right;
-    direction:rtl;
+    // direction:rtl;
     padding:0 1rem;
     border:1px solid rgb(118, 118, 118);
     &:focus{

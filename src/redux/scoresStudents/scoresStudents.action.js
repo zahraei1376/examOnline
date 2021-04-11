@@ -1,16 +1,22 @@
 import ScoresStudents from './scoresStudents.types';
 
-export const IncreaseStudent = (student)=>({
-    type:ScoresStudents.INCREASE_STUDENT,
-    action:student,
+export const SetStudentId = (studentId)=>({
+    type:ScoresStudents.SET_STUDENTID,
+    payload:studentId,
 });
 
-export const IncreaseScore = (score)=>({
+export const IncreaseStudent = (students)=>({
+    type:ScoresStudents.INCREASE_STUDENT,
+    payload:students,
+});
+
+export const IncreaseScore = (scoreItems)=>({
+    // , 'students':info.students
     type:ScoresStudents.INCREASE_SCORE,
-    action:score,
+    payload: scoreItems,
 });
 
 export const DecreaseScore = (score)=>({
     type:ScoresStudents.DECREASE_SCORE,
-    action:score,
+    payload:score,
 });

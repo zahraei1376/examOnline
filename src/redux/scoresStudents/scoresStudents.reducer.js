@@ -1,8 +1,11 @@
 import ScoresStudents from './scoresStudents.types';
-import {addStudentUtil,IncreaseScoreUtil,DecreseScoreUtil} from './scoresStudents.utils';
+import {AddStudentUtil,
+    IncreaseScoreUtil,DecreseScoreUtil
+} from './scoresStudents.utils';
 
 const INITIALATATE = {
     students:[],
+    studentId:'',
 }
 
 
@@ -11,13 +14,23 @@ const ScoreReducer = (state = INITIALATATE , action) =>{
         case ScoresStudents.INCREASE_STUDENT:
             return{
                 ...state,
-                students:addStudentUtil(state.students,action.payload)
+                students:AddStudentUtil(action.payload , state.students),
+                // students:action.payload.map(student => AddStudentUtil(student , state.students))
             }
 
         case ScoresStudents.INCREASE_SCORE:
             return{
+                // 'index':number, 'score':score , studentId: '1'
                 ...state,
-                students:[]
+                students:IncreaseScoreUtil(action.payload ,state.students),
+            }
+
+        case ScoresStudents.SET_STUDENTID:
+            console.log('action.payload',action.payload);
+            return{
+                // 'index':number, 'score':score , studentId: '1'
+                ...state,
+                studentId:action.payload,
             }
 
         case ScoresStudents.DECREASE_SCORE:

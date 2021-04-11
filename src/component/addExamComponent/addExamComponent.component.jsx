@@ -52,8 +52,8 @@ const AddExamForTeacher = () => {
 
   ////////////////////////
   const [state,setState] = useState({
-    selectedstartTime:'',
-    selectedEndTime:'',
+    // selectedstartTime:'',
+    // selectedEndTime:'',
     //////////////////
     axamId: '',
     examCourseName:'',
@@ -271,6 +271,82 @@ const AddExamForTeacher = () => {
     // }
   };
 
+  function format(time) { 
+    // console.log('time',time);  
+    // Hours, minutes and seconds
+    // var hrs = ~~(time / 3600);
+    // var mins = ~~((time % 3600) / 60);
+    // var secs = ~~time % 60;
+    var hrs = Math.floor(time / 3600);
+    var mins = Math.floor((time % 3600) / 60);
+    var secs = time % 60;
+
+    // Output like "1:01" or "4:03:59" or "123:03:59"
+    var ret = "";
+    if (hrs > 0) {
+        ret += "" + hrs + ":" + (mins < 10 ? "0" : "");
+    }
+    ret += "" + mins + ":" + (secs < 10 ? "0" : "");
+    ret += "" + secs;
+    // console.log('ret',ret);
+    return ret;
+}
+
+  useEffect(()=>{
+    var EmD = document.getElementById('examDuration');
+    if(newSelectedStartDate != '' && newSelectedEndDate !='' && newSelectedStartDate == newSelectedEndDate){
+      if(selectedstartTime && selectedEndTime){
+        var newStart = selectedstartTime ? moment2(selectedstartTime).tz('Asia/Tehran').format('HH:mm:00').split(':'):'';
+        var newEnd = selectedEndTime ? moment2(selectedEndTime).tz('Asia/Tehran').format('HH:mm:00').split(':'):'00:00:00';
+        // console.log('selectedEndTime',moment2(selectedEndTime).tz('Asia/Tehran').format('HH:mm:00'));
+        var StartHour = fixNumbers(newStart[0]) || 0;
+        var EndHour = fixNumbers(newEnd[0]) || 0;
+        var StartMinutes = fixNumbers(newStart[1]) || 0;
+        var EndMinutes = fixNumbers(newEnd[1]) || 0;
+        // var StartHour = fixNumbers(newStart[0]) ;
+        // var EndHour = fixNumbers(newEnd[0]);
+        // var StartMinutes = fixNumbers(newStart[1]);
+        // var EndMinutes = fixNumbers(newEnd[1]);
+        // console.log('EndHour',EndHour);
+        // console.log('EndMinutes',EndMinutes);
+        if(StartHour <= EndHour && StartMinutes <= EndMinutes){
+          var hour = EndHour - StartHour;
+          var minutes = EndMinutes - StartMinutes;
+          EmD.value = `${hour}: ${minutes}: 00`;
+        }else{
+          var convertStart = StartHour * 3600 + StartMinutes * 60 ;
+          var convertEnd = EndHour * 3600 + EndMinutes * 60 ;
+          var time = convertEnd - convertStart;
+          // console.log('time' ,time);
+          if(time < 0){
+            // console.log('4');
+            alert('زمان امتحان اشتباه است');
+            // handleSelectedEndTime('');
+            EmD.value = "";
+          }else{
+            EmD.value = format(time);
+          }
+        }
+      }
+     
+    }else if(newSelectedStartDate != '' && newSelectedEndDate !='' && newSelectedStartDate != newSelectedEndDate){
+      EmD.value = "";
+    }
+  })
+
+  const ExamDuration = () =>{
+    if(newSelectedStartDate != '' && newSelectedEndDate !='' && newSelectedStartDate == newSelectedEndDate){
+        var newStart = selectedstartTime ? moment2(selectedstartTime).tz('Asia/Tehran').format('HH:mm:00').split(':'):'';
+        var newEnd = selectedEndTime ? moment2(selectedEndTime).tz('Asia/Tehran').format('HH:mm:00').split(':'):'';
+        if(newStart[0] < newEnd[0] && newStart[1] < newEnd[1]){
+          var hour = newEnd[0] - newStart[0];
+          var minutes = newEnd[1] - newStart[1];
+          return `${hour}: ${minutes}: 00`
+        }
+        // console.log('newStart',newStart);
+    }
+  }
+
   return (
     <ContainerForm>
       <Grid container spacing={3}>
@@ -336,7 +412,9 @@ const AddExamForTeacher = () => {
             <TimeDiv>
               <InputTimeContainer>
               <InputTime
-                type="text"
+                id="examDuration"
+                type = "text"
+                // value = {ExamDuration}
                 // readOnly
                 // value={state.examTopic}
                 // onChange={e => 

@@ -43,18 +43,23 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function VacancyModal({PropsItems}) {
+export default function VacancyModal({vancyValue}) {
   const classes = useStyles();
   // getModalStyle is not a pure function, we roll the style only on the first render
   const [modalStyle] = React.useState(getModalStyle);
   const [open, setOpen] = React.useState(false);
 //   const [count,setCount] = React.useState(1)
-  const [items,setItems] = React.useState('');
+  const [items,setItems] = React.useState(vancyValue ? vancyValue : '');
   const [indexDelete,setIndexDelete] = React.useState(-1);
 
   useEffect(()=>{
     console.log('items',items);
   },[items]);
+
+
+  // useEffect(()=>{
+  //   console.log('vancyValue',vancyValue);
+  // },[]);
 
 //   useEffect(()=>{
 //     setItems(Array(count).fill(0).map(row => new Array(2).fill('')))
