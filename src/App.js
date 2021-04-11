@@ -4,15 +4,16 @@ import AddExamForTeacher from './component/addExamComponent/addExamComponent.com
 import ExamPageForStudent from './component/examPageForStudent/examPageForStudent.component';
 ///////////////////////////
 import ArchiveForTeacher from './component/examPageForTeacher/archiveForTeacher/archiveForTeacher.component';
-
+import EditeAxamPageForTeacher from './component/editeAxamForTeacher/editeaxamPage.component';
 
 const App = () => {
   return (
     <div className="App">
       {/* <AddExamForTeacher/> */}
-     <QuestionPageContainer />
+     {/* <QuestionPageContainer /> */}
      {/* <ExamPageForStudent/> */}
-     {/* <ArchiveForTeacher/> */}
+     <ArchiveForTeacher/>
+     {/* <EditeAxamPageForTeacher/> */}
     </div>
   );
 }

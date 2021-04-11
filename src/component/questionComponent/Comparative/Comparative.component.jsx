@@ -771,28 +771,13 @@ const Comparative = ({setToggle , ...props}) => {
           // },
         ]}
         editable={{
+          //////////////////////////////////////////
           onRowUpdateCancelled: rowData => {
-            console.log("Row editing cancelled");
+            loadVariable.load = true;
+            // setToggle(false);
+            console.log('onRowUpdateCancelled',loadVariable.load);
           },
-          onRowUpdateTriggred: rowData => console.log("Row editing opend"),
-
-          // onRowUpdateCancelled: rowData => {
-          //   console.log('updateeeeeeeee cnacle');
-          //   // console.log('onRowUpdateCancelled',loadVariable.load);
-          //   loadVariable.load = true;
-          //   // setToggle(false);
-          //   // loadVariable.disable = false;
-          //   // console.log('onRowUpdateCancelled',loadVariable.load);
-          //   // console.log('loadVariable.disable',loadVariable.disable);
-          // },
-
-          // onEditingCanceled: rowData => {
-          //   console.log('onRowUpdateCancelled',loadVariable.load);
-          //   loadVariable.load = true;
-          //   // setToggle(false);
-          //   // loadVariable.disable = false;
-          //   // console.log('onRowUpdateCancelled',loadVariable.load);
-          //   // console.log('loadVariable.disable',loadVariable.disable);
+          //////////////////////////////////////////
           // },
 
           onRowUpdate: (newData, oldData) =>

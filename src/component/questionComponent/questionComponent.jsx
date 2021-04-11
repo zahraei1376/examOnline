@@ -34,7 +34,7 @@ export var loadVariable = {
 
 const Questions = ({toggle}) =>{
   // const [innerData, setInnerData] = useState([]);
-  // const tableRef = React.useRef(null);
+  const tableRef = React.useRef(null);
   const [typeQuestion,setTypeQuestion] =useState('');
   // const [disable,setDisable] =useState(false);
   useEffect(()=>{
@@ -87,7 +87,10 @@ const Questions = ({toggle}) =>{
     });
   }
   ///////////////////////////////////////////////
- 
+  const handleFetchData = ()=>{
+      fetchData();
+  }
+  ///////////////////////////////////////////////
   const [data, setData] = useState([
     {
       'question':' گلمممم گلممممسلام به همه دوستای گلمممم سلام به همه دوستای گلمممم سلام به همه دوستای گلمممم سلام به همه دوستای گلمممم سلام به همه دوستای گلمممم سلام به همه دوستای گلمممم سلام به همه دوستای گلمممم سلام به همه دوستای گلمممم',
@@ -419,15 +422,19 @@ const Questions = ({toggle}) =>{
     
   return (
     <MaterialTable
+     style={{direction:'rtl'}}
+    // dir="rtl"
       title="سوالات"
-      // tableRef={tableRef}
+      tableRef={tableRef}
       // onRowClick={((evt, selectedRow) => setSelectedRow(selectedRow.tableData.id))}
       options={{
-        search: true,
+        // actionsColumnIndex: -1,
+        search: false,
         // paging: false,
             // search: false,
             // toolbar:false,
         actionsColumnIndex: -1,
+        // tableLayout: "auto", 
         actionsCellStyle:{
           padding:'0 40px',
         },
@@ -438,6 +445,9 @@ const Questions = ({toggle}) =>{
         headerStyle: {
           textAlign:'center',
         },
+        // toolbarStyle:{
+        //   backgroundColor:'#000',
+        // }
         
         // rowStyle: rowData => ({
         //   border: (selectedRow === rowData.tableData.id) ? '1px solid #ff6542' : '1px solid inherit'
@@ -448,10 +458,64 @@ const Questions = ({toggle}) =>{
         //       : "#fff" 
         //   })
       }}
+
+      // localization={{
+      //   body: {
+      //     AddRow: {
+      //       saveTooltip: "Salvar",
+      //       cancelTooltip: "Cancelar",
+      //       AddText: "Tem certeza que deseja deletar este registro?"
+      //     },
+      //     // addTooltip: "Adicionar",
+      //     // deleteTooltip: "Deletar",
+      //     // editTooltip: "Editar"
+      //   },
+      //   // header: {
+      //   //   actions: 'Acciones',
+      //   // }
+      // }}
       
       columns={[
-        // { title: 'آیدی سوال', field: 'questionID' },
+        { title: 'آیدی سوال', field: 'questionID', 
+        // editComponent: props => (
+        //   <TextField
+        //     style={{ minWidth: '500px', textAlign:'right',direction:'rtl' }}
+        //     value={props.value}
+        //     // defaultValue=""
+        //     fullWidth={true}
+        //     // multiline={true}
+        //   //   var newQuestion = newData.question
+        //   //             ? newData.question.split('\r\n').join('%0A')
+        //   //             : '';
+        //   //           var newQuestion2 = newQuestion
+        //   //             ? newQuestion.split('\n').join('%0A')
+        //   //             : '';
+        //     // onChange={e => {props.onChange(e.target.value)}}
+        //   />
+        // ),
+        // render: data => {
+        //   // return moment(data.group_start_time).format('HH:mm:00');
+        //   return (
+        //     <pre
+        //       style={{
+        //         fontSize: '20px',
+        //         wordBreak: 'break-word',
+        //         overflowWrap: 'break-word',
+        //         whiteSpace: 'pre-wrap',
+        //         textAlign: 'center',
+        //         width: '500px',
+        //         fontFamily: 'BNazanin',
+        //         fontSize: 16,
+        //         float:'right',
+        //       }}
+        //     >
+        //       {/* {data.question} */}
+        //     </pre>
+        //   );
+        // }, 
+      },
       ]}
+
       data={data}
       detailPanel={[
         (rowData)=>({
@@ -481,7 +545,7 @@ const Questions = ({toggle}) =>{
                 {(() => {
                     setTypeQuestion(1);
                     // setSelectedRow(rowData.tableData.id);
-                    return <DescriptiveQuestion rowData={createArray(rowData)} typeQuestion={typeQuestion} />
+                    return <DescriptiveQuestion handleFetchData={handleFetchData} rowData={createArray(rowData)} typeQuestion={typeQuestion} />
                 })()}
               </div>
             )
@@ -492,7 +556,7 @@ const Questions = ({toggle}) =>{
           // disabled:rowData.question_type == '2' ? false :true,
           // disabled: typeQuestion == 2 ? false : toggle,
           // icon: () => (<QuestionImageIconContainer src={multiChoice}/>),
-          icon: () =>rowData.question_type != '2' ? (<QuestionImageIconContainer><QuestionImageIcon src={multiChoice}/>
+          icon: () =>rowData.question_type != '3' ? (<QuestionImageIconContainer><QuestionImageIcon src={multiChoice}/>
           {/* <QuestionImageIconText>چهار گزینه ای</QuestionImageIconText> */}
           </QuestionImageIconContainer>) 
           :
@@ -517,7 +581,7 @@ const Questions = ({toggle}) =>{
                 {(() => {
                   setTypeQuestion(2);
                   // setSelectedRow(rowData.tableData.id);
-                    return <MultipleChoice rowData={createArray(rowData)} typeQuestion={typeQuestion}/>
+                    return <MultipleChoice handleFetchData={handleFetchData} rowData={createArray(rowData)} typeQuestion={typeQuestion}/>
                 })()}
 
               </div>
@@ -529,7 +593,7 @@ const Questions = ({toggle}) =>{
           // disabled:rowData.question_type == '3' ? false :true,
           // disabled: typeQuestion == 3 ? false : toggle,
           // icon: () => (<QuestionImageIconContainer src={trueFalse}/>),
-          icon: () => rowData.question_type != '3' ? (<QuestionImageIconContainer><QuestionImageIcon src={trueFalse}/>
+          icon: () => rowData.question_type != '4' ? (<QuestionImageIconContainer><QuestionImageIcon src={trueFalse}/>
           {/* <QuestionImageIconText>دو گزینه ای</QuestionImageIconText> */}
           </QuestionImageIconContainer>)
           :
@@ -556,7 +620,7 @@ const Questions = ({toggle}) =>{
                 {(() => {
                   setTypeQuestion(3);
                   // setSelectedRow(rowData.tableData.id);
-                    return <TrueAndFalse rowData={createArray(rowData)} typeQuestion={typeQuestion}/>
+                    return <TrueAndFalse handleFetchData={handleFetchData} rowData={createArray(rowData)} typeQuestion={typeQuestion}/>
                 })()}
               </div>
             )
@@ -567,7 +631,7 @@ const Questions = ({toggle}) =>{
           // disabled:rowData.question_type == '4' ? false :true,
           // disabled: typeQuestion == 4 ? false : toggle,
           // icon: () => (<QuestionImageIconContainer src={ellipsis}/>),
-          icon: () => rowData.question_type != '4' ? (<QuestionImageIconContainer><QuestionImageIcon src={ellipsis}/>
+          icon: () => rowData.question_type != '6' ? (<QuestionImageIconContainer><QuestionImageIcon src={ellipsis}/>
           {/* <QuestionImageIconText>جای خالی</QuestionImageIconText> */}
           </QuestionImageIconContainer>) :
           (<QuestionImageIconContainer><QuestionImageIcon src={ellipsis2}/>
@@ -592,7 +656,7 @@ const Questions = ({toggle}) =>{
                 {(() => {
                   setTypeQuestion(4);
                   // setSelectedRow(rowData.tableData.id);
-                    return <Vacancy rowData={createArray(rowData)} typeQuestion={typeQuestion}/>
+                    return <Vacancy handleFetchData={handleFetchData} rowData={createArray(rowData)} typeQuestion={typeQuestion}/>
                 })()}
               </div>
             )
@@ -603,7 +667,7 @@ const Questions = ({toggle}) =>{
           // disabled:rowData.question_type == '5' ? false :true,
           // disabled: typeQuestion == 5 ? false : toggle,
           // icon: () => (<QuestionImageIconContainer src={compareIcon}/>),
-          icon: () => rowData.question_type != '5' ? (<QuestionImageIconContainer><QuestionImageIcon src={compareIcon}/>
+          icon: () => rowData.question_type != '2' ? (<QuestionImageIconContainer><QuestionImageIcon src={compareIcon}/>
           {/* <QuestionImageIconText>تطبیقی</QuestionImageIconText> */}
           </QuestionImageIconContainer>)
           :
@@ -630,7 +694,7 @@ const Questions = ({toggle}) =>{
                 {(() => {
                   setTypeQuestion(5);
                   // setSelectedRow(rowData.tableData.id);
-                    return <Comparative rowData={createArray(rowData)} typeQuestion={typeQuestion}/>
+                    return <Comparative handleFetchData={handleFetchData} rowData={createArray(rowData)} typeQuestion={typeQuestion}/>
                 })()}
               </div>
             )
@@ -641,7 +705,7 @@ const Questions = ({toggle}) =>{
           // disabled:toggle,
           // disabled: typeQuestion == 6 ? false : toggle,
           // icon: () => (<QuestionImageIcon src={SequentialIcon}/>),
-          icon: () => rowData.question_type != '6' ? (<QuestionImageIconContainer><QuestionImageIcon src={SequentialIcon}/>
+          icon: () => rowData.question_type != '5' ? (<QuestionImageIconContainer><QuestionImageIcon src={SequentialIcon}/>
           {/* <QuestionImageIconText>ترتیبی</QuestionImageIconText> */}
           </QuestionImageIconContainer>)
           :
@@ -668,7 +732,7 @@ const Questions = ({toggle}) =>{
                 {(() => {
                   setTypeQuestion(6);
                   // setSelectedRow(rowData.tableData.id);
-                    return <Sequential rowData={createArray(rowData)} typeQuestion={typeQuestion}/>
+                    return <Sequential handleFetchData={handleFetchData} rowData={createArray(rowData)} typeQuestion={typeQuestion}/>
                 })()}
               </div>
             )
@@ -676,9 +740,13 @@ const Questions = ({toggle}) =>{
         }),
         
       ]}
+
+      onToggleDetailPanel={() => console.log('test11111111')}
+      onTreeExpandChange={() => console.log('test22222222')}
       editable={{
             onRowAdd: newData =>
               new Promise((resolve, reject) => {
+                console.log('ddddddddddd');
                 setTimeout(() => {
                   setData([...data, newData]);
                   

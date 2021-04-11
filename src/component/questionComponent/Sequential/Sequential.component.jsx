@@ -719,11 +719,13 @@ const Sequential = ({setToggle , ...props}) => {
         ]}
         editable={{
 
+          //////////////////////////////////////////
           onRowUpdateCancelled: rowData => {
             loadVariable.load = true;
-            setToggle(false);
+            // setToggle(false);
             console.log('onRowUpdateCancelled',loadVariable.load);
           },
+          //////////////////////////////////////////
 
           onRowUpdate: (newData, oldData) =>
             new Promise((resolve, reject) => {

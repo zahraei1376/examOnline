@@ -1004,24 +1004,14 @@ const TrueAndFalse = ({setToggle ,toggle, ...props}) => {
       
 
         editable={{
-         
-          // onRowAdd: (newData, oldData) => Promise.resolve(),
-          // onRowUpdate: (newData, oldData) => Promise.resolve(),
-
-
+         //////////////////////////////////////////
           onRowUpdateCancelled: rowData => {
-            loadVariable.load = true;
-            // setToggle(false);
-            console.log('dddddddddddddddddddddddd');
+          loadVariable.load = true;
+          // setToggle(false);
+          console.log('onRowUpdateCancelled',loadVariable.load);
           },
-
-          // onRowUpdate: (newData, oldData) =>
-          // new Promise((resolve, reject) => {
-          //   resolve();
-          // }),
-
-
-          onRowUpdate: (newData, oldData) =>
+        //////////////////////////////////////////
+           onRowUpdate: (newData, oldData) =>
             new Promise((resolve, reject) => {
               // setToggle(true);
               setTimeout(() => {
@@ -1355,7 +1345,7 @@ const TrueAndFalse = ({setToggle ,toggle, ...props}) => {
                 resolve(setToggle(false));
                 // reject(setToggle(true));
               }, 1000)
-            }),
+           }),
 
 
 

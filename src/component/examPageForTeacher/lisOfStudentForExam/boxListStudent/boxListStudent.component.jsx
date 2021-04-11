@@ -5,6 +5,11 @@ import {Card ,CardHeader,CardImage,CardName,LikeContainer,LikeBtn,DislikeBtn,Spa
 // import { Grid } from '@material-ui/core';
 import user from '../../../../assets/img/user.png';
 // import CheckCircleIcon from '@material-ui/icons/CheckCircle';
+import {connect} from 'react-redux';
+import {createStructuredSelector} from 'reselect';
+// import {TotalScore ,getStudentId} from '../../../../redux/scoresStudents/scoresStudents.selector';
+// import {getStudentId} from '../../../../redux/scoresStudents/scoresStudents.selector';
+// import { TotalScoreUtil } from '../../../../redux/scoresStudents/scoresStudents.utils.js';
 
 
 const BoxListStudent = props => {
@@ -26,7 +31,7 @@ const BoxListStudent = props => {
     // <Grid key={props.key} item xs={12} sm={5} md={5}>
     <Card key={props.key}>
       
-      <CardHeader  onClick={() => props.getScore(props.student,setScore)} >
+      <CardHeader  onClick={() => props.getScore(props.student)} >
         <CardImage src={user} alt="" />
         <CardName className="card_header-name">{props.student.person_name + ' ' + props.student.person_surname}</CardName>
         {/* <LikeContainer>
@@ -52,7 +57,7 @@ const BoxListStudent = props => {
         <CardBodyInput
           type="number"
           readOnly
-          // onChange={e => props.handleScore(e)}
+          // value={props.TotalScore(props.studentId)}
           defaultValue={score ? score : ''}
           // value={score ? score : null}
         />
@@ -62,4 +67,10 @@ const BoxListStudent = props => {
   );
 };
 
-export default BoxListStudent;
+const mapStateToProps = createStructuredSelector({
+  // TotalScore:TotalScore,
+  // studentId : getStudentId
+});
+
+
+export default connect(mapStateToProps)(BoxListStudent);

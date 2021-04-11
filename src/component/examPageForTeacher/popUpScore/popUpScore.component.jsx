@@ -205,7 +205,7 @@ const PopUpScore = props => {
           {/* exam_delay: String, */}
         </PopUpScoreHeaderDelay>
         <PopUpScorePageQuesion>
-          <ExamPageForTeacher/>
+          <ExamPageForTeacher />
           {/* {questionResponse.length
             ? questionResponse.map((res, index) => {
               return (

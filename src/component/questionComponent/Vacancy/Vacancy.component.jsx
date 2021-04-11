@@ -725,13 +725,13 @@ const Vacancy = ({setToggle , ...props}) => {
         ]}
         
         editable={{
-
-          onRowUpdateCancelled: rowData => {
-            loadVariable.load = true;
-            setToggle(false);
-            console.log('onRowUpdateCancelled',loadVariable.load);
-          },
-
+         //////////////////////////////////////////
+         onRowUpdateCancelled: rowData => {
+          loadVariable.load = true;
+          // setToggle(false);
+          console.log('onRowUpdateCancelled',loadVariable.load);
+        },
+        //////////////////////////////////////////
           onRowUpdate: (newData, oldData) =>
             new Promise((resolve, reject) => {
               // setToggle(true);

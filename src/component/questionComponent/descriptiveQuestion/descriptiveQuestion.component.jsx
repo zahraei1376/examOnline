@@ -3,7 +3,7 @@ import { v4 as uuidv4 } from 'uuid';
 import {UploadfileToserver} from '../uploadToserver/uploadToserver.component';
 import MaterialTable from 'material-table';
 import TextField from '@material-ui/core/TextField';
-import {Input,Button} from '@material-ui/core';
+// import {Input,Button} from '@material-ui/core';
 import {loadVariable} from '../questionComponent';
 import { ComparativeButton } from "../Comparative/Comparative.styles";
 import BackupIcon from '@material-ui/icons/Backup';
@@ -20,9 +20,9 @@ import setToggle from '../../../redux/toggleQuesion/toggleQuestion.action';
 // import {CloudUploadIcon} from '@material-ui/icons';
 // var load = false;
 const graphql_server_uri ='/qraphql';
-
-const DescriptiveQuestion = ({setToggle , ...props}) => {
-    // const tableRef = React.useRef(null);
+// {setToggle , ...props}
+const DescriptiveQuestion = (props) => {
+    const tableRef = React.useRef(null);
     const [innerData, setInnerData] = useState([]);
     /////////////////////////////////////////
     const [textImage, setTextImage] = useState(false); //pic with text
@@ -30,9 +30,10 @@ const DescriptiveQuestion = ({setToggle , ...props}) => {
     const [selectedFile, SetselectedFile] = useState(null);
     const [mimeTypeFile, SetMimeTypeFile] = useState('');
     var format = '';
-
+    //////////////////////////////////////////
     useEffect(()=>{
-
+      // setInnerData(props.rowData);
+      // var mm = document.getElementById('Material');
       if(!loadVariable.load){
         loadVariable.load = true;
         // setToggle(true);
@@ -41,10 +42,17 @@ const DescriptiveQuestion = ({setToggle , ...props}) => {
 
       return ()=>{
         loadVariable.load = false;
+        
+        // console.log('tableRef',tableRef);
+        // MaterialTable.editable.onRowUpdateCancelled();
         // setToggle(false);
       }
 
     },[]);
+
+    // useEffect(()=>{
+    //   console.log('innerData',innerData);
+    // },[innerData])
     ////////////////////////////////////
     const CheckFile = (myFile) =>{
         var file = myFile;
@@ -114,8 +122,6 @@ const DescriptiveQuestion = ({setToggle , ...props}) => {
         }
     };
     ////////////////////////////////////
-
-    //////////////////////////////////////////
     const [innerColumns, setInnerColumns] = useState([
         // {title:'ردیف',field:'questionID' , editable: 'never'},
         // {
@@ -310,8 +316,8 @@ const DescriptiveQuestion = ({setToggle , ...props}) => {
             </label>
           ),
         },
-      ]);
-
+    ]);
+    //////////////////////////////////////////
     function convertText(text){
       var new1Text = text
       ? text.split('\r\n').join('%0A')
@@ -325,37 +331,70 @@ const DescriptiveQuestion = ({setToggle , ...props}) => {
 
       return new3Text;
     }
-  
-
-  
+    //////////////////////////////////////////
     return (
       <div>
       {innerData.length > 0 ? <MaterialTable style={{boxShadow: '0 3px 3px rgba(0,0,0,.4'}}
         title=""
         columns={innerColumns}
         data={innerData}
-        // tableRef={tableRef}
+        tableRef={tableRef}
+        // localization={{
+        //   body: {
+        //     AddRow: {
+        //       saveTooltip: "Salvar",
+        //       cancelTooltip: "Cancelar",
+        //       deleteText: "Tem certeza que deseja deletar este registro?"
+        //     },
+        //     // addTooltip: "Adicionar",
+        //     // deleteTooltip: "Deletar",
+        //     // editTooltip: "Editar"
+        //   },
+        //   // header: {
+        //   //   actions: 'Acciones',
+        //   // }
+        // }}
+
+      //   localization={{
+      //     pagination: {
+      //         labelDisplayedRows: '{from}-{to} of {count}'
+      //     },
+      //     toolbar: {
+      //         nRowsSelected: '{0} row(s) selected'
+      //     },
+      //     header: {
+      //         actions: 'Actions'
+      //     },
+      //     body: {
+      //         emptyDataSourceMessage: 'No records to display',
+      //         filterRow: {
+      //             filterTooltip: 'Filter'
+      //         }
+      //     }
+      // }}
+       
         options={{
           pageSize: 1,
           pageSizeOptions: [1,],
           sorting: true,
           paging: false,
-            search: false,
-            toolbar:false,
-            cellStyle: {
-            //   backgroundColor: '#eee',
-              color: '#000'
-            },
-            headerStyle: {
-              backgroundColor: '#009688',
-              color:'#fff',
-              textAlign:'center',
-            },
-            rowStyle:{
-              backgroundColor: '#fff',
-            }
+          search: false,
+          toolbar:false,
+          cellStyle: {
+          //   backgroundColor: '#eee',
+            color: '#000'
+          },
+          headerStyle: {
+            backgroundColor: '#009688',
+            color:'#fff',
+            textAlign:'center',
+          },
+          rowStyle:{
+            backgroundColor: '#fff',
+          }
             
-          }}
+        }}
+
         actions={[
           {
             icon: 'delete',
@@ -414,7 +453,7 @@ const DescriptiveQuestion = ({setToggle , ...props}) => {
               //     // return res.data;
               //   });
                 //////////////////////////////////////////
-                setToggle(false);
+                // setToggle(false);
                 setInnerData([...dataDelete]);
             }
           },
@@ -452,14 +491,15 @@ const DescriptiveQuestion = ({setToggle , ...props}) => {
           //   }
           // }
         ]}
-        editable={{
 
+        editable={{
+          //////////////////////////////////////////
           onRowUpdateCancelled: rowData => {
             loadVariable.load = true;
             // setToggle(false);
             console.log('onRowUpdateCancelled',loadVariable.load);
           },
-
+          //////////////////////////////////////////
           onRowUpdate: (newData, oldData) =>
             new Promise((resolve, reject) => {
               setTimeout(() => {
@@ -468,8 +508,9 @@ const DescriptiveQuestion = ({setToggle , ...props}) => {
                 /////////////myCode
                 if (
                     // axamIdProps != '' &&
-                    newData.question_score !== undefined &&
-                    newData.question_currentOption !== undefined
+                    newData.question_score !== undefined 
+                    // &&
+                    // newData.question_currentOption !== undefined
                   ) {
                     if (
                       selectedFile &&
@@ -766,11 +807,34 @@ const DescriptiveQuestion = ({setToggle , ...props}) => {
                 dataUpdate[index] = newData;
                 setInnerData([...dataUpdate]);
   
-                resolve(setToggle(false));
                 // resolve(setToggle(false));
+                resolve();
                 // reject(loadVariable.load = false);
               }, 1000)
-            }),
+          }),
+          //////////////////////////////////////////
+
+
+
+
+
+
+
+
+
+
+
+
+           //////////////////////////////////////////
+          //  onRowUpdateCancelled: rowData => {
+          //   loadVariable.load = true;
+          //   // setToggle(false);
+          //   console.log('onRowUpdateCancelled',loadVariable.load);
+          // },
+          //////////////////////////////////////////
+
+          // onRowUpdateCancelled: rowData => console.log("Row editing cancelled"),
+          // onRowUpdateTriggred: rowData => console.log("Row editing opend"),
           // onRowDelete: oldData =>
           //   new Promise((resolve, reject) => {
           //     setTimeout(() => {

@@ -147,7 +147,7 @@ const ArchiveForTeacher = () => {
               <ListOfStudentForExam
                 setListOfStudentsScore={setListOfStudentsScore}
                 listOfStudentsScore={listOfStudentsScore}
-                Click={sendData}
+                // Click={sendData}
                 selectedDate={newSelectedDate}
                 axamId={axamId}
                 // startTime={startTime}
