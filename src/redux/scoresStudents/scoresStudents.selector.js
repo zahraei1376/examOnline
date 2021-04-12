@@ -1,35 +1,62 @@
 import { createSelector} from 'reselect';
+import Helpers from './helper';
 
 const getStudent = state => state.arraysStudentsScores;
-
 export const getStudentId = createSelector(
     [getStudent],
-    (arraysStudentsScores)=> arraysStudentsScores.studentId,
+    (arraysStudentsScores) => arraysStudentsScores.studentId,
 );
+
 
 export const getStudents = createSelector(
     [getStudent],
-    (arraysStudentsScores)=> arraysStudentsScores.students,
+    (arraysStudentsScores) => {
+        console.log('arraysStudentsScores.students',arraysStudentsScores.students);
+        return arraysStudentsScores.students
+    },
 );
 
-
-
-export const TotalScore = (studentId) =>(
+export const totalScore = (studentId) =>(
     createSelector(
-        [getStudents],
-        // collections => collections[collectionUrlparam]
-        students => (students.map(student =>{ 
-            if(student.studentId === studentId) {
-                var total = 0 ;
-                student.scores.map(score =>{
-                    total += parseFloat(score);
-                })
-
-                return total;
-            }else{
-                return null;
+        [getStudent],
+        arraysStudentsScores => 
+        {
+            const ArrStudents = arraysStudentsScores.students;
+            // console.log('ArrStudents',ArrStudents);
+            // console.log('ArrStudents.length',ArrStudents.length);
+            console.log('studentId',studentId);
+            ///////////////////
+            for (let index = 0; index < ArrStudents.length; index++) {
+                // console.log('ArrStudents[index]',ArrStudents[index]);
+                if(ArrStudents[index].studentId === studentId) {
+                    var total = 0 ;
+                    ArrStudents[index].scores.map(score =>{
+                        total += parseFloat(score);
+                    })
+                    console.log('total',total);
+                    return total;
+                }
+                // else{
+                //     return 0;
+                // }
+                
             }
-        }))
+
+            // return ArrStudents.map(student =>{ 
+            //     console.log('student',student);
+            //     if(student.studentId === '1') {
+            //         var total = 0 ; 
+            //         student.scores.map(score =>{
+            //             total += parseFloat(score);
+            //         })
+            //         console.log('total',total);
+            //         return total;
+            //     }
+            //     // else{
+            //     //     return 0;
+            //     // }
+            // })
+        }
     )
 );
 

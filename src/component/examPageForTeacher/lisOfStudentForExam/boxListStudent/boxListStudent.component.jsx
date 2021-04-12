@@ -7,12 +7,12 @@ import user from '../../../../assets/img/user.png';
 // import CheckCircleIcon from '@material-ui/icons/CheckCircle';
 import {connect} from 'react-redux';
 import {createStructuredSelector} from 'reselect';
-// import {TotalScore ,getStudentId} from '../../../../redux/scoresStudents/scoresStudents.selector';
+import {totalScore ,getStudentId} from '../../../../redux/scoresStudents/scoresStudents.selector';
 // import {getStudentId} from '../../../../redux/scoresStudents/scoresStudents.selector';
 // import { TotalScoreUtil } from '../../../../redux/scoresStudents/scoresStudents.utils.js';
 
 
-const BoxListStudent = props => {
+const BoxListStudent = ({student , studentId , total ,getScore}) => {
   // const [currentNumber, setCurrentNumber] = useState(0);
   // const [wrongNumber, setWrongNumber] = useState(0);
   const [score, setScore] = useState('');
@@ -26,14 +26,18 @@ const BoxListStudent = props => {
 
   //   }
   // }, []);
+  useEffect(()=>{
+    console.log('total',total);
+    // setScore(total);
+  },[total])
 
   return (
     // <Grid key={props.key} item xs={12} sm={5} md={5}>
-    <Card key={props.key}>
+    <Card onClick={() => getScore(student)}>
       
-      <CardHeader  onClick={() => props.getScore(props.student)} >
+      <CardHeader >
         <CardImage src={user} alt="" />
-        <CardName className="card_header-name">{props.student.person_name + ' ' + props.student.person_surname}</CardName>
+        <CardName className="card_header-name">{student.person_name + ' ' + student.person_surname}</CardName>
         {/* <LikeContainer>
           <LikeBtn href="#" type="button" className="card_btn-green">
             <Span>{currentNumber !== 'undefined' ? currentNumber : '-'}</Span>
@@ -57,8 +61,8 @@ const BoxListStudent = props => {
         <CardBodyInput
           type="number"
           readOnly
-          // value={props.TotalScore(props.studentId)}
-          defaultValue={score ? score : ''}
+          value={studentId ?  total : ''}
+          // defaultValue={score ? score : ''}
           // value={score ? score : null}
         />
       </CardBody>
@@ -67,10 +71,28 @@ const BoxListStudent = props => {
   );
 };
 
+// const mapStateToProps = (state, MYPROPS) => {
+//   return createStructuredSelector({
+//     // foo: selectFoo(state, props),   // === createSelector(inputSelectors...)
+//     studentId : getStudentId,
+//     total : (MYPROPS) => totalScore(MYPROPS),
+//   });
+// };
+
 const mapStateToProps = createStructuredSelector({
-  // TotalScore:TotalScore,
-  // studentId : getStudentId
+  studentId : getStudentId,
+  total : (state, ownProps) => totalScore(ownProps.student.person_id)(state, ownProps),
 });
+
+// const mapStateToProps = createStructuredSelector({
+//   something: (state, ownProps) => selectSomethingById(ownProps.id)(state, ownProps)
+// });
+
+// const mapStateToProps = (state, ownProps) =>({
+//   // collection:selectCollection(ownProps.match.params.collectionId)(state),
+//   studentId : getStudentId,
+//   total : (studentId) => totalScore(studentId)(state),
+// });
 
 
 export default connect(mapStateToProps)(BoxListStudent);

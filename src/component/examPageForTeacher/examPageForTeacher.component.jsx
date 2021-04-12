@@ -347,29 +347,29 @@ const ExamPageForTeacher = ({type}) => {
                 Item ? Item.map((question ,index) =>(
                     (() => {
                         if(question.question_type == '1'){
-                            return <ShowDescriptiveQuestionForArchive question={question} number={index} 
+                            return <ShowDescriptiveQuestionForArchive key={index} question={question} number={index} 
                             // responseQuestion={RsponseExam} 
                             /> 
                         }else if(question.question_type == '2'){
-                            return <ShowComparativeQuestionForArchive question={question} number={index} 
+                            return <ShowComparativeQuestionForArchive key={index} question={question} number={index} 
                             // responseQuestion={RsponseExam}
                             // items={RandomArray(Item[index].items)}
                              /> 
                         }
                         else if(question.question_type == '3'){
-                            return <ShowMultipleChoiceQuestionForArchive question={question} 
+                            return <ShowMultipleChoiceQuestionForArchive key={index} question={question} 
                             // responseQuestion={RsponseExam} 
                             number={index}
                             />
                         }
                         else if(question.question_type == '4'){
-                            return <ShowTrueAndFalseQuestionForArchive question={question} 
+                            return <ShowTrueAndFalseQuestionForArchive key={index} question={question} 
                             // responseQuestion={RsponseExam} 
                             number={index} 
                             />
                         }
                         else if(question.question_type == '5'){
-                            return <ShowSequentialQuestionForArchive question={question}
+                            return <ShowSequentialQuestionForArchive key={index} question={question}
                             //  responseQuestion={RsponseExam} 
                             number={index} 
                             // SeqItems={SeqRandomArray(Item[index].SeqItems)}
