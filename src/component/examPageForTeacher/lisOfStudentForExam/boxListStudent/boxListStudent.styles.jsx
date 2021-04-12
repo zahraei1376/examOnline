@@ -142,7 +142,8 @@ export const CardHeader = styled.div`
     border-top-right-radius:1rem;
     // rgb(246,157,60)
     // background-color: rgba(0, 0, 0, 0.03);
-    background-color:rgba(246,157,60,0.5);
+    // background-color:rgba(246,157,60,0.5);
+    background-color:#546E7A;
     // background-color:rgba(63,135,166,0.3);
     // background-color:#3f87a6;
     display: flex;
@@ -151,15 +152,17 @@ export const CardHeader = styled.div`
     align-items: center;
     // border-bottom: 1px solid #e4e9f2;
     // border-bottom:1px solid #3f87a6;
-    color:#3f87a6;
+    // color:#3f87a6;
+    color:#fff;
     // color: #888c9c;
     cursor: pointer;
     transition:all .3s;
 
     &:hover{
       // background-color: #009688;
-      background-color:rgba(246,157,60,1);
-      color:#fff;
+      // background-color:rgba(246,157,60,1);
+      background-color:#546E7A;
+      color:rgba(246,157,60,1);
     }
 `;
 
@@ -212,9 +215,10 @@ export const Card = styled.div`
 
     
     ${CardHeader}{
-      background-color:rgba(246,157,60,1);
+      // background-color:rgba(246,157,60,1);
       // background-color: #009688;
-      color:#fff;
+      background-color:#455A64;
+      color:rgba(246,157,60,1);
       border-top-left-radius:1rem;
       border-top-right-radius:1rem;
     }
