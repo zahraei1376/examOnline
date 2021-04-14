@@ -53,13 +53,13 @@ const DescriptionItemForArchive = ({number,descriptionRes,descriptionResLink,cha
     )
 }
 
-const ShowDescriptiveQuestionForArchive = ({question, number}) =>{
+const ShowDescriptiveQuestionForArchive = ({question, number ,type}) =>{
     const changeShowImage = () => {
         //changedData
     }
 
     return(
-        <ShowBodyQuestionsForArchive changeShowImage = {changeShowImage()} question={question} number={number} responseScore = {question.response_score} >
+        <ShowBodyQuestionsForArchive myType={type} changeShowImage = {changeShowImage()} question={question} number={number} responseScore = {question.response_score} >
             <DescriptionItemForArchive changeShowImage = {changeShowImage()} number={number} descriptionRes={question.response_descriptionQuestion} descriptionResLink={question.response_descriptionImageLink}/>
         </ShowBodyQuestionsForArchive>
     )

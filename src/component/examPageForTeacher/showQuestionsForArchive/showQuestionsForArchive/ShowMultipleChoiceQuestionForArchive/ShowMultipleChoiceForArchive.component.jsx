@@ -13,12 +13,12 @@ const ShowMultipleChoiceItemsForArchive = ({number,item ,StudentItem})=>{
                 <QuestionSquare
                   style={{
                     backgroundColor:
-                      StudentItem == '1' && item.question_currentOption == '1'
+                      StudentItem == '1' && item.question_correctOption == '1'
                         ? 'green'
                         : StudentItem == '1' &&
-                        item.question_currentOption != '1'
+                        item.question_correctOption != '1'
                           ? 'red'
-                          : item.question_currentOption == '1'
+                          : item.question_correctOption == '1'
                             ? 'green'
                             : 'rgb(78, 76, 76)',
                   }}
@@ -38,12 +38,12 @@ const ShowMultipleChoiceItemsForArchive = ({number,item ,StudentItem})=>{
                 <QuestionSquare
                   style={{
                     backgroundColor:
-                      StudentItem == '2' && item.question_currentOption == '2'
+                      StudentItem == '2' && item.question_correctOption == '2'
                         ? 'green'
                         : StudentItem == '2' &&
-                        item.question_currentOption != '2'
+                        item.question_correctOption != '2'
                           ? 'red'
-                          : item.question_currentOption == '2'
+                          : item.question_correctOption == '2'
                             ? 'green'
                             : 'rgb(78, 76, 76)',
                   }}
@@ -63,12 +63,12 @@ const ShowMultipleChoiceItemsForArchive = ({number,item ,StudentItem})=>{
                 <QuestionSquare
                   style={{
                     backgroundColor:
-                      StudentItem == '3' && item.question_currentOption == '3'
+                      StudentItem == '3' && item.question_correctOption == '3'
                         ? 'green'
                         : StudentItem == '3' &&
-                        item.question_currentOption != '3'
+                        item.question_correctOption != '3'
                           ? 'red'
-                          : item.question_currentOption == '3'
+                          : item.question_correctOption == '3'
                             ? 'green'
                             : 'rgb(78, 76, 76)',
                   }}
@@ -88,12 +88,12 @@ const ShowMultipleChoiceItemsForArchive = ({number,item ,StudentItem})=>{
                 <QuestionSquare
                   style={{
                     backgroundColor:
-                      StudentItem == '4' && item.question_currentOption == '4'
+                      StudentItem == '4' && item.question_correctOption == '4'
                         ? 'green'
                         : StudentItem == '4' &&
-                        item.question_currentOption != '4'
+                        item.question_correctOption != '4'
                           ? 'red'
-                          : item.question_currentOption == '4'
+                          : item.question_correctOption == '4'
                             ? 'green'
                             : 'rgb(78, 76, 76)',
                   }}
@@ -111,9 +111,9 @@ const ShowMultipleChoiceItemsForArchive = ({number,item ,StudentItem})=>{
     )
 }
 
-const ShowMultipleChoiceQuestionForArchive = ({question, number}) =>{
+const ShowMultipleChoiceQuestionForArchive = ({question, number,type}) =>{
     return(
-        <ShowBodyQuestionsForArchive question={question} number={number} responseScore = {question.response_score}>
+        <ShowBodyQuestionsForArchive myType={type} question={question} number={number} responseScore = {question.response_score}>
           <ShowMultipleChoiceItemsForArchive number={number} item={question} StudentItem={question.response_studentItem} />
         </ShowBodyQuestionsForArchive>
     )

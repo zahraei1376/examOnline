@@ -395,7 +395,7 @@ const Comparative = ({setToggle , ...props}) => {
         // {
         //   title: 'گزینه صحیح',
         //   textAlign: 'center',
-        //   field: 'question_currentOption',
+        //   field: 'question_correctOption',
         //   lookup: {
         //     1: '1',
         //     2: '2',
@@ -404,7 +404,7 @@ const Comparative = ({setToggle , ...props}) => {
         //   },
         //   minWidth: 150,
         // //   validate: rowData =>
-        // //     rowData.question_currentOption === '' ? 'Name cannot be empty' : '',
+        // //     rowData.question_correctOption === '' ? 'Name cannot be empty' : '',
         //   render: data => {
         //     return (
         //       <p
@@ -415,7 +415,7 @@ const Comparative = ({setToggle , ...props}) => {
         //           width: '50px',
         //         }}
         //       >
-        //         {data.question_currentOption}
+        //         {data.question_correctOption}
         //       </p>
         //     );
         //   },
@@ -551,7 +551,7 @@ const Comparative = ({setToggle , ...props}) => {
         //     rowData.question_score !== '' ? 'Name cannot be empty' : '',
           editComponent: props => (
             <ComparativeModal 
-            compItems={props.rowData.exam_compItems}
+            compItems={props.rowData.question_compItems}
              />
             
           ),
@@ -672,104 +672,105 @@ const Comparative = ({setToggle , ...props}) => {
           //     // setToggle(true);
           //     return (
           //       <MTableEditRow
-          //         {...props}
+          //         // {...props}
+          //         // onClick={setToggle(true)}
           //         // onEditingApproved
-          //         onRowUpdateCancelled
+          //         // onRowUpdateCancelled
           //       />
           //     );
           //   }
           // }}
-        actions={[
-          {
-            icon: 'delete',
-            tooltip: 'حذف',
-            // onClick: (event, rowData) => {
-              onClick: (event, rowData) => {
-              // Do save operation
-                const dataDelete = [...innerData];
-                const index = rowData.tableData.id;
-                dataDelete.splice(index, 1);
-                ////////////////////////////////////
-              // fetch(graphql_server_uri, {
-              //   method: 'POST',
-              //   headers: { 'Content-Type': 'application/json' },
-              //   body: JSON.stringify({
-              //     query: `
-              //       mutation{
-              //           deleteQuestion(
-              //               axamQuestion_input: {
-              //                   questionID: "${'1'}"
-              //                   axamQuestions_id: "${'1'}"
-              //                   question: "${convertText(rowData.question)}"
-              //                   question_link: "${rowData.question_link ? rowData.question_link : ''}"
-              //                   question_optionOne: "${convertText(rowData.question_optionOne)}"
-              //                   question_optionTwo:"${convertText(rowData.question_optionTwo)}"
-              //                   question_optionThree: "${convertText(rowData.question_optionThree)}"
-              //                   question_optionFour: "${convertText(rowData.question_optionFour)}"
-              //                   question_currentOption: "${rowData.question_currentOption}"
-              //                   question_timeToSolveProblem: "${convertText(rowData.question_timeToSolveProblem)}"
-              //                   question_score: "${rowData.question_score ? rowData.question_score : ''}"
-              //                   question_explane: "${convertText(rowData.question_explane)}"
-              //                   exam_link: "${rowData.exam_link ? rowData.exam_link : ''}"
-              //             },
-              //         ){
-              //           axamQuestions_id
-              //         }
-              //       }                      
-              //     `,
-              //   }),
-              // })
-              //   .then(res => res.json())
-              //   .then(res => {
-              //     // setSumScore(prevState => (prevState - parseFloat(oldScore)));
-              //     if (
-              //       res.data &&
-              //       res.data.deleteQuestion &&
-              //       res.data.deleteQuestion.axamQuestions_id
-              //     ) {
-              //       /////
-              //       alert('اطلاعاتی به درستی حذف نشد');
-              //       // setStatus(1);
-              //       // setShowPopup(true);
-              //     } else {
-              //       // setQuestionId(data.length)
-              //       // setMessage('اطلاعاتی به درستی حذف شد');
-              //       // setStatus(0);
-              //       // setShowPopup(true);
-              //       // refteshData();
-              //       //   return res.data;
-              //     }
-              //     // return res.data;
-              //   });
-                //////////////////////////////////////////
-                setToggle(false);
-                setInnerData([...dataDelete]);
-            }
-          },
-          // {
-          //   icon: "edit",
-          //   tooltip: "ویرایش",
-          //   onClick: async(event, rowData) => {
-          //     console.log("RRRRRRRRR", rowData);
+        // actions={[
+        //   {
+        //     icon: 'delete',
+        //     tooltip: 'حذف',
+        //     // onClick: (event, rowData) => {
+        //       onClick: (event, rowData) => {
+        //       // Do save operation
+        //         const dataDelete = [...innerData];
+        //         const index = rowData.tableData.id;
+        //         dataDelete.splice(index, 1);
+        //         ////////////////////////////////////
+        //       // fetch(graphql_server_uri, {
+        //       //   method: 'POST',
+        //       //   headers: { 'Content-Type': 'application/json' },
+        //       //   body: JSON.stringify({
+        //       //     query: `
+        //       //       mutation{
+        //       //           deleteQuestion(
+        //       //               axamQuestion_input: {
+        //       //                   questionID: "${'1'}"
+        //       //                   axamQuestions_id: "${'1'}"
+        //       //                   question: "${convertText(rowData.question)}"
+        //       //                   question_link: "${rowData.question_link ? rowData.question_link : ''}"
+        //       //                   question_optionOne: "${convertText(rowData.question_optionOne)}"
+        //       //                   question_optionTwo:"${convertText(rowData.question_optionTwo)}"
+        //       //                   question_optionThree: "${convertText(rowData.question_optionThree)}"
+        //       //                   question_optionFour: "${convertText(rowData.question_optionFour)}"
+        //       //                   question_correctOption: "${rowData.question_correctOption}"
+        //       //                   question_timeToSolveProblem: "${convertText(rowData.question_timeToSolveProblem)}"
+        //       //                   question_score: "${rowData.question_score ? rowData.question_score : ''}"
+        //       //                   question_explane: "${convertText(rowData.question_explane)}"
+        //       //                   exam_link: "${rowData.exam_link ? rowData.exam_link : ''}"
+        //       //             },
+        //       //         ){
+        //       //           axamQuestions_id
+        //       //         }
+        //       //       }                      
+        //       //     `,
+        //       //   }),
+        //       // })
+        //       //   .then(res => res.json())
+        //       //   .then(res => {
+        //       //     // setSumScore(prevState => (prevState - parseFloat(oldScore)));
+        //       //     if (
+        //       //       res.data &&
+        //       //       res.data.deleteQuestion &&
+        //       //       res.data.deleteQuestion.axamQuestions_id
+        //       //     ) {
+        //       //       /////
+        //       //       alert('اطلاعاتی به درستی حذف نشد');
+        //       //       // setStatus(1);
+        //       //       // setShowPopup(true);
+        //       //     } else {
+        //       //       // setQuestionId(data.length)
+        //       //       // setMessage('اطلاعاتی به درستی حذف شد');
+        //       //       // setStatus(0);
+        //       //       // setShowPopup(true);
+        //       //       // refteshData();
+        //       //       //   return res.data;
+        //       //     }
+        //       //     // return res.data;
+        //       //   });
+        //         //////////////////////////////////////////
+        //         setToggle(false);
+        //         setInnerData([...dataDelete]);
+        //     }
+        //   },
+        //   {
+        //     icon: "edit",
+        //     tooltip: "ویرایش",
+        //     onClick: async(event, rowData) => {
+        //       console.log("RRRRRRRRR", rowData);
               
-          //     // setTemp1(true);
-          //     tableRef.current.dataManager.changeRowEditing(rowData, "update");
+        //       // setTemp1(true);
+        //       tableRef.current.dataManager.changeRowEditing(rowData, "update");
   
-          //     await tableRef.current.setState(
-          //       (0, _objectSpread2["default"])(
-          //         {},
-          //         tableRef.current.dataManager.getRenderState(),
-          //         {
-          //           showAddRow: false,
-          //         },
-          //         // setToggle(true)
-          //       )
-          //     );
-          //     // setToggle(true)
-          //     // setTemp(true);
-          //   },
-          // },
-        ]}
+        //       await tableRef.current.setState(
+        //         (0, _objectSpread2["default"])(
+        //           {},
+        //           tableRef.current.dataManager.getRenderState(),
+        //           {
+        //             showAddRow: false,
+        //           },
+        //           // setToggle(true)
+        //         )
+        //       );
+        //       // setToggle(true)
+        //       // setTemp(true);
+        //     },
+        //   },
+        // ]}
         editable={{
           //////////////////////////////////////////
           onRowUpdateCancelled: rowData => {
@@ -792,7 +793,7 @@ const Comparative = ({setToggle , ...props}) => {
                 if (
                     // axamIdProps != '' &&
                     newData.question_score !== undefined &&
-                    newData.question_currentOption !== undefined
+                    newData.question_correctOption !== undefined
                   ) {
                     if (
                       selectedFile &&
@@ -827,7 +828,7 @@ const Comparative = ({setToggle , ...props}) => {
                                 }"
                                                       question_optionOne: "${convertText(newData.question_optionOne)}"
                                                       question_optionTwo:"${convertText(newData.question_optionTwo)}"
-                                                      question_currentOption: "${newData.question_currentOption ? newData.question_currentOption: ''
+                                                      question_correctOption: "${newData.question_correctOption ? newData.question_correctOption: ''
                                 }"
                                                     question_optionThree: "${convertText(newData.question_optionThree)}"
                                                     question_optionFour: "${convertText(newData.question_optionFour)}"
@@ -846,7 +847,7 @@ const Comparative = ({setToggle , ...props}) => {
                                                 question_optionTwo:"${convertText(oldData.question_optionTwo)}"
                                                 question_optionThree: "${convertText(oldData.question_optionThree)}"
                                                 question_optionFour: "${convertText(oldData.question_optionFour)}"
-                                                question_currentOption: "${oldData.question_currentOption ? oldData.question_currentOption : ''
+                                                question_correctOption: "${oldData.question_correctOption ? oldData.question_correctOption : ''
                                     }"
                                                 question_timeToSolveProblem: "${convertText(oldData.question_timeToSolveProblem)}"
                                                 question_score: "${ oldData.question_score ? oldData.question_score : ''
@@ -959,7 +960,7 @@ const Comparative = ({setToggle , ...props}) => {
                                                       question_optionTwo:"${convertText(newData.question_optionTwo)}"
                                                       question_optionThree: "${convertText(newData.question_optionThree)}"
                                                       question_optionFour: "${convertText(newData.question_optionFour)}"
-                                                      question_currentOption: "${newData.question_currentOption ? newData.question_currentOption : ''
+                                                      question_correctOption: "${newData.question_correctOption ? newData.question_correctOption : ''
                                 }"
                                                       question_timeToSolveProblem: "${convertText(newData.question_timeToSolveProblem)}"
                                                       question_score: "${newData.question_score ? newData.question_score: ''
@@ -975,7 +976,7 @@ const Comparative = ({setToggle , ...props}) => {
                                                 question_optionTwo:"${convertText(oldData.question_optionTwo)}"
                                                 question_optionThree: "${convertText(oldData.question_optionThree)}"
                                                 question_optionFour: "${convertText(oldData.question_optionFour)}"
-                                                question_currentOption: "${oldData.question_currentOption ? oldData.question_currentOption : ''
+                                                question_correctOption: "${oldData.question_correctOption ? oldData.question_correctOption : ''
                                     }"
                                                 question_timeToSolveProblem: "${convertText(oldData.question_timeToSolveProblem)}"
                                                 question_score: "${ oldData.question_score ? oldData.question_score : ''
@@ -1047,7 +1048,7 @@ const Comparative = ({setToggle , ...props}) => {
                                                       question_link: "${''}"
                                                       question_optionOne: "${convertText(newData.question_optionOne)}"
                                                       question_optionTwo:"${convertText(newData.question_optionTwo)}"
-                                                      question_currentOption: "${newData.question_currentOption ? newData.question_currentOption : ''
+                                                      question_correctOption: "${newData.question_correctOption ? newData.question_correctOption : ''
                             }"
                                                       question_timeToSolveProblem: "${convertText(newData.question_timeToSolveProblem)}"
                                                       question_score: "${newData.question_score ? newData.question_score : ''
@@ -1061,7 +1062,7 @@ const Comparative = ({setToggle , ...props}) => {
                                                 question_link: "${convertText(oldData.question_link)}"
                                                 question_optionOne: "${convertText(oldData.question_optionOne)}"
                                                 question_optionTwo:"${convertText(oldData.question_optionTwo)}"
-                                                question_currentOption: "${oldData.question_currentOption ? oldData.question_currentOption : ''
+                                                question_correctOption: "${oldData.question_correctOption ? oldData.question_correctOption : ''
                                     }"
                                                 question_timeToSolveProblem: "${convertText(oldData.question_timeToSolveProblem)}"
                                                 question_score: "${ oldData.question_score ? oldData.question_score : ''

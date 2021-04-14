@@ -337,7 +337,7 @@ const TrueAndFalse = ({setToggle ,toggle, ...props}) => {
         {
           title: 'گزینه صحیح',
           textAlign: 'center',
-          field: 'question_currentOption',
+          field: 'question_correctOption',
           lookup: {
             1: '1',
             2: '2',
@@ -346,7 +346,7 @@ const TrueAndFalse = ({setToggle ,toggle, ...props}) => {
           },
           minWidth: 150,
         //   validate: rowData =>
-        //     rowData.question_currentOption === '' ? 'Name cannot be empty' : '',
+        //     rowData.question_correctOption === '' ? 'Name cannot be empty' : '',
           render: data => {
             return (
               <p
@@ -357,7 +357,7 @@ const TrueAndFalse = ({setToggle ,toggle, ...props}) => {
                   width: '50px',
                 }}
               >
-                {data.question_currentOption}
+                {data.question_correctOption}
               </p>
             );
           },
@@ -601,7 +601,7 @@ const TrueAndFalse = ({setToggle ,toggle, ...props}) => {
               //                   question_link: "${rowData.question_link ? rowData.question_link : ''}"
               //                   question_optionOne: "${convertText(rowData.question_optionOne)}"
               //                   question_optionTwo:"${convertText(rowData.question_optionTwo)}"
-              //                   question_currentOption: "${rowData.question_currentOption}"
+              //                   question_correctOption: "${rowData.question_correctOption}"
               //                   question_timeToSolveProblem: "${convertText(rowData.question_timeToSolveProblem)}"
               //                   question_score: "${rowData.question_score ? rowData.question_score : ''}"
               //                   question_explane: "${convertText(rowData.question_explane)}"
@@ -653,7 +653,7 @@ const TrueAndFalse = ({setToggle ,toggle, ...props}) => {
           //         // if (
           //         //     // axamIdProps != '' &&
           //         //     rowData.newData.question_score !== undefined &&
-          //         //     rowData.newData.question_currentOption !== undefined
+          //         //     rowData.newData.question_correctOption !== undefined
           //         //   ) {
           //         //     if (
           //         //       selectedFile &&
@@ -688,7 +688,7 @@ const TrueAndFalse = ({setToggle ,toggle, ...props}) => {
           //         //                 }"
           //         //                                       question_optionOne: "${convertText(rowData.newData.question_optionOne)}"
           //         //                                       question_optionTwo:"${convertText(rowData.newData.question_optionTwo)}"
-          //         //                                       question_currentOption: "${rowData.newData.question_currentOption ? rowData.newData.question_currentOption: ''
+          //         //                                       question_correctOption: "${rowData.newData.question_correctOption ? rowData.newData.question_correctOption: ''
           //         //                 }"
           //         //                                       question_timeToSolveProblem: "${convertText(rowData.newData.question_timeToSolveProblem)}"
           //         //                                       question_score: "${rowData.newData.question_score ? rowData.newData.question_score : ''
@@ -703,7 +703,7 @@ const TrueAndFalse = ({setToggle ,toggle, ...props}) => {
           //         //                                 question_link: "${convertText(rowData.oldData.question_link)}"
           //         //                                 question_optionOne: "${convertText(rowData.oldData.question_optionOne)}"
           //         //                                 question_optionTwo:"${convertText(rowData.oldData.question_optionTwo)}"
-          //         //                                 question_currentOption: "${rowData.oldData.question_currentOption ? rowData.oldData.question_currentOption : ''
+          //         //                                 question_correctOption: "${rowData.oldData.question_correctOption ? rowData.oldData.question_correctOption : ''
           //         //                     }"
           //         //                                 question_timeToSolveProblem: "${convertText(rowData.oldData.question_timeToSolveProblem)}"
           //         //                                 question_score: "${ rowData.oldData.question_score ? rowData.oldData.question_score : ''
@@ -814,7 +814,7 @@ const TrueAndFalse = ({setToggle ,toggle, ...props}) => {
           //         //                                       question_link: "${''}"
           //         //                                       question_optionOne: "${convertText(rowData.newData.question_optionOne)}"
           //         //                                       question_optionTwo:"${convertText(rowData.newData.question_optionTwo)}"
-          //         //                                       question_currentOption: "${rowData.newData.question_currentOption ? rowData.newData.question_currentOption : ''
+          //         //                                       question_correctOption: "${rowData.newData.question_correctOption ? rowData.newData.question_correctOption : ''
           //         //                 }"
           //         //                                       question_timeToSolveProblem: "${convertText(rowData.newData.question_timeToSolveProblem)}"
           //         //                                       question_score: "${rowData.newData.question_score ? rowData.newData.question_score: ''
@@ -828,7 +828,7 @@ const TrueAndFalse = ({setToggle ,toggle, ...props}) => {
           //         //                                 question_link: "${convertText(rowData.oldData.question_link)}"
           //         //                                 question_optionOne: "${convertText(rowData.oldData.question_optionOne)}"
           //         //                                 question_optionTwo:"${convertText(rowData.oldData.question_optionTwo)}"
-          //         //                                 question_currentOption: "${rowData.oldData.question_currentOption ? rowData.oldData.question_currentOption : ''
+          //         //                                 question_correctOption: "${rowData.oldData.question_correctOption ? rowData.oldData.question_correctOption : ''
           //         //                     }"
           //         //                                 question_timeToSolveProblem: "${convertText(rowData.oldData.question_timeToSolveProblem)}"
           //         //                                 question_score: "${ rowData.oldData.question_score ? rowData.oldData.question_score : ''
@@ -900,7 +900,7 @@ const TrueAndFalse = ({setToggle ,toggle, ...props}) => {
           //         //                                       question_link: "${''}"
           //         //                                       question_optionOne: "${convertText(rowData.newData.question_optionOne)}"
           //         //                                       question_optionTwo:"${convertText(rowData.newData.question_optionTwo)}"
-          //         //                                       question_currentOption: "${rowData.newData.question_currentOption ? rowData.newData.question_currentOption : ''
+          //         //                                       question_correctOption: "${rowData.newData.question_correctOption ? rowData.newData.question_correctOption : ''
           //         //             }"
           //         //                                       question_timeToSolveProblem: "${convertText(rowData.newData.question_timeToSolveProblem)}"
           //         //                                       question_score: "${rowData.newData.question_score ? rowData.newData.question_score : ''
@@ -914,7 +914,7 @@ const TrueAndFalse = ({setToggle ,toggle, ...props}) => {
           //         //                                 question_link: "${convertText(rowData.oldData.question_link)}"
           //         //                                 question_optionOne: "${convertText(rowData.oldData.question_optionOne)}"
           //         //                                 question_optionTwo:"${convertText(rowData.oldData.question_optionTwo)}"
-          //         //                                 question_currentOption: "${rowData.oldData.question_currentOption ? rowData.oldData.question_currentOption : ''
+          //         //                                 question_correctOption: "${rowData.oldData.question_correctOption ? rowData.oldData.question_correctOption : ''
           //         //                     }"
           //         //                                 question_timeToSolveProblem: "${convertText(rowData.oldData.question_timeToSolveProblem)}"
           //         //                                 question_score: "${ rowData.oldData.question_score ? rowData.oldData.question_score : ''
@@ -1021,7 +1021,7 @@ const TrueAndFalse = ({setToggle ,toggle, ...props}) => {
                 if (
                     // axamIdProps != '' &&
                     newData.question_score !== undefined &&
-                    newData.question_currentOption !== undefined
+                    newData.question_correctOption !== undefined
                   ) {
                     if (
                       selectedFile &&
@@ -1056,7 +1056,7 @@ const TrueAndFalse = ({setToggle ,toggle, ...props}) => {
                                 }"
                                                       question_optionOne: "${convertText(newData.question_optionOne)}"
                                                       question_optionTwo:"${convertText(newData.question_optionTwo)}"
-                                                      question_currentOption: "${newData.question_currentOption ? newData.question_currentOption: ''
+                                                      question_correctOption: "${newData.question_correctOption ? newData.question_correctOption: ''
                                 }"
                                                       question_timeToSolveProblem: "${convertText(newData.question_timeToSolveProblem)}"
                                                       question_score: "${newData.question_score ? newData.question_score : ''
@@ -1071,7 +1071,7 @@ const TrueAndFalse = ({setToggle ,toggle, ...props}) => {
                                                 question_link: "${convertText(oldData.question_link)}"
                                                 question_optionOne: "${convertText(oldData.question_optionOne)}"
                                                 question_optionTwo:"${convertText(oldData.question_optionTwo)}"
-                                                question_currentOption: "${oldData.question_currentOption ? oldData.question_currentOption : ''
+                                                question_correctOption: "${oldData.question_correctOption ? oldData.question_correctOption : ''
                                     }"
                                                 question_timeTosolveProblem: "${convertText(oldData.question_timeTosolveProblem)}"
                                                 question_score: "${ oldData.question_score ? oldData.question_score : ''
@@ -1182,7 +1182,7 @@ const TrueAndFalse = ({setToggle ,toggle, ...props}) => {
                                                       question_link: "${''}"
                                                       question_optionOne: "${convertText(newData.question_optionOne)}"
                                                       question_optionTwo:"${convertText(newData.question_optionTwo)}"
-                                                      question_currentOption: "${newData.question_currentOption ? newData.question_currentOption : ''
+                                                      question_correctOption: "${newData.question_correctOption ? newData.question_correctOption : ''
                                 }"
                                                       question_timeTosolveProblem: "${convertText(newData.question_timeTosolveProblem)}"
                                                       question_score: "${newData.question_score ? newData.question_score: ''
@@ -1196,7 +1196,7 @@ const TrueAndFalse = ({setToggle ,toggle, ...props}) => {
                                                 question_link: "${convertText(oldData.question_link)}"
                                                 question_optionOne: "${convertText(oldData.question_optionOne)}"
                                                 question_optionTwo:"${convertText(oldData.question_optionTwo)}"
-                                                question_currentOption: "${oldData.question_currentOption ? oldData.question_currentOption : ''
+                                                question_correctOption: "${oldData.question_correctOption ? oldData.question_correctOption : ''
                                     }"
                                                 question_timeTosolveProblem: "${convertText(oldData.question_timeTosolveProblem)}"
                                                 question_score: "${ oldData.question_score ? oldData.question_score : ''
@@ -1268,7 +1268,7 @@ const TrueAndFalse = ({setToggle ,toggle, ...props}) => {
                                                       question_link: "${''}"
                                                       question_optionOne: "${convertText(newData.question_optionOne)}"
                                                       question_optionTwo:"${convertText(newData.question_optionTwo)}"
-                                                      question_currentOption: "${newData.question_currentOption ? newData.question_currentOption : ''
+                                                      question_correctOption: "${newData.question_correctOption ? newData.question_correctOption : ''
                             }"
                                                       question_timeTosolveProblem: "${convertText(newData.question_timeTosolveProblem)}"
                                                       question_score: "${newData.question_score ? newData.question_score : ''
@@ -1282,7 +1282,7 @@ const TrueAndFalse = ({setToggle ,toggle, ...props}) => {
                                                 question_link: "${convertText(oldData.question_link)}"
                                                 question_optionOne: "${convertText(oldData.question_optionOne)}"
                                                 question_optionTwo:"${convertText(oldData.question_optionTwo)}"
-                                                question_currentOption: "${oldData.question_currentOption ? oldData.question_currentOption : ''
+                                                question_correctOption: "${oldData.question_correctOption ? oldData.question_correctOption : ''
                                     }"
                                                 question_timeTosolveProblem: "${convertText(oldData.question_timeTosolveProblem)}"
                                                 question_score: "${ oldData.question_score ? oldData.question_score : ''

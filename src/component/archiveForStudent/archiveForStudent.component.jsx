@@ -87,6 +87,7 @@
 
 ///////////////////////////////
 import React, { useEffect, useState } from 'react';
+import MaterialTableAxamsForStudent from './examsTableForStudent.component';
 // import MaterialTableAxams from './axamTableForStudent';
 import {DateContainer,LableDiv , Lable ,ListOfStudentContainer,TableContainer} from './archiveForStudent.styles';
 import PersianDatePicker from '../../generalComponent/MaterialDatePicker/MaterialDatePicker';
@@ -117,14 +118,14 @@ const ArchiveForStudent = () => {
     );
   }, [selectedDate]);
 
-  const togglePopup = () => {
-    setShowPopup(!ShowPopup);
-  };
+  // const togglePopup = () => {
+  //   setShowPopup(!ShowPopup);
+  // };
 
 
-  const closePopUp = () => {
-    setShowDetails(!showDetails);
-  }
+  // const closePopUp = () => {
+  //   setShowDetails(!showDetails);
+  // }
   /////////////////
 
   const handleSetExamID = (
@@ -156,53 +157,15 @@ const ArchiveForStudent = () => {
           />
         </DateContainer>
         <Grid item xs={12} sm={12} md={12}>
-          <MaterialTableAxams
+          <MaterialTableAxamsForStudent
             selectedDate={newSelectedDate}
-            setShowRank={setShowRank}
-            setShowStudentList={setShowStudentList}
-            setShowDetails={setShowDetails}
-            handleSetExamID={handleSetExamID}
+            // setShowRank={setShowRank}
+            // setShowStudentList={setShowStudentList}
+            // setShowDetails={setShowDetails}
+            // handleSetExamID={handleSetExamID}
           />
         </Grid>
         </TableContainer>
-        <Grid item xs={12} sm={12} md={12}>
-          {showStudentList ? 
-            <ListOfStudentContainer style={{ marginTop: '60px' }}>
-              <ListOfStudentForExam
-                setListOfStudentsScore={setListOfStudentsScore}
-                listOfStudentsScore={listOfStudentsScore}
-                // Click={sendData}
-                selectedDate={newSelectedDate}
-                axamId={axamId}
-                // startTime={startTime}
-                // endTime={endTime}
-                // teacherName={teacherName}
-                // courseName={courseName}
-                // examTopic={examTopic}
-                Nameclass={Nameclass}
-                level={level}
-                //8/10/99
-                // groupId={groupId}
-                // examDate={examDate}
-              />
-            </ListOfStudentContainer> : ''}
-          {/* {showRank ? <div style={{ marginTop: '60px' }}>
-            <Ranking
-              Nameclass={Nameclass}
-              level={level}
-              axamId={axamId}
-              courseName={courseName}
-            />
-          </div> : ''}
-                {showDetails ? <div style={{ marginTop: '60px' }}>
-                  <PopupPercentageQuestion
-                    exam_id={axamId}
-                    level={level}
-                    class_name={Nameclass}
-                    close={closePopUp}
-                  />
-                </div> : ''} */}
-        </Grid>
         {/* {ShowPopup ? (
           <PopUp message={message} status={status} closePopup={togglePopup} />
         ) : null} */}

@@ -20,7 +20,7 @@ const ListOfStudentForExam = ({
   // setListOfStudentsScore,
   // listOfStudentsScore,
   selectedDate,
-  axamId,
+  examId,
   startTime,
   endTime,
   teacherName,
@@ -107,7 +107,7 @@ const ListOfStudentForExam = ({
   //     data: {
   //       level: level,
   //       class_name: Nameclass,
-  //       exam_id: axamId,
+  //       exam_id: examId,
   //     },
   //   })
   //     .then(res => {
@@ -131,7 +131,7 @@ const ListOfStudentForExam = ({
   //       console.log(error);
   //     });
   //   //////////////////////
-  // }, [axamId, Nameclass]);
+  // }, [examId, Nameclass]);
   /////////////////
 
   //////////////////////////////////////
@@ -173,7 +173,7 @@ const ListOfStudentForExam = ({
   //                   mutation{
   //                     AddSCoreForAxam(
   //                       axamResponse_input: {
-  //                         exam_id: "${axamId}"
+  //                         exam_id: "${examId}"
   //                         student_id: "${student.person_id}"
   //                         exam_score: "${score}"
   //                         examResponse_level: "${student.level}"
@@ -222,7 +222,7 @@ const ListOfStudentForExam = ({
               // setOneScore={setOneScore}
               // handleScore={handleScore}
               getScore={getScore}
-              axamId={axamId}
+              examId={examId}
             />
           </MyGrid>
         ))
@@ -236,9 +236,10 @@ const ListOfStudentForExam = ({
       {
         showPopUpScore ? (
           <PopUpScore
+          type='1'
             popUpScoreStudent={popUpScoreStudent}
             closePopUp={togglePopup}
-            axamIdProps={axamId}
+            examIdProps={examId}
             // studentId={}
             // startTime={startTime}
             // endTime={endTime}

@@ -226,7 +226,7 @@ const AddExamForTeacher = () => {
     //     data: {
     //       exam_id: IdForAxam,
     //       exam_data: newSelectedDate,
-    //       exam_Start:selectedstartTime,
+    //       exam_start:selectedstartTime,
     //       exam_end: selectedEndTime,
     //       exam_teacherId: user.user.person_id,
     //       exam_teacherName: teacherName,

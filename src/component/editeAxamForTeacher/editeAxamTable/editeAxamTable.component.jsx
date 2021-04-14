@@ -21,7 +21,7 @@
 //   // const [status, setStatus] = React.useState(0);
 //   // const [ShowPopup, setShowPopup] = React.useState(false);
 //   //////////////////////////
-//   // {exam_start_date:'14/1/1400',exam_end_date:'14/1/1400',exam_Start:'10:30',exam_end:'12:30',exam_level:'اول',exam_className:'ب',exam_courseName:'ریاضی',exam_topic:'ریاضی' ,exam_maxScore:'20'},
+//   // {exam_start_date:'14/1/1400',exam_end_date:'14/1/1400',exam_start:'10:30',exam_end:'12:30',exam_level:'اول',exam_className:'ب',exam_courseName:'ریاضی',exam_topic:'ریاضی' ,exam_maxScore:'20'},
 //   const [columns, setColumns] = React.useState([
 //     {
 //       title: 'تاریخ شروع',
@@ -55,7 +55,7 @@
 //     },
 //     {
 //       title: ' شروع امتحان',
-//       field: 'exam_Start',
+//       field: 'exam_start',
 //       type: 'datetime',
 //       render: data => {
 //         return (
@@ -65,7 +65,7 @@
 //             textAlign: 'center',
 //             width: '50px'
 //           }}>
-//             {moment(data.exam_Start).format('HH:mm:00')}
+//             {moment(data.exam_start).format('HH:mm:00')}
 //           </p>)
 //       },
 //       editComponent: ({ value, onChange }) => (
@@ -247,7 +247,7 @@
 //       // { title: 'id', field: 'exam_id', editable: 'never' },
 //       { title: 'تاریخ شروع', field: 'exam_start_date' },
 //       { title: 'تاریخ پایان', field: 'exam_end_date' },
-//       { title: ' شروع امتحان', field: 'exam_Start' },
+//       { title: ' شروع امتحان', field: 'exam_start' },
 //       { title: ' پایان امتحان', field: 'exam_end' },
 //       // { title: 'سوالات', field: 'exam_pdf' },
 //       { title: 'پایه', field: 'exam_level' },
@@ -285,7 +285,7 @@
 //     //                     ){
 //     //                         exam_id
 //     //                         exam_data
-//     //                         exam_Start
+//     //                         exam_start
 //     //                         exam_end
 //     //                         exam_teacherId
 //     //                         exam_teacherName
@@ -374,7 +374,7 @@
 //                     //                 exam_id: "${oldData.exam_id}"
 //                     //                 exam_start_date: "${oldData.exam_start_date}"
 //                     //                 exam_end_date: "${oldData.exam_end_date}"
-//                     //                 exam_Start: "${oldData.exam_Start}"
+//                     //                 exam_start: "${oldData.exam_start}"
 //                     //                 exam_end: "${oldData.exam_end}"
 //                     //                 // exam_teacherId: "${user.user.person_id}"
 //                     //                 // exam_teacherName: "${teacherName}"
@@ -388,7 +388,7 @@
 //                     //                 exam_id: "${newData.exam_id}"
 //                     //                 exam_start_date: "${newData.exam_start_date}"
 //                     //                 exam_end_date: "${newData.exam_end_date}"
-//                     //                 exam_Start: "${newData.exam_Start}"
+//                     //                 exam_start: "${newData.exam_start}"
 //                     //                 exam_end: "${newData.exam_end}"
 //                     //                 exam_teacherId: "${user.user.person_id}"
 //                     //                 exam_teacherName: "${teacherName}"
@@ -446,7 +446,7 @@
 //                   //                   exam_id: "${oldData.exam_id}"
 //                   //                   exam_start_date: "${oldData.exam_start_date}"
 //                   //                   exam_end_date: "${oldData.exam_end_date}"
-//                   //                   exam_Start: "${oldData.exam_Start}"
+//                   //                   exam_start: "${oldData.exam_start}"
 //                   //                   exam_end: "${oldData.exam_end}"
 //                   //                   exam_teacherId: "${user.user.person_id}"
 //                   //                   exam_teacherName: "${teacherName}"
@@ -511,11 +511,11 @@ const MaterialTableEditAxams = ({ selectedDate, getQuestionsId }) => {
   // const appContext = useContext(AppContext);
   // const user = useSelector(({ auth }) => auth.user);
   const [data, setData] = React.useState([
-    {exam_id:'1' , exam_start_date:'14/1/1400',exam_end_date:'14/1/1400',exam_Start:'10:30',exam_end:'12:30',exam_level:'اول',exam_className:'ب',exam_courseName:'ریاضی',exam_topic:'ریاضی' ,exam_maxScore:'20'},
-    {exam_id:'2' , exam_start_date:'14/1/1400',exam_end_date:'14/1/1400',exam_Start:'10:30',exam_end:'12:30',exam_level:'اول',exam_className:'ب',exam_courseName:'ریاضی',exam_topic:'ریاضی' ,exam_maxScore:'20'},
-    {exam_id:'3' , exam_start_date:'14/1/1400',exam_end_date:'14/1/1400',exam_Start:'10:30',exam_end:'12:30',exam_level:'اول',exam_className:'ب',exam_courseName:'ریاضی',exam_topic:'ریاضی' ,exam_maxScore:'20'},
-    {exam_id:'4' , exam_start_date:'14/1/1400',exam_end_date:'14/1/1400',exam_Start:'10:30',exam_end:'12:30',exam_level:'اول',exam_className:'ب',exam_courseName:'ریاضی',exam_topic:'ریاضی' ,exam_maxScore:'20'},
-    {exam_id:'5' ,exam_start_date:'14/1/1400',exam_end_date:'14/1/1400',exam_Start:'10:30',exam_end:'12:30',exam_level:'اول',exam_className:'ب',exam_courseName:'ریاضی',exam_topic:'ریاضی' ,exam_maxScore:'20'},
+    {exam_id:'1' , exam_start_date:'14/1/1400',exam_end_date:'14/1/1400',exam_start:'10:30',exam_end:'12:30',exam_level:'اول',exam_className:'ب',exam_courseName:'ریاضی',exam_topic:'ریاضی' ,exam_maxScore:'20'},
+    {exam_id:'2' , exam_start_date:'14/1/1400',exam_end_date:'14/1/1400',exam_start:'10:30',exam_end:'12:30',exam_level:'اول',exam_className:'ب',exam_courseName:'ریاضی',exam_topic:'ریاضی' ,exam_maxScore:'20'},
+    {exam_id:'3' , exam_start_date:'14/1/1400',exam_end_date:'14/1/1400',exam_start:'10:30',exam_end:'12:30',exam_level:'اول',exam_className:'ب',exam_courseName:'ریاضی',exam_topic:'ریاضی' ,exam_maxScore:'20'},
+    {exam_id:'4' , exam_start_date:'14/1/1400',exam_end_date:'14/1/1400',exam_start:'10:30',exam_end:'12:30',exam_level:'اول',exam_className:'ب',exam_courseName:'ریاضی',exam_topic:'ریاضی' ,exam_maxScore:'20'},
+    {exam_id:'5' ,exam_start_date:'14/1/1400',exam_end_date:'14/1/1400',exam_start:'10:30',exam_end:'12:30',exam_level:'اول',exam_className:'ب',exam_courseName:'ریاضی',exam_topic:'ریاضی' ,exam_maxScore:'20'},
   ]);
   //////////////////////////
   const [columns, setColumns] = React.useState([
@@ -551,7 +551,7 @@ const MaterialTableEditAxams = ({ selectedDate, getQuestionsId }) => {
     },
     {
       title: ' شروع امتحان',
-      field: 'exam_Start',
+      field: 'exam_start',
       type: 'datetime',
       render: data => {
         return (
@@ -561,7 +561,7 @@ const MaterialTableEditAxams = ({ selectedDate, getQuestionsId }) => {
             textAlign: 'center',
             width: '50px'
           }}>
-            {moment(data.exam_Start).format('HH:mm:00')}
+            {moment(data.exam_start).format('HH:mm:00')}
           </p>)
       },
       editComponent: ({ value, onChange }) => (
@@ -745,7 +745,7 @@ const MaterialTableEditAxams = ({ selectedDate, getQuestionsId }) => {
       // { title: 'id', field: 'exam_id', editable: 'never' },
       { title: 'تاریخ شروع', field: 'exam_start_date' },
       { title: 'تاریخ پایان', field: 'exam_end_date' },
-      { title: ' شروع امتحان', field: 'exam_Start' },
+      { title: ' شروع امتحان', field: 'exam_start' },
       { title: ' پایان امتحان', field: 'exam_end' },
       // { title: 'سوالات', field: 'exam_pdf' },
       { title: 'پایه', field: 'exam_level' },
@@ -779,7 +779,7 @@ const MaterialTableEditAxams = ({ selectedDate, getQuestionsId }) => {
     //                     ){
     //                         exam_id
     //                         exam_data
-    //                         exam_Start
+    //                         exam_start
     //                         exam_end
     //                         exam_teacherId
     //                         exam_teacherName
@@ -900,7 +900,7 @@ const MaterialTableEditAxams = ({ selectedDate, getQuestionsId }) => {
                     //                 exam_id: "${oldData.exam_id}"
                     //                 exam_start_date: "${oldData.exam_start_date}"
                     //                 exam_end_date: "${oldData.exam_end_date}"
-                    //                 exam_Start: "${oldData.exam_Start}"
+                    //                 exam_start: "${oldData.exam_start}"
                     //                 exam_end: "${oldData.exam_end}"
                     //                 // exam_teacherId: "${user.user.person_id}"
                     //                 // exam_teacherName: "${teacherName}"
@@ -914,7 +914,7 @@ const MaterialTableEditAxams = ({ selectedDate, getQuestionsId }) => {
                     //                 exam_id: "${newData.exam_id}"
                     //                 exam_start_date: "${newData.exam_start_date}"
                     //                 exam_end_date: "${newData.exam_end_date}"
-                    //                 exam_Start: "${newData.exam_Start}"
+                    //                 exam_start: "${newData.exam_start}"
                     //                 exam_end: "${newData.exam_end}"
                     //                 exam_teacherId: "${user.user.person_id}"
                     //                 exam_teacherName: "${teacherName}"
@@ -972,7 +972,7 @@ const MaterialTableEditAxams = ({ selectedDate, getQuestionsId }) => {
                   //                   exam_id: "${oldData.exam_id}"
                   //                   exam_start_date: "${oldData.exam_start_date}"
                   //                   exam_end_date: "${oldData.exam_end_date}"
-                  //                   exam_Start: "${oldData.exam_Start}"
+                  //                   exam_start: "${oldData.exam_start}"
                   //                   exam_end: "${oldData.exam_end}"
                   //                   exam_teacherId: "${user.user.person_id}"
                   //                   exam_teacherName: "${teacherName}"

@@ -338,7 +338,7 @@ const DescriptiveQuestion = (props) => {
         title=""
         columns={innerColumns}
         data={innerData}
-        tableRef={tableRef}
+        // tableRef={tableRef}
         // localization={{
         //   body: {
         //     AddRow: {
@@ -510,7 +510,7 @@ const DescriptiveQuestion = (props) => {
                     // axamIdProps != '' &&
                     newData.question_score !== undefined 
                     // &&
-                    // newData.question_currentOption !== undefined
+                    // newData.question_correctOption !== undefined
                   ) {
                     if (
                       selectedFile &&
