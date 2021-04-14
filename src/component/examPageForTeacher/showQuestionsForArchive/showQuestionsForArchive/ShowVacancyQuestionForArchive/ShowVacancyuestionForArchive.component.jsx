@@ -38,7 +38,7 @@ const VacancyItemForArchive = ({number,items ,vancyRes})=>{
         
         // var NOV = 0 ;
         var NOV = [];
-        items.exam_vancyItems.split(' ').reduce((acc,cur) => {
+        items.question_vancyItems.split(' ').reduce((acc,cur) => {
             if(cur.indexOf('$%A') > -1){
                 NOV.push('1');
                 // NOV ++;
@@ -60,7 +60,7 @@ const VacancyItemForArchive = ({number,items ,vancyRes})=>{
 
     return(
         <VacancyItemConatiner>
-            <VacancyQuestion>سوال ) {items.exam_vancyItems ? items.exam_vancyItems.replaceAll('$%A', '......') : ''}</VacancyQuestion>
+            <VacancyQuestion>سوال ) {items.question_vancyItems ? items.question_vancyItems.replaceAll('$%A', '......') : ''}</VacancyQuestion>
             <VnacyTextsContainer>
                 {
                     NOfVancy.map((item,index)=>{
@@ -81,9 +81,9 @@ const VacancyItemForArchive = ({number,items ,vancyRes})=>{
     )
 }
 
-const ShowVacancyQuestionForArchive = ({question, number }) =>{
+const ShowVacancyQuestionForArchive = ({question, number ,type }) =>{
     return(
-        <ShowBodyQuestionsForArchive question={question} number={number} responseScore = {question.response_score}>
+        <ShowBodyQuestionsForArchive myType={type} question={question} number={number} responseScore = {question.response_score}>
             <VacancyItemForArchive number={number} items={question} vancyRes={question.response_vancyQuestion} />
         </ShowBodyQuestionsForArchive>
     )

@@ -13,7 +13,7 @@ import ShowBodyQuestionsForArchive from '../showBodyQuestionForArchive.component
 
 const SequentialItemsForArchive = ({number,items , SeqResponse})=>{
 
-    // const [resSeqQuestion,setResSeqQuestion] = useState(Array(items.exam_SeqItems.length).fill(0).map(row => new Array(1).fill('')));
+    // const [resSeqQuestion,setResSeqQuestion] = useState(Array(items.question_SeqItems.length).fill(0).map(row => new Array(1).fill('')));
 
     // const handleChange = (e) =>{
     //     setResponseQuestion(e.target.value);
@@ -34,7 +34,7 @@ const SequentialItemsForArchive = ({number,items , SeqResponse})=>{
         <SequentialConatiner>
              <SequentialItemConatiner>
             {
-                items.exam_SeqItems.length > 0 ? items.exam_SeqItems.map((item,index) =>(
+                items.question_SeqItems.length > 0 ? items.question_SeqItems.map((item,index) =>(
                     // console.log('item',item)
                     <SequentialInputContainer key={index}>
                         
@@ -59,7 +59,7 @@ const SequentialItemsForArchive = ({number,items , SeqResponse})=>{
             
                     
             {
-                items.exam_SeqItems.length > 0 ? items.exam_SeqItems.map((item,index) =>{
+                items.question_SeqItems.length > 0 ? items.question_SeqItems.map((item,index) =>{
                     var res =SeqResponse[index];
                      console.log('res',res)
                     return(
@@ -80,9 +80,9 @@ const SequentialItemsForArchive = ({number,items , SeqResponse})=>{
     )
 }
 
-const ShowSequentialQuestionForArchive = ({question, number }) =>{
+const ShowSequentialQuestionForArchive = ({question, number,type }) =>{
     return(
-        <ShowBodyQuestionsForArchive question={question} number={number} responseScore = {question.response_score}>
+        <ShowBodyQuestionsForArchive myType={type} question={question} number={number} responseScore = {question.response_score}>
             <SequentialItemsForArchive number={number} items={question} SeqResponse={question.response_sequentialQuestion} />
         </ShowBodyQuestionsForArchive>
     )

@@ -14,7 +14,7 @@ const Item =[
         'question_timeToSolveProblem':'20 دقیقه',
         'exam_link':'https://www.woonwinkelhome.com/products/slim-pen-gold',//with question
         // 'question_link':'https://www.woonwinkelhome.com/products/slim-pen-gold',//replace question
-        'exam_compItems':[
+        'question_compItems':[
             ['توضیحات مربوط به امتحان درس ریاضی پایه دوم','توضیحات مربوط به امتحان درس ریاضی پایه اول'],
             ['توضیحات مربوط به امتحان درس ریاضی پایه چهارم','توضیحات مربوط به امتحان درس ریاضی پایه سوم'],
             ['توضیحات مربوط به امتحان درس ریاضی پایه ششم','توضیحات مربوط به امتحان درس ریاضی پایه پنجم'],
@@ -22,12 +22,12 @@ const Item =[
             // [1,2],[3,4],[5,6],[7,8]
         ],
         // 'StudentItem':'2',
-        'question_currentOption':'1',
+        'question_correctOption':'1',
         'question_optionOne':'سلام',
         'question_optionTwo':'hello',
         'question_optionThree':'سلام',
         'question_optionFour':'hello',
-        'exam_SeqItems':[
+        'question_SeqItems':[
             ['توضیحات مربوط به امتحان درس ریاضی پایه اول'],
             ['توضیحات مربوط به امتحان درس ریاضی پایه دوم'],
             ['توضیحات مربوط به امتحان درس ریاضی پایه سوم'],
@@ -39,7 +39,7 @@ const Item =[
             // [1,2],[3,4],[5,6],[7,8]
         ],
         // 'exam_SeqResponse':[[0,2],[1,1],[2,4],[3,3]],
-        'exam_vancyItems':'سلام بر همه دوستان $%A و محترم عید $%A بر همه $%A مبارک باد',
+        'question_vancyItems':'سلام بر همه دوستان $%A و محترم عید $%A بر همه $%A مبارک باد',
         // 'exam_vancyRes':[[0,'گلم'],[1,'نوروز'],[2,'مردم']],
         'question_type':'1',
         //////////////////////////////////////////
@@ -62,7 +62,7 @@ const Item =[
         'question_explane':'توضیحات مربوط به امتحان درس ریاضی پایه اول',
         'question_timeToSolveProblem':'20 دقیقه',
         'exam_link':'https://www.woonwinkelhome.com/products/slim-pen-gold',
-        'exam_compItems':[
+        'question_compItems':[
             ['توضیحات مربوط به امتحان درس ریاضی پایه دوم','توضیحات مربوط به امتحان درس ریاضی پایه اول'],
             ['توضیحات مربوط به امتحان درس ریاضی پایه چهارم','توضیحات مربوط به امتحان درس ریاضی پایه سوم'],
             ['توضیحات مربوط به امتحان درس ریاضی پایه ششم','توضیحات مربوط به امتحان درس ریاضی پایه پنجم'],
@@ -70,12 +70,12 @@ const Item =[
             // [1,2],[3,4],[5,6],[7,8]
         ],
         // 'StudentItem':'2',
-        'question_currentOption':'1',
+        'question_correctOption':'1',
         'question_optionOne':'سلام',
         'question_optionTwo':'hello',
         'question_optionThree':'سلام',
         'question_optionFour':'hello',
-        'exam_SeqItems':[
+        'question_SeqItems':[
             ['توضیحات مربوط به امتحان درس ریاضی پایه اول'],
             ['توضیحات مربوط به امتحان درس ریاضی پایه دوم'],
             ['توضیحات مربوط به امتحان درس ریاضی پایه سوم'],
@@ -87,7 +87,7 @@ const Item =[
             // [1,2],[3,4],[5,6],[7,8]
         ],
         // 'exam_SeqResponse':[[0,2],[1,1],[2,4],[3,3]],
-        'exam_vancyItems':'سلام بر همه دوستان $%A و محترم عید $%A بر همه $%A مبارک باد',
+        'question_vancyItems':'سلام بر همه دوستان $%A و محترم عید $%A بر همه $%A مبارک باد',
         // 'exam_vancyRes':[[0,'گلم'],[1,'نوروز'],[2,'مردم']],
         'question_type':'2',
         //////////////////////////////////////////
@@ -115,7 +115,7 @@ const Item =[
         'question_explane':'توضیحات مربوط به امتحان درس ریاضی پایه اول',
         'question_timeToSolveProblem':'20 دقیقه',
         'exam_link':'https://www.woonwinkelhome.com/products/slim-pen-gold',
-        'exam_compItems':[
+        'question_compItems':[
             ['توضیحات مربوط به امتحان درس ریاضی پایه دوم','توضیحات مربوط به امتحان درس ریاضی پایه اول'],
             ['توضیحات مربوط به امتحان درس ریاضی پایه چهارم','توضیحات مربوط به امتحان درس ریاضی پایه سوم'],
             ['توضیحات مربوط به امتحان درس ریاضی پایه ششم','توضیحات مربوط به امتحان درس ریاضی پایه پنجم'],
@@ -123,12 +123,12 @@ const Item =[
             // [1,2],[3,4],[5,6],[7,8]
         ],
         // 'StudentItem':'2',
-        'question_currentOption':'1',
+        'question_correctOption':'1',
         'question_optionOne':'سلام',
         'question_optionTwo':'hello',
         'question_optionThree':'سلام',
         'question_optionFour':'hello',
-        'exam_SeqItems':[
+        'question_SeqItems':[
             ['توضیحات مربوط به امتحان درس ریاضی پایه اول'],
             ['توضیحات مربوط به امتحان درس ریاضی پایه دوم'],
             ['توضیحات مربوط به امتحان درس ریاضی پایه سوم'],
@@ -140,7 +140,7 @@ const Item =[
             // [1,2],[3,4],[5,6],[7,8]
         ],
         // 'exam_SeqResponse':[[0,2],[1,1],[2,4],[3,3]],
-        'exam_vancyItems':'سلام بر همه دوستان $%A و محترم عید $%A بر همه $%A مبارک باد',
+        'question_vancyItems':'سلام بر همه دوستان $%A و محترم عید $%A بر همه $%A مبارک باد',
         // 'exam_vancyRes':[[0,'گلم'],[1,'نوروز'],[2,'مردم']],
         'question_type':'3',
         //////////////////////////////////////////
@@ -168,7 +168,7 @@ const Item =[
         'question_explane':'توضیحات مربوط به امتحان درس ریاضی پایه اول',
         'question_timeToSolveProblem':'20 دقیقه',
         'exam_link':'https://www.woonwinkelhome.com/products/slim-pen-gold',
-        'exam_compItems':[
+        'question_compItems':[
             ['توضیحات مربوط به امتحان درس ریاضی پایه دوم','توضیحات مربوط به امتحان درس ریاضی پایه اول'],
             ['توضیحات مربوط به امتحان درس ریاضی پایه چهارم','توضیحات مربوط به امتحان درس ریاضی پایه سوم'],
             ['توضیحات مربوط به امتحان درس ریاضی پایه ششم','توضیحات مربوط به امتحان درس ریاضی پایه پنجم'],
@@ -176,12 +176,12 @@ const Item =[
             // [1,2],[3,4],[5,6],[7,8]
         ],
         // 'StudentItem':'2',
-        'question_currentOption':'1',
+        'question_correctOption':'1',
         'question_optionOne':'سلام',
         'question_optionTwo':'hello',
         'question_optionThree':'سلام',
         'question_optionFour':'hello',
-        'exam_SeqItems':[
+        'question_SeqItems':[
             ['توضیحات مربوط به امتحان درس ریاضی پایه اول'],
             ['توضیحات مربوط به امتحان درس ریاضی پایه دوم'],
             ['توضیحات مربوط به امتحان درس ریاضی پایه سوم'],
@@ -193,7 +193,7 @@ const Item =[
             // [1,2],[3,4],[5,6],[7,8]
         ],
         // 'exam_SeqResponse':[[0,2],[1,1],[2,4],[3,3]],
-        'exam_vancyItems':'سلام بر همه دوستان $%A و محترم عید $%A بر همه $%A مبارک باد',
+        'question_vancyItems':'سلام بر همه دوستان $%A و محترم عید $%A بر همه $%A مبارک باد',
         // 'exam_vancyRes':[[0,'گلم'],[1,'نوروز'],[2,'مردم']],
         'question_type':'4',
         //////////////////////////////////////////
@@ -221,7 +221,7 @@ const Item =[
         'question_explane':'توضیحات مربوط به امتحان درس ریاضی پایه اول',
         'question_timeToSolveProblem':'20 دقیقه',
         'exam_link':'https://www.woonwinkelhome.com/products/slim-pen-gold',
-        'exam_compItems':[
+        'question_compItems':[
             ['توضیحات مربوط به امتحان درس ریاضی پایه دوم','توضیحات مربوط به امتحان درس ریاضی پایه اول'],
             ['توضیحات مربوط به امتحان درس ریاضی پایه چهارم','توضیحات مربوط به امتحان درس ریاضی پایه سوم'],
             ['توضیحات مربوط به امتحان درس ریاضی پایه ششم','توضیحات مربوط به امتحان درس ریاضی پایه پنجم'],
@@ -229,12 +229,12 @@ const Item =[
             // [1,2],[3,4],[5,6],[7,8]
         ],
         // 'StudentItem':'2',
-        'question_currentOption':'1',
+        'question_correctOption':'1',
         'question_optionOne':'سلام',
         'question_optionTwo':'hello',
         'question_optionThree':'سلام',
         'question_optionFour':'hello',
-        'exam_SeqItems':[
+        'question_SeqItems':[
             ['توضیحات مربوط به امتحان درس ریاضی پایه اول'],
             ['توضیحات مربوط به امتحان درس ریاضی پایه دوم'],
             ['توضیحات مربوط به امتحان درس ریاضی پایه سوم'],
@@ -246,7 +246,7 @@ const Item =[
             // [1,2],[3,4],[5,6],[7,8]
         ],
         // 'exam_SeqResponse':[[0,2],[1,1],[2,4],[3,3]],
-        'exam_vancyItems':'سلام بر همه دوستان $%A و محترم عید $%A بر همه $%A مبارک باد',
+        'question_vancyItems':'سلام بر همه دوستان $%A و محترم عید $%A بر همه $%A مبارک باد',
         // 'exam_vancyRes':[[0,'گلم'],[1,'نوروز'],[2,'مردم']],
         'question_type':'5',
         //////////////////////////////////////////
@@ -274,7 +274,7 @@ const Item =[
         'question_explane':'توضیحات مربوط به امتحان درس ریاضی پایه اول',
         'question_timeToSolveProblem':'20 دقیقه',
         'exam_link':'https://www.woonwinkelhome.com/products/slim-pen-gold',
-        'exam_compItems':[
+        'question_compItems':[
             ['توضیحات مربوط به امتحان درس ریاضی پایه دوم','توضیحات مربوط به امتحان درس ریاضی پایه اول'],
             ['توضیحات مربوط به امتحان درس ریاضی پایه چهارم','توضیحات مربوط به امتحان درس ریاضی پایه سوم'],
             ['توضیحات مربوط به امتحان درس ریاضی پایه ششم','توضیحات مربوط به امتحان درس ریاضی پایه پنجم'],
@@ -282,12 +282,12 @@ const Item =[
             // [1,2],[3,4],[5,6],[7,8]
         ],
         // 'StudentItem':'2',
-        'question_currentOption':'1',
+        'question_correctOption':'1',
         'question_optionOne':'سلام',
         'question_optionTwo':'hello',
         'question_optionThree':'سلام',
         'question_optionFour':'hello',
-        'exam_SeqItems':[
+        'question_SeqItems':[
             ['توضیحات مربوط به امتحان درس ریاضی پایه اول'],
             ['توضیحات مربوط به امتحان درس ریاضی پایه دوم'],
             ['توضیحات مربوط به امتحان درس ریاضی پایه سوم'],
@@ -299,7 +299,7 @@ const Item =[
             // [1,2],[3,4],[5,6],[7,8]
         ],
         // 'exam_SeqResponse':[[0,2],[1,1],[2,4],[3,3]],
-        'exam_vancyItems':'سلام بر همه دوستان $%A و محترم عید $%A بر همه $%A مبارک باد',
+        'question_vancyItems':'سلام بر همه دوستان $%A و محترم عید $%A بر همه $%A مبارک باد',
         // 'exam_vancyRes':[[0,'گلم'],[1,'نوروز'],[2,'مردم']],
         'question_type':'6',
         //////////////////////////////////////////
@@ -347,36 +347,36 @@ const ExamPageForTeacher = ({type}) => {
                 Item ? Item.map((question ,index) =>(
                     (() => {
                         if(question.question_type == '1'){
-                            return <ShowDescriptiveQuestionForArchive key={index} question={question} number={index} 
+                            return <ShowDescriptiveQuestionForArchive type={type} key={index} question={question} number={index} 
                             // responseQuestion={RsponseExam} 
                             /> 
                         }else if(question.question_type == '2'){
-                            return <ShowComparativeQuestionForArchive key={index} question={question} number={index} 
+                            return <ShowComparativeQuestionForArchive type={type} key={index} question={question} number={index} 
                             // responseQuestion={RsponseExam}
                             // items={RandomArray(Item[index].items)}
                              /> 
                         }
                         else if(question.question_type == '3'){
-                            return <ShowMultipleChoiceQuestionForArchive key={index} question={question} 
+                            return <ShowMultipleChoiceQuestionForArchive type={type} key={index} question={question} 
                             // responseQuestion={RsponseExam} 
                             number={index}
                             />
                         }
                         else if(question.question_type == '4'){
-                            return <ShowTrueAndFalseQuestionForArchive key={index} question={question} 
+                            return <ShowTrueAndFalseQuestionForArchive type={type} key={index} question={question} 
                             // responseQuestion={RsponseExam} 
                             number={index} 
                             />
                         }
                         else if(question.question_type == '5'){
-                            return <ShowSequentialQuestionForArchive key={index} question={question}
+                            return <ShowSequentialQuestionForArchive type={type} key={index} question={question}
                             //  responseQuestion={RsponseExam} 
                             number={index} 
                             // SeqItems={SeqRandomArray(Item[index].SeqItems)}
                              />
                         }
                         else if(question.question_type == '6'){
-                            return <ShowVacancyQuestionForArchive question={question} 
+                            return <ShowVacancyQuestionForArchive type={type} question={question} 
                             // responseQuestion={RsponseExam} 
                             number={index} />
                         }

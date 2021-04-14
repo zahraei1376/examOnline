@@ -5,7 +5,7 @@ import ShowComparativeItemForArchive from './compareItemForArchive/ShowComparati
 /////////////
 const ShowComparativeItemsForArchive = ({number,items,comparativeRes})=>{
 
-    const [questionRes,setQuestionRes] = useState(Array(items.exam_compItems.length).fill(0).map(row => new Array(2).fill('')));
+    const [questionRes,setQuestionRes] = useState(Array(items.question_compItems.length).fill(0).map(row => new Array(2).fill('')));
 
     const handleRes = (i , text) =>{
         var temp =[...questionRes];
@@ -21,7 +21,7 @@ const ShowComparativeItemsForArchive = ({number,items,comparativeRes})=>{
     return(
         <ComparativeItemsConatiner>
             {
-                items.exam_compItems.map((item , index) =>(
+                items.question_compItems.map((item , index) =>(
                     <ShowComparativeItemForArchive item={item} resItem={comparativeRes[index]} key={index} myIndex={index} handleRes={handleRes} />
                 ))
             }
@@ -30,9 +30,9 @@ const ShowComparativeItemsForArchive = ({number,items,comparativeRes})=>{
     )
 }
 
-const ShowComparativeQuestionForArchive = ({question, number,}) =>{
+const ShowComparativeQuestionForArchive = ({question, number,type}) =>{
     return(
-        <ShowBodyQuestionsForArchive question={question} number={number} 
+        <ShowBodyQuestionsForArchive myType={type} question={question} number={number} 
         responseScore = {question.response_score}
         // responseScore = {responseQuestion.response_score}
         >

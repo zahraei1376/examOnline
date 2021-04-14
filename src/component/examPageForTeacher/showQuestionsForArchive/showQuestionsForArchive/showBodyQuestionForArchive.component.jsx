@@ -23,7 +23,7 @@ const graphql_server_uri = '/graphql';
 // import {IncreaseIndex , DecreaseIndex} from '../../../redux/questionIndex/questionIndex.sction';
 // import {selectIndex} from '../../../redux/questionIndex/questionIndex.selector';
 // import { createStructuredSelector} from 'reselect';
-const ShowBodyQuestionsForArchive = ({question,number,children,responseScore,addScore,studentId}) =>{
+const ShowBodyQuestionsForArchive = ({question,number,myType,children,responseScore,addScore,studentId}) =>{
 
     // const [state,setState] =useState({
     //     type:false,
@@ -44,7 +44,11 @@ const ShowBodyQuestionsForArchive = ({question,number,children,responseScore,add
     useEffect(()=>{
         // index,score ,students ,studentId
         // addScore(number, score , studentId)
-        addScore({'index':number, 'score':score , studentId: studentId})
+        console.log('myType',myType);
+        if(myType === '1'){
+            addScore({'index':number, 'score':score , studentId: studentId})
+        }
+        
     },[score]);
     
   const showPic = () => {
@@ -182,7 +186,7 @@ const ShowBodyQuestionsForArchive = ({question,number,children,responseScore,add
                         <DoneIcon style={{ fontSize:'3rem'}} />
                     </BtnOk>
                 </Tooltip> */}
-                <InputScore type="number" value={score} onChange={e => setScore(e.target.value)} />
+                <InputScore type="number" readOnly={myType == '0' ? true : false} value={score} onChange={e => setScore(e.target.value)} />
                 <InputScoreLabel>نمره تخصیص داده شده</InputScoreLabel>
                 
             </InputScoreContainer>

@@ -376,7 +376,7 @@ const Vacancy = ({setToggle , ...props}) => {
         // {
         //   title: 'گزینه صحیح',
         //   textAlign: 'center',
-        //   field: 'question_currentOption',
+        //   field: 'question_correctOption',
         //   lookup: {
         //     1: '1',
         //     2: '2',
@@ -385,7 +385,7 @@ const Vacancy = ({setToggle , ...props}) => {
         //   },
         //   minWidth: 150,
         // //   validate: rowData =>
-        // //     rowData.question_currentOption === '' ? 'Name cannot be empty' : '',
+        // //     rowData.question_correctOption === '' ? 'Name cannot be empty' : '',
         //   render: data => {
         //     return (
         //       <p
@@ -396,7 +396,7 @@ const Vacancy = ({setToggle , ...props}) => {
         //           width: '50px',
         //         }}
         //       >
-        //         {data.question_currentOption}
+        //         {data.question_correctOption}
         //       </p>
         //     );
         //   },
@@ -531,7 +531,7 @@ const Vacancy = ({setToggle , ...props}) => {
         //   validate: rowData =>
         //     rowData.question_score !== '' ? 'Name cannot be empty' : '',
           editComponent: props => (
-            <VacancyModal vancyValue={props.rowData.exam_vancyItems} />
+            <VacancyModal vancyValue={props.rowData.question_vancyItems} />
             
           ),
           render: data => {
@@ -671,7 +671,7 @@ const Vacancy = ({setToggle , ...props}) => {
               //                   question_optionTwo:"${convertText(rowData.question_optionTwo)}"
               //                   question_optionThree: "${convertText(rowData.question_optionThree)}"
               //                   question_optionFour: "${convertText(rowData.question_optionFour)}"
-              //                   question_currentOption: "${rowData.question_currentOption}"
+              //                   question_correctOption: "${rowData.question_correctOption}"
               //                   question_timeToSolveProblem: "${convertText(rowData.question_timeToSolveProblem)}"
               //                   question_score: "${rowData.question_score ? rowData.question_score : ''}"
               //                   question_explane: "${convertText(rowData.question_explane)}"
@@ -742,7 +742,7 @@ const Vacancy = ({setToggle , ...props}) => {
                 if (
                     // axamIdProps != '' &&
                     newData.question_score !== undefined &&
-                    newData.question_currentOption !== undefined
+                    newData.question_correctOption !== undefined
                   ) {
                     if (
                       selectedFile &&
@@ -777,7 +777,7 @@ const Vacancy = ({setToggle , ...props}) => {
                                 }"
                                                       question_optionOne: "${convertText(newData.question_optionOne)}"
                                                       question_optionTwo:"${convertText(newData.question_optionTwo)}"
-                                                      question_currentOption: "${newData.question_currentOption ? newData.question_currentOption: ''
+                                                      question_correctOption: "${newData.question_correctOption ? newData.question_correctOption: ''
                                 }"
                                                     question_optionThree: "${convertText(newData.question_optionThree)}"
                                                     question_optionFour: "${convertText(newData.question_optionFour)}"
@@ -796,7 +796,7 @@ const Vacancy = ({setToggle , ...props}) => {
                                                 question_optionTwo:"${convertText(oldData.question_optionTwo)}"
                                                 question_optionThree: "${convertText(oldData.question_optionThree)}"
                                                 question_optionFour: "${convertText(oldData.question_optionFour)}"
-                                                question_currentOption: "${oldData.question_currentOption ? oldData.question_currentOption : ''
+                                                question_correctOption: "${oldData.question_correctOption ? oldData.question_correctOption : ''
                                     }"
                                                 question_timeToSolveProblem: "${convertText(oldData.question_timeToSolveProblem)}"
                                                 question_score: "${ oldData.question_score ? oldData.question_score : ''
@@ -909,7 +909,7 @@ const Vacancy = ({setToggle , ...props}) => {
                                                       question_optionTwo:"${convertText(newData.question_optionTwo)}"
                                                       question_optionThree: "${convertText(newData.question_optionThree)}"
                                                       question_optionFour: "${convertText(newData.question_optionFour)}"
-                                                      question_currentOption: "${newData.question_currentOption ? newData.question_currentOption : ''
+                                                      question_correctOption: "${newData.question_correctOption ? newData.question_correctOption : ''
                                 }"
                                                       question_timeToSolveProblem: "${convertText(newData.question_timeToSolveProblem)}"
                                                       question_score: "${newData.question_score ? newData.question_score: ''
@@ -925,7 +925,7 @@ const Vacancy = ({setToggle , ...props}) => {
                                                 question_optionTwo:"${convertText(oldData.question_optionTwo)}"
                                                 question_optionThree: "${convertText(oldData.question_optionThree)}"
                                                 question_optionFour: "${convertText(oldData.question_optionFour)}"
-                                                question_currentOption: "${oldData.question_currentOption ? oldData.question_currentOption : ''
+                                                question_correctOption: "${oldData.question_correctOption ? oldData.question_correctOption : ''
                                     }"
                                                 question_timeToSolveProblem: "${convertText(oldData.question_timeToSolveProblem)}"
                                                 question_score: "${ oldData.question_score ? oldData.question_score : ''
@@ -997,7 +997,7 @@ const Vacancy = ({setToggle , ...props}) => {
                                                       question_link: "${''}"
                                                       question_optionOne: "${convertText(newData.question_optionOne)}"
                                                       question_optionTwo:"${convertText(newData.question_optionTwo)}"
-                                                      question_currentOption: "${newData.question_currentOption ? newData.question_currentOption : ''
+                                                      question_correctOption: "${newData.question_correctOption ? newData.question_correctOption : ''
                             }"
                                                       question_timeToSolveProblem: "${convertText(newData.question_timeToSolveProblem)}"
                                                       question_score: "${newData.question_score ? newData.question_score : ''
@@ -1011,7 +1011,7 @@ const Vacancy = ({setToggle , ...props}) => {
                                                 question_link: "${convertText(oldData.question_link)}"
                                                 question_optionOne: "${convertText(oldData.question_optionOne)}"
                                                 question_optionTwo:"${convertText(oldData.question_optionTwo)}"
-                                                question_currentOption: "${oldData.question_currentOption ? oldData.question_currentOption : ''
+                                                question_correctOption: "${oldData.question_correctOption ? oldData.question_correctOption : ''
                                     }"
                                                 question_timeToSolveProblem: "${convertText(oldData.question_timeToSolveProblem)}"
                                                 question_score: "${ oldData.question_score ? oldData.question_score : ''

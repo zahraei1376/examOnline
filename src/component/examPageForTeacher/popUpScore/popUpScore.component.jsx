@@ -49,7 +49,7 @@ const PopUpScore = props => {
   //                           question_optionTwo
   //                           question_optionThree
   //                           question_optionFour
-  //                           question_currentOption
+  //                           question_correctOption
   //                           question_timeTosolveProblem
   //                           question_score
   //                           question_explane
@@ -119,7 +119,7 @@ const PopUpScore = props => {
   //                           question_optionTwo
   //                           question_optionThree
   //                           question_optionFour
-  //                           question_currentOption
+  //                           question_correctOption
   //                           question_timeTosolveProblem
   //                           question_score
   //                           question_explane
@@ -205,7 +205,7 @@ const PopUpScore = props => {
           {/* exam_delay: String, */}
         </PopUpScoreHeaderDelay>
         <PopUpScorePageQuesion>
-          <ExamPageForTeacher />
+          <ExamPageForTeacher type={props.type ?  props.type : '1' } />
           {/* {questionResponse.length
             ? questionResponse.map((res, index) => {
               return (

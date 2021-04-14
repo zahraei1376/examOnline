@@ -19,11 +19,11 @@ const MaterialTableAxams = ({
   // const appContext = useContext(AppContext);
   // const user = useSelector(({ auth }) => auth.user);
   const [data, setData] = React.useState([
-    {exam_start_date:'14/1/1400',exam_end_date:'14/1/1400',exam_Start:'10:30',exam_end:'12:30',exam_level:'اول',exam_className:'ب',exam_courseName:'ریاضی',exam_topic:'ریاضی' ,exam_maxScore:'20'},
-    {exam_start_date:'14/1/1400',exam_end_date:'14/1/1400',exam_Start:'10:30',exam_end:'12:30',exam_level:'اول',exam_className:'ب',exam_courseName:'ریاضی',exam_topic:'ریاضی' ,exam_maxScore:'20'},
-    {exam_start_date:'14/1/1400',exam_end_date:'14/1/1400',exam_Start:'10:30',exam_end:'12:30',exam_level:'اول',exam_className:'ب',exam_courseName:'ریاضی',exam_topic:'ریاضی' ,exam_maxScore:'20'},
-    {exam_start_date:'14/1/1400',exam_end_date:'14/1/1400',exam_Start:'10:30',exam_end:'12:30',exam_level:'اول',exam_className:'ب',exam_courseName:'ریاضی',exam_topic:'ریاضی' ,exam_maxScore:'20'},
-    {exam_start_date:'14/1/1400',exam_end_date:'14/1/1400',exam_Start:'10:30',exam_end:'12:30',exam_level:'اول',exam_className:'ب',exam_courseName:'ریاضی',exam_topic:'ریاضی' ,exam_maxScore:'20'},
+    {exam_start_date:'14/1/1400',exam_end_date:'14/1/1400',exam_start:'10:30',exam_end:'12:30',exam_level:'اول',exam_className:'ب',exam_courseName:'ریاضی',exam_topic:'ریاضی' ,exam_maxScore:'20'},
+    {exam_start_date:'14/1/1400',exam_end_date:'14/1/1400',exam_start:'10:30',exam_end:'12:30',exam_level:'اول',exam_className:'ب',exam_courseName:'ریاضی',exam_topic:'ریاضی' ,exam_maxScore:'20'},
+    {exam_start_date:'14/1/1400',exam_end_date:'14/1/1400',exam_start:'10:30',exam_end:'12:30',exam_level:'اول',exam_className:'ب',exam_courseName:'ریاضی',exam_topic:'ریاضی' ,exam_maxScore:'20'},
+    {exam_start_date:'14/1/1400',exam_end_date:'14/1/1400',exam_start:'10:30',exam_end:'12:30',exam_level:'اول',exam_className:'ب',exam_courseName:'ریاضی',exam_topic:'ریاضی' ,exam_maxScore:'20'},
+    {exam_start_date:'14/1/1400',exam_end_date:'14/1/1400',exam_start:'10:30',exam_end:'12:30',exam_level:'اول',exam_className:'ب',exam_courseName:'ریاضی',exam_topic:'ریاضی' ,exam_maxScore:'20'},
   ]);
   const [message, setMessage] = React.useState('');
   const [status, setStatus] = React.useState(0);
@@ -64,7 +64,7 @@ const MaterialTableAxams = ({
     },
     {
       title: ' شروع امتحان',
-      field: 'exam_Start',
+      field: 'exam_start',
       editable: 'never',
       type: 'datetime',
       render: data => {
@@ -75,8 +75,8 @@ const MaterialTableAxams = ({
             fontFamily: 'BNazaninBold',
             fontSize: 16,
           }}>
-            {data.exam_Start}
-            {/* {moment(data.exam_Start).format('HH:mm:00')} */}
+            {data.exam_start}
+            {/* {moment(data.exam_start).format('HH:mm:00')} */}
           </p>)
       },
     },
@@ -198,7 +198,7 @@ const MaterialTableAxams = ({
     columns: [
       { title: 'تاریخ شروع', field: 'exam_start_date', editable: 'never' },
       { title: 'تاریخ پایان', field: 'exam_end_date', editable: 'never' },
-      { title: ' شروع امتحان', field: 'exam_Start', editable: 'never' },
+      { title: ' شروع امتحان', field: 'exam_start', editable: 'never' },
       { title: ' پایان امتحان', field: 'exam_end', editable: 'never' },
       // { title: 'سوالات', field: 'exam_pdf', editable: 'never' },
       { title: 'پایه', field: 'exam_level', editable: 'never' },
@@ -256,7 +256,7 @@ const MaterialTableAxams = ({
   //                       ){
   //                         exam_id
   //                         exam_data
-  //                         exam_Start
+  //                         exam_start
   //                         exam_end
   //                         exam_teacherId
   //                         exam_teacherName
@@ -294,7 +294,7 @@ const MaterialTableAxams = ({
   const handleDetailsQuestions = (data) => {
     handleSetExamID(
       data.exam_id,
-      data.exam_Start,
+      data.exam_start,
       data.exam_end,
       data.exam_courseName,
       data.exam_teacherName,

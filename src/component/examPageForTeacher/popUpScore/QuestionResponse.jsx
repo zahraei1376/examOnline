@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 // import ShowImage from '../imageShow/showImage';
 import './QuestionResponse.styles.jsx';
 // import '../axamPage/explainQuestion.scss';
-//   question_currentOption
+//   question_correctOption
 //   question_timeTosolveProblem
 //   question_score
 //   question_explane
@@ -147,12 +147,12 @@ const QuestionResponse = ({
               className="questionResponse_questionSquare"
               style={{
                 backgroundColor:
-                  StudentItem == '1' && question.question_currentOption == '1'
+                  StudentItem == '1' && question.question_correctOption == '1'
                     ? 'green'
                     : StudentItem == '1' &&
-                      question.question_currentOption != '1'
+                      question.question_correctOption != '1'
                       ? 'red'
-                      : question.question_currentOption == '1'
+                      : question.question_correctOption == '1'
                         ? 'green'
                         : 'rgb(78, 76, 76)',
               }}
@@ -170,12 +170,12 @@ const QuestionResponse = ({
               className="questionResponse_questionSquare"
               style={{
                 backgroundColor:
-                  StudentItem == '2' && question.question_currentOption == '2'
+                  StudentItem == '2' && question.question_correctOption == '2'
                     ? 'green'
                     : StudentItem == '2' &&
-                      question.question_currentOption != '2'
+                      question.question_correctOption != '2'
                       ? 'red'
-                      : question.question_currentOption == '2'
+                      : question.question_correctOption == '2'
                         ? 'green'
                         : 'rgb(78, 76, 76)',
               }}
@@ -193,12 +193,12 @@ const QuestionResponse = ({
               className="questionResponse_questionSquare"
               style={{
                 backgroundColor:
-                  StudentItem == '3' && question.question_currentOption == '3'
+                  StudentItem == '3' && question.question_correctOption == '3'
                     ? 'green'
                     : StudentItem == '3' &&
-                      question.question_currentOption != '3'
+                      question.question_correctOption != '3'
                       ? 'red'
-                      : question.question_currentOption == '3'
+                      : question.question_correctOption == '3'
                         ? 'green'
                         : 'rgb(78, 76, 76)',
               }}
@@ -216,20 +216,20 @@ const QuestionResponse = ({
               className="questionResponse_questionSquare"
               style={{
                 backgroundColor:
-                  StudentItem == '4' && question.question_currentOption == '4'
+                  StudentItem == '4' && question.question_correctOption == '4'
                     ? 'green'
                     : StudentItem == '4' &&
-                      question.question_currentOption != '4'
+                      question.question_correctOption != '4'
                       ? 'red'
-                      : question.question_currentOption == '4'
+                      : question.question_correctOption == '4'
                         ? 'green'
                         : 'rgb(78, 76, 76)',
               }}
             // style={{
             //   backgroundColor:
-            //     StudentItem != question.question_currentOption
+            //     StudentItem != question.question_correctOption
             //       ? 'red'
-            //       : StudentItem == question.question_currentOption
+            //       : StudentItem == question.question_correctOption
             //       ? 'green'
             //       : 'rgb(78, 76, 76)',
             // }}
