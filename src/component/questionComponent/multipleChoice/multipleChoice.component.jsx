@@ -946,6 +946,7 @@ const MultipleChoice = ({setToggle , ...props}) => {
                                                 axamQuestion_input: {
                                                     questionID: "${'1'}"
                                                       axamQuestions_id: "${'1'}"
+                                                      selectedCourseName: "${props.selectedCourseName}"
                                                       question: "${convertText(newData.question)}"
                                                       question_link: "${''}"
                                                       question_optionOne: "${convertText(newData.question_optionOne)}"

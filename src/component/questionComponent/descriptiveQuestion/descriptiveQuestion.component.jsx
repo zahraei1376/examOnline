@@ -540,6 +540,7 @@ const DescriptiveQuestion = (props) => {
                                                 axamQuestion_input: {
                                                     questionID: "${'1'}"
                                                       axamQuestions_id: "${'1'}"
+                                                      selectedCourseName: "${props.selectedCourseName}"
                                                       question: "${''}"
                                                       question_link: "${file.name
                                 }"
@@ -737,6 +738,7 @@ const DescriptiveQuestion = (props) => {
                                                 axamQuestion_input: {
                                                     questionID: "${'1'}"
                                                       axamQuestions_id: "${'1'}"
+                                                      selectedCourseName: "${props.selectedCourseName}"
                                                       question: "${convertText(newData.question)}"
                                                       question_link: "${''}"
                                                       question_timeToSolveProblem: "${convertText(newData.question_timeToSolveProblem)}"

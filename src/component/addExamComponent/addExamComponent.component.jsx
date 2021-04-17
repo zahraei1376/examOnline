@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import {GroupDiv ,DatesDiv,DateDiv,ClocksDivContainer ,ClocksDiv,ClockDiv,TimeDiv,InputTimeContainer,InputTime,LabelTime, SelectDiv , Select , LabelGroup , InputGroup,BtnGroupContainer,BtnSend,Option,ContainerForm,Form} from './addExamComponent.styles';
+import {GroupDiv ,DatesDiv,DateDiv,ClocksDivContainer ,ClocksDiv,ClockDiv,TimeDiv,InputTimeContainer,InputTime,LabelTime, SelectDiv , MySelect , LabelGroup , InputGroup,BtnGroupContainer,BtnSend,Option,ContainerForm,Form} from './addExamComponent.styles';
 // import './addAxamForTeacher.scss';
 // import PopUp from '@components/UI/popUp/popup';
 import { MuiPickersUtilsProvider, TimePicker } from '@material-ui/pickers';
@@ -14,7 +14,7 @@ import { Grid } from '@material-ui/core';
 import MomentUtils from '@date-io/moment';
 // import { realeTime } from '@components/Clock/getTime';
 // import AppContext from 'app/AppContext';
-////////////////////
+////////////////////////////////////////////////////
 import axios from 'axios'
 //////////////end Pdf 
 var moment2 = require('moment-timezone');
@@ -32,7 +32,7 @@ const AddExamForTeacher = () => {
   const [selectedEndDate, handleEndDateChange] = useState(moment());
   const [newSelectedStartDate, setNewSelectedStartDate] = useState('');
   const [newSelectedEndDate, setNewSelectedEndDate] = useState('');
-  /////////////////////////////
+/////////////////////////////////
   // const [selectedstartTime, handleSelectedStartTime] = useState(realeTime.toLocaleTimeString([], {
   //   timeZone: 'Asia/Tehran',
   //   hour: '2-digit',
@@ -63,7 +63,8 @@ const AddExamForTeacher = () => {
     getExamLevelTeacher:[],
     getExamCourseNamesTeacher:[],
     examclassName:'',
-    examLevels:[],
+    examLevel:'',
+    // examLevel:[],
     handleOneClick:false,
     examMethod:'',
   })
@@ -77,7 +78,76 @@ const AddExamForTeacher = () => {
   ///////////
   // const [classN, setClassN] = useState("");
   // const [level, setLevel] = useState("");
-  const [groups, setGroups] = useState([]);
+  const [groups, setGroups] = useState([
+    {class_name:'الف',level:'اول',group_course_name:'علوم',},
+    {class_name:'الف',level:'اول',group_course_name:'ریاضی',},
+    {class_name:'ب',level:'دوم',group_course_name:'فیزیک',},
+    {class_name:'ب',level:'اول',group_course_name:'اجتماعی',},
+    {class_name:'ج',level:'سوم',group_course_name:'علوم',},
+]);
+
+  const handleItems = (item,myItem) => {
+    // var MyClass = groups.map(group => {group.level === myLevel ?  group : ""})
+    if(item =="selectedLevel"){
+      var Myclass = groups.filter(group =>group.level === myItem);
+      console.log('Myclass',Myclass);
+      var newClassName = [];
+      for (
+        var count = 0;
+        count < Myclass.length;
+        count++
+      ) {
+        var existFlag = false;
+        for (var count2 = 0; count2 < newClassName.length; count2++) {
+          if (
+            // newLevels[count2].class_name ===
+            // res.data.getGroupsByPersonId[count].class_name &&
+            newClassName[count2].class_name ===
+            Myclass[count].class_name
+            // &&
+            // newLevels[count2].group_course_name ===
+            // res.data.getGroupsByPersonId[count].group_course_name
+          ) {
+            existFlag = true;
+            break;
+          }
+        }
+        if (!existFlag) {
+          newClassName.push({ group_id: Myclass[count].group_id, class_name: Myclass[count].class_name });
+        }
+      }
+      setState({...state,getExamCourseNamesTeacher:'' ,getExamClassTeacher : newClassName});
+    }else if(item =="selectedClass"){
+      var itemsClass = myItem.split(',');
+      console.log('itemsClass',itemsClass);
+      var MyCourseNames = groups.filter(group =>group.class_name === itemsClass[0]);
+      console.log('MyCourseNames',MyCourseNames);
+      var newCourseNames = [];
+      for (
+        var count = 0;
+        count < MyCourseNames.length;
+        count++
+      ) {
+        var existFlag = false;
+        for (var count2 = 0; count2 < newCourseNames.length; count2++) {
+          if (
+            newCourseNames[count2].group_course_name ===
+            MyCourseNames[count].group_course_name
+          ) {
+            existFlag = true;
+            break;
+          }
+        }
+        if (!existFlag) {
+          newCourseNames.push({ group_id: MyCourseNames[count].group_id, group_course_name: MyCourseNames[count].group_course_name });
+        }
+      }
+      console.log('getExamCourseNamesTeacher',newCourseNames);
+      setState({...state, getExamCourseNamesTeacher : newCourseNames});
+      /////////////////////////////////////////////////
+    }
+     
+  }
   // const [Levels, setLevels] = useState([]);
   // const [classNames, setClassNames] = useState([]);
   // const [courseNames, setCourseNames] = useState([]);
@@ -95,36 +165,10 @@ const AddExamForTeacher = () => {
   }, [selectedEndDate]);
 
   useEffect(() => {
-    // if (typeOfPerson === 'teacher') {
-      // user.user.person_id
-    fetch(graphql_server_uri, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        query: `
-                      mutation{
-                        getGroupsByPersonId(
-                          person_id_input: {
-                                person_id: "${'1'}"
-                                person_password: "${'1'}"
-                          }
-                        ){
-                          group_id
-                          group_course_name
-                          class_name
-                          level
-                        }
-                      }                      
-                    `,
-      }),
-    })
-      .then(res => res.json())
-      .then(res => {
-        ///////////////////////////////
-        var newLevels = [];
+      var newLevels = [];
         for (
           var count = 0;
-          count < res.data.getGroupsByPersonId.length;
+          count < groups.length;
           count++
         ) {
           var existFlag = false;
@@ -133,7 +177,7 @@ const AddExamForTeacher = () => {
               // newLevels[count2].class_name ===
               // res.data.getGroupsByPersonId[count].class_name &&
               newLevels[count2].level ===
-              res.data.getGroupsByPersonId[count].level
+              groups[count].level
               // &&
               // newLevels[count2].group_course_name ===
               // res.data.getGroupsByPersonId[count].group_course_name
@@ -143,66 +187,117 @@ const AddExamForTeacher = () => {
             }
           }
           if (!existFlag) {
-            newLevels.push({ group_id: res.data.getGroupsByPersonId[count].group_id, level: res.data.getGroupsByPersonId[count].level });
+            newLevels.push({ group_id: groups[count].group_id, level: groups[count].level });
           }
         }
-        setState({getExamLevelTeacher : newLevels});
+        setState({...state, getExamLevelTeacher : newLevels});
+    // fetch(graphql_server_uri, {
+    //   method: 'POST',
+    //   headers: { 'Content-Type': 'application/json' },
+    //   body: JSON.stringify({
+    //     query: `
+    //                   mutation{
+    //                     getGroupsByPersonId(
+    //                       person_id_input: {
+    //                             person_id: "${'1'}"
+    //                             person_password: "${'1'}"
+    //                       }
+    //                     ){
+    //                       group_id
+    //                       group_course_name
+    //                       class_name
+    //                       level
+    //                     }
+    //                   }                      
+    //                 `,
+    //   }),
+    // })
+    //   .then(res => res.json())
+    //   .then(res => {
+    //     ///////////////////////////////
+    //     setGroups(res.data.getGroupsByPersonId);
+    //     var newLevels = [];
+    //     for (
+    //       var count = 0;
+    //       count < res.data.getGroupsByPersonId.length;
+    //       count++
+    //     ) {
+    //       var existFlag = false;
+    //       for (var count2 = 0; count2 < newLevels.length; count2++) {
+    //         if (
+    //           // newLevels[count2].class_name ===
+    //           // res.data.getGroupsByPersonId[count].class_name &&
+    //           newLevels[count2].level ===
+    //           res.data.getGroupsByPersonId[count].level
+    //           // &&
+    //           // newLevels[count2].group_course_name ===
+    //           // res.data.getGroupsByPersonId[count].group_course_name
+    //         ) {
+    //           existFlag = true;
+    //           break;
+    //         }
+    //       }
+    //       if (!existFlag) {
+    //         newLevels.push({ group_id: res.data.getGroupsByPersonId[count].group_id, level: res.data.getGroupsByPersonId[count].level });
+    //       }
+    //     }
+    //     setState({getExamLevelTeacher : newLevels});
 
-        /////////////////////////////
-        var newClassName = [];
-        for (
-          var count = 0;
-          count < res.data.getGroupsByPersonId.length;
-          count++
-        ) {
-          var existFlag = false;
-          for (var count2 = 0; count2 < newClassName.length; count2++) {
-            if (
-              // newLevels[count2].class_name ===
-              // res.data.getGroupsByPersonId[count].class_name &&
-              newClassName[count2].class_name ===
-              res.data.getGroupsByPersonId[count].class_name
-              // &&
-              // newLevels[count2].group_course_name ===
-              // res.data.getGroupsByPersonId[count].group_course_name
-            ) {
-              existFlag = true;
-              break;
-            }
-          }
-          if (!existFlag) {
-            newClassName.push({ group_id: res.data.getGroupsByPersonId[count].group_id, class_name: res.data.getGroupsByPersonId[count].class_name });
-          }
-        }
-        setState({getExamClassTeacher : newClassName});
-        ////////////////////////
-        var newCourseNames = [];
-        for (
-          var count = 0;
-          count < res.data.getGroupsByPersonId.length;
-          count++
-        ) {
-          var existFlag = false;
-          for (var count2 = 0; count2 < newCourseNames.length; count2++) {
-            if (
-              // newLevels[count2].class_name ===
-              // res.data.getGroupsByPersonId[count].class_name &&
-              newCourseNames[count2].group_course_name ===
-              res.data.getGroupsByPersonId[count].group_course_name
-              // &&
-              // newLevels[count2].group_course_name ===
-              // res.data.getGroupsByPersonId[count].group_course_name
-            ) {
-              existFlag = true;
-              break;
-            }
-          }
-          if (!existFlag) {
-            newCourseNames.push({ group_id: res.data.getGroupsByPersonId[count].group_id, group_course_name: res.data.getGroupsByPersonId[count].group_course_name });
-          }
-        }
-        setState({getExamCourseNamesTeacher : newCourseNames});
-      });
+    //     /////////////////////////////
+    //     var newClassName = [];
+    //     for (
+    //       var count = 0;
+    //       count < res.data.getGroupsByPersonId.length;
+    //       count++
+    //     ) {
+    //       var existFlag = false;
+    //       for (var count2 = 0; count2 < newClassName.length; count2++) {
+    //         if (
+    //           // newLevels[count2].class_name ===
+    //           // res.data.getGroupsByPersonId[count].class_name &&
+    //           newClassName[count2].class_name ===
+    //           res.data.getGroupsByPersonId[count].class_name
+    //           // &&
+    //           // newLevels[count2].group_course_name ===
+    //           // res.data.getGroupsByPersonId[count].group_course_name
+    //         ) {
+    //           existFlag = true;
+    //           break;
+    //         }
+    //       }
+    //       if (!existFlag) {
+    //         newClassName.push({ group_id: res.data.getGroupsByPersonId[count].group_id, class_name: res.data.getGroupsByPersonId[count].class_name });
+    //       }
+    //     }
+    //     setState({getExamClassTeacher : newClassName});
+    //     ////////////////////////
+    //     var newCourseNames = [];
+    //     for (
+    //       var count = 0;
+    //       count < res.data.getGroupsByPersonId.length;
+    //       count++
+    //     ) {
+    //       var existFlag = false;
+    //       for (var count2 = 0; count2 < newCourseNames.length; count2++) {
+    //         if (
+    //           // newLevels[count2].class_name ===
+    //           // res.data.getGroupsByPersonId[count].class_name &&
+    //           newCourseNames[count2].group_course_name ===
+    //           res.data.getGroupsByPersonId[count].group_course_name
+    //           // &&
+    //           // newLevels[count2].group_course_name ===
+    //           // res.data.getGroupsByPersonId[count].group_course_name
+    //         ) {
+    //           existFlag = true;
+    //           break;
+    //         }
+    //       }
+    //       if (!existFlag) {
+    //         newCourseNames.push({ group_id: res.data.getGroupsByPersonId[count].group_id, group_course_name: res.data.getGroupsByPersonId[count].group_course_name });
+    //       }
+    //     }
+    //     setState({getExamCourseNamesTeacher : newCourseNames});
+    //   });
     // }
   }, []);
 
@@ -347,6 +442,52 @@ const AddExamForTeacher = () => {
     }
   }
 
+  const checkValue = (field , value) => {
+    // console.log('field',field);
+    // console.log('value',value);
+    console.log('field',field,'value',value);
+    // var selectedLevel = document.getElementById("selectedLevel").options.length;
+    var selectedLevel = document.getElementById("selectedLevel");
+    var selectedClass = document.getElementById("selectedClass");
+    var selectedCourse = document.getElementById("selectedCourse");
+
+    if(field === "selectedCourse"){
+      console.log('1');
+      console.log('state.examclassName',state.examclassName,'state.examLevel',state.examLevel);
+      console.log(!state.examclassName && !state.examLevel);
+        if(!state.examclassName && !state.examLevel){
+          console.log('2');
+         
+          selectedLevel.style.border="1px solid #000";
+          selectedClass.style.border="1px solid #000";
+          // const name = event.target.name;
+          setState({
+            ...state,
+            examLevel: value,
+          });
+          // setState({examLevel:value});
+        }else{
+          console.log('3');
+          selectedLevel.style.border="1px solid red";
+          selectedClass.style.border="1px solid red";
+        }
+    }else if(field === "selectedClass"){
+      if(!state.examLevel){
+        selectedLevel.style.border="1px solid #000";
+        selectedClass.style.border="1px solid #000";
+        setState({
+          ...state,
+          examclassName:value,
+        });
+        // setState({examclassName:value});
+      }else{
+        selectedLevel.style.border="1px solid red";
+        selectedClass.style.border="1px solid red";
+      }
+    }
+   
+  }
+
   return (
     <ContainerForm>
       <Grid container spacing={3}>
@@ -472,14 +613,52 @@ const AddExamForTeacher = () => {
                 ساعت پایان امتحان
                     </LabelGroup>
             </GroupDiv> */}
+            
             <GroupDiv>
               <SelectDiv>
-                <Select
+                <MySelect
                   name="groupIdSelect"
-                  onChange={e => {
-                    setState({examclassName:e.target.value});
-                    // setClassN(e.target.value);
-                  }}
+                  id="selectedLevel"
+                  // onChange={e=>checkValue("selectedLevel",e.target.value)}
+                  onChange={e => handleItems('selectedLevel',e.target.value)}
+                  // onChange={e => {
+                    
+                  //   // alert(e.target.value);
+                  //   setState({examLevel:e.target.value})
+                  //   // setLevel(e.target.value);
+                  //   // groupId = e.target.value;
+                  // }}
+                >
+                  <Option value="">
+                    یکی از پایه های زیر را انتخاب کنید
+                        </Option>
+                  {state.getExamLevelTeacher
+                    ? state.getExamLevelTeacher.map((group, index) => (
+                      <Option key={index} value={group.level}>
+                        {parseInt(group.level) === parseInt(group.level, 10)
+                          ? group.level
+                          // appContext.initConfig.newLevel[group.level]
+                          : group.level}
+                      </Option>
+                    ))
+                    : ''}
+                </MySelect>
+              </SelectDiv>
+              <LabelGroup>
+                پایه
+                    </LabelGroup>
+            </GroupDiv>
+            <GroupDiv>
+              <SelectDiv>
+                <MySelect
+                  name="groupIdSelect"
+                  id="selectedClass"
+                  onChange={e => handleItems('selectedClass',e.target.value)}
+                  // onChange={e=>checkValue("selectedClass",e.target.value)}
+                  // onChange={e => {
+                  //   setState({examclassName:e.target.value});
+                  //   // setClassN(e.target.value);
+                  // }}
                 >
                   <Option value="">
                     یکی از کلاس های زیر را انتخاب کنید
@@ -499,7 +678,7 @@ const AddExamForTeacher = () => {
                   <Option value="10,11,12">
                     الف-ب-ج
                           </Option>
-                </Select>
+                </MySelect>
               </SelectDiv>
               <LabelGroup>
                 نام کلاس
@@ -507,51 +686,24 @@ const AddExamForTeacher = () => {
             </GroupDiv>
             <GroupDiv>
               <SelectDiv>
-                <Select
+                <MySelect
                   name="groupIdSelect"
-                  onChange={e => {
-                    // alert(e.target.value);
-                    setState({examLevels:e.target.value})
-                    // setLevel(e.target.value);
-                    // groupId = e.target.value;
-                  }}
-                >
-                  <Option value="">
-                    یکی از پایه های زیر را انتخاب کنید
-                        </Option>
-                  {state.getExamLevelTeacher
-                    ? state.getExamLevelTeacher.map((group, index) => (
-                      <Option key={index} value={group.level}>
-                        {parseInt(group.level) === parseInt(group.level, 10)
-                          ? group.level
-                          // appContext.initConfig.newLevel[group.level]
-                          : group.level}
-                      </Option>
-                    ))
-                    : ''}
-                </Select>
-              </SelectDiv>
-              <LabelGroup>
-                پایه
-                    </LabelGroup>
-            </GroupDiv>
-            <GroupDiv>
-              <SelectDiv>
-                <Select
-                  name="groupIdSelect"
-                  onChange={e => {
-                    // alert(e.target.value);
-                    setState({examCourseName:e.target.value});
-                    // setExamCourseName(e.target.value);
-                    // groupId = e.target.value;
-                  }}
+                  id="selectedCourse"
+                  // onChange={e=>checkValue("selectedCourse",e.target.value)}
+                  // onChange={e => {
+                  //   // alert(e.target.value);
+                  //   setState({examCourseName:e.target.value});
+                  //   // setExamCourseName(e.target.value);
+                  //   // groupId = e.target.value;
+                  // }}
                 >
                   <Option value="">
                     یکی از درس های زیر را انتخاب کنید
                         </Option>
                   {state.getExamCourseNamesTeacher
                     ? state.getExamCourseNamesTeacher.map((group, index) => (
-                      <Option key={index} value={`${group.group_course_name}/${group.group_id}`}>
+                      // <Option key={index} value={`${group.group_course_name}/${group.group_id}`}>
+                      <Option key={index} value={group.group_course_name}>
                         {parseInt(group.group_course_name) ===
                           parseInt(group.group_course_name, 10)
                           ? 
@@ -562,7 +714,7 @@ const AddExamForTeacher = () => {
                       </Option>
                     ))
                     : ''}
-                </Select>
+                </MySelect>
               </SelectDiv>
               <LabelGroup>
                 درس
@@ -596,7 +748,7 @@ const AddExamForTeacher = () => {
             </GroupDiv>
             <GroupDiv>
               <SelectDiv>
-                <Select
+                <MySelect
                   name="groupIdSelect"
                   onChange={e => {
                     setState({examMethod:e.target.value});
@@ -611,7 +763,7 @@ const AddExamForTeacher = () => {
                   <Option value="1">
                     پس از پایان امتحان امکان ادامه امتحان توسط دانش آموز باشد
                           </Option>
-                </Select>
+                </MySelect>
               </SelectDiv>
               <LabelGroup>
                   نحوه عملکردامتحان

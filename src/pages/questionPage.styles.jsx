@@ -4,15 +4,17 @@ import CloudUploadIcon from '@material-ui/icons/CloudUpload';
 // background-image: linear-gradient(to bottom, #1f6f8b , #1c2b2d);
 export const QuestionPageContainer = styled.div`
     min-height:100vh;
-    padding:5rem;
-    background-image: linear-gradient(to bottom, #1f6f8b , #1c2b2d);
+    padding: 0 5rem;
+    // padding:5rem;
+    // background-image: linear-gradient(to bottom, #1f6f8b , #1c2b2d);
 `;
 
 export const QuestionPageDiv = styled.div`
     // border:1px solid #000;
     box-shadow: 0 3px 20px 3px rgba(0,0,0,0.5);
     // background-color:rgba(256,256,256,0.4);
-    background-color:rgba(0,0,0,0.6);
+    // background-color:rgba(0,0,0,0.6);
+    // background-color:rgba(256,256,256,0.3);
     padding:5rem;
     border-radius:5rem;
 `;
@@ -34,4 +36,11 @@ export const UploadLabel = styled.label`
 
 export const MyCloudUploadIcon = styled(CloudUploadIcon)`
     font-size:2.8rem  !important;
+`;
+
+export const ComboDiv = styled.div`
+    display:flex;
+    justify-content:center;
+    width:100%;
+    margin-bottom:4rem;
 `;

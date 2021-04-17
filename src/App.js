@@ -9,8 +9,8 @@ import ArchiveForStudent from './component/archiveForStudent/archiveForStudent.c
 const App = () => {
   return (
     <div className="App">
-      {/* <AddExamForTeacher/> */}
-     <QuestionPageContainer />
+      <AddExamForTeacher/>
+     {/* <QuestionPageContainer /> */}
      {/* <ExamPageForStudent/> */}
      {/* <ArchiveForTeacher/> */}
      {/* <EditeAxamPageForTeacher/> */}

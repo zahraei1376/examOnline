@@ -99,7 +99,7 @@ export const SelectDiv = styled.div`
     width:70%
 `;
 
-export const Select = styled.select`
+export const MySelect = styled.select`
     border-radius:10px;
     width:100%;
     direction: rtl;
