@@ -1051,6 +1051,7 @@ const TrueAndFalse = ({setToggle ,toggle, ...props}) => {
                                                 axamQuestion_input: {
                                                     questionID: "${'1'}"
                                                       axamQuestions_id: "${'1'}"
+                                                      selectedCourseName: "${props.selectedCourseName}"
                                                       question: "${''}"
                                                       question_link: "${file.name
                                 }"

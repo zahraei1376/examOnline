@@ -99,7 +99,7 @@ export const SelectDiv = styled.div`
     width:70%
 `;
 
-export const Select = styled.select`
+export const MySelect = styled.select`
     border-radius:10px;
     width:100%;
     direction: rtl;
@@ -192,4 +192,8 @@ export const BtnSend = styled.input`
         background-color:#1c2b2d;
         box-shadow:0 1px 11px 2px rgba(0,0,0,.3);
     }
+`;
+
+export const ClsManager = styled.div`
+    width:100%;
 `;

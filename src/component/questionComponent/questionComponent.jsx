@@ -33,7 +33,7 @@ export var loadVariable = {
 };
 const graphql_server_uri = '/graphql';
 
-const Questions = ({toggle , numberOfQuestions ,seNumberOfQuestions}) =>{
+const Questions = ({toggle ,selectedCourseName, numberOfQuestions ,seNumberOfQuestions}) =>{
   // const [innerData, setInnerData] = useState([]);
   // const tableRef = React.useRef(null);
   const [typeQuestion,setTypeQuestion] =useState('');
@@ -612,7 +612,7 @@ const Questions = ({toggle , numberOfQuestions ,seNumberOfQuestions}) =>{
                 {(() => {
                     setTypeQuestion(1);
                     // setSelectedRow(rowData.tableData.id);
-                    return <DescriptiveQuestion handleFetchData={handleFetchData} rowData={createArray(rowData)} typeQuestion={typeQuestion} />
+                    return <DescriptiveQuestion selectedCourseName={selectedCourseName} handleFetchData={handleFetchData} rowData={createArray(rowData)} typeQuestion={typeQuestion} />
                 })()}
               </div>
             )
@@ -648,7 +648,7 @@ const Questions = ({toggle , numberOfQuestions ,seNumberOfQuestions}) =>{
                 {(() => {
                   setTypeQuestion(2);
                   // setSelectedRow(rowData.tableData.id);
-                    return <MultipleChoice handleFetchData={handleFetchData} rowData={createArray(rowData)} typeQuestion={typeQuestion}/>
+                    return <MultipleChoice selectedCourseName={selectedCourseName} handleFetchData={handleFetchData} rowData={createArray(rowData)} typeQuestion={typeQuestion}/>
                 })()}
 
               </div>
@@ -687,7 +687,7 @@ const Questions = ({toggle , numberOfQuestions ,seNumberOfQuestions}) =>{
                 {(() => {
                   setTypeQuestion(3);
                   // setSelectedRow(rowData.tableData.id);
-                    return <TrueAndFalse handleFetchData={handleFetchData} rowData={createArray(rowData)} typeQuestion={typeQuestion}/>
+                    return <TrueAndFalse selectedCourseName={selectedCourseName} handleFetchData={handleFetchData} rowData={createArray(rowData)} typeQuestion={typeQuestion}/>
                 })()}
               </div>
             )
@@ -723,7 +723,7 @@ const Questions = ({toggle , numberOfQuestions ,seNumberOfQuestions}) =>{
                 {(() => {
                   setTypeQuestion(4);
                   // setSelectedRow(rowData.tableData.id);
-                    return <Vacancy handleFetchData={handleFetchData} rowData={createArray(rowData)} typeQuestion={typeQuestion}/>
+                    return <Vacancy selectedCourseName={selectedCourseName} handleFetchData={handleFetchData} rowData={createArray(rowData)} typeQuestion={typeQuestion}/>
                 })()}
               </div>
             )
@@ -761,7 +761,7 @@ const Questions = ({toggle , numberOfQuestions ,seNumberOfQuestions}) =>{
                 {(() => {
                   setTypeQuestion(5);
                   // setSelectedRow(rowData.tableData.id);
-                    return <Comparative handleFetchData={handleFetchData} rowData={createArray(rowData)} typeQuestion={typeQuestion}/>
+                    return <Comparative selectedCourseName={selectedCourseName} handleFetchData={handleFetchData} rowData={createArray(rowData)} typeQuestion={typeQuestion}/>
                 })()}
               </div>
             )
@@ -799,7 +799,7 @@ const Questions = ({toggle , numberOfQuestions ,seNumberOfQuestions}) =>{
                 {(() => {
                   setTypeQuestion(6);
                   // setSelectedRow(rowData.tableData.id);
-                    return <Sequential handleFetchData={handleFetchData} rowData={createArray(rowData)} typeQuestion={typeQuestion}/>
+                    return <Sequential selectedCourseName={selectedCourseName} handleFetchData={handleFetchData} rowData={createArray(rowData)} typeQuestion={typeQuestion}/>
                 })()}
               </div>
             )
