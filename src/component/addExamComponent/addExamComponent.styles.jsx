@@ -193,3 +193,7 @@ export const BtnSend = styled.input`
         box-shadow:0 1px 11px 2px rgba(0,0,0,.3);
     }
 `;
+
+export const ClsManager = styled.div`
+    width:100%;
+`;
