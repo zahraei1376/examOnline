@@ -6,10 +6,12 @@ import ExamPageForStudent from './component/examPageForStudent/examPageForStuden
 import ArchiveForTeacher from './component/examPageForTeacher/archiveForTeacher/archiveForTeacher.component';
 import EditeAxamPageForTeacher from './component/editeAxamForTeacher/editeaxamPage.component';
 import ArchiveForStudent from './component/archiveForStudent/archiveForStudent.component';
+import AddExamForTeacherContainer from './component/addExamComponent/addExamComponent.container';
 const App = () => {
   return (
     <div className="App">
-      <AddExamForTeacher/>
+      {/* <AddExamForTeacher/> */}
+      <AddExamForTeacherContainer/>
      {/* <QuestionPageContainer /> */}
      {/* <ExamPageForStudent/> */}
      {/* <ArchiveForTeacher/> */}
