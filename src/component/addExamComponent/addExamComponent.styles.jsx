@@ -103,6 +103,7 @@ export const MySelect = styled.select`
     border-radius:10px;
     width:100%;
     direction: rtl;
+    padding:0 2rem;
     // text-align:right;
     // direction:rtl;
 `;
@@ -133,6 +134,8 @@ export const LabelTime = styled.label`
 
 export const InputGroup = styled.input`
     border-radius:10px;
+    padding:0 2rem;
+    box-sizing:border-box;
     // padding:1rem;
     font-family:Bnazanin;
     font-size:1.8rem;
