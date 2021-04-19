@@ -5,7 +5,7 @@ import {GroupDiv ,DatesDiv,DateDiv,ClocksDivContainer ,ClocksDiv,ClockDiv,TimeDi
 // import './addAxamForTeacher.scss';
 // import PopUp from '@components/UI/popUp/popup';
 import { MuiPickersUtilsProvider, TimePicker } from '@material-ui/pickers';
-import { v4 as uuidv4 } from 'uuid';
+import { v1, v4 as uuidv4 } from 'uuid';
 // import MaterialTableQuestions from './addQuestions';
 import { useSelector } from 'react-redux';
 import { fixNumbers } from '../../generalComponent/fixNumbers';
@@ -23,7 +23,8 @@ import Chip from '@material-ui/core/Chip';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
-import axios from 'axios';
+// import axios from 'axios';
+import MySnackbar from '../../messageBox/messageBox.component';
 // import ApolloClient from "apollo-boost";
 // import { gql } from "apollo-boost";
 
@@ -32,8 +33,11 @@ import axios from 'axios';
 // });
 import { graphql } from 'react-apollo';
 import {flowRight as compose} from 'lodash';
-import { addNewExamMutation} from '../../graphql/resolver';
-var typePfUser = 0;
+import { useQuery ,gql } from 'apollo-boost';
+import { useMutation} from 'react-apollo'
+// import { gql, useMutation } from '@apollo/client';
+// import { addNewExamMutation} from '../../graphql/resolver';
+var typePfUser = 1;
 //////////////end Pdf 
 var moment2 = require('moment-timezone');
 moment2().tz("Asia/Tehran").format();
@@ -50,116 +54,55 @@ var moment = require('moment-jalaali');
   },
 }));
 
-// const top100Films = [
-//   { title: 'The Shawshank Redemption', year: 1994 },
-//   { title: 'The Godfather', year: 1972 },
-//   { title: 'The Godfather: Part II', year: 1974 },
-//   { title: 'The Dark Knight', year: 2008 },
-//   { title: '12 Angry Men', year: 1957 },
-//   { title: "Schindler's List", year: 1993 },
-//   { title: 'Pulp Fiction', year: 1994 },
-//   { title: 'The Lord of the Rings: The Return of the King', year: 2003 },
-//   { title: 'The Good, the Bad and the Ugly', year: 1966 },
-//   { title: 'Fight Club', year: 1999 },
-//   { title: 'The Lord of the Rings: The Fellowship of the Ring', year: 2001 },
-//   { title: 'Star Wars: Episode V - The Empire Strikes Back', year: 1980 },
-//   { title: 'Forrest Gump', year: 1994 },
-//   { title: 'Inception', year: 2010 },
-//   { title: 'The Lord of the Rings: The Two Towers', year: 2002 },
-//   { title: "One Flew Over the Cuckoo's Nest", year: 1975 },
-//   { title: 'Goodfellas', year: 1990 },
-//   { title: 'The Matrix', year: 1999 },
-//   { title: 'Seven Samurai', year: 1954 },
-//   { title: 'Star Wars: Episode IV - A New Hope', year: 1977 },
-//   { title: 'City of God', year: 2002 },
-//   { title: 'Se7en', year: 1995 },
-//   { title: 'The Silence of the Lambs', year: 1991 },
-//   { title: "It's a Wonderful Life", year: 1946 },
-//   { title: 'Life Is Beautiful', year: 1997 },
-//   { title: 'The Usual Suspects', year: 1995 },
-//   { title: 'Léon: The Professional', year: 1994 },
-//   { title: 'Spirited Away', year: 2001 },
-//   { title: 'Saving Private Ryan', year: 1998 },
-//   { title: 'Once Upon a Time in the West', year: 1968 },
-//   { title: 'American History X', year: 1998 },
-//   { title: 'Interstellar', year: 2014 },
-//   { title: 'Casablanca', year: 1942 },
-//   { title: 'City Lights', year: 1931 },
-//   { title: 'Psycho', year: 1960 },
-//   { title: 'The Green Mile', year: 1999 },
-//   { title: 'The Intouchables', year: 2011 },
-//   { title: 'Modern Times', year: 1936 },
-//   { title: 'Raiders of the Lost Ark', year: 1981 },
-//   { title: 'Rear Window', year: 1954 },
-//   { title: 'The Pianist', year: 2002 },
-//   { title: 'The Departed', year: 2006 },
-//   { title: 'Terminator 2: Judgment Day', year: 1991 },
-//   { title: 'Back to the Future', year: 1985 },
-//   { title: 'Whiplash', year: 2014 },
-//   { title: 'Gladiator', year: 2000 },
-//   { title: 'Memento', year: 2000 },
-//   { title: 'The Prestige', year: 2006 },
-//   { title: 'The Lion King', year: 1994 },
-//   { title: 'Apocalypse Now', year: 1979 },
-//   { title: 'Alien', year: 1979 },
-//   { title: 'Sunset Boulevard', year: 1950 },
-//   { title: 'Dr. Strangelove or: How I Learned to Stop Worrying and Love the Bomb', year: 1964 },
-//   { title: 'The Great Dictator', year: 1940 },
-//   { title: 'Cinema Paradiso', year: 1988 },
-//   { title: 'The Lives of Others', year: 2006 },
-//   { title: 'Grave of the Fireflies', year: 1988 },
-//   { title: 'Paths of Glory', year: 1957 },
-//   { title: 'Django Unchained', year: 2012 },
-//   { title: 'The Shining', year: 1980 },
-//   { title: 'WALL·E', year: 2008 },
-//   { title: 'American Beauty', year: 1999 },
-//   { title: 'The Dark Knight Rises', year: 2012 },
-//   { title: 'Princess Mononoke', year: 1997 },
-//   { title: 'Aliens', year: 1986 },
-//   { title: 'Oldboy', year: 2003 },
-//   { title: 'Once Upon a Time in America', year: 1984 },
-//   { title: 'Witness for the Prosecution', year: 1957 },
-//   { title: 'Das Boot', year: 1981 },
-//   { title: 'Citizen Kane', year: 1941 },
-//   { title: 'North by Northwest', year: 1959 },
-//   { title: 'Vertigo', year: 1958 },
-//   { title: 'Star Wars: Episode VI - Return of the Jedi', year: 1983 },
-//   { title: 'Reservoir Dogs', year: 1992 },
-//   { title: 'Braveheart', year: 1995 },
-//   { title: 'M', year: 1931 },
-//   { title: 'Requiem for a Dream', year: 2000 },
-//   { title: 'Amélie', year: 2001 },
-//   { title: 'A Clockwork Orange', year: 1971 },
-//   { title: 'Like Stars on Earth', year: 2007 },
-//   { title: 'Taxi Driver', year: 1976 },
-//   { title: 'Lawrence of Arabia', year: 1962 },
-//   { title: 'Double Indemnity', year: 1944 },
-//   { title: 'Eternal Sunshine of the Spotless Mind', year: 2004 },
-//   { title: 'Amadeus', year: 1984 },
-//   { title: 'To Kill a Mockingbird', year: 1962 },
-//   { title: 'Toy Story 3', year: 2010 },
-//   { title: 'Logan', year: 2017 },
-//   { title: 'Full Metal Jacket', year: 1987 },
-//   { title: 'Dangal', year: 2016 },
-//   { title: 'The Sting', year: 1973 },
-//   { title: '2001: A Space Odyssey', year: 1968 },
-//   { title: "Singin' in the Rain", year: 1952 },
-//   { title: 'Toy Story', year: 1995 },
-//   { title: 'Bicycle Thieves', year: 1948 },
-//   { title: 'The Kid', year: 1921 },
-//   { title: 'Inglourious Basterds', year: 2009 },
-//   { title: 'Snatch', year: 2000 },
-//   { title: '3 Idiots', year: 2009 },
-//   { title: 'Monty Python and the Holy Grail', year: 1975 },
-// ];
+const addNewExamMutation = gql`
+    mutation addExamParent(
+        $userName: String!,
+        $password: String!, 
+        $examParent_gId:[ID]!,
+        $examParent_start_date: String!, 
+        $examParent_stop_date: String!, 
+        $examParent_start: String!,
+        $examParent_end: String!, 
+        $examParent_maxScore: String!, 
+        $examParent_method:String!,
+        $examParent_topic:String!
+        ){
+            addExamParent(
+                userName: $userName, 
+                password:$password, 
+                examParent_gId: $examParent_gId,
+                examParent_start_date: $examParent_start_date, 
+                examParent_stop_date: $examParent_stop_date,
+                examParent_start: $examParent_start,
+                examParent_end: $examParent_end, 
+                examParent_maxScore: $examParent_maxScore, 
+                examParent_method: $examParent_method,
+                examParent_topic: $examParent_topic
+                ){
+                  id
+                }
+        }
+`;
 
-const AddExamForTeacher = ({MyGroups ,addNewExamMutation}) => {
+const AddExamForTeacher = ({MyGroups}) => {
+  // const { loading, error, data } = useQuery(addNewExamMutation);
+  const [addExamParent ,{ data }] = useMutation(addNewExamMutation);
+  const [selectedClass , setSelectedClass] = useState([]);
+  const [selectedLevel,setSelectedLevel] = useState('');
+  const [showMessage,setShowMessage] = useState(false);
+  const [message,setMessage] =useState('');
+  const [status,setStatus] =useState(0);
   // const appContext = useContext(AppContext);
   // const user = useSelector(({ auth }) => auth.user);
   //////////////////////////////////for manager
   const classes = useStyles();
 
   //////////////////////////////////////////////
+  const [values, setValues] = React.useState([]);
+
+  const clearSelected = () => {
+    setValues([]);
+  };
   // const getAllUsersQuery = gql`
   // {
   //   groupsListByPerson(userName: "210", password: "210") {
@@ -228,11 +171,14 @@ const AddExamForTeacher = ({MyGroups ,addNewExamMutation}) => {
     // {class:'ب',level:'اول',course:'اجتماعی',pId:'4'},
     // {class:'ج',level:'سوم',course:'علوم',pId:'5'},
 ]);
+const [uniqGroups,setUniqGroups] = useState([]);
 
   const handleItems = (item,myItem) => {
+    console.log('myItem',myItem);
     // var MyClass = groups.map(group => {group.level === myLevel ?  group : ""})
     if(item =="selectedLevel"){
-      var Myclass = groups.filter(group =>group.level === myItem);
+      setSelectedLevel(myItem);
+      var Myclass = uniqGroups.filter(group =>group.level === myItem);
       console.log('Myclass',Myclass);
       var newClassName = [];
       for (
@@ -265,7 +211,7 @@ const AddExamForTeacher = ({MyGroups ,addNewExamMutation}) => {
       if(typePfUser == 0){
         var itemsClass = myItem.split(',');
         console.log('itemsClass',itemsClass);
-        var MyCourseNames = groups.filter(group =>group.class === itemsClass[0]);
+        var MyCourseNames = uniqGroups.filter(group =>group.class === itemsClass[0]);
         console.log('MyCourseNames',MyCourseNames);
         var newCourseNames = [];
         for (
@@ -291,32 +237,42 @@ const AddExamForTeacher = ({MyGroups ,addNewExamMutation}) => {
         setState({...state, getExamCourseNamesTeacher : newCourseNames});
       }
       else if(typePfUser == 1){
-        var itemsClass = myItem[0].class;
-        console.log('itemsClass',itemsClass);
-        var MyCourseNames = groups.filter(group =>group.class === itemsClass);
-        console.log('MyCourseNames',MyCourseNames);
-        var newCourseNames = [];
-        for (
-          var count = 0;
-          count < MyCourseNames.length;
-          count++
-        ) {
-          var existFlag = false;
-          for (var count2 = 0; count2 < newCourseNames.length; count2++) {
-            if (
-              newCourseNames[count2].course ===
-              MyCourseNames[count].course
-            ) {
-              existFlag = true;
-              break;
+        if(myItem && myItem.length > 0){
+          setSelectedClass(myItem);
+          var itemsClass = myItem[0].class;
+          console.log('itemsClass',itemsClass);
+          var MyCourseNames = uniqGroups.filter(group =>group.class === itemsClass);
+          console.log('MyCourseNames',MyCourseNames);
+          var newCourseNames = [];
+          for (
+            var count = 0;
+            count < MyCourseNames.length;
+            count++
+          ) {
+            var existFlag = false;
+            for (var count2 = 0; count2 < newCourseNames.length; count2++) {
+              if (
+                newCourseNames[count2].course ===
+                MyCourseNames[count].course
+              ) {
+                existFlag = true;
+                break;
+              }
+            }
+            if (!existFlag) {
+              newCourseNames.push({ pId: MyCourseNames[count].pId, course: MyCourseNames[count].course });
             }
           }
-          if (!existFlag) {
-            newCourseNames.push({ pId: MyCourseNames[count].pId, course: MyCourseNames[count].course });
-          }
+          console.log('getExamCourseNamesTeacher',newCourseNames);
+          setState({...state, getExamCourseNamesTeacher : newCourseNames});
+        }else{
+          clearSelected();
+          setSelectedClass([]);
+          // setState({...state, getExamCourseNamesTeacher : []});
+          setGroupsExam([]);
+          setState({...state, getExamCourseNamesTeacher : []});
+          // setState({...state,getExamCourseNamesTeacher:[] ,getExamClassTeacher : []});
         }
-        console.log('getExamCourseNamesTeacher',newCourseNames);
-        setState({...state, getExamCourseNamesTeacher : newCourseNames});
       }
 
        /////////////////////////////////////////////////
@@ -384,13 +340,208 @@ const AddExamForTeacher = ({MyGroups ,addNewExamMutation}) => {
 //     remoteData();
 //   }, []);
 
-  useEffect(() => {
-    // console.log('MyGroups',MyGroups);
-    setGroups(MyGroups);
-    var newLevels = [];
+  // useEffect(() => {
+  //   // console.log('MyGroups',MyGroups);
+  //   setGroups(MyGroups);
+  //   var newLevels = [];
+  //   for (
+  //     var count = 0;
+  //     count < MyGroups.length;
+  //     count++
+  //   ) {
+  //     var existFlag = false;
+  //     for (var count2 = 0; count2 < newLevels.length; count2++) {
+  //       if (
+  //         // newLevels[count2].class ===
+  //         // res.data.getGroupsByPersonId[count].class &&
+  //         newLevels[count2].level ===
+  //         MyGroups[count].level
+  //         // &&
+  //         // newLevels[count2].course ===
+  //         // res.data.getGroupsByPersonId[count].course
+  //       ) {
+  //         existFlag = true;
+  //         break;
+  //       }
+  //     }
+  //     if (!existFlag) {
+  //       // console.log('newLevels',newLevels);
+  //       newLevels.push({ pId: MyGroups[count].pId, level: MyGroups[count].level });
+  //     }
+  //   }
+  //   // console.log('newLevels',newLevels);
+  //   setState({...state, getExamLevelTeacher : newLevels});
+  //     // var newLevels = [];
+  //     //   for (
+  //     //     var count = 0;
+  //     //     count < groups.length;
+  //     //     count++
+  //     //   ) {
+  //     //     var existFlag = false;
+  //     //     for (var count2 = 0; count2 < newLevels.length; count2++) {
+  //     //       if (
+  //     //         // newLevels[count2].class ===
+  //     //         // res.data.getGroupsByPersonId[count].class &&
+  //     //         newLevels[count2].level ===
+  //     //         groups[count].level
+  //     //         // &&
+  //     //         // newLevels[count2].course ===
+  //     //         // res.data.getGroupsByPersonId[count].course
+  //     //       ) {
+  //     //         existFlag = true;
+  //     //         break;
+  //     //       }
+  //     //     }
+  //     //     if (!existFlag) {
+  //     //       newLevels.push({ pId: groups[count].pId, level: groups[count].level });
+  //     //     }
+  //     //   }
+  //     //   setState({...state, getExamLevelTeacher : newLevels});
+      
+  //   // fetch(graphql_server_uri, {
+  //   //   method: 'POST',
+  //   //   headers: { 'Content-Type': 'application/json' },
+  //   //   body: JSON.stringify({
+  //   //     query: `
+  //   //                   mutation{
+  //   //                     getGroupsByPersonId(
+  //   //                       person_id_input: {
+  //   //                             person_id: "${'1'}"
+  //   //                             person_password: "${'1'}"
+  //   //                       }
+  //   //                     ){
+  //   //                       pId
+  //   //                       course
+  //   //                       class
+  //   //                       level
+  //   //                     }
+  //   //                   }                      
+  //   //                 `,
+  //   //   }),
+  //   // })
+  //   //   .then(res => res.json())
+  //   //   .then(res => {
+  //   //     ///////////////////////////////
+  //   //     setGroups(res.data.getGroupsByPersonId);
+  //   //     var newLevels = [];
+  //   //     for (
+  //   //       var count = 0;
+  //   //       count < res.data.getGroupsByPersonId.length;
+  //   //       count++
+  //   //     ) {
+  //   //       var existFlag = false;
+  //   //       for (var count2 = 0; count2 < newLevels.length; count2++) {
+  //   //         if (
+  //   //           // newLevels[count2].class ===
+  //   //           // res.data.getGroupsByPersonId[count].class &&
+  //   //           newLevels[count2].level ===
+  //   //           res.data.getGroupsByPersonId[count].level
+  //   //           // &&
+  //   //           // newLevels[count2].course ===
+  //   //           // res.data.getGroupsByPersonId[count].course
+  //   //         ) {
+  //   //           existFlag = true;
+  //   //           break;
+  //   //         }
+  //   //       }
+  //   //       if (!existFlag) {
+  //   //         newLevels.push({ pId: res.data.getGroupsByPersonId[count].pId, level: res.data.getGroupsByPersonId[count].level });
+  //   //       }
+  //   //     }
+  //   //     setState({getExamLevelTeacher : newLevels});
+
+  //   //     // /////////////////////////////
+  //   //     // var newClassName = [];
+  //   //     // for (
+  //   //     //   var count = 0;
+  //   //     //   count < res.data.getGroupsByPersonId.length;
+  //   //     //   count++
+  //   //     // ) {
+  //   //     //   var existFlag = false;
+  //   //     //   for (var count2 = 0; count2 < newClassName.length; count2++) {
+  //   //     //     if (
+  //   //     //       // newLevels[count2].class ===
+  //   //     //       // res.data.getGroupsByPersonId[count].class &&
+  //   //     //       newClassName[count2].class ===
+  //   //     //       res.data.getGroupsByPersonId[count].class
+  //   //     //       // &&
+  //   //     //       // newLevels[count2].course ===
+  //   //     //       // res.data.getGroupsByPersonId[count].course
+  //   //     //     ) {
+  //   //     //       existFlag = true;
+  //   //     //       break;
+  //   //     //     }
+  //   //     //   }
+  //   //     //   if (!existFlag) {
+  //   //     //     newClassName.push({ pId: res.data.getGroupsByPersonId[count].pId, class: res.data.getGroupsByPersonId[count].class });
+  //   //     //   }
+  //   //     // }
+  //   //     // setState({getExamClassTeacher : newClassName});
+  //   //     // ////////////////////////
+  //   //     // var newCourseNames = [];
+  //   //     // for (
+  //   //     //   var count = 0;
+  //   //     //   count < res.data.getGroupsByPersonId.length;
+  //   //     //   count++
+  //   //     // ) {
+  //   //     //   var existFlag = false;
+  //   //     //   for (var count2 = 0; count2 < newCourseNames.length; count2++) {
+  //   //     //     if (
+  //   //     //       // newLevels[count2].class ===
+  //   //     //       // res.data.getGroupsByPersonId[count].class &&
+  //   //     //       newCourseNames[count2].course ===
+  //   //     //       res.data.getGroupsByPersonId[count].course
+  //   //     //       // &&
+  //   //     //       // newLevels[count2].course ===
+  //   //     //       // res.data.getGroupsByPersonId[count].course
+  //   //     //     ) {
+  //   //     //       existFlag = true;
+  //   //     //       break;
+  //   //     //     }
+  //   //     //   }
+  //   //     //   if (!existFlag) {
+  //   //     //     newCourseNames.push({ pId: res.data.getGroupsByPersonId[count].pId, course: res.data.getGroupsByPersonId[count].course });
+  //   //     //   }
+  //   //     // }
+  //   //     // setState({getExamCourseNamesTeacher : newCourseNames});
+  //   //   });
+  //   // }
+  // }, []);
+
+  useEffect(()=>{
+    // var Myclass = groups.filter(group =>group.level === myItem);
+    // console.log('Myclass',Myclass);
+    var newGrops = [];
     for (
       var count = 0;
       count < MyGroups.length;
+      count++
+    ) {
+      var existFlag = false;
+      for (var count2 = 0; count2 < newGrops.length; count2++) {
+        if (
+          newGrops[count2].level ===
+          MyGroups[count].level &&
+          newGrops[count2].class ===
+          MyGroups[count].class &&
+          newGrops[count2].course ===
+          MyGroups[count].course
+        ) {
+          existFlag = true;
+          break;
+        }
+      }
+      if (!existFlag) {
+        newGrops.push({ pId: MyGroups[count].pId, class: MyGroups[count].class , level: MyGroups[count].level, course: MyGroups[count].course });
+      }
+    }
+    console.log('newGrops',newGrops);
+    setUniqGroups(newGrops);
+    // setGroups(MyGroups);
+    var newLevels = [];
+    for (
+      var count = 0;
+      count < newGrops.length;
       count++
     ) {
       var existFlag = false;
@@ -399,7 +550,7 @@ const AddExamForTeacher = ({MyGroups ,addNewExamMutation}) => {
           // newLevels[count2].class ===
           // res.data.getGroupsByPersonId[count].class &&
           newLevels[count2].level ===
-          MyGroups[count].level
+          newGrops[count].level
           // &&
           // newLevels[count2].course ===
           // res.data.getGroupsByPersonId[count].course
@@ -410,161 +561,57 @@ const AddExamForTeacher = ({MyGroups ,addNewExamMutation}) => {
       }
       if (!existFlag) {
         // console.log('newLevels',newLevels);
-        newLevels.push({ pId: MyGroups[count].pId, level: MyGroups[count].level });
+        newLevels.push({ pId: newGrops[count].pId, level: newGrops[count].level });
       }
     }
     // console.log('newLevels',newLevels);
     setState({...state, getExamLevelTeacher : newLevels});
-      // var newLevels = [];
-      //   for (
-      //     var count = 0;
-      //     count < groups.length;
-      //     count++
-      //   ) {
-      //     var existFlag = false;
-      //     for (var count2 = 0; count2 < newLevels.length; count2++) {
-      //       if (
-      //         // newLevels[count2].class ===
-      //         // res.data.getGroupsByPersonId[count].class &&
-      //         newLevels[count2].level ===
-      //         groups[count].level
-      //         // &&
-      //         // newLevels[count2].course ===
-      //         // res.data.getGroupsByPersonId[count].course
-      //       ) {
-      //         existFlag = true;
-      //         break;
-      //       }
-      //     }
-      //     if (!existFlag) {
-      //       newLevels.push({ pId: groups[count].pId, level: groups[count].level });
-      //     }
-      //   }
-      //   setState({...state, getExamLevelTeacher : newLevels});
-      
-    // fetch(graphql_server_uri, {
-    //   method: 'POST',
-    //   headers: { 'Content-Type': 'application/json' },
-    //   body: JSON.stringify({
-    //     query: `
-    //                   mutation{
-    //                     getGroupsByPersonId(
-    //                       person_id_input: {
-    //                             person_id: "${'1'}"
-    //                             person_password: "${'1'}"
-    //                       }
-    //                     ){
-    //                       pId
-    //                       course
-    //                       class
-    //                       level
-    //                     }
-    //                   }                      
-    //                 `,
-    //   }),
-    // })
-    //   .then(res => res.json())
-    //   .then(res => {
-    //     ///////////////////////////////
-    //     setGroups(res.data.getGroupsByPersonId);
-    //     var newLevels = [];
-    //     for (
-    //       var count = 0;
-    //       count < res.data.getGroupsByPersonId.length;
-    //       count++
-    //     ) {
-    //       var existFlag = false;
-    //       for (var count2 = 0; count2 < newLevels.length; count2++) {
-    //         if (
-    //           // newLevels[count2].class ===
-    //           // res.data.getGroupsByPersonId[count].class &&
-    //           newLevels[count2].level ===
-    //           res.data.getGroupsByPersonId[count].level
-    //           // &&
-    //           // newLevels[count2].course ===
-    //           // res.data.getGroupsByPersonId[count].course
-    //         ) {
-    //           existFlag = true;
-    //           break;
-    //         }
-    //       }
-    //       if (!existFlag) {
-    //         newLevels.push({ pId: res.data.getGroupsByPersonId[count].pId, level: res.data.getGroupsByPersonId[count].level });
-    //       }
-    //     }
-    //     setState({getExamLevelTeacher : newLevels});
+    // setState({...state,getExamCourseNamesTeacher:'' ,getExamClassTeacher : newClassName});
+  },[MyGroups])
 
-    //     // /////////////////////////////
-    //     // var newClassName = [];
-    //     // for (
-    //     //   var count = 0;
-    //     //   count < res.data.getGroupsByPersonId.length;
-    //     //   count++
-    //     // ) {
-    //     //   var existFlag = false;
-    //     //   for (var count2 = 0; count2 < newClassName.length; count2++) {
-    //     //     if (
-    //     //       // newLevels[count2].class ===
-    //     //       // res.data.getGroupsByPersonId[count].class &&
-    //     //       newClassName[count2].class ===
-    //     //       res.data.getGroupsByPersonId[count].class
-    //     //       // &&
-    //     //       // newLevels[count2].course ===
-    //     //       // res.data.getGroupsByPersonId[count].course
-    //     //     ) {
-    //     //       existFlag = true;
-    //     //       break;
-    //     //     }
-    //     //   }
-    //     //   if (!existFlag) {
-    //     //     newClassName.push({ pId: res.data.getGroupsByPersonId[count].pId, class: res.data.getGroupsByPersonId[count].class });
-    //     //   }
-    //     // }
-    //     // setState({getExamClassTeacher : newClassName});
-    //     // ////////////////////////
-    //     // var newCourseNames = [];
-    //     // for (
-    //     //   var count = 0;
-    //     //   count < res.data.getGroupsByPersonId.length;
-    //     //   count++
-    //     // ) {
-    //     //   var existFlag = false;
-    //     //   for (var count2 = 0; count2 < newCourseNames.length; count2++) {
-    //     //     if (
-    //     //       // newLevels[count2].class ===
-    //     //       // res.data.getGroupsByPersonId[count].class &&
-    //     //       newCourseNames[count2].course ===
-    //     //       res.data.getGroupsByPersonId[count].course
-    //     //       // &&
-    //     //       // newLevels[count2].course ===
-    //     //       // res.data.getGroupsByPersonId[count].course
-    //     //     ) {
-    //     //       existFlag = true;
-    //     //       break;
-    //     //     }
-    //     //   }
-    //     //   if (!existFlag) {
-    //     //     newCourseNames.push({ pId: res.data.getGroupsByPersonId[count].pId, course: res.data.getGroupsByPersonId[count].course });
-    //     //   }
-    //     // }
-    //     // setState({getExamCourseNamesTeacher : newCourseNames});
-    //   });
-    // }
-  }, []);
 
   const handleGroupsExam = (vl) =>{
-    console.log('vl',vl);
-    var temp =[...groupsExam];
-    setGroupsExam(temp , vl);
+    // console.log('vl',vl);
+    // var temp =[...groupsExam];
+    // temp.push(vl);
+    // setGroupsExam(temp);
+    
+    if(typePfUser === 1){
+      setValues(vl);
+      var MySelectedGroup = [];
+      console.log("uniqGroups",uniqGroups);
+        for (let i = 0; i < selectedClass.length; i++) {
+          for (let j = 0; j < vl.length; j++) {
+            console.log("selectedLevel",selectedLevel);
+            console.log("selectedClass[i]",selectedClass[i].class);
+            console.log("vl[j]",vl[j].course);
+            var myGroup = uniqGroups.filter(group => group.level === selectedLevel && 
+              group.class === selectedClass[i].class &&
+              group.course === vl[j].course);
+              console.log("myGroup" ,myGroup);
+              MySelectedGroup.push(myGroup[0].pId);
+            
+          }
+          
+        }
+        console.log("MySelectedGroup" ,MySelectedGroup);
+        setGroupsExam(MySelectedGroup);
+    }else if(typePfUser === 0){
+      setGroupsExam(vl);
+    }
   }
 
+  useEffect(()=>{
+      console.log("uniqGroupsExam" , groupsExam);
+  },[groupsExam])
 
-  const handleSubmit = event => {
+
+  const handleSubmit = async(event) => {
     event.preventDefault();
-    addNewExamMutation({
-      variables: {
-        userName: "210", 
-        password: "210", 
+    // console.log("groupsExam" , groupsExam);
+    await addExamParent({ variables: { 
+        userName: "211", 
+        password: "211", 
         examParent_gId: groupsExam,
         examParent_start_date: newSelectedStartDate, 
         examParent_stop_date: newSelectedEndDate,
@@ -573,9 +620,40 @@ const AddExamForTeacher = ({MyGroups ,addNewExamMutation}) => {
         examParent_maxScore: state.examMaxScore, 
         examParent_method: state.examMethod,
         examParent_topic: state.examTopic
-      },
-      // refetchQueries: [{ query: getBooksQuery }]
-  });
+     } 
+    }).then(res=>{
+      if(res.data && res.data.addExamParent){
+        // console.log('data',data);
+        setMessage('امتحان ثبت شد');
+        setStatus('1');
+        setShowMessage(!showMessage);
+      }else{
+        // console.log('data',data);
+        setStatus('0')
+        setMessage('امتحان ثبت نشد')
+        setShowMessage(!showMessage);
+      }
+    }
+      )
+    // console.log('data',data);
+    // && data.addExamParent
+    
+    
+  //   addNewExamMutation({
+  //     variables: {
+  //       userName: "211", 
+  //       password: "211", 
+  //       examParent_gId: groupsExam,
+  //       examParent_start_date: newSelectedStartDate, 
+  //       examParent_stop_date: newSelectedEndDate,
+  //       examParent_start: selectedstartTime,
+  //       examParent_end: selectedEndTime, 
+  //       examParent_maxScore: state.examMaxScore, 
+  //       examParent_method: state.examMethod,
+  //       examParent_topic: state.examTopic
+  //     },
+  //     // refetchQueries: [{ query: getBooksQuery }]
+  // });
     // sethandleOneClick(true);
     // if (typeOfPerson === 'teacher') {
     // var teacherName =
@@ -1014,8 +1092,10 @@ const AddExamForTeacher = ({MyGroups ,addNewExamMutation}) => {
                   multiple
                   id="size-small-standard-multi"
                   size="small"
+                  value={values}
                   options={state.getExamCourseNamesTeacher ? state.getExamCourseNamesTeacher : ''}
                   getOptionLabel={(option) => option.course}
+                  // ref='courseInput'
                   //  defaultValue={[top100Films[0]]}
                   renderInput={(params) => {
                     // console.log('params', params)
@@ -1092,13 +1172,16 @@ const AddExamForTeacher = ({MyGroups ,addNewExamMutation}) => {
               />
             </BtnGroupContainer>
           </Form>
+          {
+            showMessage ? <MySnackbar message={message} status={status} showMessage={showMessage} setShowMessage={setShowMessage} /> : ''
+          }
         </Grid>
       </ Grid>
     </ContainerForm >
   );
 };
-// export default AddExamForTeacher;
-export default compose(
-  graphql(addNewExamMutation, { name: "addNewExamMutation" }),
-  // graphql(addBookMutation, { name: "addBookMutation" })
-)(AddExamForTeacher);
+export default AddExamForTeacher;
+// export default compose(
+//   graphql(addNewExamMutation, { name: "addNewExamMutation" }),
+//   // graphql(addBookMutation, { name: "addBookMutation" })
+// )(AddExamForTeacher);

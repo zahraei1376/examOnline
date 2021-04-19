@@ -27,11 +27,11 @@ const getAllUsersQuery = gql`
 `;
 
 const AddExamForTeacherContainer = ()=>(
-    <Query query={GET_GROUPS_WITH_ID} variables={{userName:"210" , password:"210"}}>
+    <Query query={GET_GROUPS_WITH_ID} variables={{userName:"211" , password:"211"}}>
             {({loading ,error , data }) => {
                     // console.log({loading});
                     // console.log({error});
-                    // console.log({data});
+                    console.log({data});
                     
                     if(loading) return <MySpinner/>
                     return <AddExamForTeacher MyGroups={data.groupsListByPerson} />
