@@ -17,6 +17,7 @@ export const QuestionPageDiv = styled.div`
     // background-color:rgba(256,256,256,0.3);
     padding:5rem;
     border-radius:5rem;
+    background-image: linear-gradient(to bottom, #1f6f8b , #1c2b2d);
 `;
 
 export const UploadSectionContainer = styled.div`

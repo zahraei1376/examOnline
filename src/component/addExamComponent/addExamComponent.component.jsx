@@ -23,7 +23,8 @@ import Chip from '@material-ui/core/Chip';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
-import axios from 'axios';
+// import axios from 'axios';
+import MySnackbar from '../../messageBox/messageBox.component';
 // import ApolloClient from "apollo-boost";
 // import { gql } from "apollo-boost";
 
@@ -85,9 +86,12 @@ const addNewExamMutation = gql`
 
 const AddExamForTeacher = ({MyGroups}) => {
   // const { loading, error, data } = useQuery(addNewExamMutation);
-  const [addExamParent] = useMutation(addNewExamMutation);
+  const [addExamParent ,{ data }] = useMutation(addNewExamMutation);
   const [selectedClass , setSelectedClass] = useState([]);
   const [selectedLevel,setSelectedLevel] = useState('');
+  const [showMessage,setShowMessage] = useState(false);
+  const [message,setMessage] =useState('');
+  const [status,setStatus] =useState(0);
   // const appContext = useContext(AppContext);
   // const user = useSelector(({ auth }) => auth.user);
   //////////////////////////////////for manager
@@ -604,7 +608,7 @@ const [uniqGroups,setUniqGroups] = useState([]);
 
   const handleSubmit = async(event) => {
     event.preventDefault();
-    console.log("groupsExam" , groupsExam);
+    // console.log("groupsExam" , groupsExam);
     await addExamParent({ variables: { 
         userName: "211", 
         password: "211", 
@@ -617,7 +621,24 @@ const [uniqGroups,setUniqGroups] = useState([]);
         examParent_method: state.examMethod,
         examParent_topic: state.examTopic
      } 
-    });
+    }).then(res=>{
+      if(res.data && res.data.addExamParent){
+        // console.log('data',data);
+        setMessage('امتحان ثبت شد');
+        setStatus('1');
+        setShowMessage(!showMessage);
+      }else{
+        // console.log('data',data);
+        setStatus('0')
+        setMessage('امتحان ثبت نشد')
+        setShowMessage(!showMessage);
+      }
+    }
+      )
+    // console.log('data',data);
+    // && data.addExamParent
+    
+    
   //   addNewExamMutation({
   //     variables: {
   //       userName: "211", 
@@ -1151,6 +1172,9 @@ const [uniqGroups,setUniqGroups] = useState([]);
               />
             </BtnGroupContainer>
           </Form>
+          {
+            showMessage ? <MySnackbar message={message} status={status} showMessage={showMessage} setShowMessage={setShowMessage} /> : ''
+          }
         </Grid>
       </ Grid>
     </ContainerForm >
