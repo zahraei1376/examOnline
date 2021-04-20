@@ -11,6 +11,12 @@ import { ComparativeButton } from "../Comparative/Comparative.styles";
 import BackupIcon from '@material-ui/icons/Backup';
 import {connect} from 'react-redux';
 import setToggle from '../../../redux/toggleQuesion/toggleQuestion.action';
+import MySnackbar from '../../../messageBox/messageBox.component';
+/////////////////////////query
+import { useQuery ,gql } from 'apollo-boost';
+import { useMutation} from 'react-apollo';
+import {SET_QUESTION_CHILD} from '../../../graphql/resolver';
+/////////////////////////query
 // import {ToggleQuestion} from '../../../redux/toggleQuesion/toggleQuestion.selector';
 // import { createStructuredSelector} from 'reselect';
 // import AddIcon from '@material-ui/icons/Add';
@@ -19,7 +25,57 @@ import setToggle from '../../../redux/toggleQuesion/toggleQuestion.action';
 // var load = false;
 const graphql_server_uri ='/qraphql';
 
+// const SET_QUESTION_CHILD = gql`
+//   mutation addQuestionChild(
+//       $userName: String!,
+//       $password: String!,
+//       $qpId: String!,
+//       $question: String!,
+//       $question_score: String!,
+//       $question_explain: String!,
+//       $question_timeToSolveProblem: String!,
+//       $question_correctOption: String!,
+//       $question_optionOne: String!,
+//       $question_optionTwo: String!,
+//       $question_optionThree: String!,
+//       $question_optionFour: String!,
+//       $question_link: String!,
+//       $exam_link: String!,
+//       $question_type: String!,
+//       $question_seqItems: [String]!,
+//       $question_vancyItems: String!,
+//       $question_compItems: [String]!,
+//       ){
+//       addQuestionChild(
+//         userName: $userName,
+//         password: $password,
+//         qpId: $qpId,
+//         question: $question,
+//         question_score: $question_score,
+//         question_explain: $question_explain,
+//         question_timeToSolveProblem: $question_timeToSolveProblem,
+//         question_correctOption: $question_correctOption,
+//         question_optionOne: $question_optionOne,
+//         question_optionTwo: $question_optionTwo,
+//         question_optionThree: $question_optionThree,
+//         question_optionFour: $question_optionFour,
+//         question_link: $question_link,
+//         exam_link: $exam_link,
+//         question_type: $question_type,
+//         question_seqItems: $question_seqItems,
+//         question_vancyItems: $question_vancyItems,
+//         question_compItems: $question_compItems,
+//       ){
+//         id
+//       }
+//   }
+// `;
+
 const MultipleChoice = ({setToggle , ...props}) => {
+    const [setQuestionChild ,{ QuestionChildData }] = useMutation(SET_QUESTION_CHILD);
+    const [showMessage,setShowMessage] = useState(false);
+    const [message,setMessage] =useState('');
+    const [status,setStatus] =useState(0);
     const [innerData, setInnerData] = useState([]);
     /////////////////////////////////////////
     // const [imageQuestion, setImageQuestion] = useState(false);
@@ -211,6 +267,7 @@ const MultipleChoice = ({setToggle , ...props}) => {
           textAlign: 'center',
           defaultFilter: '',
           minWidth: 150,
+          render: rowData =>rowData.question_link ? <img src={rowData.question_link} style={{width: 40, borderRadius: '50%'}}/> :'',
           editComponent: props => (
             <label htmlFor="upload-photo">
                 <input
@@ -498,6 +555,7 @@ const MultipleChoice = ({setToggle , ...props}) => {
           field: 'exam_link',
           textAlign: 'center',
           defaultFilter: '',
+          render: rowData => rowData.exam_link ? <img src={rowData.exam_link} style={{width: 40, borderRadius: '50%'}}/> : '',
           editComponent: props => (
             // <input type="file" defaultValue="" onChange={e => uploadFile(e)} />
             <label htmlFor="upload-photo">
@@ -528,31 +586,6 @@ const MultipleChoice = ({setToggle , ...props}) => {
       ]);
     //   const [data, setData] = useState([]);
       ////////////////////////////////////////////////
-
-  
-    // const [innerColumns, setInnerColumns] = useState([
-    //   {
-    //     title: 'questionID', field: 'questionID',
-    //     // editComponent: props => (
-    //     //   <input
-    //     //     type="text"
-    //     //     value={props.value}
-    //     //     onChange={e => props.onChange(e.target.value)}
-    //     //   />
-    //     // )
-    //   },
-    //   { title: 'axamQuestions_id', field: 'axamQuestions_id' },
-    //   { title: 'question', field: 'question' },
-    //   ///////////////////////////////////////
-    //   // { title: 'Surname', field: 'surname' },
-    //   // { title: 'Birth Year', field: 'birthYear', type: 'numeric' },
-    //   // {
-    //   //   title: 'Birth Place',
-    //   //   field: 'birthCity',
-    //   //   lookup: { 34: 'İstanbul', 63: 'Şanlıurfa' },
-    //   // },
-    // ]);
-
     function convertText(text){
       var new1Text = text
       ? text.split('\r\n').join('%0A')
@@ -693,8 +726,6 @@ const MultipleChoice = ({setToggle , ...props}) => {
                 const index = oldData.tableData.id;
                 /////////////myCode
                 if (
-                    // axamIdProps != '' &&
-                    newData.question_score !== undefined &&
                     newData.question_correctOption !== undefined
                   ) {
                     if (
@@ -715,122 +746,50 @@ const MultipleChoice = ({setToggle , ...props}) => {
                       async function handleSendToserver() {
                         var responseCode = await UploadfileToserver(file, format);
                         if (file.name && responseCode) {
-                          fetch(graphql_server_uri, {
-                            method: 'POST',
-                            headers: { 'Content-Type': 'application/json' },
-                            body: JSON.stringify({
-                              query: `
-                                          mutation{
-                                              addNewQuestion(
-                                                axamQuestion_input: {
-                                                    questionID: "${'1'}"
-                                                      axamQuestions_id: "${'1'}"
-                                                      question: "${''}"
-                                                      question_link: "${file.name
-                                }"
-                                                      question_optionOne: "${convertText(newData.question_optionOne)}"
-                                                      question_optionTwo:"${convertText(newData.question_optionTwo)}"
-                                                      question_correctOption: "${newData.question_correctOption ? newData.question_correctOption: ''
-                                }"
-                                                    question_optionThree: "${convertText(newData.question_optionThree)}"
-                                                    question_optionFour: "${convertText(newData.question_optionFour)}"
-                                                      question_timeToSolveProblem: "${convertText(newData.question_timeToSolveProblem)}"
-                                                      question_score: "${newData.question_score ? newData.question_score : ''
-                                }"
-                                                      question_explane: "${convertText(newData.question_explane)}"
-                                                      exam_link: "${''}"
-                                              },
-                                              axamQuestion_input_old: {
-                                                questionID: "${'1'}"
-                                                axamQuestions_id: "${'1'}"
-                                                question: "${convertText(oldData.question_optionOne)}"
-                                                question_link: "${convertText(oldData.question_link)}"
-                                                question_optionOne: "${convertText(oldData.question_optionOne)}"
-                                                question_optionTwo:"${convertText(oldData.question_optionTwo)}"
-                                                question_optionThree: "${convertText(oldData.question_optionThree)}"
-                                                question_optionFour: "${convertText(oldData.question_optionFour)}"
-                                                question_correctOption: "${oldData.question_correctOption ? oldData.question_correctOption : ''
-                                    }"
-                                                question_timeToSolveProblem: "${convertText(oldData.question_timeToSolveProblem)}"
-                                                question_score: "${ oldData.question_score ? oldData.question_score : ''
-                                    }"
-                                                question_explane: "${convertText(oldData.question_explane)}"
-                                                exam_link: "${oldData.exam_link}"
-                                          }
-                                            ){
-                                              axamQuestions_id
-                                            }
-                                          }                      
-                                        `,
-                            }),
-                          })
-                            .then(res => res.json())
-                            .then(res => {
+                          setQuestionChild({ variables: { 
+                            userName: "211", 
+                            password: "211", 
+                            qpId: "607d2f582cf63c244015d278",
+                            question: "", 
+                            question_score: newData.question_score ? newData.question_score : '', 
+                            question_explain: convertText(newData.question_explane),
+                            question_timeToSolveProblem: convertText(newData.question_timeToSolveProblem), 
+                            question_correctOption: newData.question_correctOption ? newData.question_correctOption: '', 
+                            question_optionOne: convertText(newData.question_optionOne),
+                            question_optionTwo: convertText(newData.question_optionTwo),
+                            question_optionThree: convertText(newData.question_optionThree),
+                            question_optionFour: convertText(newData.question_optionFour),
+                            question_link: file.name,
+                            exam_link: "", 
+                            question_type: "3",
+                            question_seqItems: [],
+                            question_vancyItems: "", 
+                            question_compItems: []
+                            } 
+                          }).then(res=>{
+                            if(res.data && res.data.addQuestionChild){
                               setQuestionImage(false);
-                              if (
-                                res.data &&
-                                res.data.addNewQuestion
-                                // &&
-                                // res.data.addNewQuestion.axamQuestions_id
-                              ) {
-                                // if (res.data.addNewQuestion && res.data.addNewQuestion.axamQuestions_id) {
-                                // setQuestionId(data.length)
-                                // setQuestionId(prevState => prevState + 1);
-                                // setMessage('اطلاعاتی به درستی ثبت شد');
-                                // setStatus(0);
-                                // setShowPopup(true);
-                                // refteshData();
-                                // return res.data;
-                              } else {
-                                alert('اطلاعاتی به درستی ثبت نشد');
-                                // setStatus(1);
-                                // setShowPopup(true);
-                                // refteshData();
-                              }
-                            });
-                          // return { ...state, data };
+                              setMessage('ثبت شد');
+                              setStatus('1');
+                              setShowMessage(!showMessage);
+                            }else{
+                              setStatus('0')
+                              setMessage('ثبت نشد')
+                              setShowMessage(!showMessage);
+                            }
+                          })
                         } else {
-                          // setLoading(false);
-                          alert('اطلاعاتی به درستی ثبت نشد');
-                          // setStatus(1);
-                          // setShowPopup(true);
-                          // refteshData();
+                          // alert('اطلاعاتی به درستی ثبت نشد');
+                          setStatus('0')
+                          setMessage('اطلاعاتی به درستی ثبت نشد')
+                          setShowMessage(!showMessage);
                         }
                       }
-                      // });
                     } else if (
                       selectedFile &&
                       questionImage == false &&
                       textImage == true
                     ) {
-                      // setState(async(prevState) => {
-                      //   const data = [...prevState.data];
-                      //   data.push(newData);
-                      // var fileIdL = selectedFile.name.split('.');
-                      // const format = fileIdL[fileIdL.length - 1].toLowerCase();
-                      // ///////////////
-                      // var mimetype = '';
-                      // ///////////////////////////////
-                      // switch (format) {
-                      //   case 'jpeg':
-                      //     // JPEG Image
-                      //     mimetype = 'image/jpeg';
-                      //     break;
-                      //   case 'jpg':
-                      //     // JPEG Image
-                      //     mimetype = 'image/jpg';
-                      //     break;
-                      //   case 'jpgv':
-                      //     // JPGVideo
-                      //     mimetype = 'video/jpeg';
-                      //     break;
-                      //   case 'png':
-                      //     // Portable Network Graphics (PNG)
-                      //     mimetype = 'image/png';
-                      //     break;
-                      //   default:
-                      //     break;
-                      // }
                       //////////////////////
                       var file = new File(
                         [selectedFile],
@@ -839,187 +798,88 @@ const MultipleChoice = ({setToggle , ...props}) => {
                           type: mimeTypeFile,
                         },
                       );
-  
                       //////////////////////
                       handleSendToserver();
                       async function handleSendToserver() {
                         var responseCode = await UploadfileToserver(file, format);
-                        // alert(selectedFileName);
                         if (file.name && responseCode) {
-                          fetch(graphql_server_uri, {
-                            method: 'POST',
-                            headers: { 'Content-Type': 'application/json' },
-                            body: JSON.stringify({
-                              query: `
-                                          mutation{
-                                              addNewQuestion(
-                                                axamQuestion_input: {
-                                                    questionID: "${'1'}"
-                                                      axamQuestions_id: "${'1'}"
-                                                      question: "${convertText(newData.question)}"
-                                                      question_link: "${''}"
-                                                      question_optionOne: "${convertText(newData.question_optionOne)}"
-                                                      question_optionTwo:"${convertText(newData.question_optionTwo)}"
-                                                      question_optionThree: "${convertText(newData.question_optionThree)}"
-                                                      question_optionFour: "${convertText(newData.question_optionFour)}"
-                                                      question_correctOption: "${newData.question_correctOption ? newData.question_correctOption : ''
-                                }"
-                                                      question_timeToSolveProblem: "${convertText(newData.question_timeToSolveProblem)}"
-                                                      question_score: "${newData.question_score ? newData.question_score: ''
-                                }"
-                                                      question_explane: "${convertText(newData.question_explane)}"
-                                                      exam_link: "${file.name}"
-                                              },    axamQuestion_input_old: {
-                                                questionID: "${'1'}"
-                                                axamQuestions_id: "${'1'}"
-                                                question: "${convertText(oldData.question_optionOne)}"
-                                                question_link: "${convertText(oldData.question_link)}"
-                                                question_optionOne: "${convertText(oldData.question_optionOne)}"
-                                                question_optionTwo:"${convertText(oldData.question_optionTwo)}"
-                                                question_optionThree: "${convertText(oldData.question_optionThree)}"
-                                                question_optionFour: "${convertText(oldData.question_optionFour)}"
-                                                question_correctOption: "${oldData.question_correctOption ? oldData.question_correctOption : ''
-                                    }"
-                                                question_timeToSolveProblem: "${convertText(oldData.question_timeToSolveProblem)}"
-                                                question_score: "${ oldData.question_score ? oldData.question_score : ''
-                                    }"
-                                                question_explane: "${convertText(oldData.question_explane)}"
-                                                exam_link: "${oldData.exam_link}"
-                                          }
-                                            ){
-                                              axamQuestions_id
-                                            }
-                                          }                      
-                                        `,
-                            }),
-                          })
-                            .then(res => res.json())
-                            .then(res => {
-                              // SetselectedFileName('');
-                              // setSumScore(prevState => prevState + parseFloat(newScore));
-                              // tesetLoading(false);
+                          setQuestionChild({ variables: { 
+                            userName: "211", 
+                            password: "211", 
+                            qpId: "607d2f582cf63c244015d278",
+                            question: convertText(newData.question), 
+                            question_score: newData.question_score ? newData.question_score : '', 
+                            question_explain: convertText(newData.question_explane),
+                            question_timeToSolveProblem: convertText(newData.question_timeToSolveProblem), 
+                            question_correctOption: newData.question_correctOption ? newData.question_correctOption: '', 
+                            question_optionOne: convertText(newData.question_optionOne),
+                            question_optionTwo: convertText(newData.question_optionTwo),
+                            question_optionThree: convertText(newData.question_optionThree),
+                            question_optionFour: convertText(newData.question_optionFour),
+                            question_link: "",
+                            exam_link: file.name, 
+                            question_type: "3",
+                            question_seqItems: [],
+                            question_vancyItems: "", 
+                            question_compItems: []
+                            } 
+                          }).then(res=>{
+                            if(res.data && res.data.addQuestionChild){
                               setTextImage(false);
                               setQuestionImage(false);
-                              if (
-                                res.data &&
-                                res.data.addNewQuestion
-                                //  &&
-                                // res.data.addNewQuestion.axamQuestions_id
-                              ) {
-                                // if (res.data.addNewQuestion && res.data.addNewQuestion.axamQuestions_id) {
-                                // setQuestionId(data.length)
-                                // setQuestionId(prevState => prevState + 1);
-                                // setMessage('اطلاعاتی به درستی ثبت شد');
-                                // setStatus(0);
-                                // setShowPopup(true);
-                                // refteshData();
-                                // return res.data;
-                              } else {
-                                alert('اطلاعاتی به درستی ثبت نشد');
-                                // setStatus(1);
-                                // setShowPopup(true);
-                                // refteshData();
-                              }
-                            });
-                          // return { ...prevState, data };
+                              setMessage('ثبت شد');
+                              setStatus('1');
+                              setShowMessage(!showMessage);
+                            }else{
+                              setStatus('0')
+                              setMessage('ثبت نشد')
+                              setShowMessage(!showMessage);
+                            }
+                          })
                         } else {
-                          // setLoading(false);
-                          alert('اطلاعاتی به درستی ثبت نشد');
-                          // setStatus(1);
-                          // setShowPopup(true);
-                          // refteshData();
+                          // alert('اطلاعاتی به درستی ثبت نشد');
+                          setStatus('0')
+                          setMessage('اطلاعاتی به درستی ثبت نشد')
+                          setShowMessage(!showMessage);
                         }
-                        // else{
-                        //   alert('نیست!!!!!');
-                        // }
                       }
-                      // });
                     } else {
-                      
-                      fetch(graphql_server_uri, {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({
-                          query: `
-                                          mutation{
-                                              addNewQuestion(
-                                                axamQuestion_input: {
-                                                    questionID: "${'1'}"
-                                                      axamQuestions_id: "${'1'}"
-                                                      selectedCourseName: "${props.selectedCourseName}"
-                                                      question: "${convertText(newData.question)}"
-                                                      question_link: "${''}"
-                                                      question_optionOne: "${convertText(newData.question_optionOne)}"
-                                                      question_optionTwo:"${convertText(newData.question_optionTwo)}"
-                                                      question_correctOption: "${newData.question_correctOption ? newData.question_correctOption : ''
-                            }"
-                                                      question_timeToSolveProblem: "${convertText(newData.question_timeToSolveProblem)}"
-                                                      question_score: "${newData.question_score ? newData.question_score : ''
-                            }"
-                                                      question_explane: "${convertText(newData.question_explane)}"
-                                                      exam_link: "${''}"
-                                              },    axamQuestion_input_old: {
-                                                questionID: "${'1'}"
-                                                axamQuestions_id: "${'1'}"
-                                                question: "${convertText(oldData.question_optionOne)}"
-                                                question_link: "${convertText(oldData.question_link)}"
-                                                question_optionOne: "${convertText(oldData.question_optionOne)}"
-                                                question_optionTwo:"${convertText(oldData.question_optionTwo)}"
-                                                question_correctOption: "${oldData.question_correctOption ? oldData.question_correctOption : ''
-                                    }"
-                                                question_timeToSolveProblem: "${convertText(oldData.question_timeToSolveProblem)}"
-                                                question_score: "${ oldData.question_score ? oldData.question_score : ''
-                                    }"
-                                                question_explane: "${convertText(oldData.question_explane)}"
-                                                exam_link: "${oldData.exam_link}"
-                                          }
-                                            ){
-                                              axamQuestions_id
-                                            }
-                                          }                      
-                                        `,
-                        }),
+                      setQuestionChild({ variables: { 
+                        userName: "211", 
+                        password: "211", 
+                        qpId: "607d2f582cf63c244015d278",
+                        question: convertText(newData.question), 
+                        question_score: newData.question_score ? newData.question_score : '', 
+                        question_explain: convertText(newData.question_explane),
+                        question_timeToSolveProblem: convertText(newData.question_timeToSolveProblem), 
+                        question_correctOption: newData.question_correctOption ? newData.question_correctOption: '', 
+                        question_optionOne: convertText(newData.question_optionOne),
+                        question_optionTwo: convertText(newData.question_optionTwo),
+                        question_optionThree: convertText(newData.question_optionThree),
+                        question_optionFour: convertText(newData.question_optionFour),
+                        question_link: "",
+                        exam_link: "", 
+                        question_type: "3",
+                        question_seqItems: [],
+                        question_vancyItems: "", 
+                        question_compItems: []
+                        } 
+                      }).then(res=>{
+                        if(res.data && res.data.addQuestionChild){
+                          setMessage('ثبت شد');
+                          setStatus('1');
+                          setShowMessage(!showMessage);
+                        }else{
+                          setStatus('0')
+                          setMessage('ثبت نشد')
+                          setShowMessage(!showMessage);
+                        }
                       })
-                        .then(res => res.json())
-                        .then(res => {
-                          // SetselectedFileName('');
-                          // setLoading(false);
-                          setTextImage(false);
-                          setQuestionImage(false);
-                          // setSumScore(prevState => prevState + parseFloat(newScore));
-                          if (
-                            res.data &&
-                            res.data.addNewQuestion
-                            // &&
-                            // res.data.addNewQuestion.axamQuestions_id
-                          ) {
-                            // if (res.data.addNewQuestion && res.data.addNewQuestion.axamQuestions_id) {
-                            // setQuestionId(data.length)
-                            // setQuestionId(prevState => prevState + 1);
-                            // setMessage('اطلاعاتی به درستی ثبت شد');
-                            // setStatus(0);
-                            // setShowPopup(true);
-                            // refteshData();
-                            // return res.data;
-                          } else {
-                            alert('اطلاعاتی به درستی ثبت نشد');
-                            // setStatus(1);
-                            // setShowPopup(true);
-                            // refteshData();
-                          }
-                          // return res.data;
-                        });
-                      // return { ...prevState, data };
-                      // });
                     }
                   } else {
-                    // setLoading(false);
                     setTextImage(false);
                     setQuestionImage(false);
                     alert('ابتدا فیلد های موردنظر را پر کنید!!');
-                    // setStatus(1);
-                    // setShowPopup(true);
-                    // refteshData();
                   }
                 ////////////////////////////
                 dataUpdate[index] = newData;
@@ -1042,6 +902,9 @@ const MultipleChoice = ({setToggle , ...props}) => {
           //   }),
         }}
       /> : ''}
+      {
+            showMessage ? <MySnackbar message={message} status={status} showMessage={showMessage} setShowMessage={setShowMessage} /> : ''
+          }
       </div>
     )
 };

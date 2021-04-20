@@ -30,4 +30,50 @@ const addNewExamMutation = gql`
         }
 `;
 
-export { addNewExamMutation, };
+const SET_QUESTION_CHILD = gql`
+  mutation addQuestionChild(
+      $userName: String!,
+      $password: String!,
+      $qpId: String!,
+      $question: String!,
+      $question_score: String!,
+      $question_explain: String!,
+      $question_timeToSolveProblem: String!,
+      $question_correctOption: String!,
+      $question_optionOne: String!,
+      $question_optionTwo: String!,
+      $question_optionThree: String!,
+      $question_optionFour: String!,
+      $question_link: String!,
+      $exam_link: String!,
+      $question_type: String!,
+      $question_seqItems: [String]!,
+      $question_vancyItems: String!,
+      $question_compItems: [String]!,
+      ){
+      addQuestionChild(
+        userName: $userName,
+        password: $password,
+        qpId: $qpId,
+        question: $question,
+        question_score: $question_score,
+        question_explain: $question_explain,
+        question_timeToSolveProblem: $question_timeToSolveProblem,
+        question_correctOption: $question_correctOption,
+        question_optionOne: $question_optionOne,
+        question_optionTwo: $question_optionTwo,
+        question_optionThree: $question_optionThree,
+        question_optionFour: $question_optionFour,
+        question_link: $question_link,
+        exam_link: $exam_link,
+        question_type: $question_type,
+        question_seqItems: $question_seqItems,
+        question_vancyItems: $question_vancyItems,
+        question_compItems: $question_compItems,
+      ){
+        id
+      }
+  }
+`;
+
+export { SET_QUESTION_CHILD, };

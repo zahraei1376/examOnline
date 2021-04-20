@@ -11,8 +11,8 @@ const App = () => {
   return (
     <div className="App">
       {/* <AddExamForTeacher/> */}
-      <AddExamForTeacherContainer/>
-     {/* <QuestionPageContainer /> */}
+      {/* <AddExamForTeacherContainer/> */}
+     <QuestionPageContainer />
      {/* <ExamPageForStudent/> */}
      {/* <ArchiveForTeacher/> */}
      {/* <EditeAxamPageForTeacher/> */}
