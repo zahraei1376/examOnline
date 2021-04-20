@@ -3,6 +3,7 @@ import Button from '@material-ui/core/Button';
 import Snackbar from '@material-ui/core/Snackbar';
 import MuiAlert from '@material-ui/lab/Alert';
 import { makeStyles } from '@material-ui/core/styles';
+import {MySnackbarDiv} from './messageBox.styles';
 
 function Alert(props) {
   return <MuiAlert elevation={6} variant="filled" {...props} />;
@@ -27,10 +28,12 @@ function MySnackbar({message ,status,showMessage,setShowMessage}) {
 
   const handleClose = (event, reason) => {
     if (reason === 'clickaway') {
+      console.log('showMessage',showMessage);
       setShowMessage(!showMessage);
       return;
     }
-
+    console.log('showMessage2',showMessage);
+    setShowMessage(!showMessage);
     setOpen(false);
   };
 
@@ -39,13 +42,13 @@ function MySnackbar({message ,status,showMessage,setShowMessage}) {
       {/* <Button variant="outlined" onClick={handleClick}>
         Open success snackbar
       </Button> */}
-      <Snackbar open={open} style={{width:'100%'}}
-    //   autoHideDuration={3000}
+      <MySnackbarDiv open={open} style={{width:'100%'}}
+      autoHideDuration={2000}
        onClose={handleClose}>
         <Alert style={{width:'70%',textAlign:'center',}} onClose={handleClose} severity={status === '1' ? "success" : "error" }>
           {message}
         </Alert>
-      </Snackbar>
+      </MySnackbarDiv>
       {/* <Alert severity="error">This is an error message!</Alert>
       <Alert severity="warning">This is a warning message!</Alert>
       <Alert severity="info">This is an information message!</Alert>

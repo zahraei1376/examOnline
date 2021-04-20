@@ -27,15 +27,84 @@ import { createStructuredSelector} from 'reselect';
 import {ToggleQuestion} from '../../redux/toggleQuesion/toggleQuestion.selector';
 // import setToggle from "../../redux/toggleQuesion/toggleQuestion.action.js";
 
+/////////////////////////query
+import { useQuery ,gql } from 'apollo-boost';
+import { useMutation} from 'react-apollo'
+/////////////////////////query
+
 export var loadVariable = {
   load:false,
   // disable:false,
 };
 const graphql_server_uri = '/graphql';
 
-const Questions = ({toggle ,selectedCourseName, numberOfQuestions ,seNumberOfQuestions}) =>{
+const SET_QUESTIONPARENT = gql`
+  mutation addQuestionParent(
+    $userName: String!,
+    $password: String!,
+    $ecId: String!,
+    ){
+      addQuestionParent(
+          userName: $userName,
+          password: $password,
+          ecId: $ecId
+      ){
+        id
+      }
+  }
+`;
+
+const SET_QUESTION_CHILD = gql`
+  mutation addQuestionChild(
+      $userName: String!,
+      $password: String!,
+      $qpId: String!,
+      $question: String!,
+      $question_score: String!,
+      $question_explain: String!,
+      $question_timeToSolveProblem: String!,
+      $question_correctOption: String!,
+      $question_optionOne: String!,
+      $question_optionTwo: String!,
+      $question_optionThree: String!,
+      $question_optionFour: String!,
+      $question_link: String!,
+      $exam_link: String!,
+      $question_type: String!,
+      $question_seqItems: [String]!,
+      $question_vancyItems: String!,
+      $question_compItems: [String]!,
+      ){
+      addQuestionChild(
+        userName: $userName,
+        password: $password,
+        qpId: $qpId,
+        question: $question,
+        question_score: $question_score,
+        question_explain: $question_explain,
+        question_timeToSolveProblem: $question_timeToSolveProblem,
+        question_correctOption: $question_correctOption,
+        question_optionOne: $question_optionOne,
+        question_optionTwo: $question_optionTwo,
+        question_optionThree: $question_optionThree,
+        question_optionFour: $question_optionFour,
+        question_link: $question_link,
+        exam_link: $exam_link,
+        question_type: $question_type,
+        question_seqItems: $question_seqItems,
+        question_vancyItems: $question_vancyItems,
+        question_compItems: $question_compItems,
+      ){
+        id
+      }
+  }
+`;
+
+const Questions = ({toggle ,selectedCourseName}) =>{
   // const [innerData, setInnerData] = useState([]);
   // const tableRef = React.useRef(null);
+  const [setQuestionParent ,{ QuestionParentData }] = useMutation(SET_QUESTIONPARENT);
+  // const [setQuestionChild ,{ QuestionChildData }] = useMutation(SET_QUESTION_CHILD);
   const [typeQuestion,setTypeQuestion] =useState('');
   // const [disable,setDisable] =useState(false);
   useEffect(()=>{
@@ -44,71 +113,71 @@ const Questions = ({toggle ,selectedCourseName, numberOfQuestions ,seNumberOfQue
     
   },[typeQuestion]);
 
-  useEffect(()=>{
+  // useEffect(()=>{
 
-    if(numberOfQuestions !== '') {
-      fetch(graphql_server_uri, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          query: `
-            mutation{
-                addNewQuestion(
-                  axamQuestion_input: {
-                      questionID: "${'1'}"
-                      axamQuestions_id: "${'1'}"
-                      question_type: 
-                      question: "${''}"
-                      question_link: "${''}"
-                      question_optionOne: "${''}"
-                      question_optionTwo:"${''}"
-                      question_correctOption: "${''}"
-                      question_optionThree: "${''}"
-                      question_optionFour: "${''}"
-                      question_timeToSolveProblem: "${''}"
-                      question_score: "${''}"
-                      question_explane: ""${''}"
-                      exam_link: "${'3'}"
-                }
-              ){
-                axamQuestions_id
-              }
-            }                      
-                    `,
-        }),
-      })
-        .then(res => res.json())
-        .then(res => {
-          seNumberOfQuestions('');
-          // setQuestionImage(false);
-          if (
-            res.data &&
-            res.data.addNewQuestion
-            // &&
-            // res.data.addNewQuestion.axamQuestions_id
-          ) {
-            seNumberOfQuestions('');
-            // if (res.data.addNewQuestion && res.data.addNewQuestion.axamQuestions_id) {
-            // setQuestionId(data.length)
-            // setQuestionId(prevState => prevState + 1);
-            // setMessage('اطلاعاتی به درستی ثبت شد');
-            // setStatus(0);
-            // setShowPopup(true);
-            // refteshData();
-            // return res.data;
-          } else {
-            alert('اطلاعاتی به درستی ثبت نشد');
-            // setStatus(1);
-            // setShowPopup(true);
-            // refteshData();
-          }
-        }).catch(err=>{
-          seNumberOfQuestions('');
-          console.log('errr');
-        })
-    }
+  //   if(numberOfQuestions !== '') {
+  //     fetch(graphql_server_uri, {
+  //       method: 'POST',
+  //       headers: { 'Content-Type': 'application/json' },
+  //       body: JSON.stringify({
+  //         query: `
+  //           mutation{
+  //               addNewQuestion(
+  //                 axamQuestion_input: {
+  //                     questionID: "${'1'}"
+  //                     axamQuestions_id: "${'1'}"
+  //                     question_type: 
+  //                     question: "${''}"
+  //                     question_link: "${''}"
+  //                     question_optionOne: "${''}"
+  //                     question_optionTwo:"${''}"
+  //                     question_correctOption: "${''}"
+  //                     question_optionThree: "${''}"
+  //                     question_optionFour: "${''}"
+  //                     question_timeToSolveProblem: "${''}"
+  //                     question_score: "${''}"
+  //                     question_explane: ""${''}"
+  //                     exam_link: "${'3'}"
+  //               }
+  //             ){
+  //               axamQuestions_id
+  //             }
+  //           }                      
+  //                   `,
+  //       }),
+  //     })
+  //       .then(res => res.json())
+  //       .then(res => {
+  //         // seNumberOfQuestions('');
+  //         // setQuestionImage(false);
+  //         if (
+  //           res.data &&
+  //           res.data.addNewQuestion
+  //           // &&
+  //           // res.data.addNewQuestion.axamQuestions_id
+  //         ) {
+  //           seNumberOfQuestions('');
+  //           // if (res.data.addNewQuestion && res.data.addNewQuestion.axamQuestions_id) {
+  //           // setQuestionId(data.length)
+  //           // setQuestionId(prevState => prevState + 1);
+  //           // setMessage('اطلاعاتی به درستی ثبت شد');
+  //           // setStatus(0);
+  //           // setShowPopup(true);
+  //           // refteshData();
+  //           // return res.data;
+  //         } else {
+  //           alert('اطلاعاتی به درستی ثبت نشد');
+  //           // setStatus(1);
+  //           // setShowPopup(true);
+  //           // refteshData();
+  //         }
+  //       }).catch(err=>{
+  //         seNumberOfQuestions('');
+  //         console.log('errr');
+  //       })
+  //   }
 
-  },[numberOfQuestions])
+  // },[numberOfQuestions])
 
   // useEffect(()=>{
   //   // fetchData();
@@ -816,7 +885,24 @@ const Questions = ({toggle ,selectedCourseName, numberOfQuestions ,seNumberOfQue
                 console.log('ddddddddddd');
                 setTimeout(() => {
                   setData([...data, newData]);
-                  
+                  setQuestionParent({ variables: { 
+                    userName: "211",
+                    password: "211",
+                    ecId: "607d4cdc5eb775051823bd58"
+                    } 
+                  }).then(res=>{
+                    if(res.data && res.data.addQuestionParent){
+                      // console.log('data',data);
+                      // setMessage('امتحان ثبت شد');
+                      // setStatus('1');
+                      // setShowMessage(!showMessage);
+                    }else{
+                      // console.log('data',data);
+                      // setStatus('0')
+                      // setMessage('امتحان ثبت نشد')
+                      // setShowMessage(!showMessage);
+                    }
+                  })
                   resolve();
                 }, 1000)
               }),

@@ -70,7 +70,7 @@ const DialogActions = withStyles((theme) => ({
   },
 }))(MuiDialogActions);
 
-function FastAccessToQuestions({seNumberOfQuestions ,numberOfQuestions}) {
+function FastAccessToQuestions() {
   const [open, setOpen] = React.useState(false);
 
   const handleClickOpen = () => {
@@ -80,16 +80,16 @@ function FastAccessToQuestions({seNumberOfQuestions ,numberOfQuestions}) {
     setOpen(false);
   };
 
-  const [nQuestions,setNQuestions] = useState(numberOfQuestions);
+  // const [nQuestions,setNQuestions] = useState(numberOfQuestions);
 
-  useEffect(()=>{
-    setNQuestions(numberOfQuestions);
-  },[numberOfQuestions]);
+  // useEffect(()=>{
+  //   setNQuestions(numberOfQuestions);
+  // },[numberOfQuestions]);
 
-  const sendNumber = () => {
-    seNumberOfQuestions(nQuestions);
-    handleClose();
-  }
+  // const sendNumber = () => {
+  //   seNumberOfQuestions(nQuestions);
+  //   handleClose();
+  // }
 
   const uploadFileQuestions = () =>{
     
@@ -128,7 +128,7 @@ function FastAccessToQuestions({seNumberOfQuestions ,numberOfQuestions}) {
                       </label>
                       {/* <NumOfQuestionInput type="text" placeholder="تعداد سوالات را وارد کنید" /> */}
                   </UploadSection>
-                  <NumOfQuestionSection>
+                  {/* <NumOfQuestionSection>
                       <UploadLabel> تعداد سوالات را وارد کنید </UploadLabel>
                       <NumOfQuestionInput value={nQuestions} type="text" 
                       // placeholder="تعداد سوالات را وارد کنید" 
@@ -140,7 +140,7 @@ function FastAccessToQuestions({seNumberOfQuestions ,numberOfQuestions}) {
                               <DoneIcon style={{ fontSize:'3rem'}} />
                           </BtnOk>
                       </Tooltip>
-                  </NumOfQuestionSection>
+                  </NumOfQuestionSection> */}
             </FastAccessDiv>
           </Typography>
         </DialogContent>
