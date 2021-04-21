@@ -17,6 +17,10 @@ import {SET_QUESTION_CHILD} from '../../../graphql/resolver';
 import Uploader  from '../../uploader.js';
 
 /////////////////////////query
+var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
+var _objectSpread2 = _interopRequireDefault(
+  require("@babel/runtime/helpers/objectSpread")
+);
 // var _interopRequireDefault = require("@babel/runtime/helpers/interopRequireDefault");
 // var _objectSpread2 = _interopRequireDefault(
 //   require("@babel/runtime/helpers/objectSpread")
@@ -358,24 +362,24 @@ const DescriptiveQuestion = (props) => {
           defaultFilter: '',
           render: rowData => rowData.exam_link ? <img src={rowData.exam_link} style={{width: 40, borderRadius: '50%'}}/> : '',
           editComponent: props => (
-            <Uploader/>
+            // <Uploader/>
             // <input type="file" defaultValue="" onChange={e => uploadFile(e)} />
-            // <label htmlFor="upload-photo">
-            //     <input
-            //         style={{ display: 'none' }}
-            //         // defaultValue=""
-            //         id="upload-photo"
-            //         name="upload-photo"
-            //         type="file"
-            //         onChange={e => uploadFile(e)}
-            //     />
+            <label htmlFor="upload-photo">
+                <input
+                    style={{ display: 'none' }}
+                    // defaultValue=""
+                    id="upload-photo"
+                    name="upload-photo"
+                    type="file"
+                    onChange={e => uploadFile(e)}
+                />
 
-            //     <ComparativeButton variant="contained" component="span">
-            //         <BackupIcon 
-            //         // style={{color:'#009688'}}
-            //          />
-            //     </ComparativeButton>
-            // </label>
+                <ComparativeButton variant="contained" component="span">
+                    <BackupIcon 
+                    // style={{color:'#009688'}}
+                     />
+                </ComparativeButton>
+            </label>
           ),
         },
     ]);
@@ -400,6 +404,7 @@ const DescriptiveQuestion = (props) => {
         title=""
         columns={innerColumns}
         data={innerData}
+        tableRef={tableRef}
         // tableRef={tableRef}
         // localization={{
         //   body: {
@@ -519,48 +524,48 @@ const DescriptiveQuestion = (props) => {
                 setInnerData([...dataDelete]);
             }
           },
-          // {
-          //   icon: "edit",
-          //   tooltip: "ویرایش",
-          //   onClick: (event, rowData) => {
-          //     console.log("RRRRRRRRR", rowData);
-          //     // setToggle(true);
-          //     // setTemp1(true);
-          //     tableRef.current.dataManager.changeRowEditing(rowData, "update");
-  
-          //     tableRef.current.setState(
-          //       (0, _objectSpread2["default"])(
-          //         {},
-          //         tableRef.current.dataManager.getRenderState(),
-          //         {
-          //           showAddRow: false,
-          //         },
-          //         // setToggle(true)
-          //       )
-          //     );
-          //     // setToggle(true);
-          //   },
-          // },
-          // {
-          //   icon: 'edit',
-          //   tooltip: 'ویرایش',
-          //   onClick: (event, rowData) => {
-          //     // Do save operation
-          //       const dataDelete = [...innerData];
-          //       const index = rowData.tableData.id;
-          //       dataDelete.splice(index, 1);
-          //       setInnerData([...dataDelete]);
-          //   }
-          // }
+         {
+          icon: "edit",
+          tooltip: "Edit",
+          onClick: (event, rowData) => {
+            console.log("RRRRRRRRR", rowData);
+            
+            // props.setDisableComponents(true);
+            props.setToggle(true);
+            setTimeout(()=>{
+              tableRef.current.dataManager.changeRowEditing(rowData);
+              console.log("Parent XXX -> 133");
+              tableRef.current.setState(tableRef.current.dataManager.getRenderState());
+              tableRef.current.dataManager.changeRowEditing(rowData, "update");
+
+              tableRef.current.setState(
+              (0, _objectSpread2["default"])(
+                {},
+                tableRef.current.dataManager.getRenderState(),
+                {
+                  showAddRow: false,
+                }
+              )
+            );
+            }, 100);
+            // setTemp1(true);
+            
+            
+          },
+        },
         ]}
 
         editable={{
           //////////////////////////////////////////
           onRowUpdateCancelled: rowData => {
             loadVariable.load = true;
-            // setToggle(false);
+            setToggle(false);
             console.log('onRowUpdateCancelled',loadVariable.load);
           },
+          // onRowUpdate: (newData, oldData) =>
+          //   new Promise((resolve, reject) => {
+          //     console.log("XXXXXXXXXXXXXXXXXR");
+          // }),
           //////////////////////////////////////////
           onRowUpdate: (newData, oldData) =>
             new Promise((resolve, reject) => {
@@ -589,7 +594,8 @@ const DescriptiveQuestion = (props) => {
                       setQuestionChild({ variables: { 
                         userName: "211", 
                         password: "211", 
-                        qpId: "607d2f582cf63c244015d278",
+                        qpId:'607ffb029c2cfe145ded608d',
+                        // examChildId:props.selectedCourseName,
                         question: "", 
                         question_score: newData.question_score ? newData.question_score : '', 
                         question_explain: convertText(newData.question_explane),
@@ -646,7 +652,8 @@ const DescriptiveQuestion = (props) => {
                       setQuestionChild({ variables: { 
                         userName: "211", 
                         password: "211", 
-                        qpId: "607d2f582cf63c244015d278",
+                        qpId:'607ffb029c2cfe145ded608d',
+                        // examChildId:props.selectedCourseName,
                         question: convertText(newData.question), 
                         question_score: newData.question_score ? newData.question_score : '', 
                         question_explain: convertText(newData.question_explane),
@@ -688,7 +695,8 @@ const DescriptiveQuestion = (props) => {
                   setQuestionChild({ variables: { 
                     userName: "211", 
                     password: "211", 
-                    qpId: "607d2f582cf63c244015d278",
+                    qpId:'607ffb029c2cfe145ded608d',
+                    // examChildId:props.selectedCourseName,
                     question: convertText(newData.question), 
                     question_score: newData.question_score ? newData.question_score : '', 
                     question_explain: convertText(newData.question_explane),
@@ -718,6 +726,7 @@ const DescriptiveQuestion = (props) => {
                     }
                   })
                 }
+                props.handleFetchData();
                   
                 ////////////////////////////
                 dataUpdate[index] = newData;

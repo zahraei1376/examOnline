@@ -8,10 +8,10 @@ import TextField from '@material-ui/core/TextField';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 //////////////////////////////
 const courses = [
-    { course: 'ریاضی', groupId: 1994 },
-    { course: 'فیزیک', groupId: 1972 },
-    { course: 'علوم', groupId: 1974 },
-    { course: 'اجتماعی', groupId: 2008 },
+    { course: 'ریاضی', examChildId: '607fd8fb3fb30a08d7ce1e54' },
+    { course: 'فیزیک', examChildId: '607fd8fb3fb30a08d7ce1e55' },
+    { course: 'علوم', examChildId: '607fd8fb3fb30a08d7ce1e56' },
+    { course: 'اجتماعی', examChildId: '607fd8fb3fb30a08d7ce1e57'},
   ]
 
 const QuestionPage = () =>{
@@ -29,7 +29,8 @@ const QuestionPage = () =>{
                     style={{ width: 300 }}
                     id="free-solo-demo"
                     freeSolo
-                    options={courses.map((option) => option.course)}
+                    options={courses.map((option) => option)}
+                    getOptionLabel={(option) => option.course}
                     renderInput={(params) => (
                     <TextField {...params} label="درس ها" margin="normal" 
                     // variant="outlined"
@@ -37,7 +38,7 @@ const QuestionPage = () =>{
                     )}
 
                     onChange={(event, newValue) => {
-                        setCourseName(newValue);
+                        setCourseName(newValue.examChildId);
                         // console.log(JSON.stringify(newValue, null, ' '));
                     }}
                 />

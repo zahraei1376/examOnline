@@ -75,6 +75,7 @@ const graphql_server_uri ='/qraphql';
 const Vacancy = ({setToggle , ...props}) => {
     const [innerData, setInnerData] = useState([]);
     const [setQuestionChild ,{ QuestionChildData }] = useMutation(SET_QUESTION_CHILD);
+    const [vancyValue , setVancyValue] = useState([]);
     const [showMessage,setShowMessage] = useState(false);
     const [message,setMessage] =useState('');
     const [status,setStatus] =useState(0);
@@ -583,12 +584,16 @@ const Vacancy = ({setToggle , ...props}) => {
           title: 'آیتم ها',
           type: 'numeric',
           textAlign: 'center',
-          field: 'question__items',
+          field: 'question_vancyItems',
           minWidth: 150,
         //   validate: rowData =>
         //     rowData.question_score !== '' ? 'Name cannot be empty' : '',
           editComponent: props => (
-            <VacancyModal vancyValue={props.rowData.question_vancyItems} />
+            <VacancyModal 
+              existVancyValue={props.rowData.question_vancyItems}
+              setVancyValue={setVancyValue}
+              vancyValue={vancyValue}
+             />
             
           ),
           render: data => {
@@ -814,7 +819,7 @@ const Vacancy = ({setToggle , ...props}) => {
                       setQuestionChild({ variables: { 
                         userName: "211", 
                         password: "211", 
-                        qpId: "607d2f582cf63c244015d278",
+                        qpId: props.selectedCourseName,
                         question: "", 
                         question_score: newData.question_score ? newData.question_score : '', 
                         question_explain: convertText(newData.question_explane),
@@ -828,7 +833,7 @@ const Vacancy = ({setToggle , ...props}) => {
                         exam_link: "", 
                         question_type: "5",
                         question_seqItems: [],
-                        question_vancyItems: "", 
+                        question_vancyItems: vancyValue, 
                         question_compItems: []
                         } 
                       }).then(res=>{
@@ -871,7 +876,7 @@ const Vacancy = ({setToggle , ...props}) => {
                       setQuestionChild({ variables: { 
                         userName: "211", 
                         password: "211", 
-                        qpId: "607d2f582cf63c244015d278",
+                        qpId: props.selectedCourseName,
                         question: convertText(newData.question), 
                         question_score: newData.question_score ? newData.question_score : '', 
                         question_explain: convertText(newData.question_explane),
@@ -885,7 +890,7 @@ const Vacancy = ({setToggle , ...props}) => {
                         exam_link: file.name, 
                         question_type: "5",
                         question_seqItems: [],
-                        question_vancyItems: "", 
+                        question_vancyItems: vancyValue, 
                         question_compItems: []
                         } 
                       }).then(res=>{
@@ -912,7 +917,7 @@ const Vacancy = ({setToggle , ...props}) => {
                   setQuestionChild({ variables: { 
                     userName: "211", 
                     password: "211", 
-                    qpId: "607d2f582cf63c244015d278",
+                    qpId: props.selectedCourseName,
                     question: convertText(newData.question), 
                     question_score: newData.question_score ? newData.question_score : '', 
                     question_explain: convertText(newData.question_explane),
@@ -926,7 +931,7 @@ const Vacancy = ({setToggle , ...props}) => {
                     exam_link: "", 
                     question_type: "5",
                     question_seqItems: [],
-                    question_vancyItems: "", 
+                    question_vancyItems: vancyValue, 
                     question_compItems: [],
                     } 
                   }).then(res=>{
@@ -944,7 +949,7 @@ const Vacancy = ({setToggle , ...props}) => {
                 ////////////////////////////
                 dataUpdate[index] = newData;
                 setInnerData([...dataUpdate]);
-  
+                props.handleFetchData();
                 resolve(setToggle(false));
               }, 1000)
             }),

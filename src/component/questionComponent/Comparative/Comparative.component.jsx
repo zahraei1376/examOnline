@@ -610,9 +610,9 @@ const Comparative = ({setToggle , ...props}) => {
         //     rowData.question_score !== '' ? 'Name cannot be empty' : '',
           editComponent: props => (
             <ComparativeModal 
-            // compItems={compItems}
-            // setCompItems={setCompItems}
-            compItems={props.rowData.question_compItems}
+            compItems={compItems}
+            setCompItems={setCompItems}
+            existCompItems={props.rowData.question_compItems}
              />
             
           ),
@@ -733,7 +733,7 @@ const Comparative = ({setToggle , ...props}) => {
                       setQuestionChild({ variables: { 
                         userName: "211", 
                         password: "211", 
-                        qpId: "607d2f582cf63c244015d278",
+                        qpId: props.selectedCourseName,
                         question: "", 
                         question_score: newData.question_score ? newData.question_score : '', 
                         question_explain: convertText(newData.question_explane),
@@ -748,7 +748,7 @@ const Comparative = ({setToggle , ...props}) => {
                         question_type: "2",
                         question_seqItems: [],
                         question_vancyItems: "", 
-                        question_compItems: []
+                        question_compItems: compItems,
                         } 
                       }).then(res=>{
                         if(res.data && res.data.addQuestionChild){
@@ -791,7 +791,7 @@ const Comparative = ({setToggle , ...props}) => {
                       setQuestionChild({ variables: { 
                         userName: "211", 
                         password: "211", 
-                        qpId: "607d2f582cf63c244015d278",
+                        qpId: props.selectedCourseName,
                         question: convertText(newData.question), 
                         question_score: newData.question_score ? newData.question_score : '', 
                         question_explain: convertText(newData.question_explane),
@@ -806,7 +806,7 @@ const Comparative = ({setToggle , ...props}) => {
                         question_type: "2",
                         question_seqItems: [],
                         question_vancyItems: "", 
-                        question_compItems: []
+                        question_compItems: compItems,
                         } 
                       }).then(res=>{
                         if(res.data && res.data.addQuestionChild){
@@ -832,7 +832,7 @@ const Comparative = ({setToggle , ...props}) => {
                   setQuestionChild({ variables: { 
                     userName: "211", 
                     password: "211", 
-                    qpId: "607d2f582cf63c244015d278",
+                    qpId: props.selectedCourseName,
                     question: convertText(newData.question), 
                     question_score: newData.question_score ? newData.question_score : '', 
                     question_explain: convertText(newData.question_explane),
@@ -847,7 +847,7 @@ const Comparative = ({setToggle , ...props}) => {
                     question_type: "2",
                     question_seqItems: [],
                     question_vancyItems: "", 
-                    question_compItems: []
+                    question_compItems: compItems,
                     } 
                   }).then(res=>{
                     if(res.data && res.data.addQuestionChild){
@@ -865,6 +865,7 @@ const Comparative = ({setToggle , ...props}) => {
                 dataUpdate[index] = newData;
                 setInnerData([...dataUpdate]);
                 resolve(setToggle(false));
+                props.handleFetchData();
               }, 1000)
             }),
           // onRowDelete: oldData =>

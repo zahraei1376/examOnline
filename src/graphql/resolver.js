@@ -76,4 +76,60 @@ const SET_QUESTION_CHILD = gql`
   }
 `;
 
-export { SET_QUESTION_CHILD, };
+const GET_QUESTIONS = gql`
+  query examParents(
+    $userName: String!,
+    $password: String!,
+    $id:  String!
+    ){
+    examParents(
+      userName: $userName,
+      password: $password,
+      id:$id
+    ){
+      id
+      examParent_start_date
+      examParent_stop_date
+      examParent_start
+      examParent_end
+      examParent_pId
+      examParent_gId
+      examParent_maxScore
+      examParent_method
+      examParent_topic
+      examChild
+      {
+        id
+        examChild_gId
+        examChild_epId
+        questionParent
+        {
+          id
+          ecId
+          questionChild
+          {
+            id
+            qpId
+            question
+            question_score
+            question_explain
+            question_timeToSolveProblem
+            question_correctOption
+            question_optionOne
+            question_optionTwo
+            question_optionThree
+            question_optionFour
+            question_link
+            exam_link
+            question_type
+            question_seqItems
+            question_vancyItems
+            question_compItems
+          }
+        }
+      }
+    }
+  }
+`;
+
+export { SET_QUESTION_CHILD, GET_QUESTIONS };

@@ -112,7 +112,8 @@ function Uploader() {
                         setS3Algorithm(data.fields["X-Amz-Algorithm"]);
                         setS3Date(data.fields["X-Amz-Date"]);
                         // document.getElementById("myForm").submit();
-                        document.getElementById("MySubmit").click();
+                        document.getElementById("myForm").submit();
+                        // document.getElementById("MySubmit").click();
                         // var MySubmit = document.getElementById("MySubmit");
                         // console.log('MySubmit',MySubmit);
                         // MySubmit.click();

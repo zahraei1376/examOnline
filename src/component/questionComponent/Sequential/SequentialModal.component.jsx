@@ -45,24 +45,25 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function SequentialModal({seqItems}) {
+export default function SequentialModal({seqItems , setSeqItems , existSeqItems}) {
   const classes = useStyles();
   const [modalStyle] = React.useState(getModalStyle);
   const [open, setOpen] = React.useState(false);
-  const [items,setItems] = React.useState(seqItems ? seqItems : []);
+  // const [items,setItems] = React.useState(seqItems ? seqItems : []);
 
   const handleChange = (event) => {
-    setItems(event.target.value);
+    setSeqItems(event.target.value);
   };
 
   useEffect(()=>{
-    console.log('items',items);
-  },[items])
+    setSeqItems(existSeqItems ? existSeqItems : [])
+    console.log('seqItems',seqItems);
+  },[])
 
   const addItem = () =>{
-      var temp = [...items];
+      var temp = [...seqItems];
       temp.push(" ");
-      setItems(temp);
+      setSeqItems(temp);
   }
 
   const handleOpen = () => {
@@ -74,17 +75,17 @@ export default function SequentialModal({seqItems}) {
   };
 
 //   const handleIndexDelete =(index)=>{
-//      var temp = [...items];
+//      var temp = [...seqItems];
 //      temp.splice(index,1);
-//      setItems(temp);
+//      setSeqItems(temp);
 //      setCount(prev => prev - 1);
 //   }
 
 
   const handleIndexSet =(index, value)=>{
-    var temp = [...items];
+    var temp = [...seqItems];
     temp[index] = value;
-    setItems(temp);
+    setSeqItems(temp);
  }
 
  const SeveData = () =>{
@@ -93,10 +94,10 @@ export default function SequentialModal({seqItems}) {
 
  const handleIndexDelete =(index)=>{
     console.log('index',index);
-    var temp = [...items];
+    var temp = [...seqItems];
     temp.splice(index,1);
     console.log('temp2',temp);
-    setItems([...temp]);
+    setSeqItems([...temp]);
    //  setCount(prev => prev - 1);
  }
 
@@ -112,13 +113,13 @@ export default function SequentialModal({seqItems}) {
         {/* اضافه کردن گزینه */}
         {/* </SequentialButton> */}
     <SequentialItemContainer>
-        {items.map((item , index) =>(
+        {seqItems.map((item , index) =>(
             // <SequentialItemContainer>
                 <SequentialModalItems key={index} myIndex={index} item={item} handleIndexDelete={handleIndexDelete} handleIndexSet={handleIndexSet} />
             // </SequentialItemContainer>
       ))}
     </SequentialItemContainer>
-      {items.length > 0 ? <SequentialButtonSave variant="contained" component="span"
+      {seqItems.length > 0 ? <SequentialButtonSave variant="contained" component="span"
         onClick={SeveData}
         >
         ثبت

@@ -77,6 +77,7 @@ const graphql_server_uri ='/qraphql';
 const Sequential = ({setToggle , ...props}) => {
     const [innerData, setInnerData] = useState([]);
     const [setQuestionChild ,{ QuestionChildData }] = useMutation(SET_QUESTION_CHILD);
+    const [seqItems,setSeqItems] = useState([]);
     const [showMessage,setShowMessage] = useState(false);
     const [message,setMessage] =useState('');
     const [status,setStatus] =useState(0);
@@ -586,7 +587,11 @@ const Sequential = ({setToggle , ...props}) => {
         //   validate: rowData =>
         //     rowData.question_score !== '' ? 'Name cannot be empty' : '',
           editComponent: props => (
-            <SequentialModal seqItems={props.rowData.question_SeqItems} />
+            <SequentialModal 
+              seqItems={seqItems}
+              setSeqItems={setSeqItems}
+              existSeqItems={props.rowData.question_SeqItems}
+            />
           ),
           render: data => {
             // return moment(data.group_start_time).format('HH:mm:00');
@@ -814,7 +819,7 @@ const Sequential = ({setToggle , ...props}) => {
                       setQuestionChild({ variables: { 
                         userName: "211", 
                         password: "211", 
-                        qpId: "607d2f582cf63c244015d278",
+                        qpId: props.selectedCourseName,
                         question: "", 
                         question_score: newData.question_score ? newData.question_score : '', 
                         question_explain: convertText(newData.question_explane),
@@ -827,7 +832,7 @@ const Sequential = ({setToggle , ...props}) => {
                         question_link: file.name,
                         exam_link: "", 
                         question_type: "5",
-                        question_seqItems: [],
+                        question_seqItems: seqItems,
                         question_vancyItems: "", 
                         question_compItems: []
                         } 
@@ -872,7 +877,7 @@ const Sequential = ({setToggle , ...props}) => {
                       setQuestionChild({ variables: { 
                         userName: "211", 
                         password: "211", 
-                        qpId: "607d2f582cf63c244015d278",
+                        qpId: props.selectedCourseName,
                         question: convertText(newData.question), 
                         question_score: newData.question_score ? newData.question_score : '', 
                         question_explain: convertText(newData.question_explane),
@@ -885,7 +890,7 @@ const Sequential = ({setToggle , ...props}) => {
                         question_link: "",
                         exam_link: file.name, 
                         question_type: "5",
-                        question_seqItems: [],
+                        question_seqItems: seqItems,
                         question_vancyItems: "", 
                         question_compItems: []
                         } 
@@ -913,7 +918,7 @@ const Sequential = ({setToggle , ...props}) => {
                   setQuestionChild({ variables: { 
                     userName: "211", 
                     password: "211", 
-                    qpId: "607d2f582cf63c244015d278",
+                    qpId: props.selectedCourseName,
                     question: convertText(newData.question), 
                     question_score: newData.question_score ? newData.question_score : '', 
                     question_explain: convertText(newData.question_explane),
@@ -926,7 +931,7 @@ const Sequential = ({setToggle , ...props}) => {
                     question_link: "",
                     exam_link: "", 
                     question_type: "5",
-                    question_seqItems: [],
+                    question_seqItems: seqItems,
                     question_vancyItems: "", 
                     question_compItems: [],
                     } 
@@ -946,6 +951,7 @@ const Sequential = ({setToggle , ...props}) => {
                 ////////////////////////////
                 dataUpdate[index] = newData;
                 setInnerData([...dataUpdate]);
+                props.handleFetchData();
                 resolve(setToggle(false));
               }, 1000)
             }),

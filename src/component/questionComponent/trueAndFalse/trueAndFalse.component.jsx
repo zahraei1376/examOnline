@@ -1061,7 +1061,7 @@ const TrueAndFalse = ({setToggle ,toggle, ...props}) => {
                           setQuestionChild({ variables: { 
                             userName: "211", 
                             password: "211", 
-                            qpId: "607d2f582cf63c244015d278",
+                            qpId: props.selectedCourseName,
                             question: "", 
                             question_score: newData.question_score ? newData.question_score : '', 
                             question_explain: convertText(newData.question_explane),
@@ -1119,7 +1119,7 @@ const TrueAndFalse = ({setToggle ,toggle, ...props}) => {
                           setQuestionChild({ variables: { 
                             userName: "211", 
                             password: "211", 
-                            qpId: "607d2f582cf63c244015d278",
+                            qpId: props.selectedCourseName,
                             question: convertText(newData.question), 
                             question_score: newData.question_score ? newData.question_score : '', 
                             question_explain: convertText(newData.question_explane),
@@ -1160,7 +1160,7 @@ const TrueAndFalse = ({setToggle ,toggle, ...props}) => {
                       setQuestionChild({ variables: { 
                         userName: "211", 
                         password: "211", 
-                        qpId: "607d2f582cf63c244015d278",
+                        qpId: props.selectedCourseName,
                         question: convertText(newData.question), 
                         question_score: newData.question_score ? newData.question_score : '', 
                         question_explain: convertText(newData.question_explane),
@@ -1197,6 +1197,7 @@ const TrueAndFalse = ({setToggle ,toggle, ...props}) => {
                 ////////////////////////////
                 dataUpdate[index] = newData;
                 setInnerData([...dataUpdate]);
+                props.handleFetchData();
                 resolve(setToggle(false));
               }, 1000)
            }),
