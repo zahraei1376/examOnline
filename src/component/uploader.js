@@ -69,7 +69,7 @@ function Uploader() {
         <input type="hidden" name="Expires" value={s3Expires} />
         <input type="hidden" name="X-Amz-Credential" value={s3Credential} />
         {/* <input type="input" name="x-amz-meta-tag" value="" /> */}
-        <br />
+        {/* <br /> */}
         <input type="hidden" name="X-Amz-Algorithm" value={s3Algorithm} />
         <input type="hidden" name="X-Amz-Date" value={s3Date} />
         <UploaderButtonSend type="button" onClick={myFunction}
@@ -125,7 +125,7 @@ function Uploader() {
             />
 
             <UploaderButton variant="contained" component="span">
-                <BackupIcon 
+                <BackupIcon style={{fontSize:'3rem'}}
                 // style={{color:'#009688'}}
                     />
             </UploaderButton>

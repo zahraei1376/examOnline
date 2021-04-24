@@ -76,6 +76,22 @@ const SET_QUESTION_CHILD = gql`
   }
 `;
 
+const DELETE_QUESTIONCHILD = gql`
+  mutation deleteQuestionChild(
+    $userName: String!,
+    $password: String!,
+    $id:  String!
+    ){
+      deleteQuestionChild(
+      userName: $userName,
+      password: $password,
+      id:$id
+      ){
+        id
+      }
+  }
+`;
+
 const GET_QUESTIONS = gql`
   query examParents(
     $userName: String!,
@@ -132,4 +148,4 @@ const GET_QUESTIONS = gql`
   }
 `;
 
-export { SET_QUESTION_CHILD, GET_QUESTIONS };
+export { SET_QUESTION_CHILD, GET_QUESTIONS ,DELETE_QUESTIONCHILD };

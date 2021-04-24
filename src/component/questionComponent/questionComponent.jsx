@@ -8,7 +8,6 @@ import Comparative from './Comparative/Comparative.component';//تطبیقی
 import Vacancy from './Vacancy/Vacancy.component';//جای خالی
 import Sequential from './Sequential/Sequential.component';//ترتیبی
 import {QuestionImageIconContainer ,QuestionImageIcon ,QuestionImageIconText,QuestionImageIconTextV} from './questionComponent.styles';
-// import DeleteIcon from '../../assets/img/iconDelete.png';
 import descriptiveIcon from '../../assets/img/descriptiveQuestion.png';
 import descriptiveIcon2 from '../../assets/img/descriptiveQuestion2.png';
 import multiChoice from '../../assets/img/multiChoice.png';
@@ -26,19 +25,16 @@ import {connect} from 'react-redux';
 import { createStructuredSelector} from 'reselect';
 import {ToggleQuestion} from '../../redux/toggleQuesion/toggleQuestion.selector';
 // import setToggle from "../../redux/toggleQuesion/toggleQuestion.action.js";
-
 /////////////////////////query
 import { gql } from 'apollo-boost';
 import { useQuery ,useMutation} from 'react-apollo';
 import { GET_QUESTIONS } from '../../graphql/resolver';
 /////////////////////////query
-
 export var loadVariable = {
   load:false,
   // disable:false,
 };
-const graphql_server_uri = '/graphql';
-
+/////////////////////////
 const SET_QUESTIONPARENT = gql`
   mutation addQuestionParent(
     $userName: String!,
@@ -49,6 +45,22 @@ const SET_QUESTIONPARENT = gql`
           userName: $userName,
           password: $password,
           ecId: $ecId
+      ){
+        id
+      }
+  }
+`;
+
+const DELETE_QUESTIONPARENT = gql`
+  mutation deleteQuestionParent(
+    $userName: String!,
+    $password: String!,
+    $id: String!,
+    ){
+      deleteQuestionParent(
+          userName: $userName,
+          password: $password,
+          id: $id
       ){
         id
       }
@@ -100,63 +112,49 @@ const SET_QUESTION_CHILD = gql`
       }
   }
 `;
-
-const Questions = ({toggle ,selectedCourseName}) =>{
+/////////////////////////
+const Questions = ({toggle ,selectedCourseName , questions}) =>{
   // const [innerData, setInnerData] = useState([]);
   // const tableRef = React.useRef(null);
   const [setQuestionParent ,{ QuestionParentData }] = useMutation(SET_QUESTIONPARENT);
+  const [deleteQuestionParent ,{ DQuestionParentData }] = useMutation(DELETE_QUESTIONPARENT);
   const { loading, error, data ,refetch  } = useQuery(GET_QUESTIONS , {
     variables: {  userName: "211",
     password: "211",
     id: "607fd8fb3fb30a08d7ce1e53" },
+    notifyOnNetworkStatusChange: true
   });
-  //   variables: {   
-  //       userName: "211",
-  //       password: "211",
-  //       ecId: "607fd8fb3fb30a08d7ce1e53"
-  //   }
-  //   // notifyOnNetworkStatusChange: true,
-  // });
-  // const [getQuestions] = useQuery(GET_QUESTIONS);
-  
-  // const [setQuestionChild ,{ QuestionChildData }] = useMutation(SET_QUESTION_CHILD);
   const [typeQuestion,setTypeQuestion] =useState('');
 
-  useEffect(()=>{
-    // fetchData();
-    console.log('loading' , loading);
-    console.log('error' , error);
-    console.log('getQuestions' , data);
-    setData(data ? data.examParents[0].examChild[0].questionParent : []);
-    
-  } , [data])
-  ///////////////////////////////////
-  async function fetchData(){
-    // getQuestions({ variables: { 
-    //   userName: "211",
-    //   password: "211",
-    //   ecId: "607d4cdc5eb775051823bd58"
-    //   } 
-    // }).then(res=>{
-    //   if(res.data && res.data.getQuestions){
-    //     setData(res.data.getQuestions)
-    //     // console.log('data',data);
-    //     // setMessage('امتحان ثبت شد');
-    //     // setStatus('1');
-    //     // setShowMessage(!showMessage);
-    //   }else{
-    //     // console.log('data',data);
-    //     // setStatus('0')
-    //     // setMessage('امتحان ثبت نشد')
-    //     // setShowMessage(!showMessage);
-    //   }
-    // })
-    ///////////////////////////////////
-  }
+  const MergeQuestions = (examP) => {
+    console.log('examP', examP );
+    var mergeQ = [];
+    var allQuestons = examP.examChild;
+    for (let index = 0; index < allQuestons.length; index++) {
+       var counterQuestionsParent = allQuestons[index].questionParent;
+        if(counterQuestionsParent && counterQuestionsParent.length > 0){
+          for (let j = 0; j < counterQuestionsParent.length; j++) {
+              console.log('allQuestons[index].questionParent[j]', allQuestons[index].questionParent[j] );
+              mergeQ.push(allQuestons[index].questionParent[j])
+          }
+            // console.log('allQuestons[index].questionParent', allQuestons[index].questionParent );
+            // mergeQ.push(allQuestons[index].questionParent[0])
+        }
+    }
+    console.log('mergeQ',mergeQ);
+    return mergeQ;
+}
+
+  useEffect(() => {
+    if (data) {
+      // console.log('get dataaaaaaaaa' ,data);
+      setData(MergeQuestions(data.examParents[0]))
+    }
+  }, [data])
   ///////////////////////////////////////////////
   const handleFetchData = ()=>{
+    // console.log('fetchhhhhhhhhhhhhh');
     refetch()
-      // fetchData();
   }
   ///////////////////////////////////////////////
   const [QuestionsData, setData] = useState([
@@ -476,25 +474,45 @@ const Questions = ({toggle ,selectedCourseName}) =>{
   // },
   ]);
   /////////////////////////////////////////
-
   function createArray(item){
+    console.log('item', item);
     var tempAray=[];
     tempAray.push(item);
+    console.log('item2', tempAray);
     return tempAray;
   }
-  const [selectedRow, setSelectedRow] = useState(null);
-
-  // useEffect(()=>{
-  //     console.log('toggle',toggle);
-  // },[toggle])
+  /////////////////////////////////////////
+  function MyCreateArray(id){
+    var tempAray=[];
+    tempAray.push(    {
+      'question': '', 
+      'question_score':'',
+      'question_explane':'',
+      'question_timeToSolveProblem':'',
+      'exam_link':'',//with question
+      // 'question_link':'https://www.woonwinkelhome.com/products/slim-pen-gold',//replace question
+      'question_compItems':[],
+      // 'StudentItem':'2',
+      'question_correctOption':'',
+      'question_optionOne':'',
+      'question_optionTwo':'',
+      'question_optionThree':'',
+      'question_optionFour':'',
+      'question_SeqItems':[],
+      'question_vancyItems':'',
+      'question_type':'',
+      'qpId' : id,
+      //////////////////////////////////////////
+  });
+    console.log('item2', tempAray);
+    return tempAray;
+  }
     
   return (
     <MaterialTable
      style={{direction:'rtl'}}
     // dir="rtl"
       title="سوالات"
-      // tableRef={tableRef}
-      // onRowClick={((evt, selectedRow) => setSelectedRow(selectedRow.tableData.id))}
       options={{
         // actionsColumnIndex: -1,
         search: false,
@@ -544,44 +562,7 @@ const Questions = ({toggle ,selectedCourseName}) =>{
       // }}
       
       columns={[
-        { title: 'آیدی سوال', field: 'questionID', 
-        // editComponent: props => (
-        //   <TextField
-        //     style={{ minWidth: '500px', textAlign:'right',direction:'rtl' }}
-        //     value={props.value}
-        //     // defaultValue=""
-        //     fullWidth={true}
-        //     // multiline={true}
-        //   //   var newQuestion = newData.question
-        //   //             ? newData.question.split('\r\n').join('%0A')
-        //   //             : '';
-        //   //           var newQuestion2 = newQuestion
-        //   //             ? newQuestion.split('\n').join('%0A')
-        //   //             : '';
-        //     // onChange={e => {props.onChange(e.target.value)}}
-        //   />
-        // ),
-        // render: data => {
-        //   // return moment(data.group_start_time).format('HH:mm:00');
-        //   return (
-        //     <pre
-        //       style={{
-        //         fontSize: '20px',
-        //         wordBreak: 'break-word',
-        //         overflowWrap: 'break-word',
-        //         whiteSpace: 'pre-wrap',
-        //         textAlign: 'center',
-        //         width: '500px',
-        //         fontFamily: 'BNazanin',
-        //         fontSize: 16,
-        //         float:'right',
-        //       }}
-        //     >
-        //       {/* {data.question} */}
-        //     </pre>
-        //   );
-        // }, 
-      },
+        { title: 'آیدی سوال', field: 'questionID',},
       ]}
 
       data={QuestionsData}
@@ -589,7 +570,7 @@ const Questions = ({toggle ,selectedCourseName}) =>{
         (rowData)=>({
           disabled:toggle,
           // disabled:rowData.question_type == '1' ? false :true,
-          icon: () => rowData.question_type != '1' ? (<QuestionImageIconContainer><QuestionImageIcon src={descriptiveIcon}/>
+          icon: () => rowData && rowData.questionChild && rowData.questionChild.length > 0 && rowData.questionChild[0].question_type != '1' ? (<QuestionImageIconContainer><QuestionImageIcon src={descriptiveIcon}/>
           {/* <QuestionImageIconText>تشریحی</QuestionImageIconText> */}
           </QuestionImageIconContainer>) : (<QuestionImageIconContainer><QuestionImageIcon src={descriptiveIcon2}/>
             {/* <QuestionImageIconTextV>تشریحی</QuestionImageIconTextV> */}
@@ -612,8 +593,24 @@ const Questions = ({toggle ,selectedCourseName}) =>{
                 {/* {rowData.question} */}
                 {(() => {
                     setTypeQuestion(1);
+                    console.log('rowData',rowData);
+                    console.log('rowData && rowData.questionChild.lenght',rowData && rowData.questionChild);
+                    // return <DescriptiveQuestion selectedCourseName={selectedCourseName} handleFetchData={handleFetchData} 
+                    // rowData={rowData && rowData.questionChild.length > 0   ? createArray(rowData.questionChild[0]) : 
+                    //   createArray(rowData.questionChild)
+                    //   // [{}]
+                    // }
+                    return <DescriptiveQuestion selectedCourseName={selectedCourseName} handleFetchData={handleFetchData} 
+                      rowData={rowData && rowData.questionChild && rowData.questionChild.length > 0   ? createArray(rowData.questionChild[0]) : 
+                        MyCreateArray(rowData.id)
+                      // [{}]
+                    }
+                    // MyCreateArray
+                    // rowData={rowData.questionChild[0]} 
+                    // && rowData.questionChild.lenght > 0 
+                    typeQuestion={typeQuestion} />
                     // setSelectedRow(rowData.tableData.id);
-                    return <DescriptiveQuestion selectedCourseName={selectedCourseName} handleFetchData={handleFetchData} rowData={createArray(rowData)} typeQuestion={typeQuestion} />
+                    // return <DescriptiveQuestion selectedCourseName={selectedCourseName} handleFetchData={handleFetchData} rowData={createArray(rowData)} typeQuestion={typeQuestion} />
                 })()}
               </div>
             )
@@ -624,7 +621,7 @@ const Questions = ({toggle ,selectedCourseName}) =>{
           // disabled:rowData.question_type == '2' ? false :true,
           // disabled: typeQuestion == 2 ? false : toggle,
           // icon: () => (<QuestionImageIconContainer src={multiChoice}/>),
-          icon: () =>rowData.question_type != '3' ? (<QuestionImageIconContainer><QuestionImageIcon src={multiChoice}/>
+          icon: () =>rowData && rowData.questionChild && rowData.questionChild.length > 0 && rowData.questionChild[0].question_type != '3' ? (<QuestionImageIconContainer><QuestionImageIcon src={multiChoice}/>
           {/* <QuestionImageIconText>چهار گزینه ای</QuestionImageIconText> */}
           </QuestionImageIconContainer>) 
           :
@@ -649,7 +646,14 @@ const Questions = ({toggle ,selectedCourseName}) =>{
                 {(() => {
                   setTypeQuestion(2);
                   // setSelectedRow(rowData.tableData.id);
-                    return <MultipleChoice selectedCourseName={selectedCourseName} handleFetchData={handleFetchData} rowData={createArray(rowData)} typeQuestion={typeQuestion}/>
+                    return <MultipleChoice selectedCourseName={selectedCourseName} handleFetchData={handleFetchData}
+                    // rowData={rowData && rowData.questionChild.length > 0   ? createArray(rowData.questionChild[0]) : createArray(rowData)}
+                    // rowData={createArray(rowData)}
+                    rowData={rowData && rowData.questionChild && rowData.questionChild.length > 0   ? createArray(rowData.questionChild[0]) : 
+                      MyCreateArray(rowData.id)
+                    // [{}]
+                  }
+                     typeQuestion={typeQuestion}/>
                 })()}
 
               </div>
@@ -661,7 +665,7 @@ const Questions = ({toggle ,selectedCourseName}) =>{
           // disabled:rowData.question_type == '3' ? false :true,
           // disabled: typeQuestion == 3 ? false : toggle,
           // icon: () => (<QuestionImageIconContainer src={trueFalse}/>),
-          icon: () => rowData.question_type != '4' ? (<QuestionImageIconContainer><QuestionImageIcon src={trueFalse}/>
+          icon: () => rowData && rowData.questionChild && rowData.questionChild.length > 0 && rowData.questionChild[0].question_type != '4' ? (<QuestionImageIconContainer><QuestionImageIcon src={trueFalse}/>
           {/* <QuestionImageIconText>دو گزینه ای</QuestionImageIconText> */}
           </QuestionImageIconContainer>)
           :
@@ -688,7 +692,14 @@ const Questions = ({toggle ,selectedCourseName}) =>{
                 {(() => {
                   setTypeQuestion(3);
                   // setSelectedRow(rowData.tableData.id);
-                    return <TrueAndFalse selectedCourseName={selectedCourseName} handleFetchData={handleFetchData} rowData={createArray(rowData)} typeQuestion={typeQuestion}/>
+                    return <TrueAndFalse selectedCourseName={selectedCourseName} handleFetchData={handleFetchData} 
+                    // rowData={rowData && rowData.questionChild.length > 0   ? createArray(rowData.questionChild[0]) : createArray(rowData)}
+                    // rowData={createArray(rowData)}
+                    rowData={rowData && rowData.questionChild && rowData.questionChild.length > 0   ? createArray(rowData.questionChild[0]) : 
+                      MyCreateArray(rowData.id)
+                    // [{}]
+                  }
+                     typeQuestion={typeQuestion}/>
                 })()}
               </div>
             )
@@ -699,7 +710,7 @@ const Questions = ({toggle ,selectedCourseName}) =>{
           // disabled:rowData.question_type == '4' ? false :true,
           // disabled: typeQuestion == 4 ? false : toggle,
           // icon: () => (<QuestionImageIconContainer src={ellipsis}/>),
-          icon: () => rowData.question_type != '6' ? (<QuestionImageIconContainer><QuestionImageIcon src={ellipsis}/>
+          icon: () => rowData && rowData.questionChild && rowData.questionChild.length > 0 && rowData.questionChild[0].question_type != '6' ? (<QuestionImageIconContainer><QuestionImageIcon src={ellipsis}/>
           {/* <QuestionImageIconText>جای خالی</QuestionImageIconText> */}
           </QuestionImageIconContainer>) :
           (<QuestionImageIconContainer><QuestionImageIcon src={ellipsis2}/>
@@ -724,7 +735,14 @@ const Questions = ({toggle ,selectedCourseName}) =>{
                 {(() => {
                   setTypeQuestion(4);
                   // setSelectedRow(rowData.tableData.id);
-                    return <Vacancy selectedCourseName={selectedCourseName} handleFetchData={handleFetchData} rowData={createArray(rowData)} typeQuestion={typeQuestion}/>
+                    return <Vacancy selectedCourseName={selectedCourseName} handleFetchData={handleFetchData} 
+                    // rowData={rowData && rowData.questionChild.length > 0   ? createArray(rowData.questionChild[0]) : createArray(rowData)}
+                    // rowData={createArray(rowData)}
+                    rowData={rowData && rowData.questionChild && rowData.questionChild.length > 0   ? createArray(rowData.questionChild[0]) : 
+                      MyCreateArray(rowData.id)
+                    // [{}]
+                  }
+                     typeQuestion={typeQuestion}/>
                 })()}
               </div>
             )
@@ -735,7 +753,7 @@ const Questions = ({toggle ,selectedCourseName}) =>{
           // disabled:rowData.question_type == '5' ? false :true,
           // disabled: typeQuestion == 5 ? false : toggle,
           // icon: () => (<QuestionImageIconContainer src={compareIcon}/>),
-          icon: () => rowData.question_type != '2' ? (<QuestionImageIconContainer><QuestionImageIcon src={compareIcon}/>
+          icon: () => rowData && rowData.questionChild && rowData.questionChild.length > 0 && rowData.questionChild[0].question_type != '2' ? (<QuestionImageIconContainer><QuestionImageIcon src={compareIcon}/>
           {/* <QuestionImageIconText>تطبیقی</QuestionImageIconText> */}
           </QuestionImageIconContainer>)
           :
@@ -762,7 +780,14 @@ const Questions = ({toggle ,selectedCourseName}) =>{
                 {(() => {
                   setTypeQuestion(5);
                   // setSelectedRow(rowData.tableData.id);
-                    return <Comparative selectedCourseName={selectedCourseName} handleFetchData={handleFetchData} rowData={createArray(rowData)} typeQuestion={typeQuestion}/>
+                    return <Comparative selectedCourseName={selectedCourseName} handleFetchData={handleFetchData} 
+                    // rowData={createArray(rowData)}
+                    // rowData={rowData && rowData.questionChild.length > 0   ? createArray(rowData.questionChild[0]) : createArray(rowData)}
+                    rowData={rowData && rowData.questionChild && rowData.questionChild.length > 0   ? createArray(rowData.questionChild[0]) : 
+                      MyCreateArray(rowData.id)
+                    // [{}]
+                  } 
+                    typeQuestion={typeQuestion}/>
                 })()}
               </div>
             )
@@ -773,7 +798,7 @@ const Questions = ({toggle ,selectedCourseName}) =>{
           disabled:toggle,
           // disabled: typeQuestion == 6 ? false : toggle,
           // icon: () => (<QuestionImageIcon src={SequentialIcon}/>),
-          icon: () => rowData.question_type != '5' ? (<QuestionImageIconContainer><QuestionImageIcon src={SequentialIcon}/>
+          icon: () => rowData && rowData.questionChild && rowData.questionChild.length > 0 && rowData.questionChild[0].question_type != '5' ? (<QuestionImageIconContainer><QuestionImageIcon src={SequentialIcon}/>
           {/* <QuestionImageIconText>ترتیبی</QuestionImageIconText> */}
           </QuestionImageIconContainer>)
           :
@@ -800,7 +825,15 @@ const Questions = ({toggle ,selectedCourseName}) =>{
                 {(() => {
                   setTypeQuestion(6);
                   // setSelectedRow(rowData.tableData.id);
-                    return <Sequential selectedCourseName={selectedCourseName} handleFetchData={handleFetchData} rowData={createArray(rowData)} typeQuestion={typeQuestion}/>
+                    return <Sequential selectedCourseName={selectedCourseName} handleFetchData={handleFetchData} 
+                    // rowData={rowData.questionChild[0] ? createArray(rowData.questionChild[0]) : ''}
+                    // rowData={rowData && rowData.questionChild.length > 0   ? createArray(rowData.questionChild[0]) : createArray(rowData)}
+                    // rowData={createArray(rowData)}
+                    rowData={rowData && rowData.questionChild && rowData.questionChild.length > 0   ? createArray(rowData.questionChild[0]) : 
+                      MyCreateArray(rowData.id)
+                    // [{}]
+                  }
+                     typeQuestion={typeQuestion}/>
                 })()}
               </div>
             )
@@ -814,9 +847,9 @@ const Questions = ({toggle ,selectedCourseName}) =>{
       editable={{
             onRowAdd: newData =>
               new Promise((resolve, reject) => {
-                console.log('ddddddddddd');
+                // console.log('ddddddddddd');
                 setTimeout(() => {
-                  setData([...QuestionsData, newData]);
+                  // setData([...QuestionsData, newData]);
                   setQuestionParent({ variables: { 
                     userName: "211",
                     password: "211",
@@ -824,11 +857,13 @@ const Questions = ({toggle ,selectedCourseName}) =>{
                     } 
                   }).then(res=>{
                     if(res.data && res.data.addQuestionParent){
+                      handleFetchData();
                       // console.log('data',data);
                       // setMessage('امتحان ثبت شد');
                       // setStatus('1');
                       // setShowMessage(!showMessage);
                     }else{
+                      handleFetchData();
                       // console.log('data',data);
                       // setStatus('0')
                       // setMessage('امتحان ثبت نشد')
@@ -852,9 +887,30 @@ const Questions = ({toggle ,selectedCourseName}) =>{
             onRowDelete: oldData =>
               new Promise((resolve, reject) => {
                 setTimeout(() => {
+                  // console.log('id',oldData)
                   const dataDelete = [...QuestionsData];
                   const index = oldData.tableData.id;
                   dataDelete.splice(index, 1);
+                  deleteQuestionParent({ variables: { 
+                    userName: "211",
+                    password: "211",
+                    id: oldData.id
+                    } 
+                  }).then(res=>{
+                    if(res.data && res.data.deleteQuestionParent){
+                      handleFetchData();
+                      // console.log('data',data);
+                      // setMessage('امتحان ثبت شد');
+                      // setStatus('1');
+                      // setShowMessage(!showMessage);
+                    }else{
+                      handleFetchData();
+                      // console.log('data',data);
+                      // setStatus('0')
+                      // setMessage('امتحان ثبت نشد')
+                      // setShowMessage(!showMessage);
+                    }
+                  })
                   setData([...dataDelete]);
     
                   resolve();

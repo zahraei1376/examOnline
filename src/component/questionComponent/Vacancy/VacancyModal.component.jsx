@@ -43,14 +43,15 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function VacancyModal({vancyValue ,setVancyValue , existVancyValue}) {
+export default function VacancyModal({vancyValue , setVancyValue , existVancyValue}) {
   const classes = useStyles();
   // getModalStyle is not a pure function, we roll the style only on the first render
   const [modalStyle] = React.useState(getModalStyle);
   const [open, setOpen] = React.useState(false);
+  // const [vancyValue , setVancyValue] = useState('');
 //   const [count,setCount] = React.useState(1)
   // const [items,setItems] = React.useState(existVancyValue ? existVancyValue : '');
-  const [indexDelete,setIndexDelete] = React.useState(-1);
+  // const [indexDelete,setIndexDelete] = React.useState(-1);
 
   useEffect(()=>{
     // console.log('vancyValue',vancyValue);
@@ -62,11 +63,12 @@ export default function VacancyModal({vancyValue ,setVancyValue , existVancyValu
   //   console.log('existVancyValue',existVancyValue);
   // },[]);
 
-//   useEffect(()=>{
-//     setVancyValue(Array(count).fill(0).map(row => new Array(2).fill('')))
-//   },[count]);
+  useEffect(()=>{
+    console.log('vancyValue',vancyValue);
+  },[vancyValue]);
 
   const handleChange = (event) => {
+    // console.log('event.target.value',event.target.value);
     setVancyValue(event.target.value);
   };
 
@@ -114,14 +116,23 @@ export default function VacancyModal({vancyValue ,setVancyValue , existVancyValu
          <AddCircleIcon style={{fontSize:'40px', color:'#009688',cursor:'pointer'}} onClick={addVancy} />
       
       <VacancyInputContainer>
-      <VacancyInput id="Text1" cols="60" rows="5"  value={vancyValue.split('$%A').join('..............')} onChange={(e) =>handleChange(e)}></VacancyInput>
+      <VacancyInput id="Text1" cols="60" rows="5"  
+        value={vancyValue.split('$%A').join('..............')}
+       onChange={(e) =>handleChange(e)} 
+      />
+       {/* </VacancyInput> */}
       </VacancyInputContainer>
       {/* <VacancyShowText>{vancyValue.split('$%A').join('..............')}</VacancyShowText> */}
-      {vancyValue.length > 0 ? <VacancyButtonSave variant="contained" component="span"
+      {/* {vancyValue ? <VacancyButtonSave variant="contained" component="span"
         onClick={SeveData}
         >
         ثبت
-      </VacancyButtonSave> : ''}
+      </VacancyButtonSave> : ''} */}
+      <VacancyButtonSave variant="contained" component="span"
+        onClick={SeveData}
+        >
+        ثبت
+      </VacancyButtonSave>
     </div>
   );
 

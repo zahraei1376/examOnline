@@ -15,6 +15,7 @@ import {FastAccessDivContainer,FastAccessDiv,MyTypography , MyButton ,
   ,NumOfQuestionInput,NumOfQuestionSection} from './fastAccessToquestions.styles';
 import { Tooltip } from '@material-ui/core';
 import DoneIcon from '@material-ui/icons/Done';
+import Uploader from '../../uploader';
 
 const styles = (theme) => ({
   root: {
@@ -110,7 +111,8 @@ function FastAccessToQuestions() {
             <FastAccessDiv>
                   <UploadSection>
                       <UploadLabel> برای آپلود سوالات کلیک کنید </UploadLabel>
-                      <label htmlFor="upload_Questions">
+                      <Uploader/>
+                      {/* <label htmlFor="upload_Questions">
                           <input
                               style={{ display: 'none' }}
                               // defaultValue=""
@@ -121,11 +123,9 @@ function FastAccessToQuestions() {
                           />
 
                           <Tooltip title="آپلود فایل">
-                              {/* <IconButton aria-label="آپلود فایل"> */}
                                   <MyCloudUploadIcon />
-                              {/* </IconButton> */}
                           </Tooltip>
-                      </label>
+                      </label> */}
                       {/* <NumOfQuestionInput type="text" placeholder="تعداد سوالات را وارد کنید" /> */}
                   </UploadSection>
                   {/* <NumOfQuestionSection>

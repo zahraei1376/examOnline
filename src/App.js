@@ -7,11 +7,15 @@ import ArchiveForTeacher from './component/examPageForTeacher/archiveForTeacher/
 import EditeAxamPageForTeacher from './component/editeAxamForTeacher/editeaxamPage.component';
 import ArchiveForStudent from './component/archiveForStudent/archiveForStudent.component';
 import AddExamForTeacherContainer from './component/addExamComponent/addExamComponent.container';
+import QuestionsComponentContainer from './component/questionComponent/questionComponent.container';
+// import QuestionsPageContainer from './pages/questionPage.container';
 const App = () => {
   return (
     <div className="App">
       {/* <AddExamForTeacher/> */}
       {/* <AddExamForTeacherContainer/> */}
+      {/* <QuestionsPageContainer/> */}
+      {/* <QuestionsComponentContainer/> */}
      <QuestionPageContainer />
      {/* <ExamPageForStudent/> */}
      {/* <ArchiveForTeacher/> */}
