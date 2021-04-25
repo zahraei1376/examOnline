@@ -66,6 +66,10 @@ const DialogActions = withStyles((theme) => ({
 
 function ExplainQuestion({number , explain , time}) {
   const [open, setOpen] = React.useState(false);
+  React.useEffect(()=>{
+    console.log('explain',explain);
+    console.log('time',time);
+  },[])
 
   const handleClickOpen = () => {
     setOpen(true);

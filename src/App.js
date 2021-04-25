@@ -16,8 +16,8 @@ const App = () => {
       {/* <AddExamForTeacherContainer/> */}
       {/* <QuestionsPageContainer/> */}
       {/* <QuestionsComponentContainer/> */}
-     <QuestionPageContainer />
-     {/* <ExamPageForStudent/> */}
+     {/* <QuestionPageContainer /> */}
+     <ExamPageForStudent/>
      {/* <ArchiveForTeacher/> */}
      {/* <EditeAxamPageForTeacher/> */}
      {/* <ArchiveForStudent/> */}

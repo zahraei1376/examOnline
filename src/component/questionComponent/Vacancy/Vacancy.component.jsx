@@ -95,13 +95,11 @@ const Vacancy = ({setToggle , ...props}) => {
 
       if(!loadVariable.load){
         loadVariable.load = true;
-        // setToggle(true);
         setInnerData(props.rowData);
       }
 
       return ()=>{
         loadVariable.load = false;
-        // setToggle(false);
       }
 
     },[]);
@@ -215,15 +213,11 @@ const Vacancy = ({setToggle , ...props}) => {
         // }
     };
     ////////////////////////////////////
-
-    //////////////////////////////////////////
+    const handleSetVancyItems = (vc) =>{
+      setVancyValue(vc)
+    }
+    ////////////////////////////////////
     const [innerColumns, setInnerColumns] = useState([
-        // {title:'ردیف',field:'questionID' , editable: 'never'},
-        // {
-        //   title: 'ردیف', field: 'questionID', textAlign: 'center',
-        //   //  render : rowData => rowData && (rowData.tableData.id),
-        //   editable: 'never'
-        // },
         {
           title: 'سوال',
           field: 'question',
@@ -292,174 +286,6 @@ const Vacancy = ({setToggle , ...props}) => {
             </label>
           ),
         },
-        // {
-        //   title: 'گزینه 1',
-        //   textAlign: 'center',
-        //   field: 'question_optionOne',
-        //   minWidth: 200,
-        //   editComponent: props => (
-        //     <TextField
-        //       style={{ minWidth: '200px' }}
-        //       value={props.value}
-        //       fullWidth={true}
-        //       multiline={true}
-        //       defaultValue=""
-        //       onChange={e => props.onChange(e.target.value)}
-        //     />
-        //   ),
-        //   render: data => {
-        //     return (
-        //       <pre
-        //         style={{
-        //           fontSize: '20px',
-        //           wordBreak: 'break-word',
-        //           overflowWrap: 'break-word',
-        //           whiteSpace: 'pre-wrap',
-        //           textAlign: 'center',
-        //           width: '200px',
-        //           fontFamily: 'BNazanin',
-        //           fontSize: 16,
-        //         }}
-        //       >
-        //         {data.question_optionOne}
-        //       </pre>
-        //     );
-        //   },
-        // },
-        // {
-        //   title: 'گزینه 2',
-        //   textAlign: 'center',
-        //   field: 'question_optionTwo',
-        //   minWidth: 200,
-        //   editComponent: props => (
-        //     <TextField
-        //       style={{ minWidth: '200px' }}
-        //       value={props.value}
-        //       defaultValue=""
-        //       fullWidth={true}
-        //       multiline={true}
-        //       onChange={e => props.onChange(e.target.value)}
-        //     />
-        //   ),
-        //   render: data => {
-        //     return (
-        //       <pre
-        //         style={{
-        //           fontSize: '20px',
-        //           wordBreak: 'break-word',
-        //           overflowWrap: 'break-word',
-        //           whiteSpace: 'pre-wrap',
-        //           textAlign: 'center',
-        //           width: '200px',
-        //           fontFamily: 'BNazanin',
-        //           fontSize: 16,
-        //         }}
-        //       >
-        //         {data.question_optionTwo}
-        //       </pre>
-        //     );
-        //   },
-        // },
-        // {
-        //   title: 'گزینه 3',
-        //   textAlign: 'center',
-        //   field: 'question_optionThree',
-        //   minWidth: 200,
-        //   editComponent: props => (
-        //     <TextField
-        //       style={{ minWidth: '200px' }}
-        //       value={props.value}
-        //       fullWidth={true}
-        //       multiline={true}
-        //       defaultValue=""
-        //       onChange={e => props.onChange(e.target.value)}
-        //     />
-        //   ),
-        //   render: data => {
-        //     // fontFamily: 'BNazanin',
-        //     // return moment(data.group_start_time).format('HH:mm:00');
-        //     return (
-        //       <pre
-        //         style={{
-        //           fontSize: '20px',
-        //           wordBreak: 'break-word',
-        //           overflowWrap: 'break-word',
-        //           whiteSpace: 'pre-wrap',
-        //           textAlign: 'center',
-        //           width: '200px',
-        //           fontFamily: 'BNazanin',
-        //           fontSize: 16,
-        //         }}
-        //       >
-        //         {data.question_optionThree}
-        //       </pre>
-        //     );
-        //   },
-        // },
-        // {
-        //   title: 'گزینه 4',
-        //   textAlign: 'center',
-        //   field: 'question_optionFour',
-        //   minWidth: 200,
-        //   editComponent: props => (
-        //     <TextField
-        //       style={{ minWidth: '200px' }}
-        //       value={props.value}
-        //       fullWidth={true}
-        //       multiline={true}
-        //       defaultValue=""
-        //       onChange={e => props.onChange(e.target.value)}
-        //     />
-        //   ),
-        //   render: data => {
-        //     // return moment(data.group_start_time).format('HH:mm:00');
-        //     return (
-        //       <pre
-        //         style={{
-        //           fontSize: '20px',
-        //           wordBreak: 'break-word',
-        //           overflowWrap: 'break-word',
-        //           whiteSpace: 'pre-wrap',
-        //           textAlign: 'center',
-        //           width: '200px',
-        //           fontFamily: 'BNazanin',
-        //           fontSize: 16,
-        //         }}
-        //       >
-        //         {data.question_optionFour}
-        //       </pre>
-        //     );
-        //   },
-        // },
-        // {
-        //   title: 'گزینه صحیح',
-        //   textAlign: 'center',
-        //   field: 'question_correctOption',
-        //   lookup: {
-        //     1: '1',
-        //     2: '2',
-        //     3: '3',
-        //     4: '4',
-        //   },
-        //   minWidth: 150,
-        // //   validate: rowData =>
-        // //     rowData.question_correctOption === '' ? 'Name cannot be empty' : '',
-        //   render: data => {
-        //     return (
-        //       <p
-        //         style={{
-        //           fontFamily: 'BNazanin',
-        //           fontSize: 16,
-        //           textAlign: 'center',
-        //           width: '50px',
-        //         }}
-        //       >
-        //         {data.question_correctOption}
-        //       </p>
-        //     );
-        //   },
-        //   // <input type="file" onChange={e => uploadFile(e)} />
-        // },
         {
           title: 'زمان تقریبی',
           textAlign: 'center',
@@ -587,13 +413,14 @@ const Vacancy = ({setToggle , ...props}) => {
           textAlign: 'center',
           field: 'question_vancyItems',
           minWidth: 150,
-        //   validate: rowData =>
-        //     rowData.question_score !== '' ? 'Name cannot be empty' : '',
           editComponent: props => (
             <VacancyModal 
+              // vancyValue={props.value}
+              // setVancyValue={props.onChange}
+              handleSetVancyItems={handleSetVancyItems}
               existVancyValue={props.rowData.question_vancyItems}
-              setVancyValue={setVancyValue}
-              vancyValue={vancyValue}
+              // setVancyValue={setVancyValue}
+              // vancyValue={vancyValue}
              />
             
           ),
@@ -628,41 +455,8 @@ const Vacancy = ({setToggle , ...props}) => {
             );
           },
         },
-        // {
-        //   title: 'عکس',
-        //   field: 'news_link',
-        //   editComponent: props => (
-        //     <input type="file" onChange={e => uploadFile(e)} />
-        //   ),
-        // },
       ]);
-    //   const [data, setData] = useState([]);
-      ////////////////////////////////////////////////
-
-  
-    // const [innerColumns, setInnerColumns] = useState([
-    //   {
-    //     title: 'questionID', field: 'questionID',
-    //     // editComponent: props => (
-    //     //   <input
-    //     //     type="text"
-    //     //     value={props.value}
-    //     //     onChange={e => props.onChange(e.target.value)}
-    //     //   />
-    //     // )
-    //   },
-    //   { title: 'axamQuestions_id', field: 'axamQuestions_id' },
-    //   { title: 'question', field: 'question' },
-    //   ///////////////////////////////////////
-    //   // { title: 'Surname', field: 'surname' },
-    //   // { title: 'Birth Year', field: 'birthYear', type: 'numeric' },
-    //   // {
-    //   //   title: 'Birth Place',
-    //   //   field: 'birthCity',
-    //   //   lookup: { 34: 'İstanbul', 63: 'Şanlıurfa' },
-    //   // },
-    // ]);
-
+    ////////////////////////////////////////////////
     function convertText(text){
       var new1Text = text
       ? text.split('\r\n').join('%0A')
@@ -676,9 +470,7 @@ const Vacancy = ({setToggle , ...props}) => {
 
       return new3Text;
     }
-  
-
-  
+    ////////////////////////////////////////////////
     return (
       <div>
       {innerData.length > 0 ? <MaterialTable style={{boxShadow: '0 3px 3px rgba(0,0,0,.4'}}
@@ -833,7 +625,7 @@ const Vacancy = ({setToggle , ...props}) => {
                           question_optionFour: "",
                           question_link: file.name,
                           exam_link: "", 
-                          question_type: "5",
+                          question_type: props.typeQuestion,
                           question_seqItems: [],
                           question_vancyItems: vancyValue, 
                           question_compItems: []
@@ -890,7 +682,7 @@ const Vacancy = ({setToggle , ...props}) => {
                           question_optionFour: "",
                           question_link: "",
                           exam_link: file.name, 
-                          question_type: "5",
+                          question_type: props.typeQuestion,
                           question_seqItems: [],
                           question_vancyItems: vancyValue, 
                           question_compItems: []
@@ -931,7 +723,7 @@ const Vacancy = ({setToggle , ...props}) => {
                       question_optionFour: "",
                       question_link: "",
                       exam_link: "", 
-                      question_type: "5",
+                      question_type: props.typeQuestion,
                       question_seqItems: [],
                       question_vancyItems: vancyValue, 
                       question_compItems: [],

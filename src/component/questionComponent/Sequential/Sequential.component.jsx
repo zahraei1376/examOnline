@@ -25,54 +25,7 @@ import { useQuery ,gql } from 'apollo-boost';
 import { useMutation} from 'react-apollo';
 import {SET_QUESTION_CHILD ,DELETE_QUESTIONCHILD} from '../../../graphql/resolver';
 /////////////////////////query
-
 const graphql_server_uri ='/qraphql';
-
-// const SET_QUESTION_CHILD = gql`
-//   mutation addQuestionChild(
-//       $userName: String!,
-//       $password: String!,
-//       $qpId: String!,
-//       $question: String!,
-//       $question_score: String!,
-//       $question_explain: String!,
-//       $question_timeToSolveProblem: String!,
-//       $question_correctOption: String!,
-//       $question_optionOne: String!,
-//       $question_optionTwo: String!,
-//       $question_optionThree: String!,
-//       $question_optionFour: String!,
-//       $question_link: String!,
-//       $exam_link: String!,
-//       $question_type: String!,
-//       $question_seqItems: [String]!,
-//       $question_vancyItems: String!,
-//       $question_compItems: [String]!,
-//       ){
-//       addQuestionChild(
-//         userName: $userName,
-//         password: $password,
-//         qpId: $qpId,
-//         question: $question,
-//         question_score: $question_score,
-//         question_explain: $question_explain,
-//         question_timeToSolveProblem: $question_timeToSolveProblem,
-//         question_correctOption: $question_correctOption,
-//         question_optionOne: $question_optionOne,
-//         question_optionTwo: $question_optionTwo,
-//         question_optionThree: $question_optionThree,
-//         question_optionFour: $question_optionFour,
-//         question_link: $question_link,
-//         exam_link: $exam_link,
-//         question_type: $question_type,
-//         question_seqItems: $question_seqItems,
-//         question_vancyItems: $question_vancyItems,
-//         question_compItems: $question_compItems,
-//       ){
-//         id
-//       }
-//   }
-// `;
 
 const Sequential = ({setToggle , ...props}) => {
     const [innerData, setInnerData] = useState([]);
@@ -217,15 +170,12 @@ const Sequential = ({setToggle , ...props}) => {
         // }
     };
     ////////////////////////////////////
+    const handleSetSeqItems =(sq) =>{
+      setSeqItems(sq);
+    }
 
     //////////////////////////////////////////
     const [innerColumns, setInnerColumns] = useState([
-        // {title:'ردیف',field:'questionID' , editable: 'never'},
-        // {
-        //   title: 'ردیف', field: 'questionID', textAlign: 'center',
-        //   //  render : rowData => rowData && (rowData.tableData.id),
-        //   editable: 'never'
-        // },
         {
           title: 'سوال',
           field: 'question',
@@ -292,174 +242,6 @@ const Sequential = ({setToggle , ...props}) => {
             </label>
           ),
         },
-        // {
-        //   title: 'گزینه 1',
-        //   textAlign: 'center',
-        //   field: 'question_optionOne',
-        //   minWidth: 200,
-        //   editComponent: props => (
-        //     <TextField
-        //       style={{ minWidth: '200px' }}
-        //       value={props.value}
-        //       fullWidth={true}
-        //       multiline={true}
-        //       defaultValue=""
-        //       onChange={e => props.onChange(e.target.value)}
-        //     />
-        //   ),
-        //   render: data => {
-        //     return (
-        //       <pre
-        //         style={{
-        //           fontSize: '20px',
-        //           wordBreak: 'break-word',
-        //           overflowWrap: 'break-word',
-        //           whiteSpace: 'pre-wrap',
-        //           textAlign: 'center',
-        //           width: '200px',
-        //           fontFamily: 'BNazanin',
-        //           fontSize: 16,
-        //         }}
-        //       >
-        //         {data.question_optionOne}
-        //       </pre>
-        //     );
-        //   },
-        // },
-        // {
-        //   title: 'گزینه 2',
-        //   textAlign: 'center',
-        //   field: 'question_optionTwo',
-        //   minWidth: 200,
-        //   editComponent: props => (
-        //     <TextField
-        //       style={{ minWidth: '200px' }}
-        //       value={props.value}
-        //       defaultValue=""
-        //       fullWidth={true}
-        //       multiline={true}
-        //       onChange={e => props.onChange(e.target.value)}
-        //     />
-        //   ),
-        //   render: data => {
-        //     return (
-        //       <pre
-        //         style={{
-        //           fontSize: '20px',
-        //           wordBreak: 'break-word',
-        //           overflowWrap: 'break-word',
-        //           whiteSpace: 'pre-wrap',
-        //           textAlign: 'center',
-        //           width: '200px',
-        //           fontFamily: 'BNazanin',
-        //           fontSize: 16,
-        //         }}
-        //       >
-        //         {data.question_optionTwo}
-        //       </pre>
-        //     );
-        //   },
-        // },
-        // {
-        //   title: 'گزینه 3',
-        //   textAlign: 'center',
-        //   field: 'question_optionThree',
-        //   minWidth: 200,
-        //   editComponent: props => (
-        //     <TextField
-        //       style={{ minWidth: '200px' }}
-        //       value={props.value}
-        //       fullWidth={true}
-        //       multiline={true}
-        //       defaultValue=""
-        //       onChange={e => props.onChange(e.target.value)}
-        //     />
-        //   ),
-        //   render: data => {
-        //     // fontFamily: 'BNazanin',
-        //     // return moment(data.group_start_time).format('HH:mm:00');
-        //     return (
-        //       <pre
-        //         style={{
-        //           fontSize: '20px',
-        //           wordBreak: 'break-word',
-        //           overflowWrap: 'break-word',
-        //           whiteSpace: 'pre-wrap',
-        //           textAlign: 'center',
-        //           width: '200px',
-        //           fontFamily: 'BNazanin',
-        //           fontSize: 16,
-        //         }}
-        //       >
-        //         {data.question_optionThree}
-        //       </pre>
-        //     );
-        //   },
-        // },
-        // {
-        //   title: 'گزینه 4',
-        //   textAlign: 'center',
-        //   field: 'question_optionFour',
-        //   minWidth: 200,
-        //   editComponent: props => (
-        //     <TextField
-        //       style={{ minWidth: '200px' }}
-        //       value={props.value}
-        //       fullWidth={true}
-        //       multiline={true}
-        //       defaultValue=""
-        //       onChange={e => props.onChange(e.target.value)}
-        //     />
-        //   ),
-        //   render: data => {
-        //     // return moment(data.group_start_time).format('HH:mm:00');
-        //     return (
-        //       <pre
-        //         style={{
-        //           fontSize: '20px',
-        //           wordBreak: 'break-word',
-        //           overflowWrap: 'break-word',
-        //           whiteSpace: 'pre-wrap',
-        //           textAlign: 'center',
-        //           width: '200px',
-        //           fontFamily: 'BNazanin',
-        //           fontSize: 16,
-        //         }}
-        //       >
-        //         {data.question_optionFour}
-        //       </pre>
-        //     );
-        //   },
-        // },
-        // {
-        //   title: 'گزینه صحیح',
-        //   textAlign: 'center',
-        //   field: 'question_correctOption',
-        //   lookup: {
-        //     1: '1',
-        //     2: '2',
-        //     3: '3',
-        //     4: '4',
-        //   },
-        //   minWidth: 150,
-        // //   validate: rowData =>
-        // //     rowData.question_correctOption === '' ? 'Name cannot be empty' : '',
-        //   render: data => {
-        //     return (
-        //       <p
-        //         style={{
-        //           fontFamily: 'BNazanin',
-        //           fontSize: 16,
-        //           textAlign: 'center',
-        //           width: '50px',
-        //         }}
-        //       >
-        //         {data.question_correctOption}
-        //       </p>
-        //     );
-        //   },
-        //   // <input type="file" onChange={e => uploadFile(e)} />
-        // },
         {
           title: 'زمان تقریبی',
           textAlign: 'center',
@@ -589,8 +371,9 @@ const Sequential = ({setToggle , ...props}) => {
         //     rowData.question_score !== '' ? 'Name cannot be empty' : '',
           editComponent: props => (
             <SequentialModal 
-              seqItems={seqItems}
-              setSeqItems={setSeqItems}
+              // seqItems={seqItems}
+              // setSeqItems={setSeqItems}
+              handleSetSeqItems={handleSetSeqItems}
               existSeqItems={props.rowData.question_SeqItems}
             />
           ),
@@ -796,7 +579,7 @@ const Sequential = ({setToggle , ...props}) => {
                           question_optionFour: "",
                           question_link: file.name,
                           exam_link: "", 
-                          question_type: "5",
+                          question_type: props.typeQuestion,
                           question_seqItems: seqItems,
                           question_vancyItems: "", 
                           question_compItems: []
@@ -854,7 +637,7 @@ const Sequential = ({setToggle , ...props}) => {
                           question_optionFour: "",
                           question_link: "",
                           exam_link: file.name, 
-                          question_type: "5",
+                          question_type: props.typeQuestion,
                           question_seqItems: seqItems,
                           question_vancyItems: "", 
                           question_compItems: []
@@ -895,7 +678,7 @@ const Sequential = ({setToggle , ...props}) => {
                       question_optionFour: "",
                       question_link: "",
                       exam_link: "", 
-                      question_type: "5",
+                      question_type: props.typeQuestion,
                       question_seqItems: seqItems,
                       question_vancyItems: "", 
                       question_compItems: [],

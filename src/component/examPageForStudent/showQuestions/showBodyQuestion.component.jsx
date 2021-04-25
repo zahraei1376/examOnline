@@ -15,9 +15,9 @@ import ShowImage from '../../imageShow/showImage.component';
 ///////////////////////////////////////////////////////
 import { connect} from 'react-redux';
 import {IncreaseIndex , DecreaseIndex} from '../../../redux/questionIndex/questionIndex.sction';
-import {selectIndex} from '../../../redux/questionIndex/questionIndex.selector';
+import {selectIndex ,finalIndex} from '../../../redux/questionIndex/questionIndex.selector';
 import { createStructuredSelector} from 'reselect';
-const ShowBodyQuestions = ({question,number,children,IncreaseIndexQuestion,DecreaseIndexQuestion,questionIndex}) =>{
+const ShowBodyQuestions = ({question,number,children,IncreaseIndexQuestion,DecreaseIndexQuestion,questionIndex ,questionsLenght}) =>{
 
     // const [state,setState] =useState({
     //     type:false,
@@ -29,7 +29,9 @@ const ShowBodyQuestions = ({question,number,children,IncreaseIndexQuestion,Decre
     const [imageSrc, setImageSrc] = useState('');
     const [captionImage, setCaptionImage] = useState(false);
     const [showImage, setShowImage] = useState(false);
-
+    useEffect(()=>{
+        console.log('MyQuestions',question);
+      },[]);
 
     // useEffect(()=>{
     //     console.log('captionImage',captionImage);
@@ -103,7 +105,7 @@ const ShowBodyQuestions = ({question,number,children,IncreaseIndexQuestion,Decre
                      // src={question.exam_link}
                      // src={`https://kamal-exam.s3.ir-thr-at1.arvanstorage.com/${question.exam_link}`}
                      />
-                     <ExplainQuestion number={number} explain={question.question_explane} time={question.question_timeTosolveProblem}/>
+                     <ExplainQuestion number={number} explain={question.question_explain} time={question.question_timeToSolveProblem}/>
                  </ImageQuestionContainer>
                  <ScoreTag
                  >
@@ -114,6 +116,7 @@ const ShowBodyQuestions = ({question,number,children,IncreaseIndexQuestion,Decre
              </ImageQuestionMainContainer>
             ) : question.question ? (
                 <BodyDiv>
+                    <ExplainQuestion number={number} explain={question.question_explain} time={question.question_timeToSolveProblem}/>
                     <BodyQuestion
                         // className={
                         // question.exam_link
@@ -125,7 +128,7 @@ const ShowBodyQuestions = ({question,number,children,IncreaseIndexQuestion,Decre
                         <br/> (
                         {question.question_score} نمره)
                     </BodyQuestion>
-                    <ExplainQuestion number={number} explain={question.question_explane} time={question.question_timeTosolveProblem}/>
+                    
                 </BodyDiv>
             ) : (
                 ''
@@ -139,13 +142,13 @@ const ShowBodyQuestions = ({question,number,children,IncreaseIndexQuestion,Decre
             <FooterBtnsContainer>
                 <Tooltip title="سوال قبلی" aria-label="سوال قبلی"  style={{ fontSize:'3rem'}} >
                     <FooterBtn disabled={questionIndex == 0 ? true :false} onClick={DecreaseIndexQuestion}>
-                        <ArrowBackIosIcon style={{ fontSize:'3rem'}} />
+                        <ArrowForwardIosIcon style={{ fontSize:'3rem'}} />
                     </FooterBtn>
                 </Tooltip>
                 
                 <Tooltip title="سوال بعدی" aria-label="سوال بعدی" style={{ fontSize:'3rem'}} >
-                    <FooterBtn disabled={questionIndex == 5 ? true :false} onClick={IncreaseIndexQuestion}>
-                        <ArrowForwardIosIcon style={{ fontSize:'3rem'}} />
+                    <FooterBtn disabled={questionIndex == questionsLenght -1 ? true :false} onClick={IncreaseIndexQuestion}>
+                        <ArrowBackIosIcon style={{ fontSize:'3rem'}} />
                     </FooterBtn>
                 </Tooltip>
 
@@ -163,7 +166,8 @@ const ShowBodyQuestions = ({question,number,children,IncreaseIndexQuestion,Decre
 // });
 
 const mapStateToProps = createStructuredSelector({
-    questionIndex:selectIndex
+    questionIndex:selectIndex,
+    questionsLenght:finalIndex
 });
 
 // selectIndex

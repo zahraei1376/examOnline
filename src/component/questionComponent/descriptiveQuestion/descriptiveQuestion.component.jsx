@@ -34,6 +34,7 @@ const DescriptiveQuestion = (props) => {
     //////////////////////////////////////////
     useEffect(()=>{
       if(!loadVariable.load){
+        console.log('props.typeQuestion' , props.typeQuestion);
         loadVariable.load = true;
         // console.log('props.rowData',props.rowData);
         setInnerData(props.rowData);
@@ -641,7 +642,7 @@ const DescriptiveQuestion = (props) => {
                           question_optionFour: "",
                           question_link: file.name,
                           exam_link: "", 
-                          question_type: "1",
+                          question_type: props.typeQuestion,
                           question_seqItems: [],
                           question_vancyItems: "", 
                           question_compItems: []
@@ -699,7 +700,7 @@ const DescriptiveQuestion = (props) => {
                           question_optionFour: "",
                           question_link: "",
                           exam_link: file.name, 
-                          question_type: "1",
+                          question_type: props.typeQuestion,
                           question_seqItems: [],
                           question_vancyItems: "", 
                           question_compItems: []
@@ -742,7 +743,7 @@ const DescriptiveQuestion = (props) => {
                       question_optionFour: "",
                       question_link: "",
                       exam_link: "", 
-                      question_type: "1",
+                      question_type: props.typeQuestion,
                       question_seqItems: [],
                       question_vancyItems: "", 
                       question_compItems: [],

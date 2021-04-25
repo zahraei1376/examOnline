@@ -1,4 +1,4 @@
-import React , {useEffect} from 'react';
+import React , {useState,useEffect} from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Modal from '@material-ui/core/Modal';
 import {VacancyButton , VacancyButtonSave , VacancyInputContainer ,VacancyInput ,VacancyShowText} from './VacancyModal.styles';
@@ -43,12 +43,12 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function VacancyModal({vancyValue , setVancyValue , existVancyValue}) {
+export default function VacancyModal({handleSetVancyItems , existVancyValue}) {
   const classes = useStyles();
   // getModalStyle is not a pure function, we roll the style only on the first render
   const [modalStyle] = React.useState(getModalStyle);
   const [open, setOpen] = React.useState(false);
-  // const [vancyValue , setVancyValue] = useState('');
+  const [vancyValue , setVancyValue] = useState('');
 //   const [count,setCount] = React.useState(1)
   // const [items,setItems] = React.useState(existVancyValue ? existVancyValue : '');
   // const [indexDelete,setIndexDelete] = React.useState(-1);
@@ -100,6 +100,7 @@ export default function VacancyModal({vancyValue , setVancyValue , existVancyVal
  }
 
  const SeveData = () =>{
+  handleSetVancyItems(vancyValue);
   setOpen(false);
  }
 

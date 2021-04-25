@@ -726,7 +726,7 @@ const MultipleChoice = ({setToggle , ...props}) => {
                               question_optionFour: convertText(newData.question_optionFour),
                               question_link: file.name,
                               exam_link: "", 
-                              question_type: "3",
+                              question_type: props.typeQuestion,
                               question_seqItems: [],
                               question_vancyItems: "", 
                               question_compItems: []
@@ -783,7 +783,7 @@ const MultipleChoice = ({setToggle , ...props}) => {
                               question_optionFour: convertText(newData.question_optionFour),
                               question_link: "",
                               exam_link: file.name, 
-                              question_type: "3",
+                              question_type: props.typeQuestion,
                               question_seqItems: [],
                               question_vancyItems: "", 
                               question_compItems: []
@@ -824,7 +824,7 @@ const MultipleChoice = ({setToggle , ...props}) => {
                           question_optionFour: convertText(newData.question_optionFour),
                           question_link: "",
                           exam_link: "", 
-                          question_type: "3",
+                          question_type: props.typeQuestion,
                           question_seqItems: [],
                           question_vancyItems: "", 
                           question_compItems: []

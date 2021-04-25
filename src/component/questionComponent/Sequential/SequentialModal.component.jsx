@@ -1,6 +1,6 @@
 //ترتیبی 
 ////////////////////////////////////////
-import React , {useEffect} from 'react';
+import React , {useState,useEffect} from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Modal from '@material-ui/core/Modal';
 import {SequentialButton , SequentialButtonSave , SequentialInputContainer ,SequentialInput ,SequentialShowText ,SequentialItemContainer} from './SequentialModal.styles';
@@ -45,10 +45,11 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function SequentialModal({seqItems , setSeqItems , existSeqItems}) {
+export default function SequentialModal({handleSetSeqItems, existSeqItems}) {
   const classes = useStyles();
   const [modalStyle] = React.useState(getModalStyle);
   const [open, setOpen] = React.useState(false);
+  const [seqItems,setSeqItems] = useState([]);
   // const [items,setItems] = React.useState(seqItems ? seqItems : []);
 
   const handleChange = (event) => {
@@ -89,6 +90,7 @@ export default function SequentialModal({seqItems , setSeqItems , existSeqItems}
  }
 
  const SeveData = () =>{
+  handleSetSeqItems(seqItems);
   setOpen(false);
  }
 

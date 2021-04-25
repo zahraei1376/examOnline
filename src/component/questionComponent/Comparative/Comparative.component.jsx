@@ -235,7 +235,9 @@ const Comparative = ({setToggle , ...props}) => {
         // }
     };
     ////////////////////////////////////
-
+    const handleSetCompItems = (comp) =>{
+      setCompItems(comp);
+    }
     //////////////////////////////////////////
     const [innerColumns, setInnerColumns] = useState([
         // {title:'ردیف',field:'questionID' , editable: 'never'},
@@ -312,174 +314,6 @@ const Comparative = ({setToggle , ...props}) => {
             </label>
           ),
         },
-        // {
-        //   title: 'گزینه 1',
-        //   textAlign: 'center',
-        //   field: 'question_optionOne',
-        //   minWidth: 200,
-        //   editComponent: props => (
-        //     <TextField
-        //       style={{ minWidth: '200px' }}
-        //       value={props.value}
-        //       fullWidth={true}
-        //       multiline={true}
-        //       defaultValue=""
-        //       onChange={e => props.onChange(e.target.value)}
-        //     />
-        //   ),
-        //   render: data => {
-        //     return (
-        //       <pre
-        //         style={{
-        //           fontSize: '20px',
-        //           wordBreak: 'break-word',
-        //           overflowWrap: 'break-word',
-        //           whiteSpace: 'pre-wrap',
-        //           textAlign: 'center',
-        //           width: '200px',
-        //           fontFamily: 'BNazanin',
-        //           fontSize: 16,
-        //         }}
-        //       >
-        //         {data.question_optionOne}
-        //       </pre>
-        //     );
-        //   },
-        // },
-        // {
-        //   title: 'گزینه 2',
-        //   textAlign: 'center',
-        //   field: 'question_optionTwo',
-        //   minWidth: 200,
-        //   editComponent: props => (
-        //     <TextField
-        //       style={{ minWidth: '200px' }}
-        //       value={props.value}
-        //       defaultValue=""
-        //       fullWidth={true}
-        //       multiline={true}
-        //       onChange={e => props.onChange(e.target.value)}
-        //     />
-        //   ),
-        //   render: data => {
-        //     return (
-        //       <pre
-        //         style={{
-        //           fontSize: '20px',
-        //           wordBreak: 'break-word',
-        //           overflowWrap: 'break-word',
-        //           whiteSpace: 'pre-wrap',
-        //           textAlign: 'center',
-        //           width: '200px',
-        //           fontFamily: 'BNazanin',
-        //           fontSize: 16,
-        //         }}
-        //       >
-        //         {data.question_optionTwo}
-        //       </pre>
-        //     );
-        //   },
-        // },
-        // {
-        //   title: 'گزینه 3',
-        //   textAlign: 'center',
-        //   field: 'question_optionThree',
-        //   minWidth: 200,
-        //   editComponent: props => (
-        //     <TextField
-        //       style={{ minWidth: '200px' }}
-        //       value={props.value}
-        //       fullWidth={true}
-        //       multiline={true}
-        //       defaultValue=""
-        //       onChange={e => props.onChange(e.target.value)}
-        //     />
-        //   ),
-        //   render: data => {
-        //     // fontFamily: 'BNazanin',
-        //     // return moment(data.group_start_time).format('HH:mm:00');
-        //     return (
-        //       <pre
-        //         style={{
-        //           fontSize: '20px',
-        //           wordBreak: 'break-word',
-        //           overflowWrap: 'break-word',
-        //           whiteSpace: 'pre-wrap',
-        //           textAlign: 'center',
-        //           width: '200px',
-        //           fontFamily: 'BNazanin',
-        //           fontSize: 16,
-        //         }}
-        //       >
-        //         {data.question_optionThree}
-        //       </pre>
-        //     );
-        //   },
-        // },
-        // {
-        //   title: 'گزینه 4',
-        //   textAlign: 'center',
-        //   field: 'question_optionFour',
-        //   minWidth: 200,
-        //   editComponent: props => (
-        //     <TextField
-        //       style={{ minWidth: '200px' }}
-        //       value={props.value}
-        //       fullWidth={true}
-        //       multiline={true}
-        //       defaultValue=""
-        //       onChange={e => props.onChange(e.target.value)}
-        //     />
-        //   ),
-        //   render: data => {
-        //     // return moment(data.group_start_time).format('HH:mm:00');
-        //     return (
-        //       <pre
-        //         style={{
-        //           fontSize: '20px',
-        //           wordBreak: 'break-word',
-        //           overflowWrap: 'break-word',
-        //           whiteSpace: 'pre-wrap',
-        //           textAlign: 'center',
-        //           width: '200px',
-        //           fontFamily: 'BNazanin',
-        //           fontSize: 16,
-        //         }}
-        //       >
-        //         {data.question_optionFour}
-        //       </pre>
-        //     );
-        //   },
-        // },
-        // {
-        //   title: 'گزینه صحیح',
-        //   textAlign: 'center',
-        //   field: 'question_correctOption',
-        //   lookup: {
-        //     1: '1',
-        //     2: '2',
-        //     3: '3',
-        //     4: '4',
-        //   },
-        //   minWidth: 150,
-        // //   validate: rowData =>
-        // //     rowData.question_correctOption === '' ? 'Name cannot be empty' : '',
-        //   render: data => {
-        //     return (
-        //       <p
-        //         style={{
-        //           fontFamily: 'BNazanin',
-        //           fontSize: 16,
-        //           textAlign: 'center',
-        //           width: '50px',
-        //         }}
-        //       >
-        //         {data.question_correctOption}
-        //       </p>
-        //     );
-        //   },
-        //   // <input type="file" onChange={e => uploadFile(e)} />
-        // },
         {
           title: 'زمان تقریبی',
           textAlign: 'center',
@@ -611,8 +445,9 @@ const Comparative = ({setToggle , ...props}) => {
         //     rowData.question_score !== '' ? 'Name cannot be empty' : '',
           editComponent: props => (
             <ComparativeModal 
-            compItems={compItems}
-            setCompItems={setCompItems}
+            // compItems={compItems}
+            // setCompItems={setCompItems}
+            handleSetCompItems={handleSetCompItems}
             existCompItems={props.rowData.question_compItems}
              />
             
@@ -790,7 +625,7 @@ const Comparative = ({setToggle , ...props}) => {
                           question_optionFour: convertText(newData.question_optionFour),
                           question_link: file.name,
                           exam_link: "", 
-                          question_type: "2",
+                          question_type: props.typeQuestion,
                           question_seqItems: [],
                           question_vancyItems: "", 
                           question_compItems: compItems,
@@ -848,7 +683,7 @@ const Comparative = ({setToggle , ...props}) => {
                           question_optionFour: convertText(newData.question_optionFour),
                           question_link: "",
                           exam_link: file.name, 
-                          question_type: "2",
+                          question_type: props.typeQuestion,
                           question_seqItems: [],
                           question_vancyItems: "", 
                           question_compItems: compItems,
@@ -889,7 +724,7 @@ const Comparative = ({setToggle , ...props}) => {
                       question_optionFour: convertText(newData.question_optionFour),
                       question_link: "",
                       exam_link: "", 
-                      question_type: "2",
+                      question_type: props.typeQuestion,
                       question_seqItems: [],
                       question_vancyItems: "", 
                       question_compItems: compItems,

@@ -124,7 +124,7 @@ const Questions = ({toggle ,selectedCourseName , questions}) =>{
     id: "607fd8fb3fb30a08d7ce1e53" },
     notifyOnNetworkStatusChange: true
   });
-  const [typeQuestion,setTypeQuestion] =useState('');
+  // const [typeQuestion,setTypeQuestion] =useState('');
 
   const MergeQuestions = (examP) => {
     console.log('examP', examP );
@@ -143,7 +143,11 @@ const Questions = ({toggle ,selectedCourseName , questions}) =>{
     }
     console.log('mergeQ',mergeQ);
     return mergeQ;
-}
+  }
+
+  // useEffect(()=>{
+  //   console.log('typeQuestion',typeQuestion)
+  // },[typeQuestion])
 
   useEffect(() => {
     if (data) {
@@ -500,7 +504,7 @@ const Questions = ({toggle ,selectedCourseName , questions}) =>{
       'question_optionFour':'',
       'question_SeqItems':[],
       'question_vancyItems':'',
-      'question_type':'',
+      'question_type':'-1',
       'qpId' : id,
       //////////////////////////////////////////
   });
@@ -570,7 +574,7 @@ const Questions = ({toggle ,selectedCourseName , questions}) =>{
         (rowData)=>({
           disabled:toggle,
           // disabled:rowData.question_type == '1' ? false :true,
-          icon: () => rowData && rowData.questionChild && rowData.questionChild.length > 0 && rowData.questionChild[0].question_type != '1' ? (<QuestionImageIconContainer><QuestionImageIcon src={descriptiveIcon}/>
+          icon: () => (rowData && rowData.questionChild && rowData.questionChild.length > 0 && rowData.questionChild[0].question_type != '1') || rowData && rowData.questionChild.length === 0  ? (<QuestionImageIconContainer><QuestionImageIcon src={descriptiveIcon}/>
           {/* <QuestionImageIconText>تشریحی</QuestionImageIconText> */}
           </QuestionImageIconContainer>) : (<QuestionImageIconContainer><QuestionImageIcon src={descriptiveIcon2}/>
             {/* <QuestionImageIconTextV>تشریحی</QuestionImageIconTextV> */}
@@ -592,9 +596,9 @@ const Questions = ({toggle ,selectedCourseName , questions}) =>{
               >
                 {/* {rowData.question} */}
                 {(() => {
-                    setTypeQuestion(1);
-                    console.log('rowData',rowData);
-                    console.log('rowData && rowData.questionChild.lenght',rowData && rowData.questionChild);
+                    // setTypeQuestion(1);
+                    // console.log('rowData',rowData);
+                    // console.log('rowData && rowData.questionChild.lenght',rowData && rowData.questionChild);
                     // return <DescriptiveQuestion selectedCourseName={selectedCourseName} handleFetchData={handleFetchData} 
                     // rowData={rowData && rowData.questionChild.length > 0   ? createArray(rowData.questionChild[0]) : 
                     //   createArray(rowData.questionChild)
@@ -608,7 +612,7 @@ const Questions = ({toggle ,selectedCourseName , questions}) =>{
                     // MyCreateArray
                     // rowData={rowData.questionChild[0]} 
                     // && rowData.questionChild.lenght > 0 
-                    typeQuestion={typeQuestion} />
+                    typeQuestion={"1"} />
                     // setSelectedRow(rowData.tableData.id);
                     // return <DescriptiveQuestion selectedCourseName={selectedCourseName} handleFetchData={handleFetchData} rowData={createArray(rowData)} typeQuestion={typeQuestion} />
                 })()}
@@ -621,7 +625,7 @@ const Questions = ({toggle ,selectedCourseName , questions}) =>{
           // disabled:rowData.question_type == '2' ? false :true,
           // disabled: typeQuestion == 2 ? false : toggle,
           // icon: () => (<QuestionImageIconContainer src={multiChoice}/>),
-          icon: () =>rowData && rowData.questionChild && rowData.questionChild.length > 0 && rowData.questionChild[0].question_type != '3' ? (<QuestionImageIconContainer><QuestionImageIcon src={multiChoice}/>
+          icon: () => (rowData && rowData.questionChild && rowData.questionChild.length > 0 && rowData.questionChild[0].question_type != '2') || rowData && rowData.questionChild.length === 0  ? (<QuestionImageIconContainer><QuestionImageIcon src={multiChoice}/>
           {/* <QuestionImageIconText>چهار گزینه ای</QuestionImageIconText> */}
           </QuestionImageIconContainer>) 
           :
@@ -644,7 +648,7 @@ const Questions = ({toggle ,selectedCourseName , questions}) =>{
                 }}
               >
                 {(() => {
-                  setTypeQuestion(2);
+                  // setTypeQuestion(2);
                   // setSelectedRow(rowData.tableData.id);
                     return <MultipleChoice selectedCourseName={selectedCourseName} handleFetchData={handleFetchData}
                     // rowData={rowData && rowData.questionChild.length > 0   ? createArray(rowData.questionChild[0]) : createArray(rowData)}
@@ -653,7 +657,7 @@ const Questions = ({toggle ,selectedCourseName , questions}) =>{
                       MyCreateArray(rowData.id)
                     // [{}]
                   }
-                     typeQuestion={typeQuestion}/>
+                     typeQuestion={"2"}/>
                 })()}
 
               </div>
@@ -665,7 +669,7 @@ const Questions = ({toggle ,selectedCourseName , questions}) =>{
           // disabled:rowData.question_type == '3' ? false :true,
           // disabled: typeQuestion == 3 ? false : toggle,
           // icon: () => (<QuestionImageIconContainer src={trueFalse}/>),
-          icon: () => rowData && rowData.questionChild && rowData.questionChild.length > 0 && rowData.questionChild[0].question_type != '4' ? (<QuestionImageIconContainer><QuestionImageIcon src={trueFalse}/>
+          icon: () => (rowData && rowData.questionChild && rowData.questionChild.length > 0 && rowData.questionChild[0].question_type != '3') || rowData && rowData.questionChild.length === 0  ? (<QuestionImageIconContainer><QuestionImageIcon src={trueFalse}/>
           {/* <QuestionImageIconText>دو گزینه ای</QuestionImageIconText> */}
           </QuestionImageIconContainer>)
           :
@@ -690,7 +694,7 @@ const Questions = ({toggle ,selectedCourseName , questions}) =>{
                 {/* {rowData.question} {rowData.axamQuestions_id} */}
                 
                 {(() => {
-                  setTypeQuestion(3);
+                  // setTypeQuestion(3);
                   // setSelectedRow(rowData.tableData.id);
                     return <TrueAndFalse selectedCourseName={selectedCourseName} handleFetchData={handleFetchData} 
                     // rowData={rowData && rowData.questionChild.length > 0   ? createArray(rowData.questionChild[0]) : createArray(rowData)}
@@ -699,7 +703,7 @@ const Questions = ({toggle ,selectedCourseName , questions}) =>{
                       MyCreateArray(rowData.id)
                     // [{}]
                   }
-                     typeQuestion={typeQuestion}/>
+                     typeQuestion={"3"}/>
                 })()}
               </div>
             )
@@ -710,7 +714,7 @@ const Questions = ({toggle ,selectedCourseName , questions}) =>{
           // disabled:rowData.question_type == '4' ? false :true,
           // disabled: typeQuestion == 4 ? false : toggle,
           // icon: () => (<QuestionImageIconContainer src={ellipsis}/>),
-          icon: () => rowData && rowData.questionChild && rowData.questionChild.length > 0 && rowData.questionChild[0].question_type != '6' ? (<QuestionImageIconContainer><QuestionImageIcon src={ellipsis}/>
+          icon: () => (rowData && rowData.questionChild && rowData.questionChild.length > 0 && rowData.questionChild[0].question_type != '4') || rowData && rowData.questionChild.length === 0 ? (<QuestionImageIconContainer><QuestionImageIcon src={ellipsis}/>
           {/* <QuestionImageIconText>جای خالی</QuestionImageIconText> */}
           </QuestionImageIconContainer>) :
           (<QuestionImageIconContainer><QuestionImageIcon src={ellipsis2}/>
@@ -724,25 +728,17 @@ const Questions = ({toggle ,selectedCourseName , questions}) =>{
             return (
               <div
                 style={{
-                  // fontSize: 100,
                   textAlign: 'center',
-                  // color: 'white',
-                  // backgroundColor: '#FDD835',
                 }}
               >
-                {/* {rowData.question} {rowData.axamQuestions_id} */}
-                
                 {(() => {
-                  setTypeQuestion(4);
-                  // setSelectedRow(rowData.tableData.id);
                     return <Vacancy selectedCourseName={selectedCourseName} handleFetchData={handleFetchData} 
                     // rowData={rowData && rowData.questionChild.length > 0   ? createArray(rowData.questionChild[0]) : createArray(rowData)}
                     // rowData={createArray(rowData)}
                     rowData={rowData && rowData.questionChild && rowData.questionChild.length > 0   ? createArray(rowData.questionChild[0]) : 
                       MyCreateArray(rowData.id)
-                    // [{}]
                   }
-                     typeQuestion={typeQuestion}/>
+                     typeQuestion={"4"}/>
                 })()}
               </div>
             )
@@ -753,7 +749,7 @@ const Questions = ({toggle ,selectedCourseName , questions}) =>{
           // disabled:rowData.question_type == '5' ? false :true,
           // disabled: typeQuestion == 5 ? false : toggle,
           // icon: () => (<QuestionImageIconContainer src={compareIcon}/>),
-          icon: () => rowData && rowData.questionChild && rowData.questionChild.length > 0 && rowData.questionChild[0].question_type != '2' ? (<QuestionImageIconContainer><QuestionImageIcon src={compareIcon}/>
+          icon: () => (rowData && rowData.questionChild && rowData.questionChild.length > 0 && rowData.questionChild[0].question_type != '5') || rowData && rowData.questionChild.length === 0  ? (<QuestionImageIconContainer><QuestionImageIcon src={compareIcon}/>
           {/* <QuestionImageIconText>تطبیقی</QuestionImageIconText> */}
           </QuestionImageIconContainer>)
           :
@@ -778,7 +774,7 @@ const Questions = ({toggle ,selectedCourseName , questions}) =>{
                 {/* {rowData.question} {rowData.axamQuestions_id} */}
                 
                 {(() => {
-                  setTypeQuestion(5);
+                  // setTypeQuestion(5);
                   // setSelectedRow(rowData.tableData.id);
                     return <Comparative selectedCourseName={selectedCourseName} handleFetchData={handleFetchData} 
                     // rowData={createArray(rowData)}
@@ -787,7 +783,7 @@ const Questions = ({toggle ,selectedCourseName , questions}) =>{
                       MyCreateArray(rowData.id)
                     // [{}]
                   } 
-                    typeQuestion={typeQuestion}/>
+                    typeQuestion={"5"}/>
                 })()}
               </div>
             )
@@ -798,7 +794,7 @@ const Questions = ({toggle ,selectedCourseName , questions}) =>{
           disabled:toggle,
           // disabled: typeQuestion == 6 ? false : toggle,
           // icon: () => (<QuestionImageIcon src={SequentialIcon}/>),
-          icon: () => rowData && rowData.questionChild && rowData.questionChild.length > 0 && rowData.questionChild[0].question_type != '5' ? (<QuestionImageIconContainer><QuestionImageIcon src={SequentialIcon}/>
+          icon: () => (rowData && rowData.questionChild && rowData.questionChild.length > 0 && rowData.questionChild[0].question_type != '6') || rowData && rowData.questionChild.length === 0  ? (<QuestionImageIconContainer><QuestionImageIcon src={SequentialIcon}/>
           {/* <QuestionImageIconText>ترتیبی</QuestionImageIconText> */}
           </QuestionImageIconContainer>)
           :
@@ -823,7 +819,7 @@ const Questions = ({toggle ,selectedCourseName , questions}) =>{
                 {/* {rowData.question} {rowData.axamQuestions_id} */}
                 
                 {(() => {
-                  setTypeQuestion(6);
+                  // setTypeQuestion(6);
                   // setSelectedRow(rowData.tableData.id);
                     return <Sequential selectedCourseName={selectedCourseName} handleFetchData={handleFetchData} 
                     // rowData={rowData.questionChild[0] ? createArray(rowData.questionChild[0]) : ''}
@@ -833,7 +829,7 @@ const Questions = ({toggle ,selectedCourseName , questions}) =>{
                       MyCreateArray(rowData.id)
                     // [{}]
                   }
-                     typeQuestion={typeQuestion}/>
+                     typeQuestion={"6"}/>
                 })()}
               </div>
             )

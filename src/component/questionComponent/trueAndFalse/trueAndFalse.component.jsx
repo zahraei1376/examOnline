@@ -400,8 +400,6 @@ const TrueAndFalse = ({setToggle ,toggle, ...props}) => {
           lookup: {
             1: '1',
             2: '2',
-            3: '3',
-            4: '4',
           },
           minWidth: 150,
         //   validate: rowData =>
@@ -1075,7 +1073,7 @@ const TrueAndFalse = ({setToggle ,toggle, ...props}) => {
                               question_optionFour: convertText(newData.question_optionFour),
                               question_link: file.name,
                               exam_link: "", 
-                              question_type: "4",
+                              question_type: props.typeQuestion,
                               question_seqItems: [],
                               question_vancyItems: "", 
                               question_compItems: []
@@ -1133,7 +1131,7 @@ const TrueAndFalse = ({setToggle ,toggle, ...props}) => {
                               question_optionFour: convertText(newData.question_optionFour),
                               question_link: "",
                               exam_link: file.name, 
-                              question_type: "4",
+                              question_type: props.typeQuestion,
                               question_seqItems: [],
                               question_vancyItems: "", 
                               question_compItems: []
@@ -1174,7 +1172,7 @@ const TrueAndFalse = ({setToggle ,toggle, ...props}) => {
                           question_optionFour: convertText(newData.question_optionFour),
                           question_link: "",
                           exam_link: "", 
-                          question_type: "4",
+                          question_type: props.typeQuestion,
                           question_seqItems: [],
                           question_vancyItems: "", 
                           question_compItems: []
