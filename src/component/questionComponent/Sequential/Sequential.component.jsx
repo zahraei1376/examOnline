@@ -23,60 +23,15 @@ import MySnackbar from '../../../messageBox/messageBox.component';
 /////////////////////////query
 import { useQuery ,gql } from 'apollo-boost';
 import { useMutation} from 'react-apollo';
-import {SET_QUESTION_CHILD} from '../../../graphql/resolver';
+import {SET_QUESTION_CHILD ,DELETE_QUESTIONCHILD} from '../../../graphql/resolver';
 /////////////////////////query
-
 const graphql_server_uri ='/qraphql';
-
-// const SET_QUESTION_CHILD = gql`
-//   mutation addQuestionChild(
-//       $userName: String!,
-//       $password: String!,
-//       $qpId: String!,
-//       $question: String!,
-//       $question_score: String!,
-//       $question_explain: String!,
-//       $question_timeToSolveProblem: String!,
-//       $question_correctOption: String!,
-//       $question_optionOne: String!,
-//       $question_optionTwo: String!,
-//       $question_optionThree: String!,
-//       $question_optionFour: String!,
-//       $question_link: String!,
-//       $exam_link: String!,
-//       $question_type: String!,
-//       $question_seqItems: [String]!,
-//       $question_vancyItems: String!,
-//       $question_compItems: [String]!,
-//       ){
-//       addQuestionChild(
-//         userName: $userName,
-//         password: $password,
-//         qpId: $qpId,
-//         question: $question,
-//         question_score: $question_score,
-//         question_explain: $question_explain,
-//         question_timeToSolveProblem: $question_timeToSolveProblem,
-//         question_correctOption: $question_correctOption,
-//         question_optionOne: $question_optionOne,
-//         question_optionTwo: $question_optionTwo,
-//         question_optionThree: $question_optionThree,
-//         question_optionFour: $question_optionFour,
-//         question_link: $question_link,
-//         exam_link: $exam_link,
-//         question_type: $question_type,
-//         question_seqItems: $question_seqItems,
-//         question_vancyItems: $question_vancyItems,
-//         question_compItems: $question_compItems,
-//       ){
-//         id
-//       }
-//   }
-// `;
 
 const Sequential = ({setToggle , ...props}) => {
     const [innerData, setInnerData] = useState([]);
     const [setQuestionChild ,{ QuestionChildData }] = useMutation(SET_QUESTION_CHILD);
+    const [deleteQuestionChild ,{ DQuestionChildData }] = useMutation(DELETE_QUESTIONCHILD);
+    const [seqItems,setSeqItems] = useState([]);
     const [showMessage,setShowMessage] = useState(false);
     const [message,setMessage] =useState('');
     const [status,setStatus] =useState(0);
@@ -215,15 +170,12 @@ const Sequential = ({setToggle , ...props}) => {
         // }
     };
     ////////////////////////////////////
+    const handleSetSeqItems =(sq) =>{
+      setSeqItems(sq);
+    }
 
     //////////////////////////////////////////
     const [innerColumns, setInnerColumns] = useState([
-        // {title:'ردیف',field:'questionID' , editable: 'never'},
-        // {
-        //   title: 'ردیف', field: 'questionID', textAlign: 'center',
-        //   //  render : rowData => rowData && (rowData.tableData.id),
-        //   editable: 'never'
-        // },
         {
           title: 'سوال',
           field: 'question',
@@ -290,174 +242,6 @@ const Sequential = ({setToggle , ...props}) => {
             </label>
           ),
         },
-        // {
-        //   title: 'گزینه 1',
-        //   textAlign: 'center',
-        //   field: 'question_optionOne',
-        //   minWidth: 200,
-        //   editComponent: props => (
-        //     <TextField
-        //       style={{ minWidth: '200px' }}
-        //       value={props.value}
-        //       fullWidth={true}
-        //       multiline={true}
-        //       defaultValue=""
-        //       onChange={e => props.onChange(e.target.value)}
-        //     />
-        //   ),
-        //   render: data => {
-        //     return (
-        //       <pre
-        //         style={{
-        //           fontSize: '20px',
-        //           wordBreak: 'break-word',
-        //           overflowWrap: 'break-word',
-        //           whiteSpace: 'pre-wrap',
-        //           textAlign: 'center',
-        //           width: '200px',
-        //           fontFamily: 'BNazanin',
-        //           fontSize: 16,
-        //         }}
-        //       >
-        //         {data.question_optionOne}
-        //       </pre>
-        //     );
-        //   },
-        // },
-        // {
-        //   title: 'گزینه 2',
-        //   textAlign: 'center',
-        //   field: 'question_optionTwo',
-        //   minWidth: 200,
-        //   editComponent: props => (
-        //     <TextField
-        //       style={{ minWidth: '200px' }}
-        //       value={props.value}
-        //       defaultValue=""
-        //       fullWidth={true}
-        //       multiline={true}
-        //       onChange={e => props.onChange(e.target.value)}
-        //     />
-        //   ),
-        //   render: data => {
-        //     return (
-        //       <pre
-        //         style={{
-        //           fontSize: '20px',
-        //           wordBreak: 'break-word',
-        //           overflowWrap: 'break-word',
-        //           whiteSpace: 'pre-wrap',
-        //           textAlign: 'center',
-        //           width: '200px',
-        //           fontFamily: 'BNazanin',
-        //           fontSize: 16,
-        //         }}
-        //       >
-        //         {data.question_optionTwo}
-        //       </pre>
-        //     );
-        //   },
-        // },
-        // {
-        //   title: 'گزینه 3',
-        //   textAlign: 'center',
-        //   field: 'question_optionThree',
-        //   minWidth: 200,
-        //   editComponent: props => (
-        //     <TextField
-        //       style={{ minWidth: '200px' }}
-        //       value={props.value}
-        //       fullWidth={true}
-        //       multiline={true}
-        //       defaultValue=""
-        //       onChange={e => props.onChange(e.target.value)}
-        //     />
-        //   ),
-        //   render: data => {
-        //     // fontFamily: 'BNazanin',
-        //     // return moment(data.group_start_time).format('HH:mm:00');
-        //     return (
-        //       <pre
-        //         style={{
-        //           fontSize: '20px',
-        //           wordBreak: 'break-word',
-        //           overflowWrap: 'break-word',
-        //           whiteSpace: 'pre-wrap',
-        //           textAlign: 'center',
-        //           width: '200px',
-        //           fontFamily: 'BNazanin',
-        //           fontSize: 16,
-        //         }}
-        //       >
-        //         {data.question_optionThree}
-        //       </pre>
-        //     );
-        //   },
-        // },
-        // {
-        //   title: 'گزینه 4',
-        //   textAlign: 'center',
-        //   field: 'question_optionFour',
-        //   minWidth: 200,
-        //   editComponent: props => (
-        //     <TextField
-        //       style={{ minWidth: '200px' }}
-        //       value={props.value}
-        //       fullWidth={true}
-        //       multiline={true}
-        //       defaultValue=""
-        //       onChange={e => props.onChange(e.target.value)}
-        //     />
-        //   ),
-        //   render: data => {
-        //     // return moment(data.group_start_time).format('HH:mm:00');
-        //     return (
-        //       <pre
-        //         style={{
-        //           fontSize: '20px',
-        //           wordBreak: 'break-word',
-        //           overflowWrap: 'break-word',
-        //           whiteSpace: 'pre-wrap',
-        //           textAlign: 'center',
-        //           width: '200px',
-        //           fontFamily: 'BNazanin',
-        //           fontSize: 16,
-        //         }}
-        //       >
-        //         {data.question_optionFour}
-        //       </pre>
-        //     );
-        //   },
-        // },
-        // {
-        //   title: 'گزینه صحیح',
-        //   textAlign: 'center',
-        //   field: 'question_correctOption',
-        //   lookup: {
-        //     1: '1',
-        //     2: '2',
-        //     3: '3',
-        //     4: '4',
-        //   },
-        //   minWidth: 150,
-        // //   validate: rowData =>
-        // //     rowData.question_correctOption === '' ? 'Name cannot be empty' : '',
-        //   render: data => {
-        //     return (
-        //       <p
-        //         style={{
-        //           fontFamily: 'BNazanin',
-        //           fontSize: 16,
-        //           textAlign: 'center',
-        //           width: '50px',
-        //         }}
-        //       >
-        //         {data.question_correctOption}
-        //       </p>
-        //     );
-        //   },
-        //   // <input type="file" onChange={e => uploadFile(e)} />
-        // },
         {
           title: 'زمان تقریبی',
           textAlign: 'center',
@@ -586,7 +370,12 @@ const Sequential = ({setToggle , ...props}) => {
         //   validate: rowData =>
         //     rowData.question_score !== '' ? 'Name cannot be empty' : '',
           editComponent: props => (
-            <SequentialModal seqItems={props.rowData.question_SeqItems} />
+            <SequentialModal 
+              // seqItems={seqItems}
+              // setSeqItems={setSeqItems}
+              handleSetSeqItems={handleSetSeqItems}
+              existSeqItems={props.rowData.question_SeqItems}
+            />
           ),
           render: data => {
             // return moment(data.group_start_time).format('HH:mm:00');
@@ -698,85 +487,48 @@ const Sequential = ({setToggle , ...props}) => {
             }
             
           }}
-        actions={[
-          {
-            icon: 'delete',
-            tooltip: 'حذف',
-            // onClick: (event, rowData) => {
-              onClick: (event, rowData) => {
-              // Do save operation
-                const dataDelete = [...innerData];
-                const index = rowData.tableData.id;
-                dataDelete.splice(index, 1);
-                ////////////////////////////////////
-              // fetch(graphql_server_uri, {
-              //   method: 'POST',
-              //   headers: { 'Content-Type': 'application/json' },
-              //   body: JSON.stringify({
-              //     query: `
-              //       mutation{
-              //           deleteQuestion(
-              //               axamQuestion_input: {
-              //                   questionID: "${'1'}"
-              //                   axamQuestions_id: "${'1'}"
-              //                   question: "${convertText(rowData.question)}"
-              //                   question_link: "${rowData.question_link ? rowData.question_link : ''}"
-              //                   question_optionOne: "${convertText(rowData.question_optionOne)}"
-              //                   question_optionTwo:"${convertText(rowData.question_optionTwo)}"
-              //                   question_optionThree: "${convertText(rowData.question_optionThree)}"
-              //                   question_optionFour: "${convertText(rowData.question_optionFour)}"
-              //                   question_correctOption: "${rowData.question_correctOption}"
-              //                   question_timeToSolveProblem: "${convertText(rowData.question_timeToSolveProblem)}"
-              //                   question_score: "${rowData.question_score ? rowData.question_score : ''}"
-              //                   question_explane: "${convertText(rowData.question_explane)}"
-              //                   exam_link: "${rowData.exam_link ? rowData.exam_link : ''}"
-              //             },
-              //         ){
-              //           axamQuestions_id
-              //         }
-              //       }                      
-              //     `,
-              //   }),
-              // })
-              //   .then(res => res.json())
-              //   .then(res => {
-              //     // setSumScore(prevState => (prevState - parseFloat(oldScore)));
-              //     if (
-              //       res.data &&
-              //       res.data.deleteQuestion &&
-              //       res.data.deleteQuestion.axamQuestions_id
-              //     ) {
-              //       /////
-              //       alert('اطلاعاتی به درستی حذف نشد');
-              //       // setStatus(1);
-              //       // setShowPopup(true);
-              //     } else {
-              //       // setQuestionId(data.length)
-              //       // setMessage('اطلاعاتی به درستی حذف شد');
-              //       // setStatus(0);
-              //       // setShowPopup(true);
-              //       // refteshData();
-              //       //   return res.data;
-              //     }
-              //     // return res.data;
-              //   });
-                //////////////////////////////////////////
-                setToggle(false);
-                setInnerData([...dataDelete]);
-            }
-          },
-          // {
-          //   icon: 'edit',
-          //   tooltip: 'ویرایش',
-          //   onClick: (event, rowData) => {
-          //     // Do save operation
-          //       const dataDelete = [...innerData];
-          //       const index = rowData.tableData.id;
-          //       dataDelete.splice(index, 1);
-          //       setInnerData([...dataDelete]);
-          //   }
-          // }
-        ]}
+          actions={[
+            {
+              icon: 'delete',
+              tooltip: 'حذف',
+              // onClick: (event, rowData) => {
+                onClick: async(event, rowData) => {
+                // Do save operation
+                if(props.rowData && props.rowData.length > 0 && props.rowData[0].id){
+                  const dataDelete = [...innerData];
+                  const index = rowData.tableData.id;
+                  console.log('id', props.rowData[0].id);
+                  await deleteQuestionChild({ variables: { 
+                    userName: "211",
+                    password: "211",
+                    id: props.rowData[0].id
+                    } 
+                  }).then(res=>{
+                    if(res.data && res.data.deleteQuestionChild){
+                      props.handleFetchData();
+                      // console.log('data',data);
+                      // setMessage('امتحان ثبت شد');
+                      // setStatus('1');
+                      // setShowMessage(!showMessage);
+                    }else{
+                      props.handleFetchData();
+                      // console.log('data',data);
+                      // setStatus('0')
+                      // setMessage('امتحان ثبت نشد')
+                      // setShowMessage(!showMessage);
+                    }
+                  })
+                  dataDelete.splice(index, 1);
+                  setInnerData([...dataDelete]);
+                }else{
+                  setStatus('0')
+                  setMessage('اطلاعاتی برای حذف وجود ندارد!!!')
+                  setShowMessage(!showMessage);
+                }
+                 
+              }
+            },
+          ]}
         editable={{
 
           //////////////////////////////////////////
@@ -789,165 +541,173 @@ const Sequential = ({setToggle , ...props}) => {
 
           onRowUpdate: (newData, oldData) =>
             new Promise((resolve, reject) => {
-              setTimeout(() => {
-                const dataUpdate = [...innerData];
-                const index = oldData.tableData.id;
-                /////////////myCode
-                if (
-                  selectedFile &&
-                  ((textImage == true && questionImage == true) ||
-                    (questionImage == true && textImage == false))
-                ) {
-                  //////////////////////
-                  var file = new File(
-                    [selectedFile],
-                    uuidv4() + `.${format}`,
-                    {
-                      type: mimeTypeFile,
-                    },
-                  );
-                //////////////////////////////////////////
-                  handleSendToserver();
-                  async function handleSendToserver() {
-                    var responseCode = await UploadfileToserver(file, format);
-                    if (file.name && responseCode) {
-                      setQuestionChild({ variables: { 
-                        userName: "211", 
-                        password: "211", 
-                        qpId: "607d2f582cf63c244015d278",
-                        question: "", 
-                        question_score: newData.question_score ? newData.question_score : '', 
-                        question_explain: convertText(newData.question_explane),
-                        question_timeToSolveProblem: convertText(newData.question_timeToSolveProblem), 
-                        question_correctOption: "", 
-                        question_optionOne: "",
-                        question_optionTwo: "",
-                        question_optionThree: "",
-                        question_optionFour: "",
-                        question_link: file.name,
-                        exam_link: "", 
-                        question_type: "5",
-                        question_seqItems: [],
-                        question_vancyItems: "", 
-                        question_compItems: []
-                        } 
-                      }).then(res=>{
-                        if(res.data && res.data.addQuestionChild){
-                          setQuestionImage(false);
-                          setMessage('ثبت شد');
-                          setStatus('1');
-                          setShowMessage(!showMessage);
-                        }else{
-                          setStatus('0')
-                          setMessage('ثبت نشد')
-                          setShowMessage(!showMessage);
-                        }
-                      })
-                    } else {
-                      // alert('اطلاعاتی به درستی ثبت نشد');
-                      setStatus('0')
-                      setMessage('اطلاعاتی به درستی ثبت نشد')
-                      setShowMessage(!showMessage);
+              if(props.rowData && props.rowData.length > 0 && props.rowData[0].qpId ){
+                setTimeout(() => {
+                  // const dataUpdate = [...innerData];
+                  // const index = oldData.tableData.id;
+                  /////////////myCode
+                  if (
+                    selectedFile &&
+                    ((textImage == true && questionImage == true) ||
+                      (questionImage == true && textImage == false))
+                  ) {
+                    //////////////////////
+                    var file = new File(
+                      [selectedFile],
+                      uuidv4() + `.${format}`,
+                      {
+                        type: mimeTypeFile,
+                      },
+                    );
+                  //////////////////////////////////////////
+                    handleSendToserver();
+                    async function handleSendToserver() {
+                      var responseCode = await UploadfileToserver(file, format);
+                      if (file.name && responseCode) {
+                        setQuestionChild({ variables: { 
+                          userName: "211", 
+                          password: "211", 
+                          qpId: props.rowData[0].qpId,
+                          question: "", 
+                          question_score: newData.question_score ? newData.question_score : '', 
+                          question_explain: convertText(newData.question_explane),
+                          question_timeToSolveProblem: convertText(newData.question_timeToSolveProblem), 
+                          question_correctOption: "", 
+                          question_optionOne: "",
+                          question_optionTwo: "",
+                          question_optionThree: "",
+                          question_optionFour: "",
+                          question_link: file.name,
+                          exam_link: "", 
+                          question_type: props.typeQuestion,
+                          question_seqItems: seqItems,
+                          question_vancyItems: "", 
+                          question_compItems: []
+                          } 
+                        }).then(res=>{
+                          if(res.data && res.data.addQuestionChild){
+                            setQuestionImage(false);
+                            setMessage('ثبت شد');
+                            setStatus('1');
+                            setShowMessage(!showMessage);
+                          }else{
+                            setStatus('0')
+                            setMessage('ثبت نشد')
+                            setShowMessage(!showMessage);
+                          }
+                        })
+                      } else {
+                        // alert('اطلاعاتی به درستی ثبت نشد');
+                        setStatus('0')
+                        setMessage('اطلاعاتی به درستی ثبت نشد')
+                        setShowMessage(!showMessage);
+                      }
                     }
+                  } else if (
+                    selectedFile &&
+                    questionImage == false &&
+                    textImage == true
+                  ) {
+                    //////////////////////
+                    var file = new File(
+                      [selectedFile],
+                      uuidv4() + `.${format}`,
+                      {
+                        type: mimeTypeFile,
+                      },
+                    );
+  
+                    //////////////////////
+                    handleSendToserver();
+                    async function handleSendToserver() {
+                      var responseCode = await UploadfileToserver(file, format);
+                      if (file.name && responseCode) {
+                        setQuestionChild({ variables: { 
+                          userName: "211", 
+                          password: "211", 
+                          qpId: props.rowData[0].qpId,
+                          question: convertText(newData.question), 
+                          question_score: newData.question_score ? newData.question_score : '', 
+                          question_explain: convertText(newData.question_explane),
+                          question_timeToSolveProblem: convertText(newData.question_timeToSolveProblem), 
+                          question_correctOption: "", 
+                          question_optionOne: "",
+                          question_optionTwo: "",
+                          question_optionThree: "",
+                          question_optionFour: "",
+                          question_link: "",
+                          exam_link: file.name, 
+                          question_type: props.typeQuestion,
+                          question_seqItems: seqItems,
+                          question_vancyItems: "", 
+                          question_compItems: []
+                          } 
+                        }).then(res=>{
+                          if(res.data && res.data.addQuestionChild){
+                            setTextImage(false);
+                            setQuestionImage(false);
+                            setMessage('ثبت شد');
+                            setStatus('1');
+                            setShowMessage(!showMessage);
+                          }else{
+                            setStatus('0')
+                            setMessage('ثبت نشد')
+                            setShowMessage(!showMessage);
+                          }
+                        })
+                      } else {
+                        // alert('اطلاعاتی به درستی ثبت نشد');
+                        setStatus('0')
+                        setMessage('اطلاعاتی به درستی ثبت نشد')
+                        setShowMessage(!showMessage);
+                      }
+                    }
+                  } else {
+                    setQuestionChild({ variables: { 
+                      userName: "211", 
+                      password: "211", 
+                      qpId: props.rowData[0].qpId,
+                      question: convertText(newData.question), 
+                      question_score: newData.question_score ? newData.question_score : '', 
+                      question_explain: convertText(newData.question_explane),
+                      question_timeToSolveProblem: convertText(newData.question_timeToSolveProblem), 
+                      question_correctOption: "", 
+                      question_optionOne: "",
+                      question_optionTwo: "",
+                      question_optionThree: "",
+                      question_optionFour: "",
+                      question_link: "",
+                      exam_link: "", 
+                      question_type: props.typeQuestion,
+                      question_seqItems: seqItems,
+                      question_vancyItems: "", 
+                      question_compItems: [],
+                      } 
+                    }).then(res=>{
+                      if(res.data && res.data.addQuestionChild){
+                        setMessage('ثبت شد');
+                        setStatus('1');
+                        setShowMessage(!showMessage);
+                      }else{
+                        // console.log('data',data);
+                        setStatus('0')
+                        setMessage('ثبت نشد')
+                        setShowMessage(!showMessage);
+                      }
+                    })
                   }
-                } else if (
-                  selectedFile &&
-                  questionImage == false &&
-                  textImage == true
-                ) {
-                  //////////////////////
-                  var file = new File(
-                    [selectedFile],
-                    uuidv4() + `.${format}`,
-                    {
-                      type: mimeTypeFile,
-                    },
-                  );
-
-                  //////////////////////
-                  handleSendToserver();
-                  async function handleSendToserver() {
-                    var responseCode = await UploadfileToserver(file, format);
-                    if (file.name && responseCode) {
-                      setQuestionChild({ variables: { 
-                        userName: "211", 
-                        password: "211", 
-                        qpId: "607d2f582cf63c244015d278",
-                        question: convertText(newData.question), 
-                        question_score: newData.question_score ? newData.question_score : '', 
-                        question_explain: convertText(newData.question_explane),
-                        question_timeToSolveProblem: convertText(newData.question_timeToSolveProblem), 
-                        question_correctOption: "", 
-                        question_optionOne: "",
-                        question_optionTwo: "",
-                        question_optionThree: "",
-                        question_optionFour: "",
-                        question_link: "",
-                        exam_link: file.name, 
-                        question_type: "5",
-                        question_seqItems: [],
-                        question_vancyItems: "", 
-                        question_compItems: []
-                        } 
-                      }).then(res=>{
-                        if(res.data && res.data.addQuestionChild){
-                          setTextImage(false);
-                          setQuestionImage(false);
-                          setMessage('ثبت شد');
-                          setStatus('1');
-                          setShowMessage(!showMessage);
-                        }else{
-                          setStatus('0')
-                          setMessage('ثبت نشد')
-                          setShowMessage(!showMessage);
-                        }
-                      })
-                    } else {
-                      // alert('اطلاعاتی به درستی ثبت نشد');
-                      setStatus('0')
-                      setMessage('اطلاعاتی به درستی ثبت نشد')
-                      setShowMessage(!showMessage);
-                    }
-                  }
-                } else {
-                  setQuestionChild({ variables: { 
-                    userName: "211", 
-                    password: "211", 
-                    qpId: "607d2f582cf63c244015d278",
-                    question: convertText(newData.question), 
-                    question_score: newData.question_score ? newData.question_score : '', 
-                    question_explain: convertText(newData.question_explane),
-                    question_timeToSolveProblem: convertText(newData.question_timeToSolveProblem), 
-                    question_correctOption: "", 
-                    question_optionOne: "",
-                    question_optionTwo: "",
-                    question_optionThree: "",
-                    question_optionFour: "",
-                    question_link: "",
-                    exam_link: "", 
-                    question_type: "5",
-                    question_seqItems: [],
-                    question_vancyItems: "", 
-                    question_compItems: [],
-                    } 
-                  }).then(res=>{
-                    if(res.data && res.data.addQuestionChild){
-                      setMessage('ثبت شد');
-                      setStatus('1');
-                      setShowMessage(!showMessage);
-                    }else{
-                      // console.log('data',data);
-                      setStatus('0')
-                      setMessage('ثبت نشد')
-                      setShowMessage(!showMessage);
-                    }
-                  })
-                }
-                ////////////////////////////
-                dataUpdate[index] = newData;
-                setInnerData([...dataUpdate]);
-                resolve(setToggle(false));
-              }, 1000)
+                  ////////////////////////////
+                  // dataUpdate[index] = newData;
+                  // setInnerData([...dataUpdate]);
+                  props.handleFetchData();
+                  resolve();
+                }, 1000)
+              }else{
+                setStatus('0')
+                setMessage('خطایی رخ داده است!!!')
+                setShowMessage(!showMessage);
+                resolve();
+              }
             }),
           // onRowDelete: oldData =>
           //   new Promise((resolve, reject) => {

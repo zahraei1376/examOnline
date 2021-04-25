@@ -1,4 +1,4 @@
-import React , {useEffect} from 'react';
+import React , {useState,useEffect} from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Modal from '@material-ui/core/Modal';
 import {VacancyButton , VacancyButtonSave , VacancyInputContainer ,VacancyInput ,VacancyShowText} from './VacancyModal.styles';
@@ -43,34 +43,37 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function VacancyModal({vancyValue}) {
+export default function VacancyModal({handleSetVancyItems , existVancyValue}) {
   const classes = useStyles();
   // getModalStyle is not a pure function, we roll the style only on the first render
   const [modalStyle] = React.useState(getModalStyle);
   const [open, setOpen] = React.useState(false);
+  const [vancyValue , setVancyValue] = useState('');
 //   const [count,setCount] = React.useState(1)
-  const [items,setItems] = React.useState(vancyValue ? vancyValue : '');
-  const [indexDelete,setIndexDelete] = React.useState(-1);
+  // const [items,setItems] = React.useState(existVancyValue ? existVancyValue : '');
+  // const [indexDelete,setIndexDelete] = React.useState(-1);
 
   useEffect(()=>{
-    console.log('items',items);
-  },[items]);
+    // console.log('vancyValue',vancyValue);
+    setVancyValue(existVancyValue ? existVancyValue : '')
+  },[]);
 
 
   // useEffect(()=>{
-  //   console.log('vancyValue',vancyValue);
+  //   console.log('existVancyValue',existVancyValue);
   // },[]);
 
-//   useEffect(()=>{
-//     setItems(Array(count).fill(0).map(row => new Array(2).fill('')))
-//   },[count]);
+  useEffect(()=>{
+    console.log('vancyValue',vancyValue);
+  },[vancyValue]);
 
   const handleChange = (event) => {
-    setItems(event.target.value);
+    // console.log('event.target.value',event.target.value);
+    setVancyValue(event.target.value);
   };
 
   const addVancy = () =>{
-    setItems(items + '$%A');
+    setVancyValue(vancyValue + '$%A');
     document.getElementById("Text1").focus();
   }
 
@@ -83,20 +86,21 @@ export default function VacancyModal({vancyValue}) {
   };
 
 //   const handleIndexDelete =(index)=>{
-//      var temp = [...items];
+//      var temp = [...vancyValue];
 //      temp.splice(index,1);
-//      setItems(temp);
+//      setVancyValue(temp);
 //      setCount(prev => prev - 1);
 //   }
 
 
   const handleIndexSet =(index,num , value)=>{
-    var temp = [...items];
+    var temp = [...vancyValue];
     temp[index][num] = value;
-    setItems(temp);
+    setVancyValue(temp);
  }
 
  const SeveData = () =>{
+  handleSetVancyItems(vancyValue);
   setOpen(false);
  }
 
@@ -113,14 +117,23 @@ export default function VacancyModal({vancyValue}) {
          <AddCircleIcon style={{fontSize:'40px', color:'#009688',cursor:'pointer'}} onClick={addVancy} />
       
       <VacancyInputContainer>
-      <VacancyInput id="Text1" cols="60" rows="5"  value={items.split('$%A').join('..............')} onChange={(e) =>handleChange(e)}></VacancyInput>
+      <VacancyInput id="Text1" cols="60" rows="5"  
+        value={vancyValue.split('$%A').join('..............')}
+       onChange={(e) =>handleChange(e)} 
+      />
+       {/* </VacancyInput> */}
       </VacancyInputContainer>
-      {/* <VacancyShowText>{items.split('$%A').join('..............')}</VacancyShowText> */}
-      {items.length > 0 ? <VacancyButtonSave variant="contained" component="span"
+      {/* <VacancyShowText>{vancyValue.split('$%A').join('..............')}</VacancyShowText> */}
+      {/* {vancyValue ? <VacancyButtonSave variant="contained" component="span"
         onClick={SeveData}
         >
         ثبت
-      </VacancyButtonSave> : ''}
+      </VacancyButtonSave> : ''} */}
+      <VacancyButtonSave variant="contained" component="span"
+        onClick={SeveData}
+        >
+        ثبت
+      </VacancyButtonSave>
     </div>
   );
 

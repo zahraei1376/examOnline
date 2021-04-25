@@ -10,7 +10,8 @@ export const VacancyButton = styled(Button)`
 
 export const VacancyButtonSave = styled(Button)`
     background-color:#009688 !important;
-    color:#fff;
+    color:#fff !important;
+    font-size:1.5rem !important;
     bottom: 0;
     transition:all .3s;
     &:hover{
