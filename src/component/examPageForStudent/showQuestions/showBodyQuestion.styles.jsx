@@ -36,6 +36,7 @@ export const BodyQuestionBox = styled.div`
     // align-items: flex-start;
     // align-items:center;
     // flex-direction:column;
+    padding: 1rem 0;
 
 `;
 
@@ -69,7 +70,7 @@ export const ImageQuestionMainContainer = styled.div`
 export const ImageQuestionContainer = styled.div`
     width:100%;
     display:flex;
-    justify-content:flex-end;
+    justify-content:flex-start;
     align-items:center;
 `;
 

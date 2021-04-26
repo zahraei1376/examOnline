@@ -7,6 +7,7 @@ export const DescriptionItemConatiner = styled.div`
     display:flex;
     align-items:center;
     justify-content: space-evenly;
+    margin-top:3rem;
     
     @media only screen and (max-width: 769px) {
             flex-direction:column;

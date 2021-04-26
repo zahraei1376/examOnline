@@ -95,6 +95,7 @@ const ShowBodyQuestions = ({question,number,children,IncreaseIndexQuestion,Decre
             {question.question_link ? (
                  <ImageQuestionMainContainer>
                  <ImageQuestionContainer>
+                 <ExplainQuestion number={number} explain={question.question_explain} time={question.question_timeToSolveProblem}/>
                      <ImageQuestion
                      onClick={() =>
                          handleShowPic(
@@ -105,7 +106,7 @@ const ShowBodyQuestions = ({question,number,children,IncreaseIndexQuestion,Decre
                      // src={question.exam_link}
                      // src={`https://kamal-exam.s3.ir-thr-at1.arvanstorage.com/${question.exam_link}`}
                      />
-                     <ExplainQuestion number={number} explain={question.question_explain} time={question.question_timeToSolveProblem}/>
+                     
                  </ImageQuestionContainer>
                  <ScoreTag
                  >
@@ -140,18 +141,19 @@ const ShowBodyQuestions = ({question,number,children,IncreaseIndexQuestion,Decre
         {/* /////////////////////////////////footer */}
         <FooterQuestionContainer>
             <FooterBtnsContainer>
-                <Tooltip title="سوال قبلی" aria-label="سوال قبلی"  style={{ fontSize:'3rem'}} >
-                    <FooterBtn disabled={questionIndex == 0 ? true :false} onClick={DecreaseIndexQuestion}>
+
+                <Tooltip title="سوال بعدی" aria-label="سوال بعدی" style={{ fontSize:'3rem'}} >
+                    <FooterBtn disabled={questionIndex == questionsLenght -1 ? true :false} onClick={IncreaseIndexQuestion}>
                         <ArrowForwardIosIcon style={{ fontSize:'3rem'}} />
                     </FooterBtn>
                 </Tooltip>
-                
-                <Tooltip title="سوال بعدی" aria-label="سوال بعدی" style={{ fontSize:'3rem'}} >
-                    <FooterBtn disabled={questionIndex == questionsLenght -1 ? true :false} onClick={IncreaseIndexQuestion}>
+
+                <Tooltip title="سوال قبلی" aria-label="سوال قبلی"  style={{ fontSize:'3rem'}} >
+                    <FooterBtn disabled={questionIndex == 0 ? true :false} onClick={DecreaseIndexQuestion}>
                         <ArrowBackIosIcon style={{ fontSize:'3rem'}} />
                     </FooterBtn>
                 </Tooltip>
-
+                
             </FooterBtnsContainer>
         </FooterQuestionContainer>
         {

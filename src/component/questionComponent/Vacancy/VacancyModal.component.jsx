@@ -1,7 +1,7 @@
 import React , {useState,useEffect} from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Modal from '@material-ui/core/Modal';
-import {VacancyButton , VacancyButtonSave , VacancyInputContainer ,VacancyInput ,VacancyShowText} from './VacancyModal.styles';
+import {VacancyButton , VacancyButtonSave , VacancyInputContainer ,VacancyInput ,VacancyShowText ,RecordButton} from './VacancyModal.styles';
 import {Button} from '@material-ui/core';
 import AddCircleIcon from '@material-ui/icons/AddCircle';
 // import AddCircleIcon from '@material-ui/icons/AddCircle';
@@ -68,11 +68,14 @@ export default function VacancyModal({handleSetVancyItems , existVancyValue}) {
   },[vancyValue]);
 
   const handleChange = (event) => {
-    // console.log('event.target.value',event.target.value);
+    console.log('event.target.value',event.target.value);
     setVancyValue(event.target.value);
   };
 
   const addVancy = () =>{
+    // var myItemV = vancyValue;
+    // myItemV += '$%A';
+    // setVancyValue(myItemV);
     setVancyValue(vancyValue + '$%A');
     document.getElementById("Text1").focus();
   }
@@ -100,6 +103,7 @@ export default function VacancyModal({handleSetVancyItems , existVancyValue}) {
  }
 
  const SeveData = () =>{
+   console.log('vancyValue',vancyValue);
   handleSetVancyItems(vancyValue);
   setOpen(false);
  }
@@ -117,9 +121,10 @@ export default function VacancyModal({handleSetVancyItems , existVancyValue}) {
          <AddCircleIcon style={{fontSize:'40px', color:'#009688',cursor:'pointer'}} onClick={addVancy} />
       
       <VacancyInputContainer>
-      <VacancyInput id="Text1" cols="60" rows="5"  
-        value={vancyValue.split('$%A').join('..............')}
-       onChange={(e) =>handleChange(e)} 
+      <VacancyInput id="Text1" cols="60" rows="5"  placeholder="متن خود را وارد کنید!!"
+      value={vancyValue}
+        // value={vancyValue.split('$%A').join('..............')}
+        onChange={(e) =>handleChange(e)} 
       />
        {/* </VacancyInput> */}
       </VacancyInputContainer>
@@ -139,9 +144,12 @@ export default function VacancyModal({handleSetVancyItems , existVancyValue}) {
 
   return (
     <div>
-      <button type="button" onClick={handleOpen}>
-        ایجاد سوال جای خالی
-      </button>
+      {/* <button type="button" onClick={handleOpen}> */}
+        <RecordButton type="button" onClick={handleOpen}>
+           سوال جای خالی 
+        </RecordButton>
+       
+      {/* </button> */}
       <Modal
         open={open}
         onClose={handleClose}

@@ -214,6 +214,7 @@ const Vacancy = ({setToggle , ...props}) => {
     };
     ////////////////////////////////////
     const handleSetVancyItems = (vc) =>{
+      console.log('vc',vc);
       setVancyValue(vc)
     }
     ////////////////////////////////////

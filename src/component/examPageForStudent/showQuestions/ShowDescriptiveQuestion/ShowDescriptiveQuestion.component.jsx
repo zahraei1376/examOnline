@@ -9,6 +9,7 @@ import ShowBodyQuestions from '../showBodyQuestion.component';
 import AddIcon from '@material-ui/icons/Add';
 import { Tooltip } from "@material-ui/core";
 /////////////
+import Uploader from '../../../uploader';
 
 
 
@@ -20,13 +21,15 @@ const DescriptionItem = ({number})=>{
         setResponseQuestion(e.target.value);
     }
 
+    const handleGetFileName = (fileName) => {
+
+    }
+
     return(
         <DescriptionItemConatiner>
-            <TextArea rows="6" cols="50" value={responseQuestion} onChange={e => handleChange(e)}>
-            
-            </TextArea>
             <Tooltip title="آپلود جواب">
-                <label htmlFor={`upload${number}Pic`}>
+                <Uploader handleGetFileName={handleGetFileName} />
+                {/* <label htmlFor={`upload${number}Pic`}>
                     <input type="file" style={{display:'none'}} id={`upload${number}Pic`}/>
 
                     <ShowDescriptionButton variant="contained" component="span">
@@ -34,8 +37,11 @@ const DescriptionItem = ({number})=>{
                         // style={{color:'#009688'}}
                         />
                     </ShowDescriptionButton>
-                </label>
+                </label> */}
             </Tooltip>
+            <TextArea rows="6" cols="50" value={responseQuestion} onChange={e => handleChange(e)}>
+            
+            </TextArea>
         </DescriptionItemConatiner>
     )
 }

@@ -31,20 +31,20 @@ const VacancyItem = ({number,Vitems})=>{
     
 
     useEffect(()=>{
-        // var newItems = Vitems.split(' ');
-        // newItems.reduce((item , total ) => {
 
-        // })
-        
-        // var NOV = 0 ;
+        console.log('Vitems',Vitems);
+        var VItemsCount = Vitems.split('$%A'); 
         var NOV = [];
-        Vitems.split(' ').reduce((acc,cur) => {
-            if(cur.indexOf('$%A') > -1){
-                NOV.push('1');
-                // NOV ++;
-                return acc + 1;
-            }
-        }, 0);
+        // Vitems.split(' ').reduce((acc,cur) => {
+        //     if(cur.indexOf('$%A') > -1){
+        //         NOV.push('1');
+        //         // NOV ++;
+        //         return acc + 1;
+        //     }
+        // }, 0);
+        // NOV = 
+        VItemsCount.map(item => item != "" ?
+        NOV.push(item) : "" )
         console.log('NOV',NOV);
         setResponseVancyQuestion(Array(NOV.length).fill(0).map(row => new Array(2).fill('')));
         setNOfVancy(NOV);

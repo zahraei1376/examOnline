@@ -27,3 +27,14 @@ export const SequentialItemContainer = styled.div`
 //    grid-column-gap:1rem;
 `;
 
+export const RecordButton = styled.button`
+    border:none;
+    background-color:#009688;
+    color:#fff;
+    font-family:Bnazanin;
+    font-size:1.8rem;
+    padding:1rem 2rem;
+    border-radius:2rem;
+    cursor:pointer;
+`;
+

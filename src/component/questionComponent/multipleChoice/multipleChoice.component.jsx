@@ -690,8 +690,10 @@ const MultipleChoice = ({setToggle , ...props}) => {
                   // const dataUpdate = [...innerData];
                   // const index = oldData.tableData.id;
                   /////////////myCode
+                  console.log('newData.question_correctOption' ,newData.question_correctOption);
                   if (
-                      newData.question_correctOption !== undefined
+                      // newData.question_correctOption !== undefined
+                      newData.question_correctOption
                     ) {
                       if (
                         selectedFile &&
@@ -841,18 +843,20 @@ const MultipleChoice = ({setToggle , ...props}) => {
                           }
                         })
                       }
+
+                      props.handleFetchData();
                      
                     } else {
                       setTextImage(false);
                       setQuestionImage(false);
-                      alert('ابتدا فیلد های موردنظر را پر کنید!!');
+                      alert('ابتدا فیلد گزینه صحیح را پر کنید!!');
                     }
                   ////////////////////////////
                   // dataUpdate[index] = newData;
                   // setInnerData([...dataUpdate]);
-                  props.handleFetchData();
+                    // props.handleFetchData();
                       // console.log('idEdit', newData);
-                      resolve();
+                    resolve();
                   // reject(loadVariable.load = false);
                 }, 1000)
               }else{

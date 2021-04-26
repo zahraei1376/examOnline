@@ -80,7 +80,7 @@ function ExplainQuestion({number , explain , time}) {
 
   return (
     <ExplainDivContainer>
-      <MyMainButton variant="outlined" color="primary" onClick={handleClickOpen}>
+      <MyMainButton explain={explain} variant="outlined" color="primary" onClick={handleClickOpen}>
       {number + 1}
       </MyMainButton>
       <Dialog onClose={handleClose} aria-labelledby="customized-dialog-title" open={open}>
@@ -89,14 +89,14 @@ function ExplainQuestion({number , explain , time}) {
         </DialogTitle>
         <DialogContent dividers>
           <Typography gutterBottom>
-            {explain != 'undefined' ? (
+            {explain ? (
             <ExplainDiv>
                 توضیحات : {explain.split('%0A').join('\r\n')}
             </ExplainDiv>
             ) : (
                 ''
             )}
-            {time != 'undefined' ? (
+            {time ? (
             <TimeDiv>
                 زمان : {time}
             </TimeDiv>
