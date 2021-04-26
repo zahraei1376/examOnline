@@ -47,9 +47,9 @@ const SET_QUESTION_CHILD = gql`
       $question_link: String!,
       $exam_link: String!,
       $question_type: String!,
-      $question_seqItems: [String]!,
+      $question_seqItems: [[String]]!,
       $question_vancyItems: String!,
-      $question_compItems: [String]!,
+      $question_compItems: [[String]]!,
       ){
       addQuestionChild(
         userName: $userName,
@@ -116,6 +116,10 @@ const GET_QUESTIONS = gql`
       examChild
       {
         id
+        groups{
+          id
+          course
+        }
         examChild_gId
         examChild_epId
         questionParent

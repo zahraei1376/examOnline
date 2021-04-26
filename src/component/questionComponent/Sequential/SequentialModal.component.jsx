@@ -3,7 +3,7 @@
 import React , {useState,useEffect} from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Modal from '@material-ui/core/Modal';
-import {SequentialButton , SequentialButtonSave , SequentialInputContainer ,SequentialInput ,SequentialShowText ,SequentialItemContainer} from './SequentialModal.styles';
+import {SequentialButton , SequentialButtonSave , SequentialInputContainer ,SequentialInput ,SequentialShowText ,SequentialItemContainer ,RecordButton} from './SequentialModal.styles';
 // import AddCircleIcon from '@material-ui/icons/AddCircle';
 import SequentialModalItems from './SequentialModalItem.component';
 import AddCircleIcon from '@material-ui/icons/AddCircle';
@@ -131,9 +131,12 @@ export default function SequentialModal({handleSetSeqItems, existSeqItems}) {
 
   return (
     <div>
-      <button type="button" onClick={handleOpen}>
-        سوال ترتیبی
-      </button>
+      {/* <button type="button" onClick={handleOpen}> */}
+        <RecordButton  type="button" onClick={handleOpen}>
+          سوال ترتیبی
+        </RecordButton>
+        
+      {/* </button> */}
       <Modal
         open={open}
         onClose={handleClose}

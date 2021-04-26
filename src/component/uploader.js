@@ -2,6 +2,9 @@ import React, { useEffect, useState, useRef } from "react";
 import axios from "axios";
 import {UploaderButton ,UploaderButtonSend} from './uploader.styles';
 import BackupIcon from '@material-ui/icons/Backup';
+import AddIcon from '@material-ui/icons/Add'
+import {ShowDescriptionButton} from './uploader.styles';
+import MySnackbar from '../messageBox/messageBox.component';
 const AWS = require("aws-sdk");
 
 const s3 = new AWS.S3({
@@ -14,7 +17,7 @@ const s3 = new AWS.S3({
     region: "us-east-1", // Put you region
   });
 
-function Uploader() {
+function Uploader({handleGetFileName}) {
     
   const [s3Acl, setS3Acl] = useState();
   const [s3Url, setS3Url] = useState();
@@ -26,6 +29,10 @@ function Uploader() {
   const [s3Date, setS3Date] = useState();
   const [s3Expires, setS3Expires] = useState();
   const [s3Bucket, setS3Bucket] = useState();
+  //////////////////////////////////////////////////
+  const [showMessage,setShowMessage] = useState(false);
+  const [message,setMessage] =useState('');
+  const [status,setStatus] =useState(0);
 
   useEffect(() => {
     console.log("s3Url:", s3Url);
@@ -60,7 +67,7 @@ function Uploader() {
         action={s3Url}
         method="post"
         enctype="multipart/form-data"
-        class="direct-upload"
+        className="direct-upload"
       >
         <input type="hidden" name="ACL" value={s3Acl} />
         <input type="hidden" name="key" value={s3Key} />
@@ -91,11 +98,12 @@ function Uploader() {
                 // type="file"
                 name="file"
                 onChange={(event) => {
+                  var myFileNama = Date.now() + "-" + event.target.files[0].name;
                     axios({
                     url: "http://t1.ray-sa.ir:4000/sign_post",
                     method: "post",
                     data: {
-                        fileName: Date.now() + "-" + event.target.files[0].name,
+                        fileName: myFileNama,
                     },
                     })
                     .then(async (res) => {
@@ -113,6 +121,11 @@ function Uploader() {
                         setS3Date(data.fields["X-Amz-Date"]);
                         // document.getElementById("myForm").submit();
                         document.getElementById("myForm").submit();
+                        setMessage('ارسال شد');
+                        setStatus('1');
+                        setShowMessage(!showMessage);
+                        console.log('myFileNama',myFileNama);
+                        handleGetFileName(myFileNama);
                         // document.getElementById("MySubmit").click();
                         // var MySubmit = document.getElementById("MySubmit");
                         // console.log('MySubmit',MySubmit);
@@ -124,11 +137,16 @@ function Uploader() {
                 }}
             />
 
-            <UploaderButton variant="contained" component="span">
+            {/* <UploaderButton variant="contained" component="span">
                 <BackupIcon style={{fontSize:'3rem'}}
                 // style={{color:'#009688'}}
                     />
-            </UploaderButton>
+            </UploaderButton> */}
+            <ShowDescriptionButton variant="contained" component="span">
+                <AddIcon style={{fontSize:'4rem'}}
+                        // style={{color:'#009688'}}
+                        />
+            </ShowDescriptionButton>
         </label>
         {/* <input
           id="ccc"
@@ -161,6 +179,9 @@ function Uploader() {
               });
           }}
         /> */}
+        {
+          showMessage ? <MySnackbar message={message} status={status} showMessage={showMessage} setShowMessage={setShowMessage} /> : ''
+        }
         {" "}
         <br />
       </form>

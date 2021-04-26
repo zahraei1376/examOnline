@@ -14,6 +14,8 @@ import { GET_QUESTIONS } from '../../graphql/resolver';
 import { useQuery ,useMutation} from 'react-apollo';
 /////////////////////////message
 import MySnackbar from '../../messageBox/messageBox.component';
+////////////////////////////////
+import {ShowQuestionsContainer ,ShowQuestionsCourseNameContainer , ShowQuestionsCourseName} from './examPageForStudent.styles';
 
 // const Item =[
 // {
@@ -271,11 +273,14 @@ const  ExamPageForStudent = ({questionIndex ,setLengthQuestions}) =>{
         var allQuestons = examP.examChild;
         for (let index = 0; index < allQuestons.length; index++) {
            var counterQuestionsParent = allQuestons[index].questionParent;
-            if(counterQuestionsParent && counterQuestionsParent.length > 0){
+           var courseName = allQuestons[index] && allQuestons[index].groups && allQuestons[index].groups.length > 0 ? allQuestons[index].groups[0].course : '';
+           console.log('courseName',courseName); 
+           if(counterQuestionsParent && counterQuestionsParent.length > 0){
               for (let j = 0; j < counterQuestionsParent.length; j++) {
                   console.log('allQuestons[index].questionParent[j]', allQuestons[index].questionParent[j] );
                   if(allQuestons[index].questionParent[j].questionChild && allQuestons[index].questionParent[j].questionChild.length > 0){
-                    mergeQ.push(allQuestons[index].questionParent[j].questionChild[0]);
+                    mergeQ.push({...allQuestons[index].questionParent[j].questionChild[0] , courseName:courseName});
+                    // mergeQ.push(allQuestons[index].questionParent[j].questionChild[0]);
                   }
               }
                 // console.log('allQuestons[index].questionParent', allQuestons[index].questionParent );
@@ -366,14 +371,19 @@ const  ExamPageForStudent = ({questionIndex ,setLengthQuestions}) =>{
     }
     ///////////////////////////////////////////////////
     return(
-        <div style={{direction: 'rtl'}}>
+        <ShowQuestionsContainer>
+            {/* <ShowQuestionsCourseNameContainer>
+                <ShowQuestionsCourseName>نام درس : {items[questionIndex].course}</ShowQuestionsCourseName>
+            </ShowQuestionsCourseNameContainer> */}
             {/* <ShowDescriptiveQuestion question={Item[questionIndex]} number={48}/> */}
             {/* <ShowComparativeQuestion question={Item[questionIndex]} number={48} items={RandomArray(Item[questionIndex].items)} /> */}
             {/* <MultipleChoiceConatiner question={Item[questionIndex]} number={48}/> */}
             {/* <ShowTrueAndFalseQuestion question={Item[questionIndex]} number={48} /> */}
             {/* <ShowSequentialQuestion question={Item[questionIndex]} number={48} SeqItems={SeqRandomArray(Item[questionIndex].SeqItems)} /> */}
             {/* <ShowVacancyQuestion question={Item[questionIndex]} number={48} Vitems={Item[questionIndex].vancyItems}/> */}
-
+            <ShowQuestionsCourseNameContainer>
+                <ShowQuestionsCourseName>نام درس : {items.length > 0 ? items[questionIndex].courseName : ''}</ShowQuestionsCourseName>
+            </ShowQuestionsCourseNameContainer>
             {(() => {
                 if(items.length > 0){
                     if(items[questionIndex].question_type == '1'){
@@ -401,7 +411,7 @@ const  ExamPageForStudent = ({questionIndex ,setLengthQuestions}) =>{
                 showMessage ? <MySnackbar message={message} status={status} showMessage={showMessage} setShowMessage={setShowMessage} /> : ''
             }
 
-        </div>
+        </ShowQuestionsContainer>
     )
 };
 

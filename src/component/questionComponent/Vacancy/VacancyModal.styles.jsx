@@ -39,3 +39,14 @@ export const VacancyShowText = styled.pre`
     border-style:double;
 `;
 
+export const RecordButton = styled.button`
+    border:none;
+    background-color:#009688;
+    color:#fff;
+    font-family:Bnazanin;
+    font-size:1.8rem;
+    padding:1rem 1rem;
+    border-radius:2rem;
+    cursor:pointer;
+`;
+

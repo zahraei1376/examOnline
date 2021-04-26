@@ -1038,7 +1038,8 @@ const TrueAndFalse = ({setToggle ,toggle, ...props}) => {
                   // const index = oldData.tableData.id;
                   /////////////myCode
                   if (
-                      newData.question_correctOption !== undefined
+                      // newData.question_correctOption !== undefined
+                      newData.question_correctOption
                     ) {
                       if (
                         selectedFile &&
@@ -1189,16 +1190,18 @@ const TrueAndFalse = ({setToggle ,toggle, ...props}) => {
                               }
                         })
                       }
+
+                      props.handleFetchData();
                      
                     } else {
                       setTextImage(false);
                       setQuestionImage(false);
-                      alert('ابتدا فیلد های موردنظر را پر کنید!!');
+                      alert('ابتدا فیلد گزینه صحیح را پر کنید!!');
                     }
                   ////////////////////////////
                   // dataUpdate[index] = newData;
                   // setInnerData([...dataUpdate]);
-                  props.handleFetchData();
+                  // props.handleFetchData();
                       // console.log('idEdit', newData);
                   resolve();
                   // reject(loadVariable.load = false);

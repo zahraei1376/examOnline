@@ -63,7 +63,8 @@ export const MyMainButton = styled.button`
     padding:0 ;
     width:4rem;
     height:4rem;
-    border:1px solid #3f87a6;
+    // border:1px solid #3f87a6;
+    border: ${props => props.explain ? '1px solid #FFB300;' : '1px solid #3f87a6;' }
     cursor:pointer;
     transition:all .2s;
     margin-left:1rem;
@@ -73,7 +74,8 @@ export const MyMainButton = styled.button`
     }
 
     &:hover{
-        background-color:#3f87a6;
+        background-color: ${props => props.explain ? '#FFB300;' : '#3f87a6;' }
+        // background-color:#3f87a6;
         color:#fff;
     }
 `;
