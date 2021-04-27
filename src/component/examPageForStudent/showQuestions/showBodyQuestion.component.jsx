@@ -15,9 +15,16 @@ import ShowImage from '../../imageShow/showImage.component';
 ///////////////////////////////////////////////////////
 import { connect} from 'react-redux';
 import {IncreaseIndex , DecreaseIndex} from '../../../redux/questionIndex/questionIndex.sction';
+import {setRepsonseStudent} from '../../../redux/responsesStudent/responsesStudent.action';
 import {selectIndex ,finalIndex} from '../../../redux/questionIndex/questionIndex.selector';
 import { createStructuredSelector} from 'reselect';
-const ShowBodyQuestions = ({question,number,children,IncreaseIndexQuestion,DecreaseIndexQuestion,questionIndex ,questionsLenght}) =>{
+//////////////////////query
+import { useMutation} from 'react-apollo';
+import {SET_RESPONSE_STUDENT} from '../../../graphql/resolver';
+//////////////////////query
+import MySnackbar from '../../../messageBox/messageBox.component';
+
+const ShowBodyQuestions = ({question,number,children,IncreaseIndexQuestion,setRepsonseStudent ,DecreaseIndexQuestion,questionIndex ,questionsLenght}) =>{
 
     // const [state,setState] =useState({
     //     type:false,
@@ -25,13 +32,26 @@ const ShowBodyQuestions = ({question,number,children,IncreaseIndexQuestion,Decre
     //     captionImage:'',
     //     showImage:false,
     // });
+    ////////////////////////////////////////query
+    const [addResponse ,{ data }] = useMutation(SET_RESPONSE_STUDENT);
+    /////////////////////////////////////////////////////////
     const [type, setType] = useState(false);
     const [imageSrc, setImageSrc] = useState('');
     const [captionImage, setCaptionImage] = useState(false);
     const [showImage, setShowImage] = useState(false);
+    // var resForRedux = '';
+    ////////////////////////////////////////setToRedux
+    const [resForRedux , setResForRedux] = useState('');
+    const [responseDesImage ,setResponseDesImage] = useState('');
+    ////////////////////////////////////////////messageBox
+    const [showMessage,setShowMessage] = useState(false);
+    const [message,setMessage] =useState('');
+    const [status,setStatus] =useState(0);
+    ///////////////////////////////////////////
     useEffect(()=>{
-        console.log('MyQuestions',question);
-      },[]);
+        // console.log('MyQuestions',question);
+        console.log('resForRedux',resForRedux);
+      },[resForRedux]);
 
     // useEffect(()=>{
     //     console.log('captionImage',captionImage);
@@ -72,6 +92,74 @@ const ShowBodyQuestions = ({question,number,children,IncreaseIndexQuestion,Decre
     }
   };
 
+    const handleNextQuestion = async() =>{
+        // var promise = new Promise( (resolve, reject) => {
+
+        //     let name = 'Paul'
+          
+        //     if (name === 'Paul') {
+        //      resolve("Promise resolved successfully");
+        //     }
+        //     else {
+        //      reject(Error("Promise rejected"));
+        //     }
+        //    });
+          
+        //    let obj = {newName: ''};
+          
+        //    promise.then( result => {
+        //     this.setState({name: result});
+        //    }, function(error) {
+        //     this.setState({name: error});
+        //    });
+        await addResponse({ variables: { 
+            userName: "210",
+            password: "210",
+            qcId: "6086689dceaf54645b7b499e",
+            response_descriptionImageLink:question.question_type == '1' ? responseDesImage : "",
+            response_sequentialQuestion: question.question_type == '6' ? resForRedux : [], 
+            response_studentItem: question.question_type == '2' || question.question_type == '3'  ? resForRedux : "",
+            response_comparativeQuestion: question.question_type == '5' ? resForRedux : [], 
+            response_descriptionQuestion: question.question_type == '1' ? resForRedux : "",
+            response_vancyQuestion: question.question_type == '4' ? resForRedux : [],
+            response_score: "1"
+         } 
+        }).then(res=>{
+          if(res.data && res.data.addResponse){
+            // console.log('data',data);
+            setRepsonseStudent({id: question.id , res: resForRedux});
+            setMessage('جواب شما ثبت شد');
+            setStatus('1');
+            setShowMessage(!showMessage);
+            setTimeout(()=>{
+                IncreaseIndexQuestion();
+            },1000)
+            
+          }else{
+            // console.log('data',data);
+            setStatus('0')
+            setMessage('جواب شما ثبت نشد')
+            setShowMessage(!showMessage);
+          }
+        }
+          )
+        console.log('{id: question.id , res: resForRedux}',{id: question.id , res: resForRedux});
+        // setRepsonseStudent({id: question.id , res: resForRedux});
+        // IncreaseIndexQuestion();
+    }
+
+    const handlePrevQuestion = () =>{
+        // setRepsonseStudent()
+        DecreaseIndexQuestion();
+    }
+
+    const childrenWithProps = React.Children.map(children, child => {
+        // checking isValidElement is the safe way and avoids a typescript error too
+        if (React.isValidElement(child)) {
+          return React.cloneElement(child, { setResForRedux: setResForRedux ,setResponseDesImage:setResponseDesImage });
+        }
+        return child;
+    });
 
     return(
     <BodyContainer>
@@ -136,20 +224,22 @@ const ShowBodyQuestions = ({question,number,children,IncreaseIndexQuestion,Decre
                 )}
         </BodyQuestionBox>
         {/* //////////////////////////////////////////////children */}
-        {children}
+        {childrenWithProps}
+        {/* renderSecret={text => <span style={{ color: "red" }}>{text}</span>} */}
+        {/* {children} */}
         </BodyQuestionBoxWithChildren>
         {/* /////////////////////////////////footer */}
         <FooterQuestionContainer>
             <FooterBtnsContainer>
 
                 <Tooltip title="سوال بعدی" aria-label="سوال بعدی" style={{ fontSize:'3rem'}} >
-                    <FooterBtn disabled={questionIndex == questionsLenght -1 ? true :false} onClick={IncreaseIndexQuestion}>
+                    <FooterBtn disabled={questionIndex == questionsLenght -1 ? true :false} onClick={handleNextQuestion}>
                         <ArrowForwardIosIcon style={{ fontSize:'3rem'}} />
                     </FooterBtn>
                 </Tooltip>
 
                 <Tooltip title="سوال قبلی" aria-label="سوال قبلی"  style={{ fontSize:'3rem'}} >
-                    <FooterBtn disabled={questionIndex == 0 ? true :false} onClick={DecreaseIndexQuestion}>
+                    <FooterBtn disabled={questionIndex == 0 ? true :false} onClick={handlePrevQuestion}>
                         <ArrowBackIosIcon style={{ fontSize:'3rem'}} />
                     </FooterBtn>
                 </Tooltip>
@@ -158,6 +248,9 @@ const ShowBodyQuestions = ({question,number,children,IncreaseIndexQuestion,Decre
         </FooterQuestionContainer>
         {
             showImage ? <ShowImage imageSrc={imageSrc} caption={captionImage} close={showPic} type={type} /> : ''
+        }
+        {
+            showMessage ? <MySnackbar message={message} status={status} showMessage={showMessage} setShowMessage={setShowMessage} /> : ''
         }
     </BodyContainer>
     )
@@ -177,6 +270,7 @@ const mapStateToProps = createStructuredSelector({
 const mapDispatchToProps = dispatch =>({
     IncreaseIndexQuestion: () => dispatch(IncreaseIndex()),
     DecreaseIndexQuestion: () => dispatch(DecreaseIndex()),
+    setRepsonseStudent: (item)=> dispatch(setRepsonseStudent(item)),
 });
 
 export default connect(mapStateToProps,mapDispatchToProps)(ShowBodyQuestions);

@@ -152,4 +152,34 @@ const GET_QUESTIONS = gql`
   }
 `;
 
-export { SET_QUESTION_CHILD, GET_QUESTIONS ,DELETE_QUESTIONCHILD };
+const SET_RESPONSE_STUDENT = gql`
+  mutation addResponse(
+    $userName: String!,
+    $password: String!,
+    $qcId: String!,
+    $response_descriptionImageLink: String!,
+    $response_sequentialQuestion: [String]!,
+    $response_studentItem: String!,
+    $response_comparativeQuestion: [String]!,
+    $response_descriptionQuestion: String!,
+    $response_vancyQuestion: [String]!,
+    $response_score: String!,
+    ){
+      addResponse(
+        userName: $userName,
+        password: $password,
+        qcId: $qcId,
+        response_descriptionImageLink: $response_descriptionImageLink,
+        response_sequentialQuestion: $response_sequentialQuestion,
+        response_studentItem: $response_studentItem,
+        response_comparativeQuestion: $response_comparativeQuestion,
+        response_descriptionQuestion: $response_descriptionQuestion,
+        response_vancyQuestion: $response_vancyQuestion,
+        response_score: $response_score,
+      ){
+        id
+      }
+  }
+`;
+
+export { SET_QUESTION_CHILD, GET_QUESTIONS ,DELETE_QUESTIONCHILD ,SET_RESPONSE_STUDENT};
