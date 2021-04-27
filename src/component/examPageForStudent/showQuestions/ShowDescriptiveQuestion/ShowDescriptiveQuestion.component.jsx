@@ -13,16 +13,18 @@ import Uploader from '../../../uploader';
 
 
 
-const DescriptionItem = ({number})=>{
+const DescriptionItem = ({number ,setResForRedux ,setResponseDesImage})=>{
 
     const [responseQuestion,setResponseQuestion] = useState('');
 
     const handleChange = (e) =>{
         setResponseQuestion(e.target.value);
+        setResForRedux(e.target.value);
+        // resForRedux = e.target.value;
     }
 
     const handleGetFileName = (fileName) => {
-
+        setResponseDesImage(fileName);
     }
 
     return(
