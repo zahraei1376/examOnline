@@ -1,4 +1,4 @@
-import React,{useState} from "react";
+import React,{useEffect, useState} from "react";
 import {TextArea ,ShowDescriptionButton,DescriptionItemConatiner} from './ShowDescriptiveQuestion.styles';
 // import {DescriptiveContainer,DescriptiveQuestion,DescriptiveQuestionBox,DescriptiveDiv,ImageQuestion,ImageQuestionContainer,
 //     ImageWithQuestionContainer , ImageWithQuestion,ScoreTag,ImageQuestionMainContainer} from './ShowDescriptiveQuestion.styles';
@@ -10,12 +10,21 @@ import AddIcon from '@material-ui/icons/Add';
 import { Tooltip } from "@material-ui/core";
 /////////////
 import Uploader from '../../../uploader';
+/////////////////////////
+import { connect } from 'react-redux';
+import { createStructuredSelector } from 'reselect';
+import { getResponseStudentWithIndex } from '../../../../redux/responsesStudent/responsesStudent.selector';
 
 
 
-const DescriptionItem = ({number ,setResForRedux ,setResponseDesImage})=>{
+const DescriptionItem = ({number ,setResForRedux ,setResponseDesImage ,ResItem ,ResItemImage})=>{
 
-    const [responseQuestion,setResponseQuestion] = useState('');
+    const [responseQuestion,setResponseQuestion] = useState(ResItem ? ResItem : '');
+    useEffect(()=>{
+        console.log('ResItem' ,ResItem);
+        setResponseDesImage(ResItemImage ? ResItemImage : '')
+        setResForRedux(ResItem ? ResItem : '');
+    },[]);
 
     const handleChange = (e) =>{
         setResponseQuestion(e.target.value);
@@ -48,10 +57,19 @@ const DescriptionItem = ({number ,setResForRedux ,setResponseDesImage})=>{
     )
 }
 
-const ShowDescriptiveQuestion = ({question, number}) =>{
+const ShowDescriptiveQuestion = ({question, number ,ResItem ,ResItemImage, getResponseStudentWithIndex}) =>{
+    useEffect(()=>{
+        console.log('ResItem',ResItem);
+    },[])
     return(
-        <ShowBodyQuestions question={question} number={number}><DescriptionItem number={number}/></ShowBodyQuestions>
+        <ShowBodyQuestions question={question} number={number}>
+            <DescriptionItem number={number} ResItem={ResItem ? ResItem : getResponseStudentWithIndex} ResItemImage={ResItemImage} />
+        </ShowBodyQuestions>
     )
 };
 
-export default ShowDescriptiveQuestion;
+const mapStateToProps = createStructuredSelector({
+    getResponseStudentWithIndex : (state, ownProps) => getResponseStudentWithIndex(ownProps.question.id)(state, ownProps),
+});
+
+export default connect(mapStateToProps)(ShowDescriptiveQuestion);

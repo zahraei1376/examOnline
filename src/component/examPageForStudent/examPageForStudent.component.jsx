@@ -266,6 +266,10 @@ const  ExamPageForStudent = ({questionIndex ,setLengthQuestions}) =>{
         }
        
     },[data]);
+
+    useEffect(()=>{
+        console.log('items' , items);
+    } ,[items])
     ///////////////////////////////////////////////////
     const MergeQuestions = (examP) => {
         console.log('examP', examP );
@@ -387,21 +391,24 @@ const  ExamPageForStudent = ({questionIndex ,setLengthQuestions}) =>{
             {(() => {
                 if(items.length > 0){
                     if(items[questionIndex].question_type == '1'){
-                        return <ShowDescriptiveQuestion question={items[questionIndex]} number={questionIndex}/> 
+                        return <ShowDescriptiveQuestion question={items[questionIndex]} number={questionIndex} 
+                            ResItem = {items[questionIndex].response && items[questionIndex].response.length > 0 ?  items[questionIndex].response[0].response_descriptionQuestion : ''}
+                            ResItemImage = {items[questionIndex].response && items[questionIndex].response.length > 0 ?  items[questionIndex].response[0].response_descriptionImageLink : ''}
+                        /> 
                     }else if(items[questionIndex].question_type == '5'){
-                        return <ShowComparativeQuestion question={items[questionIndex]} number={questionIndex} items={RandomArray(items[questionIndex].question_compItems)} /> 
+                        return <ShowComparativeQuestion question={items[questionIndex]} number={questionIndex} items={RandomArray(items[questionIndex].question_compItems)} ResItem = {items[questionIndex].response && items[questionIndex].response.length > 0 ?  items[questionIndex].response[0].response_comparativeQuestion : ''} /> 
                     }
                     else if(items[questionIndex].question_type == '2'){
-                        return <MultipleChoiceConatiner question={items[questionIndex]} number={questionIndex}/>
+                        return <MultipleChoiceConatiner question={items[questionIndex]} number={questionIndex} ResItem={items[questionIndex].response && items[questionIndex].response.length > 0 ?  items[questionIndex].response[0].response_studentItem : ''} />
                     }
                     else if(items[questionIndex].question_type == '3'){
-                        return <ShowTrueAndFalseQuestion question={items[questionIndex]} number={questionIndex} />
+                        return <ShowTrueAndFalseQuestion question={items[questionIndex]} number={questionIndex} ResItem={ items[questionIndex].response && items[questionIndex].response.length > 0 ? items[questionIndex].response[0].response_studentItem : ''} />
                     }
                     else if(items[questionIndex].question_type == '6'){
-                        return <ShowSequentialQuestion question={items[questionIndex]} number={questionIndex} SeqItems={SeqRandomArray(items[questionIndex].question_seqItems)} />
+                        return <ShowSequentialQuestion question={items[questionIndex]} number={questionIndex} items={SeqRandomArray(items[questionIndex].question_seqItems)} ResItem={items[questionIndex].response && items[questionIndex].response.length > 0 ?  items[questionIndex].response[0].response_sequentialQuestion : ''} />
                     }
                     else if(items[questionIndex].question_type == '4'){
-                        return <ShowVacancyQuestion question={items[questionIndex]} number={questionIndex} Vitems={items[questionIndex].question_vancyItems}/>
+                        return <ShowVacancyQuestion question={items[questionIndex]} number={questionIndex} items={items[questionIndex].question_vancyItems} ResItem={items[questionIndex].response && items[questionIndex].response.length > 0 ?  items[questionIndex].response[0].response_vancyQuestion : ''}/>
                     }
                 }
                
