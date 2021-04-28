@@ -2,10 +2,14 @@ import React,{useEffect, useState} from "react";
 import {TrueAndFalseConatiner,TrueAndFalseitemDiv,Item,InputRadio,InputLabel} from './ShowTrueAndFalse.styles';
 import ShowBodyQuestions from '../showBodyQuestion.component';
 // import ShowComparativeItem from './compareItem/ShowComparativeItem.component';
-/////////////
-const ShowTrueAndFalseItems = ({number,item})=>{
+/////////////////////////////////////////////////
+import { connect } from 'react-redux';
+import { createStructuredSelector } from 'reselect';
+import { getResponseStudentWithIndex } from '../../../../redux/responsesStudent/responsesStudent.selector';
+/////////////////////////////////////////////////
+const ShowTrueAndFalseItems = ({number,question,ResItem ,setResForRedux})=>{
 
-    // const [questionRes,setQuestionRes] = useState(Array(items.length).fill(0).map(row => new Array(2).fill('')));
+    // const [questionRes,setQuestionRes] = useState(Array(questions.length).fill(0).map(row => new Array(2).fill('')));
 
     // const handleRes = (i , text) =>{
     //     var temp =[...questionRes];
@@ -17,19 +21,31 @@ const ShowTrueAndFalseItems = ({number,item})=>{
     // useEffect(()=>{
     //     console.log('questionRes',questionRes);
     // },[questionRes])
+    const [checked ,setChecked] = useState(ResItem ? ResItem : '');
+
+    useEffect(()=>{
+      console.log('ResItem' ,ResItem);
+      setResForRedux(ResItem);
+  },[]);
+
+    const setOneAnswer = (e) =>{
+      console.log('e.target.value',e.target.value);
+      setResForRedux(e.target.value);
+    }
 
     return(
         <TrueAndFalseConatiner>
-            {item.question_optionOne && item.question_optionOne != 'undefined' ? (
+            {question.question_optionOne && question.question_optionOne != '' ? (
               <TrueAndFalseitemDiv>
                 <Item>1 </Item>
                 <InputRadio
                   type="radio"
                   id={`optionOne${number}`}
                   name={number}
-                  value={number < 9 ? `0${number + 1},1` : `${number + 1},1`}
-                  // onChange={e => setOneAnswer(e)}
-                  // defaultChecked={checked == '1' ? true : false}
+                  // value={number < 9 ? `0${number + 1},1` : `${number + 1},1`}
+                  value={'1'}
+                  onChange={e => setOneAnswer(e)}
+                  defaultChecked={checked == '1' ? true : false}
                 />
                 <InputLabel
                   // htmlFor="optionOne"
@@ -49,28 +65,29 @@ const ShowTrueAndFalseItems = ({number,item})=>{
                 //   borderRadius:'10px'
                 // }}
                 >
-                  {item.question_optionOne.split('%0A').join('\r\n')}
+                  {question.question_optionOne.split('%0A').join('\r\n')}
                 </InputLabel>
               </TrueAndFalseitemDiv>
             ) : (
                 ''
               )}
-            {item.question_optionTwo && item.question_optionTwo != 'undefined' ? (
+            {question.question_optionTwo && question.question_optionTwo != '' ? (
               <TrueAndFalseitemDiv>
                 <Item>2</Item>
                 <InputRadio
                   type="radio"
                   id={`optionTwo${number}`}
                   name={number}
-                  value={number < 9 ? `0${number + 1},2` : `${number + 1},2`}
-                  // onChange={e => setOneAnswer(e)}
-                  // defaultChecked={checked == '2' ? true : false}
+                  // value={number < 9 ? `0${number + 1},2` : `${number + 1},2`}
+                  value={'2'}
+                  onChange={e => setOneAnswer(e)}
+                  defaultChecked={checked == '2' ? true : false}
                 />
                 <InputLabel
                   // htmlFor="optionTwo"
                   htmlFor={`optionTwo${number}`}
                 >
-                  {item.question_optionTwo.split('%0A').join('\r\n')}
+                  {question.question_optionTwo.split('%0A').join('\r\n')}
                 </InputLabel>
                 {/* <div className="questionComponent_questionSquare"></div>
         <div className="questionComponent_questionItem">
@@ -80,42 +97,44 @@ const ShowTrueAndFalseItems = ({number,item})=>{
             ) : (
                 ''
               )}
-            {item.question_optionThree && item.question_optionThree != 'undefined' ? (
+            {question.question_optionThree && question.question_optionThree != '' ? (
               <TrueAndFalseitemDiv>
                 <Item>3</Item>
                 <InputRadio
                   type="radio"
                   id={`optionTree${number}`}
                   name={number}
-                  value={number < 9 ? `0${number + 1},3` : `${number + 1},3`}
-                  // onChange={e => setOneAnswer(e)}
+                  value={'3'}
+                  // value={number < 9 ? `0${number + 1},3` : `${number + 1},3`}
+                  onChange={e => setOneAnswer(e)}
                   // defaultChecked={checked == '3' ? true : false}
                 />
                 <InputLabel
                   // htmlFor="optionTree"
                   htmlFor={`optionTree${number}`}
                 >
-                  {item.question_optionThree.split('%0A').join('\r\n')}
+                  {question.question_optionThree.split('%0A').join('\r\n')}
                 </InputLabel>
               </TrueAndFalseitemDiv>
             ) : (
                 ''
               )}
-            {item.question_optionFour && item.question_optionFour != 'undefined' ? (
+            {question.question_optionFour && question.question_optionFour != '' ? (
               <TrueAndFalseitemDiv>
                 <Item>4</Item>
                 <InputRadio
                   type="radio"
                   id={`optionFour${number}`}
                   name={number}
-                  value={number < 9 ? `0${number + 1},4` : `${number + 1},4`}
-                  // onChange={e => setOneAnswer(e)}
+                  // value={number < 9 ? `0${number + 1},4` : `${number + 1},4`}
+                  value={'4'}
+                  onChange={e => setOneAnswer(e)}
                   // defaultChecked={checked == '4' ? true : false}
                 />
                 <InputLabel
                   htmlFor={`optionFour${number}`}
                 >
-                  {item.question_optionFour.split('%0A').join('\r\n')}
+                  {question.question_optionFour.split('%0A').join('\r\n')}
                 </InputLabel>
               </TrueAndFalseitemDiv>
             ) : (
@@ -125,10 +144,16 @@ const ShowTrueAndFalseItems = ({number,item})=>{
     )
 }
 
-const ShowTrueAndFalseQuestion = ({question, number,items}) =>{
+const ShowTrueAndFalseQuestion = ({question, number,ResItem ,getResponseStudentWithIndex}) =>{
     return(
-        <ShowBodyQuestions question={question} number={number}><ShowTrueAndFalseItems number={number} item={question}/></ShowBodyQuestions>
+        <ShowBodyQuestions question={question} number={number}>
+          <ShowTrueAndFalseItems number={number} question={question} ResItem={ResItem ? ResItem : getResponseStudentWithIndex}/>
+        </ShowBodyQuestions>
     )
 };
 
-export default ShowTrueAndFalseQuestion;
+const mapStateToProps = createStructuredSelector({
+  getResponseStudentWithIndex : (state, ownProps) => getResponseStudentWithIndex(ownProps.question.id)(state, ownProps),
+});
+
+export default connect(mapStateToProps)(ShowTrueAndFalseQuestion);

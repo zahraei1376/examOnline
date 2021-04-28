@@ -8,19 +8,29 @@ import {VnacyTextsContainer,VnacyText ,VacancyQuestion,VacancyItemConatiner,Vnac
 import ShowBodyQuestions from '../showBodyQuestion.component';
 // import AddIcon from '@material-ui/icons/Add';
 // import { Tooltip } from "@material-ui/core";
-/////////////
+/////////////////////////////////////////////////
+import { connect } from 'react-redux';
+import { createStructuredSelector } from 'reselect';
+import { getResponseStudentWithIndex } from '../../../../redux/responsesStudent/responsesStudent.selector';
+/////////////////////////////////////////////////
 
 
 
-const VacancyItem = ({number,Vitems})=>{
+const VacancyItem = ({number,items ,ResItem ,setResForRedux})=>{
 
-    const [responseVancyQuestion,setResponseVancyQuestion] = useState([]);
+    const [responseVancyQuestion,setResponseVancyQuestion] = useState(ResItem ? ResItem : []);
     const [NOfVancy,setNOfVancy] = useState([]);
+
+    useEffect(()=>{
+        console.log('ResItem' ,ResItem);
+        setResForRedux(ResItem);
+    },[]);
 
     const handleChange = (i,value) =>{
         var temp =[...responseVancyQuestion];
         temp[i][0]=i;
         temp[i][1]=value;
+        setResForRedux(temp);
         setResponseVancyQuestion(temp);
     }
 
@@ -32,10 +42,10 @@ const VacancyItem = ({number,Vitems})=>{
 
     useEffect(()=>{
 
-        console.log('Vitems',Vitems);
-        var VItemsCount = Vitems.split('$%A'); 
+        console.log('items',items);
+        var VItemsCount = items.split('$%A'); 
         var NOV = [];
-        // Vitems.split(' ').reduce((acc,cur) => {
+        // items.split(' ').reduce((acc,cur) => {
         //     if(cur.indexOf('$%A') > -1){
         //         NOV.push('1');
         //         // NOV ++;
@@ -60,12 +70,13 @@ const VacancyItem = ({number,Vitems})=>{
 
     return(
         <VacancyItemConatiner>
-            <VacancyQuestion>سوال ) {Vitems.replaceAll('$%A', '......')}</VacancyQuestion>
+            <VacancyQuestion>سوال ) {items.replaceAll('$%A', '......')}</VacancyQuestion>
             <VnacyTextsContainer>
                 {
                     NOfVancy.map((item,index)=>(
                         <VnacyTextDiv key={index}>
-                        <VnacySpan>{index + 1}</VnacySpan><VnacyText type="text" onChange={e=>handleChange(index,e.target.value)} />
+                        <VnacySpan>{index + 1}</VnacySpan>
+                        <VnacyText type="text" defaultValue={ResItem[index] ? ResItem[index][1] : ''} onChange={e=>handleChange(index,e.target.value)} />
                         </VnacyTextDiv>
                     ))
                 }
@@ -74,13 +85,19 @@ const VacancyItem = ({number,Vitems})=>{
     )
 }
 
-const ShowVacancyQuestion = ({question, number,Vitems}) =>{
+const ShowVacancyQuestion = ({question, number,items ,ResItem ,getResponseStudentWithIndex}) =>{
     // useEffect(()=>{
-    //     console.log('question.Vitems',question.Vitems);
+    //     console.log('question.items',question.items);
     // },[]);
     return(
-        <ShowBodyQuestions question={question} number={number}><VacancyItem number={number} Vitems={Vitems}/></ShowBodyQuestions>
+        <ShowBodyQuestions question={question} number={number}>
+            <VacancyItem number={number} items={items} ResItem={ResItem ? ResItem : getResponseStudentWithIndex}/>
+        </ShowBodyQuestions>
     )
 };
 
-export default ShowVacancyQuestion;
+const mapStateToProps = createStructuredSelector({
+    getResponseStudentWithIndex : (state, ownProps) => getResponseStudentWithIndex(ownProps.question.id)(state, ownProps),
+});
+
+export default connect(mapStateToProps)(ShowVacancyQuestion);

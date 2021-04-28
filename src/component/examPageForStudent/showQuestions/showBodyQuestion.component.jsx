@@ -112,10 +112,11 @@ const ShowBodyQuestions = ({question,number,children,IncreaseIndexQuestion,setRe
         //    }, function(error) {
         //     this.setState({name: error});
         //    });
+        console.log("CCCCCCCCC:", resForRedux);
         await addResponse({ variables: { 
             userName: "210",
             password: "210",
-            qcId: "6086689dceaf54645b7b499e",
+            qcId: question.id,
             response_descriptionImageLink:question.question_type == '1' ? responseDesImage : "",
             response_sequentialQuestion: question.question_type == '6' ? resForRedux : [], 
             response_studentItem: question.question_type == '2' || question.question_type == '3'  ? resForRedux : "",
@@ -131,10 +132,13 @@ const ShowBodyQuestions = ({question,number,children,IncreaseIndexQuestion,setRe
             setMessage('جواب شما ثبت شد');
             setStatus('1');
             setShowMessage(!showMessage);
-            setTimeout(()=>{
+            if(questionIndex != questionsLenght -1){
+              setTimeout(()=>{
                 IncreaseIndexQuestion();
-            },1000)
-            
+              },1000)
+            }else{
+              alert('سوالات تمام شده است');
+            }
           }else{
             // console.log('data',data);
             setStatus('0')
@@ -233,13 +237,17 @@ const ShowBodyQuestions = ({question,number,children,IncreaseIndexQuestion,setRe
             <FooterBtnsContainer>
 
                 <Tooltip title="سوال بعدی" aria-label="سوال بعدی" style={{ fontSize:'3rem'}} >
-                    <FooterBtn disabled={questionIndex == questionsLenght -1 ? true :false} onClick={handleNextQuestion}>
+                    <FooterBtn 
+                    //  disabled={questionIndex == questionsLenght -1 ? true :false}
+                     onClick={handleNextQuestion}>
                         <ArrowForwardIosIcon style={{ fontSize:'3rem'}} />
                     </FooterBtn>
                 </Tooltip>
 
                 <Tooltip title="سوال قبلی" aria-label="سوال قبلی"  style={{ fontSize:'3rem'}} >
-                    <FooterBtn disabled={questionIndex == 0 ? true :false} onClick={handlePrevQuestion}>
+                    <FooterBtn 
+                     disabled={questionIndex == 0 ? true :false}
+                     onClick={handlePrevQuestion}>
                         <ArrowBackIosIcon style={{ fontSize:'3rem'}} />
                     </FooterBtn>
                 </Tooltip>
