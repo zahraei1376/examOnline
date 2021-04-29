@@ -590,10 +590,17 @@ const DescriptiveQuestion = (props) => {
         //     // }
           
         // }),
+          onRowUpdateBefore: () =>
+            new Promise((resolve, reject) => {
+              console.log("onRowUpdateBefore");
+              props.setToggle(true);
+              // props.setDisableComponents(true);
+              resolve();
+            }),
           //////////////////////////////////////////
           onRowUpdateCancelled: rowData => {
             loadVariable.load = true;
-            setToggle(false);
+            props.setToggle(false);
             console.log('onRowUpdateCancelled',loadVariable.load);
           },
           //////////////////////////////////////////
@@ -776,6 +783,8 @@ const DescriptiveQuestion = (props) => {
                 setShowMessage(!showMessage);
                 resolve();
               }
+
+              props.setToggle(false);
             
           }),
           //////////////////////////////////////////

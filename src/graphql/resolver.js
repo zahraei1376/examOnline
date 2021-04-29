@@ -192,4 +192,22 @@ const SET_RESPONSE_STUDENT = gql`
   }
 `;
 
-export { SET_QUESTION_CHILD, GET_QUESTIONS ,DELETE_QUESTIONCHILD ,SET_RESPONSE_STUDENT};
+const SET_DEALY_RESPONSE_STUDENT = gql`
+  mutation addDelayResponse(
+    $userName: String!,
+    $password: String!,
+    $ecI: String!,
+    $delay: String!,
+    ){
+      addDelayResponse(
+        userName: $userName, 
+        password: $password, 
+        delay: $delay,
+        ecI: $ecI, 
+      ){
+        id
+      }
+  }
+`;
+
+export { SET_QUESTION_CHILD, GET_QUESTIONS ,DELETE_QUESTIONCHILD ,SET_RESPONSE_STUDENT ,SET_DEALY_RESPONSE_STUDENT};

@@ -4,8 +4,9 @@ import {AddIndexQuestion ,LowOffIndexQuestion} from './questionIndex.utils';
 const INITIALSTATE = {
     indexQuestion: 0,
     questionsLenght:0,
+    typeIncreaseQuestions : 'justForward',
+    runningTomeOfTime:false,
 }
-
 
 const QuestionIndexReducer = (state = INITIALSTATE ,action)=>{
     switch (action.type) {
@@ -13,6 +14,11 @@ const QuestionIndexReducer = (state = INITIALSTATE ,action)=>{
             return {
                 ...state,
                 indexQuestion:action.payload,
+            }
+        case QuestionIndexTypes.SET_TYPE_INCREASE_QUESTIONS:
+            return {
+                ...state,
+                typeIncreaseQuestions:action.payload,
             }
             // break;
         case QuestionIndexTypes.INCREASE_INDEX:
@@ -34,6 +40,13 @@ const QuestionIndexReducer = (state = INITIALSTATE ,action)=>{
                 ...state,
                 questionsLenght:action.payload,
                 // indexQuestion:state.indexQuestion - 1,
+            }
+            // break;
+
+        case QuestionIndexTypes.RUNNING_OUT_OF_TIME:
+            return {
+                ...state,
+                runningTomeOfTime:action.payload,
             }
             // break;
         default:

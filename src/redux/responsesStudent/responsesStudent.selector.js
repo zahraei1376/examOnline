@@ -26,7 +26,7 @@ export const getResponseStudentWithIndex = (questionId) =>{
                     // }                 
                 }
 
-                return null;
+                // return null;
                 // console.log('existIDIf' ,existID);
                 // responseStudent.map(item => item.id === questionId ? item.res : null );
             }else{

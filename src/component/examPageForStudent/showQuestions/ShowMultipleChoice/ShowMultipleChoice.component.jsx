@@ -23,12 +23,12 @@ const ShowMultipleChoiceItems = ({number,question,ResItem ,setResForRedux})=>{
     // },[questionRes])
 
     // const [checked ,setChecked] = useState(ResItem ? ResItem : '');
-    const [checked ,setChecked] = useState('');
+    const [checked , setChecked] = useState(ResItem);
     useEffect(()=>{
-      console.log('ResItem' , ResItem);
+      console.log('MyResItem' , ResItem);
       console.log('number' , number);
       setResForRedux(ResItem);
-      setChecked(ResItem);
+      // setChecked(ResItem);
     },[number]);
 
     const setOneAnswer = (e) =>{
@@ -45,11 +45,13 @@ const ShowMultipleChoiceItems = ({number,question,ResItem ,setResForRedux})=>{
                   type="radio"
                   id={`optionOne${number}`}
                   name={number}
-                  // value={number < 9 ? `0${number + 1},1` : `${number + 1},1`}
                   value={'1'}
                   onChange={e => setOneAnswer(e)}
+                  // defaultChecked={ResItem == '1'}
+                  // defaultChecked={ResItem != null && ResItem == '1' ? true : false}
                   // defaultChecked={checked == '1' ? true : false}
-                  checked={checked == '1' ? true : false}
+                  // checked={checked == '1' ? true : false}
+                  defaultChecked={ResItem == '1' ? true : false}
                 />
                 <InputLabel
                   // htmlFor="optionOne"
@@ -85,7 +87,9 @@ const ShowMultipleChoiceItems = ({number,question,ResItem ,setResForRedux})=>{
                   // value={number < 9 ? `0${number + 1},2` : `${number + 1},2`}
                   value={'2'}
                   onChange={e => setOneAnswer(e)}
-                  checked={checked == '2' ? true : false}
+                  // checked={checked == '2' ? true : false}
+                  // defaultChecked={ResItem == '2'}
+                  defaultChecked={ResItem == '2' ? true : false}
                   // defaultChecked={checked == '2' ? true : false}
                 />
                 <InputLabel
@@ -112,7 +116,11 @@ const ShowMultipleChoiceItems = ({number,question,ResItem ,setResForRedux})=>{
                   // value={number < 9 ? `0${number + 1},3` : `${number + 1},3`}
                   value={'3'}
                   onChange={e => setOneAnswer(e)}
-                  checked={checked == '3' ? true : false}
+                  // checked={checked == '3' ? true : false}
+                  defaultChecked={ResItem == '3' ? true : false}
+                  // defaultChecked={checked == '3' ? true : false}
+                  // defaultChecked={ResItem == '3'}
+                  // defaultChecked={ResItem != null && ResItem == '3' ? true : false}
                   // defaultChecked={checked == '3' ? true : false}
                 />
                 <InputLabel
@@ -139,8 +147,12 @@ const ShowMultipleChoiceItems = ({number,question,ResItem ,setResForRedux})=>{
                   // value={number < 9 ? `0${number + 1},4` : `${number + 1},4`}
                   value={'4'}
                   onChange={e => setOneAnswer(e)}
-                  checked={checked == '4' ? true : false}
+                  // defaultChecked={ResItem == '4'}
+                  // checked={checked == '4' ? true : false}
+                  defaultChecked={ResItem == '4' ? true : false}
                   // defaultChecked={checked == '4' ? true : false}
+                  // defaultChecked={ResItem != null && ResItem == '4' ? true : false}
+
                 />
                 <InputLabel
                   htmlFor={`optionFour${number}`}

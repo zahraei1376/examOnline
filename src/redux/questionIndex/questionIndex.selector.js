@@ -11,3 +11,13 @@ export const finalIndex =createSelector(
     [selectQIndex],
     (questionIndex)=>questionIndex.questionsLenght,
 );
+
+export const typeIncreaseQuestions =createSelector(
+    [selectQIndex],
+    (questionIndex)=>questionIndex.typeIncreaseQuestions,
+);
+
+export const timeOutToSolveQuestions =createSelector(
+    [selectQIndex],
+    (questionIndex)=>questionIndex.runningTomeOfTime,
+);
