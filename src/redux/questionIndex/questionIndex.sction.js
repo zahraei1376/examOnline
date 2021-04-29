@@ -5,6 +5,16 @@ export const setLengthQuestions = (len)=>({
     payload:len,
 });
 
+export const setTypeIncreaseQuestions = (type)=>({
+    type:QuestionIndexTypes.SET_TYPE_INCREASE_QUESTIONS,
+    payload:type,
+});
+
+export const runningTimeOfTimeForSolveQuestions = (type)=>({
+    type:QuestionIndexTypes.RUNNING_OUT_OF_TIME,
+    payload:type,
+});
+
 export const setIndex = (index)=>({
     type:QuestionIndexTypes.SET_INDEX,
     payload:index,

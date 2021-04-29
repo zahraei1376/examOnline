@@ -14,9 +14,9 @@ import ShowImage from '../../imageShow/showImage.component';
 // import AddIcon from '@material-ui/icons/Add';
 ///////////////////////////////////////////////////////
 import { connect} from 'react-redux';
-import {IncreaseIndex , DecreaseIndex} from '../../../redux/questionIndex/questionIndex.sction';
+import {IncreaseIndex , DecreaseIndex } from '../../../redux/questionIndex/questionIndex.sction';
 import {setRepsonseStudent} from '../../../redux/responsesStudent/responsesStudent.action';
-import {selectIndex ,finalIndex} from '../../../redux/questionIndex/questionIndex.selector';
+import {selectIndex ,finalIndex ,typeIncreaseQuestions ,timeOutToSolveQuestions} from '../../../redux/questionIndex/questionIndex.selector';
 import { createStructuredSelector} from 'reselect';
 //////////////////////query
 import { useMutation} from 'react-apollo';
@@ -24,7 +24,7 @@ import {SET_RESPONSE_STUDENT} from '../../../graphql/resolver';
 //////////////////////query
 import MySnackbar from '../../../messageBox/messageBox.component';
 
-const ShowBodyQuestions = ({question,number,children,IncreaseIndexQuestion,setRepsonseStudent ,DecreaseIndexQuestion,questionIndex ,questionsLenght}) =>{
+const ShowBodyQuestions = ({question,number,children,IncreaseIndexQuestion,setRepsonseStudent ,DecreaseIndexQuestion,questionIndex ,questionsLenght ,typeIncreaseQuestions ,timeOutToSolveQuestions }) =>{
 
     // const [state,setState] =useState({
     //     type:false,
@@ -238,6 +238,8 @@ const ShowBodyQuestions = ({question,number,children,IncreaseIndexQuestion,setRe
 
                 <Tooltip title="سوال بعدی" aria-label="سوال بعدی" style={{ fontSize:'3rem'}} >
                     <FooterBtn 
+                    
+                    disabled={timeOutToSolveQuestions == true ? true : false}
                     //  disabled={questionIndex == questionsLenght -1 ? true :false}
                      onClick={handleNextQuestion}>
                         <ArrowForwardIosIcon style={{ fontSize:'3rem'}} />
@@ -246,7 +248,7 @@ const ShowBodyQuestions = ({question,number,children,IncreaseIndexQuestion,setRe
 
                 <Tooltip title="سوال قبلی" aria-label="سوال قبلی"  style={{ fontSize:'3rem'}} >
                     <FooterBtn 
-                     disabled={questionIndex == 0 ? true :false}
+                     disabled={timeOutToSolveQuestions == true ? true : typeIncreaseQuestions == 'justForward' ? true : questionIndex == 0 ? true :false}
                      onClick={handlePrevQuestion}>
                         <ArrowBackIosIcon style={{ fontSize:'3rem'}} />
                     </FooterBtn>
@@ -270,7 +272,9 @@ const ShowBodyQuestions = ({question,number,children,IncreaseIndexQuestion,setRe
 
 const mapStateToProps = createStructuredSelector({
     questionIndex:selectIndex,
-    questionsLenght:finalIndex
+    questionsLenght:finalIndex,
+    typeIncreaseQuestions: typeIncreaseQuestions,
+    timeOutSolveQuestions : timeOutToSolveQuestions,
 });
 
 // selectIndex

@@ -735,7 +735,7 @@ const [uniqGroups,setUniqGroups] = useState([]);
     ret += "" + secs;
     // console.log('ret',ret);
     return ret;
-}
+  }
 
   useEffect(()=>{
     var EmD = document.getElementById('examDuration');
