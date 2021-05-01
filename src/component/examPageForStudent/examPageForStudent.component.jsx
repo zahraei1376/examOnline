@@ -9,6 +9,10 @@ import {connect} from 'react-redux';
 import {selectIndex} from '../../redux/questionIndex/questionIndex.selector';
 import {setLengthQuestions ,setTypeIncreaseQuestions ,runningTimeOfTimeForSolveQuestions} from '../../redux/questionIndex/questionIndex.sction';
 import { createStructuredSelector} from 'reselect';
+import ExamInfoHeader from './examInfo/examInfo.component';
+/////////////////////////////////
+import Tooltip from '@material-ui/core/Tooltip';
+import CloseIcon from '@material-ui/icons/Close';
 /////////////////////query
 import { GET_QUESTIONS } from '../../graphql/resolver';
 import { useQuery ,useMutation} from 'react-apollo';
@@ -16,7 +20,9 @@ import { SET_DEALY_RESPONSE_STUDENT } from '../../graphql/resolver';
 /////////////////////////message
 import MySnackbar from '../../messageBox/messageBox.component';
 ////////////////////////////////
-import {ShowQuestionsContainer,ShowInfoExam ,ShowQuestionsCourseNameContainer , ShowQuestionsCourseName ,ShowLoginTimeContainer ,ShowLoginTime} from './examPageForStudent.styles';
+import {ShowQuestionsContainer,ShowInfoExam ,ShowQuestionsCourseNameContainer ,
+     ShowQuestionsCourseName ,ShowLoginTimeContainer ,ShowLoginTime,
+     ExitButtonContainer,ExitButton} from './examPageForStudent.styles';
 ///////////////////////////////////////time
 // import { realeTime } from '@components/Clock/getTime';
 // import { fixNumbers } from '@components/FixNumbers/fixNumbers';
@@ -29,229 +35,6 @@ moment2().tz("Asia/Tehran").format();
 var moment = require('moment-jalaali');
 moment().format('jYYYY/jMM/jDD')
 /////////////////////////////////////////
-// const Item =[
-// {
-//     'question':' گلمممم گلممممسلام به همه دوستای گلمممم سلام به همه دوستای گلمممم سلام به همه دوستای گلمممم سلام به همه دوستای گلمممم سلام به همه دوستای گلمممم سلام به همه دوستای گلمممم سلام به همه دوستای گلمممم سلام به همه دوستای گلمممم',
-//     'question_score':'2',
-//     'question_explane':'توضیحات مربوط به امتحان درس ریاضی پایه اول',
-//     'question_timeTosolveProblem':'20 دقیقه',
-//     'exam_link':'https://www.woonwinkelhome.com/products/slim-pen-gold',
-//     'items':[
-//         ['توضیحات مربوط به امتحان درس ریاضی پایه دوم','توضیحات مربوط به امتحان درس ریاضی پایه اول'],
-//         ['توضیحات مربوط به امتحان درس ریاضی پایه چهارم','توضیحات مربوط به امتحان درس ریاضی پایه سوم'],
-//         ['توضیحات مربوط به امتحان درس ریاضی پایه ششم','توضیحات مربوط به امتحان درس ریاضی پایه پنجم'],
-//         ['توضیحات مربوط به امتحان درس ریاضی پایه هشتم','توضیحات مربوط به امتحان درس ریاضی پایه هفتم'],
-//         // [1,2],[3,4],[5,6],[7,8]
-//     ],
-//     'question_optionOne':'سلام',
-//     'question_optionTwo':'hello',
-//     'question_optionThree':'سلام',
-//     'question_optionFour':'hello',
-//     'SeqItems':[
-//         ['توضیحات مربوط به امتحان درس ریاضی پایه اول'],
-//         ['توضیحات مربوط به امتحان درس ریاضی پایه دوم'],
-//         ['توضیحات مربوط به امتحان درس ریاضی پایه سوم'],
-//         ['توضیحات مربوط به امتحان درس ریاضی پایه چهارم'],
-//         ['توضیحات مربوط به امتحان درس ریاضی پایه پنجم '],
-//         ['توضیحات مربوط به امتحان درس ریاضی پایه ششم'],
-//         ['توضیحات مربوط به امتحان درس ریاضی پایه هفتم'],
-//         ['توضیحات مربوط به امتحان درس ریاضی پایه هشتم'],
-//         // [1,2],[3,4],[5,6],[7,8]
-//     ],
-//     'vancyItems':'سلام بر همه دوستان $%A و محترم عید $%A بر همه $%A مبارک باد',
-//     'question_type':'1',
-//     // 'vancyItems':'سلام بر همه دوستان $%A و محترم عید $%A بر همه $%A مبارک باد سلام بر همه دوستان $%A و محترم عید $%A بر همه $%A مبارک باد سلام بر همه دوستان $%A و محترم عید $%A بر همه $%A مبارک باد سلام بر همه دوستان $%A و محترم عید $%A بر همه $%A مبارک باد',
-  
-//     // 'question_optionThree':'hi',
-//     // 'question_optionFour':'آنیو',
-//     // 'question_link':'https://www.woonwinkelhome.com/products/slim-pen-gold',
-
-// },
-// {
-//     'question':' وستای گلمممم سلام به همه دوستای گلمممم سلام به همه دوستای گلمممم',
-//     'question_score':'2',
-//     'question_explane':'توضیحات مربوط به امتحان درس ریاضی پایه اول',
-//     'question_timeTosolveProblem':'20 دقیقه',
-//     'exam_link':'https://www.woonwinkelhome.com/products/slim-pen-gold',
-//     'items':[
-//         ['توضیحات مربوط به امتحان درس ریاضی پایه دوم','توضیحات مربوط به امتحان درس ریاضی پایه اول'],
-//         ['توضیحات مربوط به امتحان درس ریاضی پایه چهارم','توضیحات مربوط به امتحان درس ریاضی پایه سوم'],
-//         ['توضیحات مربوط به امتحان درس ریاضی پایه ششم','توضیحات مربوط به امتحان درس ریاضی پایه پنجم'],
-//         ['توضیحات مربوط به امتحان درس ریاضی پایه هشتم','توضیحات مربوط به امتحان درس ریاضی پایه هفتم'],
-//         // [1,2],[3,4],[5,6],[7,8]
-//     ],
-//     'question_optionOne':'سلام',
-//     'question_optionTwo':'hello',
-//     'question_optionThree':'سلام',
-//     'question_optionFour':'hello',
-//     'SeqItems':[
-//         ['توضیحات مربوط به امتحان درس ریاضی پایه اول'],
-//         ['توضیحات مربوط به امتحان درس ریاضی پایه دوم'],
-//         ['توضیحات مربوط به امتحان درس ریاضی پایه سوم'],
-//         ['توضیحات مربوط به امتحان درس ریاضی پایه چهارم'],
-//         ['توضیحات مربوط به امتحان درس ریاضی پایه پنجم '],
-//         ['توضیحات مربوط به امتحان درس ریاضی پایه ششم'],
-//         ['توضیحات مربوط به امتحان درس ریاضی پایه هفتم'],
-//         ['توضیحات مربوط به امتحان درس ریاضی پایه هشتم'],
-//         // [1,2],[3,4],[5,6],[7,8]
-//     ],
-//     'vancyItems':'سلام بر همه دوستان $%A و محترم عید $%A بر همه $%A مبارک باد',
-//     'question_type':'2',
-//     // 'vancyItems':'سلام بر همه دوستان $%A و محترم عید $%A بر همه $%A مبارک باد سلام بر همه دوستان $%A و محترم عید $%A بر همه $%A مبارک باد سلام بر همه دوستان $%A و محترم عید $%A بر همه $%A مبارک باد سلام بر همه دوستان $%A و محترم عید $%A بر همه $%A مبارک باد',
-  
-//     // 'question_optionThree':'hi',
-//     // 'question_optionFour':'آنیو',
-//     // 'question_link':'https://www.woonwinkelhome.com/products/slim-pen-gold',
-
-// },
-// {
-//     'question':' گلمممم گلممممسلام به همه دوستای گلمممم سلام به همه دوستای گلمممم سلام به همه دوستای گلمممم سلام به همه دوستای گلمممم سلام به همه دوستای گلمممم سلام به همه دوستای گلمممم سلام به همه دوستای گلمممم سلام به همه دوستای گلمممم',
-//     'question_score':'2',
-//     'question_explane':'توضیحات مربوط به امتحان درس ریاضی پایه اول',
-//     'question_timeTosolveProblem':'20 دقیقه',
-//     'exam_link':'https://www.woonwinkelhome.com/products/slim-pen-gold',
-//     'items':[
-//         ['توضیحات مربوط به امتحان درس ریاضی پایه دوم','توضیحات مربوط به امتحان درس ریاضی پایه اول'],
-//         ['توضیحات مربوط به امتحان درس ریاضی پایه چهارم','توضیحات مربوط به امتحان درس ریاضی پایه سوم'],
-//         ['توضیحات مربوط به امتحان درس ریاضی پایه ششم','توضیحات مربوط به امتحان درس ریاضی پایه پنجم'],
-//         ['توضیحات مربوط به امتحان درس ریاضی پایه هشتم','توضیحات مربوط به امتحان درس ریاضی پایه هفتم'],
-//         // [1,2],[3,4],[5,6],[7,8]
-//     ],
-//     'question_optionOne':'سلام',
-//     'question_optionTwo':'hello',
-//     'question_optionThree':'سلام',
-//     'question_optionFour':'hello',
-//     'SeqItems':[
-//         ['توضیحات مربوط به امتحان درس ریاضی پایه اول'],
-//         ['توضیحات مربوط به امتحان درس ریاضی پایه دوم'],
-//         ['توضیحات مربوط به امتحان درس ریاضی پایه سوم'],
-//         ['توضیحات مربوط به امتحان درس ریاضی پایه چهارم'],
-//         ['توضیحات مربوط به امتحان درس ریاضی پایه پنجم '],
-//         ['توضیحات مربوط به امتحان درس ریاضی پایه ششم'],
-//         ['توضیحات مربوط به امتحان درس ریاضی پایه هفتم'],
-//         ['توضیحات مربوط به امتحان درس ریاضی پایه هشتم'],
-//         // [1,2],[3,4],[5,6],[7,8]
-//     ],
-//     'vancyItems':'سلام بر همه دوستان $%A و محترم عید $%A بر همه $%A مبارک باد',
-//     'question_type':'3',
-//     // 'vancyItems':'سلام بر همه دوستان $%A و محترم عید $%A بر همه $%A مبارک باد سلام بر همه دوستان $%A و محترم عید $%A بر همه $%A مبارک باد سلام بر همه دوستان $%A و محترم عید $%A بر همه $%A مبارک باد سلام بر همه دوستان $%A و محترم عید $%A بر همه $%A مبارک باد',
-  
-//     // 'question_optionThree':'hi',
-//     // 'question_optionFour':'آنیو',
-//     // 'question_link':'https://www.woonwinkelhome.com/products/slim-pen-gold',
-
-// },
-// {
-//     'question':' گلمممم گلممممسلام به همه دوستای گلمممم سلام به همه دوستای گلمممم سلام به همه دوستای گلمممم سلام به همه دوستای گلمممم سلام به همه دوستای گلمممم سلام به همه دوستای گلمممم سلام به همه دوستای گلمممم سلام به همه دوستای گلمممم',
-//     'question_score':'2',
-//     'question_explane':'توضیحات مربوط به امتحان درس ریاضی پایه اول',
-//     'question_timeTosolveProblem':'20 دقیقه',
-//     'exam_link':'https://www.woonwinkelhome.com/products/slim-pen-gold',
-//     'items':[
-//         ['توضیحات مربوط به امتحان درس ریاضی پایه دوم','توضیحات مربوط به امتحان درس ریاضی پایه اول'],
-//         ['توضیحات مربوط به امتحان درس ریاضی پایه چهارم','توضیحات مربوط به امتحان درس ریاضی پایه سوم'],
-//         ['توضیحات مربوط به امتحان درس ریاضی پایه ششم','توضیحات مربوط به امتحان درس ریاضی پایه پنجم'],
-//         ['توضیحات مربوط به امتحان درس ریاضی پایه هشتم','توضیحات مربوط به امتحان درس ریاضی پایه هفتم'],
-//         // [1,2],[3,4],[5,6],[7,8]
-//     ],
-//     'question_optionOne':'سلام',
-//     'question_optionTwo':'hello',
-//     'SeqItems':[
-//         ['توضیحات مربوط به امتحان درس ریاضی پایه اول'],
-//         ['توضیحات مربوط به امتحان درس ریاضی پایه دوم'],
-//         ['توضیحات مربوط به امتحان درس ریاضی پایه سوم'],
-//         ['توضیحات مربوط به امتحان درس ریاضی پایه چهارم'],
-//         ['توضیحات مربوط به امتحان درس ریاضی پایه پنجم '],
-//         ['توضیحات مربوط به امتحان درس ریاضی پایه ششم'],
-//         ['توضیحات مربوط به امتحان درس ریاضی پایه هفتم'],
-//         ['توضیحات مربوط به امتحان درس ریاضی پایه هشتم'],
-//         // [1,2],[3,4],[5,6],[7,8]
-//     ],
-//     'vancyItems':'سلام بر همه دوستان $%A و محترم عید $%A بر همه $%A مبارک باد',
-//     'question_type':'4',
-//     // 'vancyItems':'سلام بر همه دوستان $%A و محترم عید $%A بر همه $%A مبارک باد سلام بر همه دوستان $%A و محترم عید $%A بر همه $%A مبارک باد سلام بر همه دوستان $%A و محترم عید $%A بر همه $%A مبارک باد سلام بر همه دوستان $%A و محترم عید $%A بر همه $%A مبارک باد',
-  
-//     // 'question_optionThree':'hi',
-//     // 'question_optionFour':'آنیو',
-//     // 'question_link':'https://www.woonwinkelhome.com/products/slim-pen-gold',
-
-// },
-// {
-//     'question':' گلمممم گلممممسلام به همه دوستای گلمممم سلام به همه دوستای گلمممم سلام به همه دوستای گلمممم سلام به همه دوستای گلمممم سلام به همه دوستای گلمممم سلام به همه دوستای گلمممم سلام به همه دوستای گلمممم سلام به همه دوستای گلمممم',
-//     'question_score':'2',
-//     'question_explane':'توضیحات مربوط به امتحان درس ریاضی پایه اول',
-//     'question_timeTosolveProblem':'20 دقیقه',
-//     'exam_link':'https://www.woonwinkelhome.com/products/slim-pen-gold',
-//     'items':[
-//         ['توضیحات مربوط به امتحان درس ریاضی پایه دوم','توضیحات مربوط به امتحان درس ریاضی پایه اول'],
-//         ['توضیحات مربوط به امتحان درس ریاضی پایه چهارم','توضیحات مربوط به امتحان درس ریاضی پایه سوم'],
-//         ['توضیحات مربوط به امتحان درس ریاضی پایه ششم','توضیحات مربوط به امتحان درس ریاضی پایه پنجم'],
-//         ['توضیحات مربوط به امتحان درس ریاضی پایه هشتم','توضیحات مربوط به امتحان درس ریاضی پایه هفتم'],
-//         // [1,2],[3,4],[5,6],[7,8]
-//     ],
-//     'question_optionOne':'سلام',
-//     'question_optionTwo':'hello',
-//     'question_optionThree':'سلام',
-//     'question_optionFour':'hello',
-//     'SeqItems':[
-//         ['توضیحات مربوط به امتحان درس ریاضی پایه اول'],
-//         ['توضیحات مربوط به امتحان درس ریاضی پایه دوم'],
-//         ['توضیحات مربوط به امتحان درس ریاضی پایه سوم'],
-//         ['توضیحات مربوط به امتحان درس ریاضی پایه چهارم'],
-//         ['توضیحات مربوط به امتحان درس ریاضی پایه پنجم '],
-//         ['توضیحات مربوط به امتحان درس ریاضی پایه ششم'],
-//         ['توضیحات مربوط به امتحان درس ریاضی پایه هفتم'],
-//         ['توضیحات مربوط به امتحان درس ریاضی پایه هشتم'],
-//         // [1,2],[3,4],[5,6],[7,8]
-//     ],
-//     'vancyItems':'سلام بر همه دوستان $%A و محترم عید $%A بر همه $%A مبارک باد',
-//     'question_type':'5',
-//     // 'vancyItems':'سلام بر همه دوستان $%A و محترم عید $%A بر همه $%A مبارک باد سلام بر همه دوستان $%A و محترم عید $%A بر همه $%A مبارک باد سلام بر همه دوستان $%A و محترم عید $%A بر همه $%A مبارک باد سلام بر همه دوستان $%A و محترم عید $%A بر همه $%A مبارک باد',
-  
-//     // 'question_optionThree':'hi',
-//     // 'question_optionFour':'آنیو',
-//     // 'question_link':'https://www.woonwinkelhome.com/products/slim-pen-gold',
-
-// },
-// {
-//     'question':' گلمممم گلممممسلام به همه دوستای گلمممم سلام به همه دوستای گلمممم سلام به همه دوستای گلمممم سلام به همه دوستای گلمممم سلام به همه دوستای گلمممم سلام به همه دوستای گلمممم سلام به همه دوستای گلمممم سلام به همه دوستای گلمممم',
-//     'question_score':'2',
-//     'question_explane':'توضیحات مربوط به امتحان درس ریاضی پایه اول',
-//     'question_timeTosolveProblem':'20 دقیقه',
-//     'exam_link':'https://www.woonwinkelhome.com/products/slim-pen-gold',
-//     'items':[
-//         ['توضیحات مربوط به امتحان درس ریاضی پایه دوم','توضیحات مربوط به امتحان درس ریاضی پایه اول'],
-//         ['توضیحات مربوط به امتحان درس ریاضی پایه چهارم','توضیحات مربوط به امتحان درس ریاضی پایه سوم'],
-//         ['توضیحات مربوط به امتحان درس ریاضی پایه ششم','توضیحات مربوط به امتحان درس ریاضی پایه پنجم'],
-//         ['توضیحات مربوط به امتحان درس ریاضی پایه هشتم','توضیحات مربوط به امتحان درس ریاضی پایه هفتم'],
-//         // [1,2],[3,4],[5,6],[7,8]
-//     ],
-//     'question_optionOne':'سلام',
-//     'question_optionTwo':'hello',
-//     'question_optionThree':'سلام',
-//     'question_optionFour':'hello',
-//     'SeqItems':[
-//         ['توضیحات مربوط به امتحان درس ریاضی پایه اول'],
-//         ['توضیحات مربوط به امتحان درس ریاضی پایه دوم'],
-//         ['توضیحات مربوط به امتحان درس ریاضی پایه سوم'],
-//         ['توضیحات مربوط به امتحان درس ریاضی پایه چهارم'],
-//         ['توضیحات مربوط به امتحان درس ریاضی پایه پنجم '],
-//         ['توضیحات مربوط به امتحان درس ریاضی پایه ششم'],
-//         ['توضیحات مربوط به امتحان درس ریاضی پایه هفتم'],
-//         ['توضیحات مربوط به امتحان درس ریاضی پایه هشتم'],
-//         // [1,2],[3,4],[5,6],[7,8]
-//     ],
-//     'vancyItems':'سلام بر همه دوستان $%A و محترم عید $%A بر همه $%A مبارک باد',
-//     'question_type':'6',
-//     // 'vancyItems':'سلام بر همه دوستان $%A و محترم عید $%A بر همه $%A مبارک باد سلام بر همه دوستان $%A و محترم عید $%A بر همه $%A مبارک باد سلام بر همه دوستان $%A و محترم عید $%A بر همه $%A مبارک باد سلام بر همه دوستان $%A و محترم عید $%A بر همه $%A مبارک باد',
-  
-//     // 'question_optionThree':'hi',
-//     // 'question_optionFour':'آنیو',
-//     // 'question_link':'https://www.woonwinkelhome.com/products/slim-pen-gold',
-
-// },
-// ]
-
 const  ExamPageForStudent = ({questionIndex ,setLengthQuestions , setTypeIncreaseQuestions ,runningTimeOfTimeForSolveQuestions}) =>{
     ///////////////////////////////////////////////////
     const { loading, error, data ,refetch  } = useQuery(GET_QUESTIONS , {
@@ -270,8 +53,15 @@ const  ExamPageForStudent = ({questionIndex ,setLengthQuestions , setTypeIncreas
     const [time, setTime] = useState('');
     /////////////////////timer
     var second = 0;
-    // const [second, setSecond] = useState(0);
     const [loginTime, setLoginTime] = useState(0);
+    ///////////////////////////////////////////////////
+    // useEffect(()=>{
+    //     return ()=>{
+    //         if(sendReqDelay){
+    //             clearInterval(sendReqDelay);
+    //         }
+    //     }
+    // },[])
     ///////////////////////////////////////////////////
     useEffect(()=>{
         console.log('data',data);
@@ -287,9 +77,15 @@ const  ExamPageForStudent = ({questionIndex ,setLengthQuestions , setTypeIncreas
 
     useEffect(()=>{
         console.log('items' , items);
-        TimerIntervalSolveQuestions = setTimeout(() => {
-            tick();
-        }, 1000);
+        // TimerIntervalSolveQuestions = setTimeout(function run() {
+        //     tick();
+        //     TimerIntervalSolveQuestions = setTimeout(run, 1000);
+        //   }, 1000);
+
+
+        // TimerIntervalSolveQuestions = setInterval(() => {
+        //     tick();
+        // }, 1000);
     } ,[items])
     ///////////////////////////////////////////////////time
     var timerClear;
@@ -317,10 +113,6 @@ const  ExamPageForStudent = ({questionIndex ,setLengthQuestions , setTypeIncreas
     }, [time]);
     /////////////////////
     const handleSendWxamDataAfterEndTime = () => {
-    //     examParent_start_date
-    //   examParent_stop_date
-    //   examParent_start
-    //   examParent_end
         if(data.examParents[0].examParent_start_date === data.examParents[0].examParent_stop_date){
             //////////////////////////////شروع و پایان امتحان در یک روز
             var newEndTime = fixNumbers(moment2(data.examParents[0].examParent_end)
@@ -334,31 +126,35 @@ const  ExamPageForStudent = ({questionIndex ,setLengthQuestions , setTypeIncreas
                     alert('زمان امتحان تمام شده است!!!');
                     runningTimeOfTimeForSolveQuestions(true);
                     clearInterval(timerClear);
-                    clearInterval(sendReqDelay);
-                } else if (data.examParents[0].examParent_method == 1) {
-                    sendReqDelay = setInterval(() => {
-                        setDelayResponseStudent({ variables: { 
-                            userName: "210", 
-                            password: "210", 
-                            delay: time,
-                            ecI: data.examParents[0].id, 
-                        } 
-                        }).then(res=>{
-                        if(res.data && res.data.setDelayResponseStudent){
-                            console.log('data',data);
-                            // setMessage('امتحان ثبت شد');
-                            // setStatus('1');
-                            // setShowMessage(!showMessage);
-                        }else{
-                            console.log('data',data);
-                            // setStatus('0')
-                            // setMessage('امتحان ثبت نشد')
-                            // setShowMessage(!showMessage);
-                        }
-                        }
-                        )
-                    }, 60000);
-                }
+                    if(sendReqDelay){
+                        clearInterval(sendReqDelay);
+                    }
+                    clearInterval(TimerIntervalSolveQuestions);
+                } 
+                // else if (data.examParents[0].examParent_method == 1) {
+                //     sendReqDelay = setInterval(() => {
+                //         setDelayResponseStudent({ variables: { 
+                //             userName: "210", 
+                //             password: "210", 
+                //             delay: time,
+                //             ecI: data.examParents[0].id, 
+                //         } 
+                //         }).then(res=>{
+                //         if(res.data && res.data.setDelayResponseStudent){
+                //             console.log('data',data);
+                //             // setMessage('امتحان ثبت شد');
+                //             // setStatus('1');
+                //             // setShowMessage(!showMessage);
+                //         }else{
+                //             console.log('data',data);
+                //             // setStatus('0')
+                //             // setMessage('امتحان ثبت نشد')
+                //             // setShowMessage(!showMessage);
+                //         }
+                //         }
+                //         )
+                //     }, 60000);
+                // }
             }
         }else{
             ////////////////////////////// شروع و پایان امتحان در یک روز نباشد
@@ -372,17 +168,13 @@ const  ExamPageForStudent = ({questionIndex ,setLengthQuestions , setTypeIncreas
                 alert('زمان امتحان تمام شده است!!!');
                 runningTimeOfTimeForSolveQuestions(true);
                 clearInterval(timerClear);
-                // if (data.examParents[0].examParent_method == 0) { //not
-                //     alert('زمان امتحان تمام شده است!!!');
-                //     runningTimeOfTimeForSolveQuestions(true);
-                //     clearInterval(timerClear);
-                // } 
+                clearInterval(TimerIntervalSolveQuestions);
             }
         }
-    
     }
     /////////////////////
     function format(time) { 
+        console.log('time', time);
         var hrs = Math.floor(time / 3600);
         var mins = Math.floor((time % 3600) / 60);
         var secs = time % 60;
@@ -399,21 +191,7 @@ const  ExamPageForStudent = ({questionIndex ,setLengthQuestions , setTypeIncreas
     /////////////////timer
     const tick = () => {
         second += 1;
-        // let minutes = minute;
-        // let hour = hour;
-
-        // if (seconds === 60) {
-        //     seconds = 0;
-        //     minutes = minutes + 1;
-        // }
-
-        // if (minutes === 60) {
-        //     minutes = 0;
-        //     hour = hour + 1;
-        // }
-
-        // update(seconds, minutes , hour);
-        // setSecond(seconds);
+        // console.log('second', second);
         setLoginTime(format(second));
     };
     //////////////////////////////////////////////////////
@@ -427,11 +205,15 @@ const  ExamPageForStudent = ({questionIndex ,setLengthQuestions , setTypeIncreas
            var counterQuestionsParent = allQuestons[index].questionParent;
            var courseName = allQuestons[index] && allQuestons[index].groups && allQuestons[index].groups.length > 0 ? allQuestons[index].groups[0].course : '';
            console.log('courseName',courseName); 
+           var teacherName = allQuestons[index] && allQuestons[index].groups && allQuestons[index].groups.length > 0 && allQuestons[index].groups[0].people && allQuestons[index].groups[0].people.length > 0 ?  allQuestons[index].groups[0].people[0].name + ' ' + allQuestons[index].groups[0].people[0].sureName : '';
+           console.log('teacherName',teacherName);
            if(counterQuestionsParent && counterQuestionsParent.length > 0){
               for (let j = 0; j < counterQuestionsParent.length; j++) {
                   console.log('allQuestons[index].questionParent[j]', allQuestons[index].questionParent[j] );
                   if(allQuestons[index].questionParent[j].questionChild && allQuestons[index].questionParent[j].questionChild.length > 0){
-                    mergeQ.push({...allQuestons[index].questionParent[j].questionChild[0] , courseName:courseName});
+                    mergeQ.push({...allQuestons[index].questionParent[j].questionChild[0] ,
+                         courseName:courseName,
+                        teacherName:teacherName });
                     // mergeQ.push(allQuestons[index].questionParent[j].questionChild[0]);
                   }
               }
@@ -523,27 +305,68 @@ const  ExamPageForStudent = ({questionIndex ,setLengthQuestions , setTypeIncreas
        return newItem;
     }
     ///////////////////////////////////////////////////
+    const handleExitPage = () =>{
+        runningTimeOfTimeForSolveQuestions(true);
+        clearInterval(timerClear);
+        if(sendReqDelay){
+            clearInterval(sendReqDelay);
+        }
+        clearInterval(TimerIntervalSolveQuestions);
+        setDelayResponseStudent({ variables: { 
+            userName: "210", 
+            password: "210", 
+            pId: "210",
+            epId: data.examParents[0].id, 
+            delay: time,
+            totalScore: '0',
+            countScore: '0',
+        } 
+        }).then(res=>{
+            if(res.data && res.data.setDelayResponseStudent){
+                console.log('data',data);
+                // setMessage('امتحان ثبت شد');
+                // setStatus('1');
+                // setShowMessage(!showMessage);
+            }else{
+                console.log('data',data);
+                // setStatus('0')
+                // setMessage('امتحان ثبت نشد')
+                // setShowMessage(!showMessage);
+            }
+        })
+    }
+    ///////////////////////////////////////////////////
     return(
         <ShowQuestionsContainer>
-            {/* <ShowQuestionsCourseNameContainer>
-                <ShowQuestionsCourseName>نام درس : {items[questionIndex].course}</ShowQuestionsCourseName>
-            </ShowQuestionsCourseNameContainer> */}
-            {/* <ShowDescriptiveQuestion question={Item[questionIndex]} number={48}/> */}
-            {/* <ShowComparativeQuestion question={Item[questionIndex]} number={48} items={RandomArray(Item[questionIndex].items)} /> */}
-            {/* <MultipleChoiceConatiner question={Item[questionIndex]} number={48}/> */}
-            {/* <ShowTrueAndFalseQuestion question={Item[questionIndex]} number={48} /> */}
-            {/* <ShowSequentialQuestion question={Item[questionIndex]} number={48} SeqItems={SeqRandomArray(Item[questionIndex].SeqItems)} /> */}
-            {/* <ShowVacancyQuestion question={Item[questionIndex]} number={48} Vitems={Item[questionIndex].vancyItems}/> */}
+            {/* ////////////////////////////// */}
+            <ExamInfoHeader 
+                startDate={data && data.examParents.length > 0 ? data.examParents[0].examParent_start_date : ''} 
+                startTime={data && data.examParents.length > 0 ? data.examParents[0].examParent_start : ''}
+                endTime={data && data.examParents.length > 0 ? data.examParents[0].examParent_end : ''}
+                teacherName={items.length > 0 ? items[questionIndex].teacherName : ''} 
+            />
+            {/* ////////////////////////////// */}
             <ShowInfoExam>
+                <ExitButtonContainer>
+                    <Tooltip title="خروج" aria-label="خروج"  >
+                        <ExitButton onClick={handleExitPage}>
+                            <CloseIcon style={{ fontSize:'3rem'}}/>
+                        </ExitButton>
+                    </Tooltip>
+                    <ShowLoginTimeContainer>
+                        <ShowLoginTime>{loginTime}</ShowLoginTime>
+                    </ShowLoginTimeContainer>
+                </ExitButtonContainer>
                 <ShowQuestionsCourseNameContainer>
                     <ShowQuestionsCourseName>نام درس : {items.length > 0 ? items[questionIndex].courseName : ''}</ShowQuestionsCourseName>
                 </ShowQuestionsCourseNameContainer>
 
-                <ShowLoginTimeContainer>
+                {/* <ShowLoginTimeContainer>
                     <ShowLoginTime> مدت زمان گذشته از امتحان : {loginTime}</ShowLoginTime>
-                </ShowLoginTimeContainer>
+                </ShowLoginTimeContainer> */}
+                
             </ShowInfoExam>
-            
+            {/* ////////////////////////////// */}
             {(() => {
                 if(items.length > 0){
                     if(items[questionIndex].question_type == '1'){
@@ -569,11 +392,11 @@ const  ExamPageForStudent = ({questionIndex ,setLengthQuestions , setTypeIncreas
                 }
                
             })()}
-
+            {/* ////////////////////////////// */}
             {
                 showMessage ? <MySnackbar message={message} status={status} showMessage={showMessage} setShowMessage={setShowMessage} /> : ''
             }
-
+             {/* ////////////////////////////// */}
         </ShowQuestionsContainer>
     )
 };

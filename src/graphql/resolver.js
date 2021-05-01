@@ -118,6 +118,10 @@ const GET_QUESTIONS = gql`
         id
         groups{
           id
+          people{
+            name
+            sureName
+          }
           course
         }
         examChild_gId
@@ -191,19 +195,24 @@ const SET_RESPONSE_STUDENT = gql`
       }
   }
 `;
-
+// $userName: String!,
+//     $password: String!,
 const SET_DEALY_RESPONSE_STUDENT = gql`
-  mutation addDelayResponse(
+  mutation addResponseInfo(
     $userName: String!,
     $password: String!,
-    $ecI: String!,
+    $epId: String!,
     $delay: String!,
+    $totalScore: String!,
+    $countScore: String!,
     ){
-      addDelayResponse(
-        userName: $userName, 
-        password: $password, 
+      addResponseInfo(
+        userName: $userName,
+        password: $password,
+        epId: $epId,
         delay: $delay,
-        ecI: $ecI, 
+        totalScore: $totalScore,
+        countScore: $countScore,
       ){
         id
       }

@@ -41,10 +41,18 @@ export const BodyQuestionBox = styled.div`
 `;
 
 export const BodyDiv = styled.div`
-width:65%;
+    // width:65%;
+    width:95%;
     display:flex;
     align-items:center;
 `;
+
+export const BodyQDiv = styled.div`
+    width:65%;
+    // width:95%;
+    display:flex;
+    align-items:center;
+`; 
 
 export const BodyQuestion = styled.pre`
     white-space: pre-wrap;      
@@ -99,6 +107,10 @@ export const ScoreTag = styled.p`
     font-family:Bnazanin;
     font-size:1.8rem;
     margin-top:2rem;
+`;
+
+export const QuestionImageContainer = styled.div`
+    display:flex;
 `;
 
 export const FooterQuestionContainer = styled.div`

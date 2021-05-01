@@ -1,6 +1,6 @@
 import React,{useState,useEffect} from 'react';
-import {BodyContainer,BodyQuestion,BodyQuestionBoxWithChildren,BodyQuestionBox,BodyDiv,ImageQuestion,ImageQuestionContainer,
-    ImageWithQuestionContainer , ImageWithQuestion,ScoreTag,ImageQuestionMainContainer,
+import {BodyContainer,BodyQuestion,BodyQuestionBoxWithChildren,BodyQuestionBox,BodyDiv,BodyQDiv,ImageQuestion,ImageQuestionContainer,
+    ImageWithQuestionContainer , ImageWithQuestion,ScoreTag,ImageQuestionMainContainer,QuestionImageContainer,
     FooterQuestionContainer,FooterBtnsContainer , FooterBtn} from './showBodyQuestion.styles';
 import ExplainQuestion from '../../explainQuestionComponent/explainQuestionComponent.component';
 import MyPic from '../../../assets/img/images.jpg';
@@ -47,6 +47,10 @@ const ShowBodyQuestions = ({question,number,children,IncreaseIndexQuestion,setRe
     const [showMessage,setShowMessage] = useState(false);
     const [message,setMessage] =useState('');
     const [status,setStatus] =useState(0);
+    //////////////////////////////////////////
+    useEffect(()=>{
+      console.log('question',question);
+    },[])
     ///////////////////////////////////////////
     useEffect(()=>{
         // console.log('MyQuestions',question);
@@ -169,7 +173,7 @@ const ShowBodyQuestions = ({question,number,children,IncreaseIndexQuestion,setRe
     <BodyContainer>
         <BodyQuestionBoxWithChildren>
         <BodyQuestionBox>
-            {question.exam_link ? (
+            {/* {question.exam_link ? (
                  <ImageWithQuestionContainer>
                  <ImageWithQuestion
                  onClick={() => handleShowPic(`https://kamal-exam.s3.ir-thr-at1.arvanstorage.com/${question.exam_link}`)}
@@ -183,8 +187,85 @@ const ShowBodyQuestions = ({question,number,children,IncreaseIndexQuestion,setRe
                
                 ) : (
                     ''
-            )}
-            {question.question_link ? (
+            )} */}
+            {/* ////////////////////////////////
+             */}
+
+            {(() => {
+              if(question.question_link){
+                  return <ImageQuestionMainContainer>
+                        <ImageQuestionContainer>
+                        <ExplainQuestion number={number} explain={question.question_explain} time={question.question_timeToSolveProblem}/>
+                            <ImageQuestion
+                            onClick={() =>
+                                handleShowPic(
+                                `https://kamal-exam.s3.ir-thr-at1.arvanstorage.com/${question.question_link}`,
+                                )
+                            }
+                            src={MyPic}
+                            // src={question.exam_link}
+                            // src={`https://kamal-exam.s3.ir-thr-at1.arvanstorage.com/${question.exam_link}`}
+                            />
+                            
+                        </ImageQuestionContainer>
+                        <ScoreTag
+                        >
+                        (نمره {question.question_score})
+                        </ScoreTag>
+                        
+                        
+                  </ImageQuestionMainContainer>
+              }else{
+                if(question.exam_link){
+                  return (<QuestionImageContainer>
+                    <BodyQDiv>
+                      <ExplainQuestion number={number} explain={question.question_explain} time={question.question_timeToSolveProblem}/>
+                      <BodyQuestion
+                          // className={
+                          // question.exam_link
+                          //     ? 'questionComponent__question'
+                          //     : 'questionComponent__questionwidth'
+                          // }
+                      >
+                          {question.question.split('%0A').join('\r\n')}
+                          <br/> (
+                          {question.question_score} نمره)
+                      </BodyQuestion>
+                      
+                  </BodyQDiv>
+                    <ImageWithQuestionContainer>
+                    <ImageWithQuestion
+                    onClick={() => handleShowPic(`https://kamal-exam.s3.ir-thr-at1.arvanstorage.com/${question.exam_link}`)}
+                    // onClick={() => handleShowPic(`https://kamal-exam.s3.ir-thr-at1.arvanstorage.com/${question.question_link}`)}
+                    // src={question.question_link}
+                    src={MyPic2}
+                    // src={`https://kamal-exam.s3.ir-thr-at1.arvanstorage.com/${question.question_link}`}
+                    />
+                </ImageWithQuestionContainer>
+                </QuestionImageContainer>)
+                }else{
+                  return (<BodyDiv>
+                    <ExplainQuestion number={number} explain={question.question_explain} time={question.question_timeToSolveProblem}/>
+                    <BodyQuestion
+                        // className={
+                        // question.exam_link
+                        //     ? 'questionComponent__question'
+                        //     : 'questionComponent__questionwidth'
+                        // }
+                    >
+                        {question.question.split('%0A').join('\r\n')}
+                        <br/> (
+                        {question.question_score} نمره)
+                    </BodyQuestion>
+                  
+                  </BodyDiv>)
+                  
+                }
+                  
+              }
+              
+            })()}
+            {/* {question.question_link ? (
                  <ImageQuestionMainContainer>
                  <ImageQuestionContainer>
                  <ExplainQuestion number={number} explain={question.question_explain} time={question.question_timeToSolveProblem}/>
@@ -225,12 +306,10 @@ const ShowBodyQuestions = ({question,number,children,IncreaseIndexQuestion,setRe
                 </BodyDiv>
             ) : (
                 ''
-                )}
+                )} */}
         </BodyQuestionBox>
         {/* //////////////////////////////////////////////children */}
         {childrenWithProps}
-        {/* renderSecret={text => <span style={{ color: "red" }}>{text}</span>} */}
-        {/* {children} */}
         </BodyQuestionBoxWithChildren>
         {/* /////////////////////////////////footer */}
         <FooterQuestionContainer>
