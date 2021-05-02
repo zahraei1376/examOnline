@@ -14,6 +14,7 @@ import PersianDatePicker from '../../generalComponent/MaterialDatePicker/Materia
 // import { ConvertToString } from '@components/ConvertToString/ConvertToString';
 import { Grid } from '@material-ui/core';
 import MomentUtils from '@date-io/moment';
+import { realeTime } from '../../generalComponent/Clock/getTime';
 // import { realeTime } from '@components/Clock/getTime';
 // import AppContext from 'app/AppContext';
 ////////////////////////////////////////////////////
@@ -57,17 +58,20 @@ var moment = require('moment-jalaali');
 const addNewExamMutation = gql`
     mutation addExamParent(
         $userName: String!,
-        $password: String!, 
-        $examParent_gId:[ID]!,
+        $password: String!,
+        $examParent_gId:[String]!,
         $examParent_start_date: String!, 
         $examParent_stop_date: String!, 
         $examParent_start: String!,
         $examParent_end: String!, 
+        $examParent_duration: String!,
         $examParent_maxScore: String!, 
         $examParent_method:String!,
-        $examParent_topic:String!
+        $examParent_topic:String!,
+        $examParent_random: Boolean!,
+        $examParent_backward: Boolean!,
         ){
-            addExamParent(
+          addExamParent(
                 userName: $userName, 
                 password:$password, 
                 examParent_gId: $examParent_gId,
@@ -75,9 +79,12 @@ const addNewExamMutation = gql`
                 examParent_stop_date: $examParent_stop_date,
                 examParent_start: $examParent_start,
                 examParent_end: $examParent_end, 
+                examParent_duration: $examParent_duration,
                 examParent_maxScore: $examParent_maxScore, 
                 examParent_method: $examParent_method,
-                examParent_topic: $examParent_topic
+                examParent_topic: $examParent_topic,
+                examParent_random: $examParent_random,
+                examParent_backward: $examParent_backward,
                 ){
                   id
                 }
@@ -99,10 +106,23 @@ const AddExamForTeacher = ({MyGroups}) => {
 
   //////////////////////////////////////////////
   const [values, setValues] = React.useState([]);
+  const [valuesClass,setValuesClass] = useState([]);
 
-  const clearSelected = () => {
+  const clearSelectedCourse = () => {
     setValues([]);
   };
+
+  const clearSelectedClass = () => {
+    setValuesClass([]);
+  };
+
+  const clearSelected = () =>{
+    setValues([]);
+    setValuesClass([]);
+  }
+
+
+ 
   // const getAllUsersQuery = gql`
   // {
   //   groupsListByPerson(userName: "210", password: "210") {
@@ -133,8 +153,8 @@ const AddExamForTeacher = ({MyGroups}) => {
   //   second: '2-digit',
   //   hour12: false,
   // }));
-  const [selectedEndTime, handleSelectedEndTime] = useState('');
-  const [selectedstartTime, handleSelectedStartTime] = useState('');
+  const [selectedEndTime, handleSelectedEndTime] = useState(moment2());
+  const [selectedstartTime, handleSelectedStartTime] = useState(moment2());
   const [groupsExam,setGroupsExam] =useState([]);
   ////////////////////////
   const [state,setState] = useState({
@@ -152,7 +172,10 @@ const AddExamForTeacher = ({MyGroups}) => {
     examLevel:'',
     // examLevel:[],
     handleOneClick:false,
-    examMethod:'',
+    examMethod: '0',
+    backward: "false",
+    random : "true",
+    duration: '00:00:00',
   })
   // const [examCourseName, setExamCourseName] = useState('');
   // const [examMaxScore, setExamMaxScore] = useState('');
@@ -171,12 +194,15 @@ const AddExamForTeacher = ({MyGroups}) => {
     // {class:'ب',level:'اول',course:'اجتماعی',pId:'4'},
     // {class:'ج',level:'سوم',course:'علوم',pId:'5'},
 ]);
-const [uniqGroups,setUniqGroups] = useState([]);
-
+  const [uniqGroups,setUniqGroups] = useState([]);
+  {/* ///////////////////////////////////////////////*/}
   const handleItems = (item,myItem) => {
     console.log('myItem',myItem);
     // var MyClass = groups.map(group => {group.level === myLevel ?  group : ""})
     if(item =="selectedLevel"){
+      clearSelected();
+      // setValuesClass([]);
+      // setState({...state ,getExamClassTeacher: []});
       setSelectedLevel(myItem);
       var Myclass = uniqGroups.filter(group =>group.level === myItem);
       console.log('Myclass',Myclass);
@@ -238,6 +264,7 @@ const [uniqGroups,setUniqGroups] = useState([]);
       }
       else if(typePfUser == 1){
         if(myItem && myItem.length > 0){
+          setValuesClass(myItem);
           setSelectedClass(myItem);
           var itemsClass = myItem[0].class;
           console.log('itemsClass',itemsClass);
@@ -266,6 +293,8 @@ const [uniqGroups,setUniqGroups] = useState([]);
           console.log('getExamCourseNamesTeacher',newCourseNames);
           setState({...state, getExamCourseNamesTeacher : newCourseNames});
         }else{
+          // clearSelectedCourse();
+          // setValuesClass([]);
           clearSelected();
           setSelectedClass([]);
           // setState({...state, getExamCourseNamesTeacher : []});
@@ -284,7 +313,7 @@ const [uniqGroups,setUniqGroups] = useState([]);
   // const [courseNames, setCourseNames] = useState([]);
   // const [handleOneClick, sethandleOneClick] = useState(false);
   // const [method, setMethod] = useState('');
-
+  {/* ///////////////////////////////////////////////*/}
   useEffect(() => {
     setNewSelectedStartDate(fixNumbers(moment(selectedStatrtDate,
     ).format('jYYYY/jMM/jDD')));
@@ -294,7 +323,7 @@ const [uniqGroups,setUniqGroups] = useState([]);
     setNewSelectedEndDate(fixNumbers(moment(selectedEndDate,
     ).format('jYYYY/jMM/jDD')));
   }, [selectedEndDate]);
-
+  {/* ///////////////////////////////////////////////*/}
   
 // async function remoteData() {
 //   console.log("Query object - ");
@@ -507,7 +536,7 @@ const [uniqGroups,setUniqGroups] = useState([]);
   //   //   });
   //   // }
   // }, []);
-
+  {/* ///////////////////////////////////////////////*/}
   useEffect(()=>{
     // var Myclass = groups.filter(group =>group.level === myItem);
     // console.log('Myclass',Myclass);
@@ -568,8 +597,7 @@ const [uniqGroups,setUniqGroups] = useState([]);
     setState({...state, getExamLevelTeacher : newLevels});
     // setState({...state,getExamCourseNamesTeacher:'' ,getExamClassTeacher : newClassName});
   },[MyGroups])
-
-
+  {/* ///////////////////////////////////////////////*/}
   const handleGroupsExam = (vl) =>{
     // console.log('vl',vl);
     // var temp =[...groupsExam];
@@ -600,124 +628,54 @@ const [uniqGroups,setUniqGroups] = useState([]);
       setGroupsExam(vl);
     }
   }
-
+  {/* ///////////////////////////////////////////////*/}
   useEffect(()=>{
       console.log("uniqGroupsExam" , groupsExam);
   },[groupsExam])
-
-
+  {/* ///////////////////////////////////////////////*/}
   const handleSubmit = async(event) => {
     event.preventDefault();
-    // console.log("groupsExam" , groupsExam);
-    await addExamParent({ variables: { 
+    if(groupsExam.length > 0){
+      await addExamParent({ variables: { 
         userName: "211", 
         password: "211", 
         examParent_gId: groupsExam,
         examParent_start_date: newSelectedStartDate, 
         examParent_stop_date: newSelectedEndDate,
-        examParent_start: selectedstartTime,
-        examParent_end: selectedEndTime, 
+        examParent_start:selectedstartTime ?  moment2(selectedstartTime).tz('Asia/Tehran').format('HH:mm:00') : '',
+        examParent_end: selectedEndTime ?  moment2(selectedEndTime).tz('Asia/Tehran').format('HH:mm:00') : '', 
+        examParent_duration: state.duration,
         examParent_maxScore: state.examMaxScore, 
         examParent_method: state.examMethod,
-        examParent_topic: state.examTopic
-     } 
-    }).then(res=>{
-      if(res.data && res.data.addExamParent){
-        // console.log('data',data);
-        setMessage('امتحان ثبت شد');
-        setStatus('1');
-        setShowMessage(!showMessage);
-      }else{
-        // console.log('data',data);
-        setStatus('0')
-        setMessage('امتحان ثبت نشد')
-        setShowMessage(!showMessage);
-      }
+        examParent_topic: state.examTopic,
+        examParent_random: state.random == "true" ? true : false,
+        examParent_backward: state.backward == "true" ? true : false,
+        // //////////////////////////////////////
+     }
+      }).then(res=>{
+        if(res.data && res.data.addExamParent){
+          // console.log('data',data);
+          setMessage('امتحان ثبت شد');
+          setStatus('1');
+          setShowMessage(!showMessage);
+        }else{
+          // console.log('data',data);
+          setStatus('0')
+          setMessage('امتحان ثبت نشد')
+          setShowMessage(!showMessage);
+        }
+      })
+    }else{
+      setStatus('0')
+      setMessage('باید درسی را انتخاب کنید')
+      setShowMessage(!showMessage);
     }
-      )
-    // console.log('data',data);
-    // && data.addExamParent
     
     
-  //   addNewExamMutation({
-  //     variables: {
-  //       userName: "211", 
-  //       password: "211", 
-  //       examParent_gId: groupsExam,
-  //       examParent_start_date: newSelectedStartDate, 
-  //       examParent_stop_date: newSelectedEndDate,
-  //       examParent_start: selectedstartTime,
-  //       examParent_end: selectedEndTime, 
-  //       examParent_maxScore: state.examMaxScore, 
-  //       examParent_method: state.examMethod,
-  //       examParent_topic: state.examTopic
-  //     },
-  //     // refetchQueries: [{ query: getBooksQuery }]
-  // });
-    // sethandleOneClick(true);
-    // if (typeOfPerson === 'teacher') {
-    // var teacherName =
-    //   user.user.person_name +
-    //   ' ' +
-    //   user.user.person_surname;
-    // //////////////////////////
-    // var IdForAxam = uuidv4();
-    // /////////
-    // if ((level !== "" && classN !== "" && examCourseName !== '' && method !== '')) {
-    //   ///////////////
-    //   axios({
-    //     method: 'post',
-    //     url: '/addNewExam',
-    //     data: {
-    //       exam_id: IdForAxam,
-    //       exam_data: newSelectedDate,
-    //       exam_start:selectedstartTime,
-    //       exam_end: selectedEndTime,
-    //       exam_teacherId: user.user.person_id,
-    //       exam_teacherName: teacherName,
-    //       exam_level: level,
-    //       exam_className: classN,
-    //       exam_courseName: examCourseName,
-    //       exam_maxScore: examMaxScore,
-    //       exam_method:method,
-    //       exam_topic: examTopic,
-    //       // exam_pdf: pdfFile ? pdfFile : ''
-    //     },
-    //   })
-    //     .then(res => {
-    //       if (res.data.exam_id) {
-    //         sethandleOneClick(false);
-    //         setExamCourseName('');
-    //         setExamMaxScore('');
-    //         setAxamId(res.data.exam_id);
-    //         setMessage('اطلاعاتی به درستی ثبت شد');
-    //         setStatus(0);
-    //         setShowPopup(true);
-    //       } else {
-    //         sethandleOneClick(false);
-    //         // setExamCourseName('');
-    //         // setExamMaxScore('');
-    //         // setAxamId(res.data.addNewAxam.exam_id);
-    //         setMessage('اطلاعاتی به درستی ثبت نشد');
-    //         setStatus(1);
-    //         setShowPopup(true);
-    //       }
-    //     })
-    //     .catch(error => {
-    //       console.log(error);
-    //     });
-    //     //////////////////////////////////////
-      
-    // } else {
-    //   setMessage('ابتدا اطلاعات خواسته شده را پر کنید!!');
-    //   setStatus(1);
-    //   setShowPopup(true);
-    //   sethandleOneClick(false);
-    // }
   };
-
+  {/* ///////////////////////////////////////////////*/}
   function format(time) { 
-    // console.log('time',time);  
+    console.log('time',time);  
     // Hours, minutes and seconds
     // var hrs = ~~(time / 3600);
     // var mins = ~~((time % 3600) / 60);
@@ -725,18 +683,22 @@ const [uniqGroups,setUniqGroups] = useState([]);
     var hrs = Math.floor(time / 3600);
     var mins = Math.floor((time % 3600) / 60);
     var secs = time % 60;
-
+    console.log('hrs',hrs);
+    console.log('mins',mins);
+    console.log('secs',secs);
     // Output like "1:01" or "4:03:59" or "123:03:59"
     var ret = "";
     if (hrs > 0) {
         ret += "" + hrs + ":" + (mins < 10 ? "0" : "");
+    }else{
+      ret += "00:" + (mins < 10 ? "0" : "");
     }
     ret += "" + mins + ":" + (secs < 10 ? "0" : "");
     ret += "" + secs;
-    // console.log('ret',ret);
+    console.log('ret',ret);
     return ret;
   }
-
+  {/* ///////////////////////////////////////////////*/}
   useEffect(()=>{
     var EmD = document.getElementById('examDuration');
     if(newSelectedStartDate != '' && newSelectedEndDate !='' && newSelectedStartDate == newSelectedEndDate){
@@ -754,11 +716,21 @@ const [uniqGroups,setUniqGroups] = useState([]);
         // var EndMinutes = fixNumbers(newEnd[1]);
         // console.log('EndHour',EndHour);
         // console.log('EndMinutes',EndMinutes);
-        if(StartHour <= EndHour && StartMinutes <= EndMinutes){
+        if(StartHour < EndHour && StartMinutes < EndMinutes){
           var hour = EndHour - StartHour;
+          if(hour < 10){
+            hour = '0'+hour;
+          }
           var minutes = EndMinutes - StartMinutes;
-          EmD.value = `${hour}: ${minutes}: 00`;
-        }else{
+          if(minutes < 10){
+            minutes = '0'+minutes;
+          }
+          // EmD.value = `${hour}: ${minutes}: 00`;
+          EmD.defaultValue = `${hour}: ${minutes}: 00`;
+        }else if(StartHour == EndHour && StartMinutes == EndMinutes){
+            alert('زمان اشتباه است!!!');
+        }
+        else{
           var convertStart = StartHour * 3600 + StartMinutes * 60 ;
           var convertEnd = EndHour * 3600 + EndMinutes * 60 ;
           var time = convertEnd - convertStart;
@@ -769,16 +741,18 @@ const [uniqGroups,setUniqGroups] = useState([]);
             // handleSelectedEndTime('');
             EmD.value = "";
           }else{
-            EmD.value = format(time);
+            // EmD.value = format(time);
+            EmD.defaultValue = format(time);
+
           }
         }
       }
      
     }else if(newSelectedStartDate != '' && newSelectedEndDate !='' && newSelectedStartDate != newSelectedEndDate){
-      EmD.value = "";
+      // EmD.value = "";
     }
-  })
-
+  },[newSelectedStartDate,newSelectedEndDate ,selectedstartTime ,selectedEndTime])
+  {/* ///////////////////////////////////////////////*/}
   const ExamDuration = () =>{
     if(newSelectedStartDate != '' && newSelectedEndDate !='' && newSelectedStartDate == newSelectedEndDate){
         var newStart = selectedstartTime ? moment2(selectedstartTime).tz('Asia/Tehran').format('HH:mm:00').split(':'):'';
@@ -791,7 +765,7 @@ const [uniqGroups,setUniqGroups] = useState([]);
         // console.log('newStart',newStart);
     }
   }
-
+  {/* ///////////////////////////////////////////////*/}
   const checkValue = (field , value) => {
     // console.log('field',field);
     // console.log('value',value);
@@ -837,35 +811,37 @@ const [uniqGroups,setUniqGroups] = useState([]);
     }
    
   }
-
+  {/* ///////////////////////////////////////////////*/}
   return (
     <ContainerForm>
-      {/* ///////////////////////////////////////////////*/
-
-       /**/}
+      {/* ///////////////////////////////////////////////*/}
       <Grid container spacing={3}>
         <Grid item sm={12} md={12}>
           <Form>
             <DatesDiv>
               <DateDiv>
+                  <LabelGroup>
+                      تاریخ شروع امتحان
+                  </LabelGroup>
                   <PersianDatePicker selectedDate={selectedStatrtDate} handleDateChange={handleStartDateChange} />
-                <LabelGroup>
-                    تاریخ شروع امتحان
-                </LabelGroup>
               </DateDiv>
               <DateDiv>
-                  <PersianDatePicker selectedDate={selectedEndDate} handleDateChange={handleEndDateChange} />
                   <LabelGroup>
                     تاریخ پایان امتحان
                   </LabelGroup>
+                  <PersianDatePicker selectedDate={selectedEndDate} handleDateChange={handleEndDateChange} />
               </DateDiv>
           </DatesDiv>
           {/* / */}
           <ClocksDivContainer>
             <ClocksDiv>
                 <ClockDiv>
-                  <MuiPickersUtilsProvider moment={moment2} utils={MomentUtils}>
+                  <LabelGroup>
+                      ساعت شروع امتحان
+                  </LabelGroup>
+                  <MuiPickersUtilsProvider moment={moment2} utils={MomentUtils} >
                   <TimePicker
+                    style={{fontSize:'3rem'}}
                     okLabel="تأیید"
                     cancelLabel="لغو"
                     clearLabel="پاک کردن"
@@ -878,14 +854,15 @@ const [uniqGroups,setUniqGroups] = useState([]);
                     onChange={handleSelectedStartTime}
                   />
                 </MuiPickersUtilsProvider>
-                  <LabelGroup>
-                      ساعت شروع امتحان
-                  </LabelGroup>
                 </ClockDiv>
                 <ClockDiv>
+                    <LabelGroup>
+                      ساعت پایان امتحان
+                    </LabelGroup>
                     <MuiPickersUtilsProvider moment={moment2} utils={MomentUtils}>
                 
                       <TimePicker
+                        style={{fontSize:'3rem'}}
                         okLabel="تأیید"
                         cancelLabel="لغو"
                         clearLabel="پاک کردن"
@@ -898,27 +875,25 @@ const [uniqGroups,setUniqGroups] = useState([]);
                         onChange={handleSelectedEndTime}
                       />
                     </MuiPickersUtilsProvider>
-                    <LabelGroup>
-                      ساعت پایان امتحان
-                    </LabelGroup>
                 </ClockDiv>
             </ClocksDiv>
             <TimeDiv>
+              <LabelTime>
+                مدت زمان امتحان
+              </LabelTime>
               <InputTimeContainer>
               <InputTime
                 id="examDuration"
                 type = "text"
                 // value = {ExamDuration}
-                // readOnly
+                // readOnly ={newSelectedStartDate == newSelectedEndDate}
                 // value={state.examTopic}
-                // onChange={e => 
-                //   setState({examTopic:e.target.value})
-                // }
+                onChange={e => 
+                  setState({...state , duration:e.target.value})
+                }
               />
               </InputTimeContainer>
-              <LabelTime>
-                مدت زمان امتحان
-                    </LabelTime>
+              
             </TimeDiv>
           </ClocksDivContainer>
           {/*  */}
@@ -966,8 +941,11 @@ const [uniqGroups,setUniqGroups] = useState([]);
                 ساعت پایان امتحان
                     </LabelGroup>
             </GroupDiv> */}
-            
+            {/* ////////////////////////////// */}
             <GroupDiv>
+              <LabelGroup>
+                پایه
+              </LabelGroup>
               <SelectDiv>
                 <MySelect
                   name="groupIdSelect"
@@ -997,11 +975,13 @@ const [uniqGroups,setUniqGroups] = useState([]);
                     : ''}
                 </MySelect>
               </SelectDiv>
-              <LabelGroup>
-                پایه
-                    </LabelGroup>
+             
             </GroupDiv>
+            {/* ////////////////////////////// */}
             <GroupDiv>
+              <LabelGroup>
+                نام کلاس
+              </LabelGroup>
               <SelectDiv>
                 {typePfUser == 0 ? <MySelect
                   name="groupIdSelect"
@@ -1038,8 +1018,9 @@ const [uniqGroups,setUniqGroups] = useState([]);
                     multiple
                     id="size-small-standard-multi"
                     size="small"
-                    options={state.getExamClassTeacher ? state.getExamClassTeacher : ''}
+                    options={state.getExamClassTeacher && state.getExamClassTeacher.length > 0 ? state.getExamClassTeacher : []}
                     getOptionLabel={(option) => option.class}
+                    value={valuesClass}
                     //  defaultValue={[top100Films[0]]}
                     renderInput={(params) => {
                       // console.log('params', params)
@@ -1051,13 +1032,15 @@ const [uniqGroups,setUniqGroups] = useState([]);
                   />
                 </ClsManager>}
               </SelectDiv>
-              <LabelGroup>
-                نام کلاس
-                    </LabelGroup>
             </GroupDiv>
+            {/* ////////////////////////////// */}
             <GroupDiv>
+              <LabelGroup>
+                درس
+              </LabelGroup>
               <SelectDiv>
                 {typePfUser === 0 ? <MySelect
+                // style={{direction:'ltr'}}
                   name="groupIdSelect"
                   id="selectedCourse"
                   onChange={event => handleGroupsExam(event.target.value)}
@@ -1089,12 +1072,17 @@ const [uniqGroups,setUniqGroups] = useState([]);
                 </MySelect> :
                 <ClsManager className={classes.root}>
                 <Autocomplete
+                // style={{direction:'ltr'}}
                   multiple
                   id="size-small-standard-multi"
                   size="small"
                   value={values}
-                  options={state.getExamCourseNamesTeacher ? state.getExamCourseNamesTeacher : ''}
-                  getOptionLabel={(option) => option.course}
+                  options={state.getExamCourseNamesTeacher && state.getExamCourseNamesTeacher.length > 0 ? state.getExamCourseNamesTeacher : []}
+                  getOptionLabel={(option) => option.course ? option.course : ''}
+                  ///////////////////////////////
+                  // options={state.getExamClassTeacher ? state.getExamClassTeacher : ''}
+                  //   getOptionLabel={(option) => option.class}
+                  //   value={valuesClass}
                   // ref='courseInput'
                   //  defaultValue={[top100Films[0]]}
                   renderInput={(params) => {
@@ -1110,11 +1098,13 @@ const [uniqGroups,setUniqGroups] = useState([]);
               </ClsManager>
                 }
               </SelectDiv>
-              <LabelGroup>
-                درس
-                    </LabelGroup>
+              
             </GroupDiv>
+            {/* ////////////////////////////// */}
             <GroupDiv>
+              <LabelGroup>
+                موضوع امتحان
+              </LabelGroup>
               <InputGroup
                 type="text"
                 value={state.examTopic}
@@ -1122,11 +1112,13 @@ const [uniqGroups,setUniqGroups] = useState([]);
                   setState({...state,examTopic:e.target.value})
                 }
               />
-              <LabelGroup>
-                موضوع امتحان
-                    </LabelGroup>
+              
             </GroupDiv>
+            {/* ////////////////////////////// */}
             <GroupDiv>
+              <LabelGroup>
+                از چند نمره
+              </LabelGroup>
               <InputGroup
                 type="number"
                 id="maxScore"
@@ -1136,11 +1128,13 @@ const [uniqGroups,setUniqGroups] = useState([]);
                   setState({...state,examMaxScore:e.target.value})
                 }
               />
-              <LabelGroup>
-                از چند نمره
-                    </LabelGroup>
+             
             </GroupDiv>
+            {/* ////////////////////////////// */}
             <GroupDiv>
+              <LabelGroup>
+                  نحوه عملکردامتحان
+              </LabelGroup>
               <SelectDiv>
                 <MySelect
                   name="groupIdSelect"
@@ -1151,7 +1145,7 @@ const [uniqGroups,setUniqGroups] = useState([]);
                   <Option value="">
                      انتخاب کنید
                         </Option>
-                  <Option value="0">
+                  <Option value="0" selected="selected">
                     پس از پایان امتحان امکان ادامه امتحان توسط دانش آموز نباشد
                           </Option>
                   <Option value="1">
@@ -1159,10 +1153,73 @@ const [uniqGroups,setUniqGroups] = useState([]);
                           </Option>
                 </MySelect>
               </SelectDiv>
-              <LabelGroup>
-                  نحوه عملکردامتحان
-              </LabelGroup>
+              
             </GroupDiv>
+            {/* ////////////////////////////// */}
+            <GroupDiv>
+              <LabelGroup>
+                  تصادفی کردن سوالات
+              </LabelGroup>
+              <SelectDiv>
+                <MySelect
+                  name="groupIdSelect"
+                  data-bind="value: stateString"
+                  onChange={e => {
+                    setState({...state,random:e.target.value});
+                  }}
+                >
+                  <Option value="">
+                     انتخاب کنید
+                        </Option>
+                  <Option 
+                  // value={true}
+                  value="true"
+                  selected="selected"
+                  >
+                    بله
+                          </Option>
+                  <Option 
+                  // value={false}
+                  value="false"
+                  >
+                   خیر
+                          </Option>
+                </MySelect>
+              </SelectDiv>
+            </GroupDiv>
+            {/* /////////////////////////////////////// */}
+            <GroupDiv>
+              <LabelGroup>
+                  بازگشت به سوال قبل
+              </LabelGroup>
+              <SelectDiv>
+                <MySelect
+                  name="groupIdSelect"
+                  // data-bind="value: stateString"
+                  onChange={e => {
+                    setState({...state,backward:e.target.value});
+                  }}
+                >
+                  <Option value="">
+                     انتخاب کنید
+                        </Option>
+                  <Option 
+                  // value={true}
+                  value="true"
+                  >
+                    بله
+                          </Option>
+                  <Option 
+                  // value={false}
+                  value="false"
+                  selected="selected"
+                  >
+                    خیر
+                  </Option>
+                </MySelect>
+              </SelectDiv>
+            </GroupDiv>
+            {/* //////////////////////////////////////////// */}
             <BtnGroupContainer>
               <BtnSend
                 type="submit"

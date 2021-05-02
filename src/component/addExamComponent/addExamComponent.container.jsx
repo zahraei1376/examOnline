@@ -34,7 +34,10 @@ const AddExamForTeacherContainer = ()=>(
                     console.log({data});
                     
                     if(loading) return <MySpinner/>
-                    return <AddExamForTeacher MyGroups={data.groupsListByPerson} />
+                    else if(error) return <MySpinner/>
+                    else return <AddExamForTeacher MyGroups={data.groupsListByPerson} />
+                    
+                    
             }}
     </Query>
 );

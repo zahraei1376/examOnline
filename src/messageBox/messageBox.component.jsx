@@ -6,14 +6,16 @@ import { makeStyles } from '@material-ui/core/styles';
 import {MySnackbarDiv} from './messageBox.styles';
 
 function Alert(props) {
-  return <MuiAlert elevation={6} variant="filled" {...props} />;
+  return <MuiAlert style={{fontSize: '3.25rem', marginLeft:'2rem'}} elevation={6} variant="filled" {...props} />;
 }
 
 const useStyles = makeStyles((theme) => ({
   root: {
+    fontSize: '2rem',
     // width: '100%',
     '& > * + *': {
       marginTop: theme.spacing(2),
+      fontSize: '2rem',
     },
   },
 }));
@@ -42,10 +44,10 @@ function MySnackbar({message ,status,showMessage,setShowMessage}) {
       {/* <Button variant="outlined" onClick={handleClick}>
         Open success snackbar
       </Button> */}
-      <MySnackbarDiv open={open} style={{width:'100%'}}
-      autoHideDuration={2000}
+      <MySnackbarDiv open={open} style={{width:'100%',textAlign:'center',fontSize: '2rem',}}
+      autoHideDuration={6000}
        onClose={handleClose}>
-        <Alert style={{width:'70%',textAlign:'center',}} onClose={handleClose} severity={status === '1' ? "success" : "error" }>
+        <Alert style={{width:'70%',textAlign:'center',fontSize: '2rem', direction: 'ltr',}} onClose={handleClose} severity={status === '1' ? "success" : "error" }>
           {message}
         </Alert>
       </MySnackbarDiv>

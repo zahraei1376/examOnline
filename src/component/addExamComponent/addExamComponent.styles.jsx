@@ -11,6 +11,9 @@ export const ContainerForm = styled.div`
     box-sizing:border-box;
     background: linear-gradient(to bottom, #3f87a6, #ebf8e1, #f69d3c);
     // background-image: linear-gradient(to bottom, #a7ffeb , #f9fbe7,#ffccbc);
+    direction:rtl;
+    font-family:Nastaliq;
+    font-weight: 400;
 `;
 
 export const Form = styled.form`
@@ -95,6 +98,7 @@ export const TimeDiv = styled.div`
 `;
 
 export const SelectDiv = styled.div`
+direction:ltr;
     text-align:right;
     width:70%
 `;
@@ -102,6 +106,7 @@ export const SelectDiv = styled.div`
 export const MySelect = styled.select`
     border-radius:10px;
     width:100%;
+    height:3rem;
     direction: rtl;
     padding:0 2rem;
     // text-align:right;
@@ -112,7 +117,7 @@ export const Option = styled.option`
     width:100%
     text-align:right;
     direction:rtl;
-    font-family:Bnazanin;
+    // font-family:Bnazanin;
     font-size:1.8rem;
 `;
 
@@ -120,7 +125,7 @@ export const LabelGroup = styled.label`
     width:30%;
     text-align:right;
     padding:0 20px;
-    font-family:Bnazanin;
+    // font-family:Bnazanin;
     font-size:1.8rem;
 `;
 
@@ -128,7 +133,7 @@ export const LabelTime = styled.label`
     width:50%;
     text-align:left;
     padding:0 10px;
-    font-family:Bnazanin;
+    // font-family:Bnazanin;
     font-size:1.8rem;
 `;
 
@@ -137,9 +142,10 @@ export const InputGroup = styled.input`
     padding:0 2rem;
     box-sizing:border-box;
     // padding:1rem;
-    font-family:Bnazanin;
+    // font-family:Bnazanin;
     font-size:1.8rem;
     width:70%;
+    height:3rem;
     text-align:right;
     direction:rtl;
     border:1px solid rgb(118, 118, 118);
@@ -156,13 +162,15 @@ export const InputTimeContainer = styled.div`
 
 export const InputTime = styled.input`
     border-radius:10px;
-    font-family:Bnazanin;
+    // font-family:Bnazanin;
     font-size:1.8rem;
     // width:70%;
     text-align:right;
-    // direction:rtl;
+    direction:ltr;
     padding:0 1rem;
     border:1px solid rgb(118, 118, 118);
+    // direction:rtl;
+    // text-align:right;
     &:focus{
         outline:none;
     }
@@ -170,8 +178,8 @@ export const InputTime = styled.input`
 
 export const BtnGroupContainer = styled.div`
     margin-top:40px;
-    display:flext;
-    align-items:flex-end;
+    display: flex;
+    justify-content: flex-end;
 `;
 
 export const BtnSend = styled.input`
