@@ -1,0 +1,34 @@
+@font-face {
+    font-family: 'Bnazanin';
+    src: url(./fonts/B_NAZANIN/B-NAZANIN.TTF) format('ttf');
+  }
+  
+  @font-face {
+    font-family: 'Helal';
+    src: url(./fonts/B-Helal/B-Helal.ttf) format('ttf');
+  }
+  
+  @font-face {
+    font-family: 'Abdoullah';
+    src: url(./fonts/Far_Abdoullah/Far_Abdoullah.ttf) format('ttf');
+  }
+  
+  @font-face {
+    font-family: 'Nazanin';
+    src: url(./fonts/Far_Nazanin/Far_Nazanin.ttf) format('ttf');
+  }
+  
+  @font-face {
+    font-family: 'tabssom';
+    src: url(./fonts/Far_Tabssom/Far_Tabssom.ttf) format('ttf');
+  }
+  
+  @font-face {
+    font-family: 'gol';
+    src: url(./fonts/gol/gol.ttf) format('ttf');
+  }
+  
+  @font-face {
+    font-family: 'Nastaliq';
+    src: url(./fonts/IranNastaliq.ttf) format('ttf');
+  }

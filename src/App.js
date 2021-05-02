@@ -13,11 +13,11 @@ const App = () => {
   return (
     <div className="App">
       {/* <AddExamForTeacher/> */}
-      {/* <AddExamForTeacherContainer/> */}
+      <AddExamForTeacherContainer/>
       {/* <QuestionsPageContainer/> */}
       {/* <QuestionsComponentContainer/> */}
      {/* <QuestionPageContainer /> */}
-     <ExamPageForStudent/>
+     {/* <ExamPageForStudent/> */}
      {/* <ArchiveForTeacher/> */}
      {/* <EditeAxamPageForTeacher/> */}
      {/* <ArchiveForStudent/> */}
