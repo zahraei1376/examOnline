@@ -121,7 +121,7 @@ const Questions = ({toggle ,selectedCourseName , questions}) =>{
   const { loading, error, data ,refetch  } = useQuery(GET_QUESTIONS , {
     variables: {  userName: "211",
     password: "211",
-    id: "607fd8fb3fb30a08d7ce1e53" },
+    id: "608e8876fdd2f026a23a7166" },
     notifyOnNetworkStatusChange: true
   });
   // const [typeQuestion,setTypeQuestion] =useState('');
@@ -151,7 +151,7 @@ const Questions = ({toggle ,selectedCourseName , questions}) =>{
 
   useEffect(() => {
     if (data) {
-      // console.log('get dataaaaaaaaa' ,data);
+      console.log('get dataaaaaaaaa' ,data);
       setData(MergeQuestions(data.examParents[0]))
     }
   }, [data])

@@ -20,11 +20,14 @@ query examParents(
       examParent_stop_date
       examParent_start
       examParent_end
+      examParent_duration
       examParent_pId
       examParent_gId
       examParent_maxScore
       examParent_method
       examParent_topic
+      examParent_random
+      examParent_backward
       examChild
       {
         id
@@ -90,7 +93,7 @@ const MergeQuestions = (examP) => {
 }
 
 const QuestionsPageContainer = ()=>(
-    <Query query={GET_ALL_QUESTIONS_FOR_EXAM} variables={{userName:"211" , password:"211" , id:"607fd8fb3fb30a08d7ce1e53"}}>
+    <Query query={GET_ALL_QUESTIONS_FOR_EXAM} variables={{userName:"211" , password:"211" , id:"608e8876fdd2f026a23a7166"}}>
             {({loading ,error , data }) => {
                     // console.log({loading});
                     // console.log({error});

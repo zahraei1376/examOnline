@@ -7,11 +7,12 @@ import FastAccessToQuestions from '../component/questionComponent/fastAccessToqu
 import TextField from '@material-ui/core/TextField';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 //////////////////////////////
+import QuestionsHeader from '../component/questionsInfo/questionsInfo.components';
 const courses = [
-    { course: 'ریاضی', examChildId: '607fd8fb3fb30a08d7ce1e54' },
-    { course: 'فیزیک', examChildId: '607fd8fb3fb30a08d7ce1e55' },
-    { course: 'علوم', examChildId: '607fd8fb3fb30a08d7ce1e56' },
-    { course: 'اجتماعی', examChildId: '607fd8fb3fb30a08d7ce1e57'},
+    { course: 'ریاضی', examChildId: '608e3587e587310916173bdf' },
+    { course: 'فیزیک', examChildId: '608e35e1e587310916173be1' },
+    { course: 'علوم', examChildId: '608e35f7d0832209d2e4bf71' },
+    { course: 'اجتماعی', examChildId: '608e375446851c0a1782b31f'},
   ]
 
 const QuestionPage = ({questions}) =>{
@@ -25,6 +26,9 @@ const QuestionPage = ({questions}) =>{
 
     return (
         <QuestionPageContainer>
+            <div>
+                <QuestionsHeader courses={courses} />
+            </div>
              <ComboDiv >
                 <Autocomplete
                     style={{ width: 300 }}
@@ -60,7 +64,7 @@ const QuestionPage = ({questions}) =>{
                     )}
                 /> */}
             </ComboDiv>
-            <FastAccessToQuestions />
+            {/* <FastAccessToQuestions /> */}
             <QuestionPageDiv>
                 {/* <UploadSectionContainer>
                     <UploadQuestions seNumberOfQuestions={seNumberOfQuestions} numberOfQuestions={numberOfQuestions} />

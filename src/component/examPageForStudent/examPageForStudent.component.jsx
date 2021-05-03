@@ -205,7 +205,7 @@ const  ExamPageForStudent = ({questionIndex ,setLengthQuestions , setTypeIncreas
            var counterQuestionsParent = allQuestons[index].questionParent;
            var courseName = allQuestons[index] && allQuestons[index].groups && allQuestons[index].groups.length > 0 ? allQuestons[index].groups[0].course : '';
            console.log('courseName',courseName); 
-           var teacherName = allQuestons[index] && allQuestons[index].groups && allQuestons[index].groups.length > 0 && allQuestons[index].groups[0].people && allQuestons[index].groups[0].people.length > 0 ?  allQuestons[index].groups[0].people[0].name + ' ' + allQuestons[index].groups[0].people[0].sureName : '';
+           var teacherName = allQuestons[index] && allQuestons[index].groups && allQuestons[index].groups.length > 0 && allQuestons[index].groups[0].people && allQuestons[index].groups[0].people.length > 0 ?  allQuestons[index].groups[0].people[0].name + ' ' + allQuestons[index].groups[0].people[0].surName : '';
            console.log('teacherName',teacherName);
            if(counterQuestionsParent && counterQuestionsParent.length > 0){
               for (let j = 0; j < counterQuestionsParent.length; j++) {
