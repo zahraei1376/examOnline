@@ -16,7 +16,7 @@ export const UploaderButtonSend = styled.input`
     display:none;
 `;
 
-export const ShowDescriptionButton = styled(Button)`
+export const UploadButton = styled(Button)`
     // background-color:#fff !important;
     // box-shadow:none !important;
     // color:#000 !important;
@@ -28,6 +28,7 @@ export const ShowDescriptionButton = styled(Button)`
     // }
     // background-color:#3f87a6 !important;
     // border:1px solid #3f87a6 !important;
+    width:4rem !important;
     background-color:#3f87a6 !important;
     border:1px solid transparent !important;
     &:hover{
@@ -37,6 +38,8 @@ export const ShowDescriptionButton = styled(Button)`
     
 
     @media only screen and (max-width: 769px) {
+        min-width: 3rem !important;
+        // width:3rem !important;
         margin-bottom: 2rem !important;
         
     }

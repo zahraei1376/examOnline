@@ -120,7 +120,7 @@ const GET_QUESTIONS = gql`
           id
           people{
             name
-            sureName
+            surName
           }
           course
         }
@@ -218,5 +218,27 @@ const SET_DEALY_RESPONSE_STUDENT = gql`
       }
   }
 `;
+//فایل و ضریب
+const SET_INFO_EXAMCHILD = gql` 
+  mutation addResponseInfo(
+    $userName: String!,
+    $password: String!,
+    $epId: String!,
+    $delay: String!,
+    $totalScore: String!,
+    $countScore: String!,
+    ){
+      addResponseInfo(
+        userName: $userName,
+        password: $password,
+        epId: $epId,
+        delay: $delay,
+        totalScore: $totalScore,
+        countScore: $countScore,
+      ){
+        id
+      }
+  }
+`;
 
-export { SET_QUESTION_CHILD, GET_QUESTIONS ,DELETE_QUESTIONCHILD ,SET_RESPONSE_STUDENT ,SET_DEALY_RESPONSE_STUDENT};
+export { SET_QUESTION_CHILD, GET_QUESTIONS ,DELETE_QUESTIONCHILD ,SET_RESPONSE_STUDENT ,SET_DEALY_RESPONSE_STUDENT ,SET_INFO_EXAMCHILD};

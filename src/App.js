@@ -13,14 +13,16 @@ const App = () => {
   return (
     <div className="App">
       {/* <AddExamForTeacher/> */}
-      <AddExamForTeacherContainer/>
-      {/* <QuestionsPageContainer/> */}
+       {/* <QuestionsPageContainer/> */}
       {/* <QuestionsComponentContainer/> */}
-     {/* <QuestionPageContainer /> */}
-     {/* <ExamPageForStudent/> */}
-     {/* <ArchiveForTeacher/> */}
-     {/* <EditeAxamPageForTeacher/> */}
-     {/* <ArchiveForStudent/> */}
+{/* ////////////////////////////////////////////////// */}
+      {/* <AddExamForTeacherContainer/> */}
+      <QuestionPageContainer />
+      {/* <ExamPageForStudent/> */}
+      {/* <ArchiveForTeacher/> */}
+      {/* <EditeAxamPageForTeacher/> */}
+      {/* <ArchiveForStudent/> */}
+{/* ////////////////////////////////////////////////////////// */}
     </div>
   );
 }

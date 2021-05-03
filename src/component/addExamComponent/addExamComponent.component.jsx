@@ -90,7 +90,7 @@ const addNewExamMutation = gql`
                 }
         }
 `;
-
+var counter = 0;
 const AddExamForTeacher = ({MyGroups}) => {
   // const { loading, error, data } = useQuery(addNewExamMutation);
   const [addExamParent ,{ data }] = useMutation(addNewExamMutation);
@@ -99,6 +99,7 @@ const AddExamForTeacher = ({MyGroups}) => {
   const [showMessage,setShowMessage] = useState(false);
   const [message,setMessage] =useState('');
   const [status,setStatus] =useState(0);
+  
   // const appContext = useContext(AppContext);
   // const user = useSelector(({ auth }) => auth.user);
   //////////////////////////////////for manager
@@ -155,6 +156,8 @@ const AddExamForTeacher = ({MyGroups}) => {
   // }));
   const [selectedEndTime, handleSelectedEndTime] = useState(moment2());
   const [selectedstartTime, handleSelectedStartTime] = useState(moment2());
+  // const [selectedEndTime, handleSelectedEndTime] = useState();
+  // const [selectedstartTime, handleSelectedStartTime] = useState();
   const [groupsExam,setGroupsExam] =useState([]);
   ////////////////////////
   const [state,setState] = useState({
@@ -696,62 +699,76 @@ const AddExamForTeacher = ({MyGroups}) => {
     ret += "" + mins + ":" + (secs < 10 ? "0" : "");
     ret += "" + secs;
     console.log('ret',ret);
+    setState({...state , duration:ret});
     return ret;
   }
   {/* ///////////////////////////////////////////////*/}
   useEffect(()=>{
-    var EmD = document.getElementById('examDuration');
-    if(newSelectedStartDate != '' && newSelectedEndDate !='' && newSelectedStartDate == newSelectedEndDate){
-      if(selectedstartTime && selectedEndTime){
-        var newStart = selectedstartTime ? moment2(selectedstartTime).tz('Asia/Tehran').format('HH:mm:00').split(':'):'';
-        var newEnd = selectedEndTime ? moment2(selectedEndTime).tz('Asia/Tehran').format('HH:mm:00').split(':'):'00:00:00';
-        // console.log('selectedEndTime',moment2(selectedEndTime).tz('Asia/Tehran').format('HH:mm:00'));
-        var StartHour = fixNumbers(newStart[0]) || 0;
-        var EndHour = fixNumbers(newEnd[0]) || 0;
-        var StartMinutes = fixNumbers(newStart[1]) || 0;
-        var EndMinutes = fixNumbers(newEnd[1]) || 0;
-        // var StartHour = fixNumbers(newStart[0]) ;
-        // var EndHour = fixNumbers(newEnd[0]);
-        // var StartMinutes = fixNumbers(newStart[1]);
-        // var EndMinutes = fixNumbers(newEnd[1]);
-        // console.log('EndHour',EndHour);
-        // console.log('EndMinutes',EndMinutes);
-        if(StartHour < EndHour && StartMinutes < EndMinutes){
-          var hour = EndHour - StartHour;
-          if(hour < 10){
-            hour = '0'+hour;
+    // console.log('count' , counter);
+    // if(counter == 2){
+      var EmD = document.getElementById('examDuration');
+      if(newSelectedStartDate != '' && newSelectedEndDate !='' && newSelectedStartDate == newSelectedEndDate){
+        if(selectedstartTime && selectedEndTime){
+          var newStart = selectedstartTime ? moment2(selectedstartTime).tz('Asia/Tehran').format('HH:mm:00').split(':'):'';
+          var newEnd = selectedEndTime ? moment2(selectedEndTime).tz('Asia/Tehran').format('HH:mm:00').split(':'):'00:00:00';
+          // console.log('selectedEndTime',moment2(selectedEndTime).tz('Asia/Tehran').format('HH:mm:00'));
+          var StartHour = fixNumbers(newStart[0]) || 0;
+          var EndHour = fixNumbers(newEnd[0]) || 0;
+          var StartMinutes = fixNumbers(newStart[1]) || 0;
+          var EndMinutes = fixNumbers(newEnd[1]) || 0;
+          // var StartHour = fixNumbers(newStart[0]) ;
+          // var EndHour = fixNumbers(newEnd[0]);
+          // var StartMinutes = fixNumbers(newStart[1]);
+          // var EndMinutes = fixNumbers(newEnd[1]);
+          // console.log('EndHour',EndHour);
+          // console.log('EndMinutes',EndMinutes);
+          if(StartHour < EndHour && StartMinutes < EndMinutes){
+            var hour = EndHour - StartHour;
+            if(hour < 10){
+              hour = '0' + hour;
+            }
+            var minutes = EndMinutes - StartMinutes;
+            if(minutes < 10){
+              minutes = '0' + minutes;
+            }
+            EmD.value = `${hour}: ${minutes}: 00`;
+            setState({...state , duration:`${hour}: ${minutes}: 00`});
+            // EmD.defaultValue = `${hour}: ${minutes}: 00`;
           }
-          var minutes = EndMinutes - StartMinutes;
-          if(minutes < 10){
-            minutes = '0'+minutes;
+          // else if(StartHour == EndHour && StartMinutes == EndMinutes){
+          //     alert('زمان اشتباه است!!!');
+          //     EmD.defaultValue = "";
+          // }
+          else{
+            var convertStart = StartHour * 3600 + StartMinutes * 60 ;
+            var convertEnd = EndHour * 3600 + EndMinutes * 60 ;
+            var time = convertEnd - convertStart;
+            // console.log('time' ,time);
+            if(time < 0){
+              // console.log('4');
+              alert('زمان امتحان اشتباه است');
+              // handleSelectedEndTime('');
+              EmD.value = "";
+            }else{
+              EmD.value = format(time);
+              // EmD.defaultValue = format(time);
+  
+            }
           }
-          // EmD.value = `${hour}: ${minutes}: 00`;
-          EmD.defaultValue = `${hour}: ${minutes}: 00`;
-        }else if(StartHour == EndHour && StartMinutes == EndMinutes){
-            alert('زمان اشتباه است!!!');
         }
-        else{
-          var convertStart = StartHour * 3600 + StartMinutes * 60 ;
-          var convertEnd = EndHour * 3600 + EndMinutes * 60 ;
-          var time = convertEnd - convertStart;
-          // console.log('time' ,time);
-          if(time < 0){
-            // console.log('4');
-            alert('زمان امتحان اشتباه است');
-            // handleSelectedEndTime('');
-            EmD.value = "";
-          }else{
-            // EmD.value = format(time);
-            EmD.defaultValue = format(time);
-
-          }
-        }
+       
+      }else if(newSelectedStartDate != '' && newSelectedEndDate !='' && newSelectedStartDate != newSelectedEndDate){
+        // EmD.value = "";
       }
-     
-    }else if(newSelectedStartDate != '' && newSelectedEndDate !='' && newSelectedStartDate != newSelectedEndDate){
-      // EmD.value = "";
-    }
-  },[newSelectedStartDate,newSelectedEndDate ,selectedstartTime ,selectedEndTime])
+    // }
+    // else{
+      
+    //   counter = counter + 1;
+    //   console.log('counter2',counter);
+    // }
+    
+
+  })
   {/* ///////////////////////////////////////////////*/}
   const ExamDuration = () =>{
     if(newSelectedStartDate != '' && newSelectedEndDate !='' && newSelectedStartDate == newSelectedEndDate){
@@ -886,7 +903,7 @@ const AddExamForTeacher = ({MyGroups}) => {
                 id="examDuration"
                 type = "text"
                 // value = {ExamDuration}
-                // readOnly ={newSelectedStartDate == newSelectedEndDate}
+                readOnly ={newSelectedStartDate == newSelectedEndDate}
                 // value={state.examTopic}
                 onChange={e => 
                   setState({...state , duration:e.target.value})

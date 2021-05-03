@@ -6,8 +6,8 @@ import ExplainQuestion from '../../../explainQuestionComponent/explainQuestionCo
 import MyPic from '../../../../assets/img/images.jpg';
 import MyPic2 from '../../../../assets/img/image2.jpg';
 /////////////////////////
-import Tooltip from '@material-ui/core/Tooltip';
-import DoneIcon from '@material-ui/icons/Done';
+// import Tooltip from '@material-ui/core/Tooltip';
+// import DoneIcon from '@material-ui/icons/Done';
 // import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
 // import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
 // import ArrowForwardIosIcon from '@material-ui/icons/ArrowForwardIos';
