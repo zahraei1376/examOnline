@@ -15,9 +15,9 @@ export const QuestionPageDiv = styled.div`
     // background-color:rgba(256,256,256,0.4);
     // background-color:rgba(0,0,0,0.6);
     // background-color:rgba(256,256,256,0.3);
-    padding:5rem;
+    // padding:5rem;
     border-radius:5rem;
-    background-image: linear-gradient(to bottom, #1f6f8b , #1c2b2d);
+    // background-image: linear-gradient(to bottom, #1f6f8b , #1c2b2d);
 `;
 
 export const UploadSectionContainer = styled.div`
@@ -44,4 +44,11 @@ export const ComboDiv = styled.div`
     justify-content:center;
     width:100%;
     margin-bottom:4rem;
+    text-align:center;
+`;
+
+export const QuestionsContainer = styled.div`
+    border:2px solid #000;
+    padding:0 2rem;
+    // background-image: linear-gradient(to bottom, #1f6f8b , #1c2b2d);
 `;

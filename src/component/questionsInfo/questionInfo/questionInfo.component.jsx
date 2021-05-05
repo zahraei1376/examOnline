@@ -21,24 +21,62 @@ const QuestionInfo = ({course}) => {
     const [coefficient , setCoefficient ] = useState(1);
     const [negativeCoefficient , setNegativeCoefficient ] = useState(0);
     //////////////////////////////////////////
-    const sendInfo = async() =>{
-        await addExamChildInfo({ variables: { 
-            userName: "211", 
-            password: "211", 
-         }
-          }).then(res=>{
-            if(res.data && res.data.addExamChildInfo){
-              // console.log('data',data);
-              setMessage('امتحان ثبت شد');
-              setStatus('1');
-              setShowMessage(!showMessage);
-            }else{
-              // console.log('data',data);
-              setStatus('0')
-              setMessage('امتحان ثبت نشد')
-              setShowMessage(!showMessage);
-            }
-          })
+    const sendInfo = () =>{
+        const SendFilePromise = new Promise((resolve, reject) => {
+            document.getElementById(`myForm${course.group && course.group.length > 0 ? course.group[0] : ''}`).submit();
+      
+            // resolve();
+        });
+
+        SendFilePromise
+        .then( handleResolvedA => {
+            addExamChildInfo({ variables: { 
+                userName: "211",
+                password: "211",
+                id: course.group,
+                examChild_falseCoefficient : negativeCoefficient,
+                examChild_courseCoefficient : coefficient,
+                examChild_pdf: fileName,
+             }
+              }).then(res=>{
+                if(res.data && res.data.addExamChildInfo){
+                  // console.log('data',data);
+                  setMessage('اطلاعات ثبت شد');
+                  setStatus('1');
+                  setShowMessage(!showMessage);
+                }else{
+                  // console.log('data',data);
+                  setStatus('0')
+                  setMessage('اطلاعات ثبت نشد')
+                  setShowMessage(!showMessage);
+                }
+              })
+        })
+        .catch(err =>{
+            alert(err);
+        });
+       
+        // await addExamChildInfo({ variables: { 
+        //     userName: "211",
+        //     password: "211",
+        //     id: course.group,
+        //     examChild_falseCoefficient : negativeCoefficient,
+        //     examChild_courseCoefficient : coefficient,
+        //     examChild_pdf: fileName,
+        //  }
+        //   }).then(res=>{
+        //     if(res.data && res.data.addExamChildInfo){
+        //       // console.log('data',data);
+        //       setMessage('اطلاعات ثبت شد');
+        //       setStatus('1');
+        //       setShowMessage(!showMessage);
+        //     }else{
+        //       // console.log('data',data);
+        //       setStatus('0')
+        //       setMessage('اطلاعات ثبت نشد')
+        //       setShowMessage(!showMessage);
+        //     }
+        //   })
     }
 
     const handleGetFileName = (fileName) => {
@@ -48,7 +86,10 @@ const QuestionInfo = ({course}) => {
     return (
         <QuestionInfoContainer>
             <QuestionInfoUpload>
-                <UploaderQuestionsFile handleGetFileName={handleGetFileName} />
+                <UploaderQuestionsFile handleGetFileName={handleGetFileName} 
+                fileId={course.group && course.group.length > 0 ? course.group[0] : ''}
+                // myForm${fileId}
+                 />
             </QuestionInfoUpload>
             
             <QuestionInfoGroup>

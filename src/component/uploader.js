@@ -17,7 +17,9 @@ const s3 = new AWS.S3({
     region: "us-east-1", // Put you region
   });
 
-function Uploader({handleGetFileName}) {
+function Uploader({handleGetFileName
+  // , id, setState
+}) {
     
   const [s3Acl, setS3Acl] = useState();
   const [s3Url, setS3Url] = useState();
@@ -63,7 +65,8 @@ function Uploader({handleGetFileName}) {
   return (
 <div>
 <form
-        id="myForm"
+        // id={"myForm" + id}
+        id={"myForm"}
         action={s3Url}
         method="post"
         enctype="multipart/form-data"

@@ -35,7 +35,8 @@ import MySnackbar from '../../messageBox/messageBox.component';
 import { graphql } from 'react-apollo';
 import {flowRight as compose} from 'lodash';
 import { useQuery ,gql } from 'apollo-boost';
-import { useMutation} from 'react-apollo'
+import { useMutation} from 'react-apollo';
+import { useHistory } from "react-router-dom";
 // import { gql, useMutation } from '@apollo/client';
 // import { addNewExamMutation} from '../../graphql/resolver';
 var typePfUser = 1;
@@ -92,23 +93,24 @@ const addNewExamMutation = gql`
 `;
 var counter = 0;
 const AddExamForTeacher = ({MyGroups}) => {
-  // const { loading, error, data } = useQuery(addNewExamMutation);
+  ////////////////////////////////
+   // const appContext = useContext(AppContext);
+  // const user = useSelector(({ auth }) => auth.user);
+  ////////////////////////////////////
   const [addExamParent ,{ data }] = useMutation(addNewExamMutation);
   const [selectedClass , setSelectedClass] = useState([]);
   const [selectedLevel,setSelectedLevel] = useState('');
   const [showMessage,setShowMessage] = useState(false);
   const [message,setMessage] =useState('');
   const [status,setStatus] =useState(0);
-  
-  // const appContext = useContext(AppContext);
-  // const user = useSelector(({ auth }) => auth.user);
+  /////////////////////////
+  let history = useHistory();
   //////////////////////////////////for manager
   const classes = useStyles();
-
   //////////////////////////////////////////////
   const [values, setValues] = React.useState([]);
   const [valuesClass,setValuesClass] = useState([]);
-
+  //////////////////////////////////////////////
   const clearSelectedCourse = () => {
     setValues([]);
   };
@@ -121,19 +123,6 @@ const AddExamForTeacher = ({MyGroups}) => {
     setValues([]);
     setValuesClass([]);
   }
-
-
- 
-  // const getAllUsersQuery = gql`
-  // {
-  //   groupsListByPerson(userName: "210", password: "210") {
-  //     pId
-  //     class
-  //     level
-  //     course
-  //   }
-  // }
-  // `;
   ////////////////////////////////////////////
   const [selectedStatrtDate, handleStartDateChange] = useState(moment());
   const [selectedEndDate, handleEndDateChange] = useState(moment());
@@ -158,7 +147,8 @@ const AddExamForTeacher = ({MyGroups}) => {
   const [selectedstartTime, handleSelectedStartTime] = useState(moment2());
   // const [selectedEndTime, handleSelectedEndTime] = useState();
   // const [selectedstartTime, handleSelectedStartTime] = useState();
-  const [groupsExam,setGroupsExam] =useState([]);
+  const [groupsExam,setGroupsExam] = useState([]);
+  const [groupWithCourseName,setGroupsExamWithCourseName] = useState([]);
   ////////////////////////
   const [state,setState] = useState({
     // selectedstartTime:'',
@@ -266,6 +256,7 @@ const AddExamForTeacher = ({MyGroups}) => {
         setState({...state, getExamCourseNamesTeacher : newCourseNames});
       }
       else if(typePfUser == 1){
+        setValues([]);
         if(myItem && myItem.length > 0){
           setValuesClass(myItem);
           setSelectedClass(myItem);
@@ -326,219 +317,6 @@ const AddExamForTeacher = ({MyGroups}) => {
     setNewSelectedEndDate(fixNumbers(moment(selectedEndDate,
     ).format('jYYYY/jMM/jDD')));
   }, [selectedEndDate]);
-  {/* ///////////////////////////////////////////////*/}
-  
-// async function remoteData() {
-//   console.log("Query object - ");
-//   return client
-//     .query({
-//     query: getAllUsersQuery,
-//     })
-//     .then((res) => {
-//       console.log(res.data.groupsListByPerson);
-//       // var data = res.data.groupsListByPerson;
-//       setGroups(res.data.groupsListByPerson);
-//       var newLevels = [];
-//       for (
-//         var count = 0;
-//         count < groups.length;
-//         count++
-//       ) {
-//         var existFlag = false;
-//         for (var count2 = 0; count2 < newLevels.length; count2++) {
-//           if (
-//             // newLevels[count2].class ===
-//             // res.data.getGroupsByPersonId[count].class &&
-//             newLevels[count2].level ===
-//             groups[count].level
-//             // &&
-//             // newLevels[count2].course ===
-//             // res.data.getGroupsByPersonId[count].course
-//           ) {
-//             existFlag = true;
-//             break;
-//           }
-//         }
-//         if (!existFlag) {
-//           newLevels.push({ pId: groups[count].pId, level: groups[count].level });
-//         }
-//       }
-//       setState({...state, getExamLevelTeacher : newLevels});
-//     });
-//   }
-//   React.useEffect(() => {
-//     console.log("effect");
-//     // refteshData();
-//     remoteData();
-//   }, []);
-
-  // useEffect(() => {
-  //   // console.log('MyGroups',MyGroups);
-  //   setGroups(MyGroups);
-  //   var newLevels = [];
-  //   for (
-  //     var count = 0;
-  //     count < MyGroups.length;
-  //     count++
-  //   ) {
-  //     var existFlag = false;
-  //     for (var count2 = 0; count2 < newLevels.length; count2++) {
-  //       if (
-  //         // newLevels[count2].class ===
-  //         // res.data.getGroupsByPersonId[count].class &&
-  //         newLevels[count2].level ===
-  //         MyGroups[count].level
-  //         // &&
-  //         // newLevels[count2].course ===
-  //         // res.data.getGroupsByPersonId[count].course
-  //       ) {
-  //         existFlag = true;
-  //         break;
-  //       }
-  //     }
-  //     if (!existFlag) {
-  //       // console.log('newLevels',newLevels);
-  //       newLevels.push({ pId: MyGroups[count].pId, level: MyGroups[count].level });
-  //     }
-  //   }
-  //   // console.log('newLevels',newLevels);
-  //   setState({...state, getExamLevelTeacher : newLevels});
-  //     // var newLevels = [];
-  //     //   for (
-  //     //     var count = 0;
-  //     //     count < groups.length;
-  //     //     count++
-  //     //   ) {
-  //     //     var existFlag = false;
-  //     //     for (var count2 = 0; count2 < newLevels.length; count2++) {
-  //     //       if (
-  //     //         // newLevels[count2].class ===
-  //     //         // res.data.getGroupsByPersonId[count].class &&
-  //     //         newLevels[count2].level ===
-  //     //         groups[count].level
-  //     //         // &&
-  //     //         // newLevels[count2].course ===
-  //     //         // res.data.getGroupsByPersonId[count].course
-  //     //       ) {
-  //     //         existFlag = true;
-  //     //         break;
-  //     //       }
-  //     //     }
-  //     //     if (!existFlag) {
-  //     //       newLevels.push({ pId: groups[count].pId, level: groups[count].level });
-  //     //     }
-  //     //   }
-  //     //   setState({...state, getExamLevelTeacher : newLevels});
-      
-  //   // fetch(graphql_server_uri, {
-  //   //   method: 'POST',
-  //   //   headers: { 'Content-Type': 'application/json' },
-  //   //   body: JSON.stringify({
-  //   //     query: `
-  //   //                   mutation{
-  //   //                     getGroupsByPersonId(
-  //   //                       person_id_input: {
-  //   //                             person_id: "${'1'}"
-  //   //                             person_password: "${'1'}"
-  //   //                       }
-  //   //                     ){
-  //   //                       pId
-  //   //                       course
-  //   //                       class
-  //   //                       level
-  //   //                     }
-  //   //                   }                      
-  //   //                 `,
-  //   //   }),
-  //   // })
-  //   //   .then(res => res.json())
-  //   //   .then(res => {
-  //   //     ///////////////////////////////
-  //   //     setGroups(res.data.getGroupsByPersonId);
-  //   //     var newLevels = [];
-  //   //     for (
-  //   //       var count = 0;
-  //   //       count < res.data.getGroupsByPersonId.length;
-  //   //       count++
-  //   //     ) {
-  //   //       var existFlag = false;
-  //   //       for (var count2 = 0; count2 < newLevels.length; count2++) {
-  //   //         if (
-  //   //           // newLevels[count2].class ===
-  //   //           // res.data.getGroupsByPersonId[count].class &&
-  //   //           newLevels[count2].level ===
-  //   //           res.data.getGroupsByPersonId[count].level
-  //   //           // &&
-  //   //           // newLevels[count2].course ===
-  //   //           // res.data.getGroupsByPersonId[count].course
-  //   //         ) {
-  //   //           existFlag = true;
-  //   //           break;
-  //   //         }
-  //   //       }
-  //   //       if (!existFlag) {
-  //   //         newLevels.push({ pId: res.data.getGroupsByPersonId[count].pId, level: res.data.getGroupsByPersonId[count].level });
-  //   //       }
-  //   //     }
-  //   //     setState({getExamLevelTeacher : newLevels});
-
-  //   //     // /////////////////////////////
-  //   //     // var newClassName = [];
-  //   //     // for (
-  //   //     //   var count = 0;
-  //   //     //   count < res.data.getGroupsByPersonId.length;
-  //   //     //   count++
-  //   //     // ) {
-  //   //     //   var existFlag = false;
-  //   //     //   for (var count2 = 0; count2 < newClassName.length; count2++) {
-  //   //     //     if (
-  //   //     //       // newLevels[count2].class ===
-  //   //     //       // res.data.getGroupsByPersonId[count].class &&
-  //   //     //       newClassName[count2].class ===
-  //   //     //       res.data.getGroupsByPersonId[count].class
-  //   //     //       // &&
-  //   //     //       // newLevels[count2].course ===
-  //   //     //       // res.data.getGroupsByPersonId[count].course
-  //   //     //     ) {
-  //   //     //       existFlag = true;
-  //   //     //       break;
-  //   //     //     }
-  //   //     //   }
-  //   //     //   if (!existFlag) {
-  //   //     //     newClassName.push({ pId: res.data.getGroupsByPersonId[count].pId, class: res.data.getGroupsByPersonId[count].class });
-  //   //     //   }
-  //   //     // }
-  //   //     // setState({getExamClassTeacher : newClassName});
-  //   //     // ////////////////////////
-  //   //     // var newCourseNames = [];
-  //   //     // for (
-  //   //     //   var count = 0;
-  //   //     //   count < res.data.getGroupsByPersonId.length;
-  //   //     //   count++
-  //   //     // ) {
-  //   //     //   var existFlag = false;
-  //   //     //   for (var count2 = 0; count2 < newCourseNames.length; count2++) {
-  //   //     //     if (
-  //   //     //       // newLevels[count2].class ===
-  //   //     //       // res.data.getGroupsByPersonId[count].class &&
-  //   //     //       newCourseNames[count2].course ===
-  //   //     //       res.data.getGroupsByPersonId[count].course
-  //   //     //       // &&
-  //   //     //       // newLevels[count2].course ===
-  //   //     //       // res.data.getGroupsByPersonId[count].course
-  //   //     //     ) {
-  //   //     //       existFlag = true;
-  //   //     //       break;
-  //   //     //     }
-  //   //     //   }
-  //   //     //   if (!existFlag) {
-  //   //     //     newCourseNames.push({ pId: res.data.getGroupsByPersonId[count].pId, course: res.data.getGroupsByPersonId[count].course });
-  //   //     //   }
-  //   //     // }
-  //   //     // setState({getExamCourseNamesTeacher : newCourseNames});
-  //   //   });
-  //   // }
-  // }, []);
   {/* ///////////////////////////////////////////////*/}
   useEffect(()=>{
     // var Myclass = groups.filter(group =>group.level === myItem);
@@ -610,6 +388,7 @@ const AddExamForTeacher = ({MyGroups}) => {
     if(typePfUser === 1){
       setValues(vl);
       var MySelectedGroup = [];
+      var MySelectedGroupWithCourseName = [];
       console.log("uniqGroups",uniqGroups);
         for (let i = 0; i < selectedClass.length; i++) {
           for (let j = 0; j < vl.length; j++) {
@@ -621,12 +400,55 @@ const AddExamForTeacher = ({MyGroups}) => {
               group.course === vl[j].course);
               console.log("myGroup" ,myGroup);
               MySelectedGroup.push(myGroup[0].pId);
-            
+              ////////////////////////////////////////////////////////////
+              // MySelectedGroupWithCourseName.push({group: [myGroup[0].pId] , course:myGroup[0].course});
+              /////////////////////////////////////////////
+              ///////////////////////////////////////////////////////////
+              // if(MySelectedGroupWithCourseName.length > 0){
+                var existFlag = false;
+                var count = 0;
+                for (let index = 0; index < MySelectedGroupWithCourseName.length; index++) {
+                  
+                  if(MySelectedGroupWithCourseName[index].course == vl[j].course){
+                    existFlag = true;
+                    count = index;
+                    // console.log('MySelectedGroupWithCourseName',MySelectedGroupWithCourseName);
+                    break;
+                    // var groupsCN = MySelectedGroupWithCourseName[index].group;
+                    // groupsCN.push(myGroup[0].pId);
+                    // MySelectedGroupWithCourseName[index] = {group: groupsCN , course:myGroup[0].course}
+                    // MySelectedGroupWithCourseName.splice(index, 1, '');
+                  }
+                  // else{
+                  //   MySelectedGroupWithCourseName.push({group: [myGroup[0].pId] , course:myGroup[0].course});
+                  // }
+                }
+
+                if (existFlag) {
+                  MySelectedGroupWithCourseName[count].group.push(myGroup[0].pId);
+                  console.log('not exist',MySelectedGroupWithCourseName);
+                  // listScoreAndCourse[count].average = avg;
+                } else {
+                  MySelectedGroupWithCourseName.push({group: [myGroup[0].pId] , course:myGroup[0].course});
+                  console.log('exist',MySelectedGroupWithCourseName);
+                  // console.log('listScoreAndCourse');
+                  // console.log(listScoreAndCourse);
+                }
+              // }
+              // else{
+              //   MySelectedGroupWithCourseName.push({group: [myGroup[0].pId] , course:myGroup[0].course});
+              // }
+              
+
+              // console.log('MySelectedGroupWithCourseName',MySelectedGroupWithCourseName);
+              
           }
           
         }
         console.log("MySelectedGroup" ,MySelectedGroup);
+        console.log('MySelectedGroupWithCourseName',MySelectedGroupWithCourseName);
         setGroupsExam(MySelectedGroup);
+        setGroupsExamWithCourseName(MySelectedGroupWithCourseName);
     }else if(typePfUser === 0){
       setGroupsExam(vl);
     }
@@ -635,11 +457,79 @@ const AddExamForTeacher = ({MyGroups}) => {
   useEffect(()=>{
       console.log("uniqGroupsExam" , groupsExam);
   },[groupsExam])
-  {/* ///////////////////////////////////////////////*/}
+ {/* ///////////////////////////////////////////////*/}
   const handleSubmit = async(event) => {
     event.preventDefault();
+    //////////////////////
+    const myPromise = new Promise((resolve, reject) => {
+      var EmD = document.getElementById('examDuration');
+      if(newSelectedStartDate != '' && newSelectedEndDate !='' && newSelectedStartDate == newSelectedEndDate){
+        if(selectedstartTime && selectedEndTime){
+          var newStart = selectedstartTime ? moment2(selectedstartTime).tz('Asia/Tehran').format('HH:mm:00').split(':'):'';
+          var newEnd = selectedEndTime ? moment2(selectedEndTime).tz('Asia/Tehran').format('HH:mm:00').split(':'):'00:00:00';
+          // console.log('selectedEndTime',moment2(selectedEndTime).tz('Asia/Tehran').format('HH:mm:00'));
+          var StartHour = fixNumbers(newStart[0]) || 0;
+          var EndHour = fixNumbers(newEnd[0]) || 0;
+          var StartMinutes = fixNumbers(newStart[1]) || 0;
+          var EndMinutes = fixNumbers(newEnd[1]) || 0;
+          // var StartHour = fixNumbers(newStart[0]) ;
+          // var EndHour = fixNumbers(newEnd[0]);
+          // var StartMinutes = fixNumbers(newStart[1]);
+          // var EndMinutes = fixNumbers(newEnd[1]);
+          // console.log('EndHour',EndHour);
+          // console.log('EndMinutes',EndMinutes);
+          if(StartHour < EndHour && StartMinutes < EndMinutes){
+            var hour = EndHour - StartHour;
+            if(hour < 10){
+              hour = '0' + hour;
+            }
+            var minutes = EndMinutes - StartMinutes;
+            if(minutes < 10){
+              minutes = '0' + minutes;
+            }
+            // EmD.value = `${hour}: ${minutes}: 00`;
+            setState({...state , duration:`${hour}: ${minutes}: 00`});
+            resolve(`${hour}: ${minutes}: 00`);
+            // EmD.defaultValue = `${hour}: ${minutes}: 00`;
+          }
+          else if(StartHour == EndHour && StartMinutes == EndMinutes){
+              // alert('زمان اشتباه است!!!');
+              reject('زمان اشتباه است!!!');
+              // EmD.defaultValue = "";
+          }
+          else{
+            var convertStart = StartHour * 3600 + StartMinutes * 60 ;
+            var convertEnd = EndHour * 3600 + EndMinutes * 60 ;
+            var time = convertEnd - convertStart;
+            // console.log('time' ,time);
+            if(time < 0){
+              // console.log('4');
+              // alert('زمان امتحان اشتباه است');
+              reject('زمان امتحان اشتباه است');
+              // handleSelectedEndTime('');
+              // EmD.value = "";
+            }else{
+              var valueTime =format(time);
+              // EmD.value = valueTime;
+              resolve(valueTime);
+              // EmD.defaultValue = format(time);
+
+            }
+          }
+        }
+      
+      }else if(newSelectedStartDate != '' && newSelectedEndDate !='' && newSelectedStartDate != newSelectedEndDate){
+        // EmD.value = "";
+        resolve(state.examMethod);
+      }
+
+      // resolve();
+    });
+    // var CT = calcTime();
+  myPromise
+  .then( handleResolvedA => {
     if(groupsExam.length > 0){
-      await addExamParent({ variables: { 
+      addExamParent({ variables: { 
         userName: "211", 
         password: "211", 
         examParent_gId: groupsExam,
@@ -647,7 +537,7 @@ const AddExamForTeacher = ({MyGroups}) => {
         examParent_stop_date: newSelectedEndDate,
         examParent_start:selectedstartTime ?  moment2(selectedstartTime).tz('Asia/Tehran').format('HH:mm:00') : '',
         examParent_end: selectedEndTime ?  moment2(selectedEndTime).tz('Asia/Tehran').format('HH:mm:00') : '', 
-        examParent_duration: state.duration,
+        examParent_duration:handleResolvedA,
         examParent_maxScore: state.examMaxScore, 
         examParent_method: state.examMethod,
         examParent_topic: state.examTopic,
@@ -657,10 +547,19 @@ const AddExamForTeacher = ({MyGroups}) => {
      }
       }).then(res=>{
         if(res.data && res.data.addExamParent){
-          // console.log('data',data);
+          console.log('groupWithCourseName',groupWithCourseName);
+          console.log('res.data.addExamParent',res.data.addExamParent);
           setMessage('امتحان ثبت شد');
           setStatus('1');
           setShowMessage(!showMessage);
+          setTimeout(()=>{
+            // history.push("/questions");
+            history.push({
+              pathname: '/questions',
+              // search: '?query=abc',
+              state: { courses: groupWithCourseName ,examParentId: res.data.addExamParent && res.data.addExamParent.id ? res.data.addExamParent.id : ''}
+            })
+          },1000)
         }else{
           // console.log('data',data);
           setStatus('0')
@@ -673,8 +572,56 @@ const AddExamForTeacher = ({MyGroups}) => {
       setMessage('باید درسی را انتخاب کنید')
       setShowMessage(!showMessage);
     }
-    
-    
+  })
+  .catch(err =>{
+      alert(err);
+  });
+    //////////////////////////
+    // if(CT){
+    //   if(groupsExam.length > 0){
+    //     await addExamParent({ variables: { 
+    //       userName: "211", 
+    //       password: "211", 
+    //       examParent_gId: groupsExam,
+    //       examParent_start_date: newSelectedStartDate, 
+    //       examParent_stop_date: newSelectedEndDate,
+    //       examParent_start:selectedstartTime ?  moment2(selectedstartTime).tz('Asia/Tehran').format('HH:mm:00') : '',
+    //       examParent_end: selectedEndTime ?  moment2(selectedEndTime).tz('Asia/Tehran').format('HH:mm:00') : '', 
+    //       examParent_duration: state.duration,
+    //       examParent_maxScore: state.examMaxScore, 
+    //       examParent_method: state.examMethod,
+    //       examParent_topic: state.examTopic,
+    //       examParent_random: state.random == "true" ? true : false,
+    //       examParent_backward: state.backward == "true" ? true : false,
+    //       // //////////////////////////////////////
+    //    }
+    //     }).then(res=>{
+    //       if(res.data && res.data.addExamParent){
+    //         // console.log('data',data);
+    //         setMessage('امتحان ثبت شد');
+    //         setStatus('1');
+    //         setShowMessage(!showMessage);
+    //         setTimeout(()=>{
+    //           // history.push("/questions");
+    //           history.push({
+    //             pathname: '/questions',
+    //             // search: '?query=abc',
+    //             state: { courses: groupsExam ,examParentId: res.data.addExamParent }
+    //           })
+    //         },1000)
+    //       }else{
+    //         // console.log('data',data);
+    //         setStatus('0')
+    //         setMessage('امتحان ثبت نشد')
+    //         setShowMessage(!showMessage);
+    //       }
+    //     })
+    //   }else{
+    //     setStatus('0')
+    //     setMessage('باید درسی را انتخاب کنید')
+    //     setShowMessage(!showMessage);
+    //   }
+    // }
   };
   {/* ///////////////////////////////////////////////*/}
   function format(time) { 
@@ -703,72 +650,72 @@ const AddExamForTeacher = ({MyGroups}) => {
     return ret;
   }
   {/* ///////////////////////////////////////////////*/}
-  useEffect(()=>{
-    // console.log('count' , counter);
-    // if(counter == 2){
-      var EmD = document.getElementById('examDuration');
-      if(newSelectedStartDate != '' && newSelectedEndDate !='' && newSelectedStartDate == newSelectedEndDate){
-        if(selectedstartTime && selectedEndTime){
-          var newStart = selectedstartTime ? moment2(selectedstartTime).tz('Asia/Tehran').format('HH:mm:00').split(':'):'';
-          var newEnd = selectedEndTime ? moment2(selectedEndTime).tz('Asia/Tehran').format('HH:mm:00').split(':'):'00:00:00';
-          // console.log('selectedEndTime',moment2(selectedEndTime).tz('Asia/Tehran').format('HH:mm:00'));
-          var StartHour = fixNumbers(newStart[0]) || 0;
-          var EndHour = fixNumbers(newEnd[0]) || 0;
-          var StartMinutes = fixNumbers(newStart[1]) || 0;
-          var EndMinutes = fixNumbers(newEnd[1]) || 0;
-          // var StartHour = fixNumbers(newStart[0]) ;
-          // var EndHour = fixNumbers(newEnd[0]);
-          // var StartMinutes = fixNumbers(newStart[1]);
-          // var EndMinutes = fixNumbers(newEnd[1]);
-          // console.log('EndHour',EndHour);
-          // console.log('EndMinutes',EndMinutes);
-          if(StartHour < EndHour && StartMinutes < EndMinutes){
-            var hour = EndHour - StartHour;
-            if(hour < 10){
-              hour = '0' + hour;
-            }
-            var minutes = EndMinutes - StartMinutes;
-            if(minutes < 10){
-              minutes = '0' + minutes;
-            }
-            EmD.value = `${hour}: ${minutes}: 00`;
-            setState({...state , duration:`${hour}: ${minutes}: 00`});
-            // EmD.defaultValue = `${hour}: ${minutes}: 00`;
-          }
-          // else if(StartHour == EndHour && StartMinutes == EndMinutes){
-          //     alert('زمان اشتباه است!!!');
-          //     EmD.defaultValue = "";
-          // }
-          else{
-            var convertStart = StartHour * 3600 + StartMinutes * 60 ;
-            var convertEnd = EndHour * 3600 + EndMinutes * 60 ;
-            var time = convertEnd - convertStart;
-            // console.log('time' ,time);
-            if(time < 0){
-              // console.log('4');
-              alert('زمان امتحان اشتباه است');
-              // handleSelectedEndTime('');
-              EmD.value = "";
-            }else{
-              EmD.value = format(time);
-              // EmD.defaultValue = format(time);
+  // useEffect(()=>{
+  //   // console.log('count' , counter);
+  //   // if(counter == 2){
+  //     var EmD = document.getElementById('examDuration');
+  //     if(newSelectedStartDate != '' && newSelectedEndDate !='' && newSelectedStartDate == newSelectedEndDate){
+  //       if(selectedstartTime && selectedEndTime){
+  //         var newStart = selectedstartTime ? moment2(selectedstartTime).tz('Asia/Tehran').format('HH:mm:00').split(':'):'';
+  //         var newEnd = selectedEndTime ? moment2(selectedEndTime).tz('Asia/Tehran').format('HH:mm:00').split(':'):'00:00:00';
+  //         // console.log('selectedEndTime',moment2(selectedEndTime).tz('Asia/Tehran').format('HH:mm:00'));
+  //         var StartHour = fixNumbers(newStart[0]) || 0;
+  //         var EndHour = fixNumbers(newEnd[0]) || 0;
+  //         var StartMinutes = fixNumbers(newStart[1]) || 0;
+  //         var EndMinutes = fixNumbers(newEnd[1]) || 0;
+  //         // var StartHour = fixNumbers(newStart[0]) ;
+  //         // var EndHour = fixNumbers(newEnd[0]);
+  //         // var StartMinutes = fixNumbers(newStart[1]);
+  //         // var EndMinutes = fixNumbers(newEnd[1]);
+  //         // console.log('EndHour',EndHour);
+  //         // console.log('EndMinutes',EndMinutes);
+  //         if(StartHour < EndHour && StartMinutes < EndMinutes){
+  //           var hour = EndHour - StartHour;
+  //           if(hour < 10){
+  //             hour = '0' + hour;
+  //           }
+  //           var minutes = EndMinutes - StartMinutes;
+  //           if(minutes < 10){
+  //             minutes = '0' + minutes;
+  //           }
+  //           EmD.value = `${hour}: ${minutes}: 00`;
+  //           setState({...state , duration:`${hour}: ${minutes}: 00`});
+  //           // EmD.defaultValue = `${hour}: ${minutes}: 00`;
+  //         }
+  //         // else if(StartHour == EndHour && StartMinutes == EndMinutes){
+  //         //     alert('زمان اشتباه است!!!');
+  //         //     EmD.defaultValue = "";
+  //         // }
+  //         else{
+  //           var convertStart = StartHour * 3600 + StartMinutes * 60 ;
+  //           var convertEnd = EndHour * 3600 + EndMinutes * 60 ;
+  //           var time = convertEnd - convertStart;
+  //           // console.log('time' ,time);
+  //           if(time < 0){
+  //             // console.log('4');
+  //             alert('زمان امتحان اشتباه است');
+  //             // handleSelectedEndTime('');
+  //             EmD.value = "";
+  //           }else{
+  //             EmD.value = format(time);
+  //             // EmD.defaultValue = format(time);
   
-            }
-          }
-        }
+  //           }
+  //         }
+  //       }
        
-      }else if(newSelectedStartDate != '' && newSelectedEndDate !='' && newSelectedStartDate != newSelectedEndDate){
-        // EmD.value = "";
-      }
-    // }
-    // else{
+  //     }else if(newSelectedStartDate != '' && newSelectedEndDate !='' && newSelectedStartDate != newSelectedEndDate){
+  //       // EmD.value = "";
+  //     }
+  //   // }
+  //   // else{
       
-    //   counter = counter + 1;
-    //   console.log('counter2',counter);
-    // }
+  //   //   counter = counter + 1;
+  //   //   console.log('counter2',counter);
+  //   // }
     
 
-  })
+  // })
   {/* ///////////////////////////////////////////////*/}
   const ExamDuration = () =>{
     if(newSelectedStartDate != '' && newSelectedEndDate !='' && newSelectedStartDate == newSelectedEndDate){
@@ -894,6 +841,7 @@ const AddExamForTeacher = ({MyGroups}) => {
                     </MuiPickersUtilsProvider>
                 </ClockDiv>
             </ClocksDiv>
+            {newSelectedStartDate != newSelectedEndDate ? 
             <TimeDiv>
               <LabelTime>
                 مدت زمان امتحان
@@ -911,7 +859,7 @@ const AddExamForTeacher = ({MyGroups}) => {
               />
               </InputTimeContainer>
               
-            </TimeDiv>
+            </TimeDiv> : ''}
           </ClocksDivContainer>
           {/*  */}
             
