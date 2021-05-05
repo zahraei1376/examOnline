@@ -220,25 +220,26 @@ const SET_DEALY_RESPONSE_STUDENT = gql`
 `;
 //فایل و ضریب
 const SET_INFO_EXAMCHILD = gql` 
-  mutation addResponseInfo(
+  mutation updateExamChild(
     $userName: String!,
     $password: String!,
-    $epId: String!,
-    $delay: String!,
-    $totalScore: String!,
-    $countScore: String!,
+    $id: String!,
+    $examChild_falseCoefficient: String!,
+    $examChild_courseCoefficient: String!,
+    $examChild_pdf: String!,
     ){
-      addResponseInfo(
+      updateExamChild(
         userName: $userName,
         password: $password,
-        epId: $epId,
-        delay: $delay,
-        totalScore: $totalScore,
-        countScore: $countScore,
+        id: $id,
+        examChild_falseCoefficient: $examChild_falseCoefficient,
+        examChild_courseCoefficient: $examChild_courseCoefficient,
+        examChild_pdf: $examChild_pdf,
       ){
         id
       }
   }
 `;
+
 
 export { SET_QUESTION_CHILD, GET_QUESTIONS ,DELETE_QUESTIONCHILD ,SET_RESPONSE_STUDENT ,SET_DEALY_RESPONSE_STUDENT ,SET_INFO_EXAMCHILD};

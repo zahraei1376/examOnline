@@ -9,6 +9,12 @@ import ArchiveForStudent from './component/archiveForStudent/archiveForStudent.c
 import AddExamForTeacherContainer from './component/addExamComponent/addExamComponent.container';
 import QuestionsComponentContainer from './component/questionComponent/questionComponent.container';
 // import QuestionsPageContainer from './pages/questionPage.container';
+/////////////////////////////////////////////////////////////////////
+import {
+  Switch,
+  Route,
+} from "react-router-dom";
+////////////////////
 const App = () => {
   return (
     <div className="App">
@@ -17,12 +23,20 @@ const App = () => {
       {/* <QuestionsComponentContainer/> */}
 {/* ////////////////////////////////////////////////// */}
       {/* <AddExamForTeacherContainer/> */}
-      <QuestionPageContainer />
+      {/* <QuestionPageContainer /> */}
       {/* <ExamPageForStudent/> */}
       {/* <ArchiveForTeacher/> */}
       {/* <EditeAxamPageForTeacher/> */}
       {/* <ArchiveForStudent/> */}
 {/* ////////////////////////////////////////////////////////// */}
+      <Switch>
+        <Route exact path="/" >
+          <AddExamForTeacherContainer/>
+        </Route>
+        <Route exact path="/questions">
+          <QuestionPageContainer />
+        </Route>
+      </Switch>
     </div>
   );
 }

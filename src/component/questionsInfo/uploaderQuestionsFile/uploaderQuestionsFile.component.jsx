@@ -17,7 +17,7 @@ const s3 = new AWS.S3({
     region: "us-east-1", // Put you region
   });
 
-function UploaderQuestionsFile({handleGetFileName ,file}) {
+function UploaderQuestionsFile({handleGetFileName ,fileSend ,fileId}) {
     
   const [s3Acl, setS3Acl] = useState();
   const [s3Url, setS3Url] = useState();
@@ -33,7 +33,9 @@ function UploaderQuestionsFile({handleGetFileName ,file}) {
   const [showMessage,setShowMessage] = useState(false);
   const [message,setMessage] =useState('');
   const [status,setStatus] =useState(0);
-
+  /////////////////////////////////////////////////
+  const [myFileNama ,setMyFileNama] = useState('');
+  ////////////////////////////////////////////////
   useEffect(() => {
     console.log("s3Url:", s3Url);
     console.log("s3Key:", s3Key);
@@ -57,42 +59,51 @@ function UploaderQuestionsFile({handleGetFileName ,file}) {
   ////////////////////////////////////
   useEffect(()=> {
     // if(handleSend === true){
-    if(file){
-        axios({
-            url: "http://t1.ray-sa.ir:4000/sign_post",
-            method: "post",
-            data: {
-                fileName: file.name,
-            },
-        })
-        .then(async (res) => {
-            console.log(res);
-            var data = res.data;
-            setS3Acl(data.fields.ACL);
-            setS3Url(data.url);
-            setS3Key(data.fields.key);
-            setS3Expires(data.fields.Expires);
-            setS3Bucket(data.fields.bucket);
-            setS3Policy(data.fields.Policy);
-            setS3Signature(data.fields["X-Amz-Signature"]);
-            setS3Credential(data.fields["X-Amz-Credential"]);
-            setS3Algorithm(data.fields["X-Amz-Algorithm"]);
-            setS3Date(data.fields["X-Amz-Date"]);
-            // document.getElementById("myForm").submit();
-            /////////////////////////////////////////////////////////////
-            document.getElementById("myForm").submit();
-            setMessage('ارسال شد');
-            setStatus('1');
-            setShowMessage(!showMessage);
-            // console.log('myFileNama',myFileNama);
-            // return true;
-        })
-        .catch((error) => {
-            console.log(error);
-        });
+      if(!!fileSend){
+        document.getElementById("MySubmit").click();
+        // setMessage('ارسال شد');
+        // setStatus('1');
+        // setShowMessage(!showMessage);
+        console.log('myFileNama',myFileNama);
+        handleGetFileName(myFileNama);
+      }
+      ////////////////////////////////////
+    // if(file){
+    //     axios({
+    //         url: "http://t1.ray-sa.ir:4000/sign_post",
+    //         method: "post",
+    //         data: {
+    //             fileName: file.name,
+    //         },
+    //     })
+    //     .then(async (res) => {
+    //         console.log(res);
+    //         var data = res.data;
+    //         setS3Acl(data.fields.ACL);
+    //         setS3Url(data.url);
+    //         setS3Key(data.fields.key);
+    //         setS3Expires(data.fields.Expires);
+    //         setS3Bucket(data.fields.bucket);
+    //         setS3Policy(data.fields.Policy);
+    //         setS3Signature(data.fields["X-Amz-Signature"]);
+    //         setS3Credential(data.fields["X-Amz-Credential"]);
+    //         setS3Algorithm(data.fields["X-Amz-Algorithm"]);
+    //         setS3Date(data.fields["X-Amz-Date"]);
+    //         // document.getElementById("myForm").submit();
+    //         /////////////////////////////////////////////////////////////
+    //         document.getElementById("myForm").submit();
+    //         setMessage('ارسال شد');
+    //         setStatus('1');
+    //         setShowMessage(!showMessage);
+    //         // console.log('myFileNama',myFileNama);
+    //         // return true;
+    //     })
+    //     .catch((error) => {
+    //         console.log(error);
+    //     });
        
-    }
-  },[])
+    // }
+  },[fileSend])
   ////////////////////////////////////////////////////////////////
 
   function myFunction() {
@@ -103,7 +114,7 @@ function UploaderQuestionsFile({handleGetFileName ,file}) {
   return (
 <div>
 <form
-        id="myForm"
+        id={`myForm${fileId}`}
         action={s3Url}
         method="post"
         enctype="multipart/form-data"
@@ -117,7 +128,8 @@ function UploaderQuestionsFile({handleGetFileName ,file}) {
         <input type="hidden" name="X-Amz-Credential" value={s3Credential} />
         <input type="hidden" name="X-Amz-Algorithm" value={s3Algorithm} />
         <input type="hidden" name="X-Amz-Date" value={s3Date} />
-        <UploaderButtonSend type="button" onClick={myFunction}
+        <UploaderButtonSend type="button" 
+        // onClick={myFunction}
          id="MySubmit" />
         <label htmlFor="uploadPhotoAws">
             <input
@@ -130,40 +142,42 @@ function UploaderQuestionsFile({handleGetFileName ,file}) {
                 // id="ccc"
                 // type="file"
                 name="file"
-                // onChange={(event) => {
-                //   var myFileNama = Date.now() + "-" + event.target.files[0].name;
-                //     axios({
-                //     url: "http://t1.ray-sa.ir:4000/sign_post",
-                //     method: "post",
-                //     data: {
-                //         fileName: myFileNama,
-                //     },
-                //     })
-                //     .then(async (res) => {
-                //         console.log(res);
-                //         var data = res.data;
-                //         setS3Acl(data.fields.ACL);
-                //         setS3Url(data.url);
-                //         setS3Key(data.fields.key);
-                //         setS3Expires(data.fields.Expires);
-                //         setS3Bucket(data.fields.bucket);
-                //         setS3Policy(data.fields.Policy);
-                //         setS3Signature(data.fields["X-Amz-Signature"]);
-                //         setS3Credential(data.fields["X-Amz-Credential"]);
-                //         setS3Algorithm(data.fields["X-Amz-Algorithm"]);
-                //         setS3Date(data.fields["X-Amz-Date"]);
-                //         // document.getElementById("myForm").submit();
-                //         document.getElementById("myForm").submit();
-                //         setMessage('ارسال شد');
-                //         setStatus('1');
-                //         setShowMessage(!showMessage);
-                //         console.log('myFileNama',myFileNama);
-                //         handleGetFileName(myFileNama);
-                //     })
-                //     .catch((error) => {
-                //         console.log(error);
-                //     });
-                // }}
+                onChange={(event) => {
+                  var FileNama = Date.now() + "-" + event.target.files[0].name;
+                  setMyFileNama(FileNama);
+                    axios({
+                    url: "http://t1.ray-sa.ir:4000/sign_post",
+                    method: "post",
+                    data: {
+                        fileName: FileNama,
+                    },
+                    })
+                    .then(async (res) => {
+                        console.log(res);
+                        var data = res.data;
+                        setS3Acl(data.fields.ACL);
+                        setS3Url(data.url);
+                        setS3Key(data.fields.key);
+                        setS3Expires(data.fields.Expires);
+                        setS3Bucket(data.fields.bucket);
+                        setS3Policy(data.fields.Policy);
+                        setS3Signature(data.fields["X-Amz-Signature"]);
+                        setS3Credential(data.fields["X-Amz-Credential"]);
+                        setS3Algorithm(data.fields["X-Amz-Algorithm"]);
+                        setS3Date(data.fields["X-Amz-Date"]);
+                        // document.getElementById("myForm").submit();
+                        //////////////////////////////////////////////////////
+                        // document.getElementById("myForm").submit();
+                        // setMessage('ارسال شد');
+                        // setStatus('1');
+                        // setShowMessage(!showMessage);
+                        // console.log('myFileNama',myFileNama);
+                        // handleGetFileName(myFileNama);
+                    })
+                    .catch((error) => {
+                        console.log(error);
+                    });
+                }}
             />
              <UploadButton variant="contained" component="span">
                 <InsertDriveFileIcon style={{fontSize:'4rem'}}

@@ -10,6 +10,8 @@ import { ApolloClient } from 'apollo-boost';
 ////////////////////////////////////////////////////
 import {Provider } from 'react-redux';
 import {Store} from './redux/store';
+///////////////////////////////////////////////////
+import { BrowserRouter } from 'react-router-dom';
 
 
 const cache =new InMemoryCache();
@@ -27,13 +29,15 @@ const client =new ApolloClient({
 
 
 ReactDOM.render(
-  <ApolloProvider client={client}>
-  <Provider store ={Store}> 
-    <React.StrictMode>
-      <App />
-    </React.StrictMode>
-   </Provider>
-  </ApolloProvider>
+  <BrowserRouter>
+    <ApolloProvider client={client}>
+      <Provider store ={Store}> 
+        <React.StrictMode>
+          <App />
+        </React.StrictMode>
+      </Provider>
+    </ApolloProvider>
+  </BrowserRouter>
   ,
   document.getElementById('root')
 );

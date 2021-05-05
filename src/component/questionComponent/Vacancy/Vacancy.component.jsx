@@ -25,6 +25,9 @@ import { useQuery ,gql } from 'apollo-boost';
 import { useMutation} from 'react-apollo';
 import {SET_QUESTION_CHILD , DELETE_QUESTIONCHILD} from '../../../graphql/resolver';
 /////////////////////////query
+import {selectedCourseName} from '../../../redux/questionsCourses/questionsCourses.selector';
+import { createStructuredSelector } from 'reselect';
+/////////////////////////////////////////
 // const SET_QUESTION_CHILD = gql`
 //   mutation addQuestionChild(
 //       $userName: String!,
@@ -72,7 +75,7 @@ import {SET_QUESTION_CHILD , DELETE_QUESTIONCHILD} from '../../../graphql/resolv
 // `;
 const graphql_server_uri ='/qraphql';
 
-const Vacancy = ({setToggle , ...props}) => {
+const Vacancy = ({setToggle ,courseName, ...props}) => {
     const [innerData, setInnerData] = useState([]);
     const [setQuestionChild ,{ QuestionChildData }] = useMutation(SET_QUESTION_CHILD);
     const [deleteQuestionChild ,{ DQuestionChildData }] = useMutation(DELETE_QUESTIONCHILD);
@@ -623,188 +626,199 @@ const Vacancy = ({setToggle , ...props}) => {
         ]}
         
         editable={{
-         //////////////////////////////////
-         onRowUpdateBefore: () =>
-         new Promise((resolve, reject) => {
-           console.log("onRowUpdateBefore");
-           setToggle(true);
-           // props.setDisableComponents(true);
-           resolve();
-         }),
-       //////////////////////////////////////////
-       onRowUpdateCancelled: rowData => {
-        loadVariable.load = true;
-        setToggle(false);
-        console.log('onRowUpdateCancelled',loadVariable.load);
-        },
-        //////////////////////////////////////////
+          //////////////////////////////////
+          onRowUpdateBefore: () =>
+          new Promise((resolve, reject) => {
+            console.log("onRowUpdateBefore");
+            setToggle(true);
+            // props.setDisableComponents(true);
+            resolve();
+          }),
+          //////////////////////////////////////////
+          onRowUpdateCancelled: rowData => {
+            loadVariable.load = true;
+            setToggle(false);
+            console.log('onRowUpdateCancelled',loadVariable.load);
+          },
+          //////////////////////////////////////////
           onRowUpdate: (newData, oldData) =>
             new Promise((resolve, reject) => {
-              if(props.rowData && props.rowData.length > 0 && props.rowData[0].qpId ){
-                setTimeout(() => {
-                  // const dataUpdate = [...innerData];
-                  // const index = oldData.tableData.id;
-                  /////////////myCode
-                  if (
-                    selectedFile &&
-                    ((textImage == true && questionImage == true) ||
-                      (questionImage == true && textImage == false))
-                  ) {
-                    //////////////////////
-                    var file = new File(
-                      [selectedFile],
-                      uuidv4() + `.${format}`,
-                      {
-                        type: mimeTypeFile,
-                      },
-                    );
-                  //////////////////////////////////////////
-                    handleSendToserver();
-                    async function handleSendToserver() {
-                      var responseCode = await UploadfileToserver(file, format);
-                      if (file.name && responseCode) {
-                        setQuestionChild({ variables: { 
-                          userName: "211", 
-                          password: "211", 
-                          qpId: props.rowData[0].qpId,
-                          question: "", 
-                          question_score: newData.question_score ? newData.question_score : '', 
-                          question_explain: convertText(newData.question_explane),
-                          question_timeToSolveProblem: convertText(newData.question_timeToSolveProblem), 
-                          question_correctOption: "", 
-                          question_optionOne: "",
-                          question_optionTwo: "",
-                          question_optionThree: "",
-                          question_optionFour: "",
-                          question_link: file.name,
-                          exam_link: "", 
-                          question_type: props.typeQuestion,
-                          question_seqItems: [],
-                          question_vancyItems: vancyValue, 
-                          question_compItems: []
-                          } 
-                        }).then(res=>{
-                          if(res.data && res.data.addQuestionChild){
-                            setQuestionImage(false);
-                            setMessage('ثبت شد');
-                            setStatus('1');
-                            setShowMessage(!showMessage);
-                          }else{
-                            setStatus('0')
-                            setMessage('ثبت نشد')
-                            setShowMessage(!showMessage);
-                          }
-                        })
-                      } else {
-                        // alert('اطلاعاتی به درستی ثبت نشد');
-                        setStatus('0')
-                        setMessage('اطلاعاتی به درستی ثبت نشد')
-                        setShowMessage(!showMessage);
-                      }
-                    }
-                  } else if (
-                    selectedFile &&
-                    questionImage == false &&
-                    textImage == true
-                  ) {
-                    //////////////////////
-                    var file = new File(
-                      [selectedFile],
-                      uuidv4() + `.${format}`,
-                      {
-                        type: mimeTypeFile,
-                      },
-                    );
-                    //////////////////////
-                    handleSendToserver();
-                    async function handleSendToserver() {
-                      var responseCode = await UploadfileToserver(file, format);
-                      if (file.name && responseCode) {
-                        setQuestionChild({ variables: { 
-                          userName: "211", 
-                          password: "211", 
-                          qpId: props.rowData[0].qpId,
-                          question: convertText(newData.question), 
-                          question_score: newData.question_score ? newData.question_score : '', 
-                          question_explain: convertText(newData.question_explane),
-                          question_timeToSolveProblem: convertText(newData.question_timeToSolveProblem), 
-                          question_correctOption: "", 
-                          question_optionOne: "",
-                          question_optionTwo: "",
-                          question_optionThree: "",
-                          question_optionFour: "",
-                          question_link: "",
-                          exam_link: file.name, 
-                          question_type: props.typeQuestion,
-                          question_seqItems: [],
-                          question_vancyItems: vancyValue, 
-                          question_compItems: []
-                          } 
-                        }).then(res=>{
-                          if(res.data && res.data.addQuestionChild){
-                            setTextImage(false);
-                            setQuestionImage(false);
-                            setMessage('ثبت شد');
-                            setStatus('1');
-                            setShowMessage(!showMessage);
-                          }else{
-                            setStatus('0')
-                            setMessage('ثبت نشد')
-                            setShowMessage(!showMessage);
-                          }
-                        })
-                      } else {
-                        // alert('اطلاعاتی به درستی ثبت نشد');
-                        setStatus('0')
-                        setMessage('اطلاعاتی به درستی ثبت نشد')
-                        setShowMessage(!showMessage);
-                      }
-                    }
-                  } else {
-                    setQuestionChild({ variables: { 
-                      userName: "211", 
-                      password: "211", 
-                      qpId: props.rowData[0].qpId,
-                      question: convertText(newData.question), 
-                      question_score: newData.question_score ? newData.question_score : '', 
-                      question_explain: convertText(newData.question_explane),
-                      question_timeToSolveProblem: convertText(newData.question_timeToSolveProblem), 
-                      question_correctOption: "", 
-                      question_optionOne: "",
-                      question_optionTwo: "",
-                      question_optionThree: "",
-                      question_optionFour: "",
-                      question_link: "",
-                      exam_link: "", 
-                      question_type: props.typeQuestion,
-                      question_seqItems: [],
-                      question_vancyItems: vancyValue, 
-                      question_compItems: [],
-                      } 
-                    }).then(res=>{
-                      if(res.data && res.data.addQuestionChild){
-                          setMessage('ثبت شد');
-                          setStatus('1');
-                          setShowMessage(!showMessage);
-                        }else{
+              if(courseName != ''){
+                if(props.rowData && props.rowData.length > 0 && props.rowData[0].qpId ){
+                  setTimeout(() => {
+                    // const dataUpdate = [...innerData];
+                    // const index = oldData.tableData.id;
+                    /////////////myCode
+                    if (
+                      selectedFile &&
+                      ((textImage == true && questionImage == true) ||
+                        (questionImage == true && textImage == false))
+                    ) {
+                      //////////////////////
+                      var file = new File(
+                        [selectedFile],
+                        uuidv4() + `.${format}`,
+                        {
+                          type: mimeTypeFile,
+                        },
+                      );
+                    //////////////////////////////////////////
+                      handleSendToserver();
+                      async function handleSendToserver() {
+                        var responseCode = await UploadfileToserver(file, format);
+                        if (file.name && responseCode) {
+                          setQuestionChild({ variables: { 
+                            userName: "211", 
+                            password: "211", 
+                            qpId: props.rowData[0].qpId,
+                            examChildId:courseName,
+                            question: "", 
+                            question_score: newData.question_score ? newData.question_score : '', 
+                            question_explain: convertText(newData.question_explane),
+                            question_timeToSolveProblem: convertText(newData.question_timeToSolveProblem), 
+                            question_correctOption: "", 
+                            question_optionOne: "",
+                            question_optionTwo: "",
+                            question_optionThree: "",
+                            question_optionFour: "",
+                            question_link: file.name,
+                            exam_link: "", 
+                            question_type: props.typeQuestion,
+                            question_seqItems: [],
+                            question_vancyItems: vancyValue, 
+                            question_compItems: []
+                            } 
+                          }).then(res=>{
+                            if(res.data && res.data.addQuestionChild){
+                              setQuestionImage(false);
+                              setMessage('ثبت شد');
+                              setStatus('1');
+                              setShowMessage(!showMessage);
+                            }else{
+                              setStatus('0')
+                              setMessage('ثبت نشد')
+                              setShowMessage(!showMessage);
+                            }
+                          })
+                        } else {
+                          // alert('اطلاعاتی به درستی ثبت نشد');
                           setStatus('0')
-                          setMessage('ثبت نشد')
+                          setMessage('اطلاعاتی به درستی ثبت نشد')
                           setShowMessage(!showMessage);
                         }
-                    })
-                  }
-                  ////////////////////////////
-                  // dataUpdate[index] = newData;
-                  // setInnerData([...dataUpdate]);
-                  props.handleFetchData();
+                      }
+                    } else if (
+                      selectedFile &&
+                      questionImage == false &&
+                      textImage == true
+                    ) {
+                      //////////////////////
+                      var file = new File(
+                        [selectedFile],
+                        uuidv4() + `.${format}`,
+                        {
+                          type: mimeTypeFile,
+                        },
+                      );
+                      //////////////////////
+                      handleSendToserver();
+                      async function handleSendToserver() {
+                        var responseCode = await UploadfileToserver(file, format);
+                        if (file.name && responseCode) {
+                          setQuestionChild({ variables: { 
+                            userName: "211", 
+                            password: "211", 
+                            qpId: props.rowData[0].qpId,
+                            examChildId:courseName,
+                            question: convertText(newData.question), 
+                            question_score: newData.question_score ? newData.question_score : '', 
+                            question_explain: convertText(newData.question_explane),
+                            question_timeToSolveProblem: convertText(newData.question_timeToSolveProblem), 
+                            question_correctOption: "", 
+                            question_optionOne: "",
+                            question_optionTwo: "",
+                            question_optionThree: "",
+                            question_optionFour: "",
+                            question_link: "",
+                            exam_link: file.name, 
+                            question_type: props.typeQuestion,
+                            question_seqItems: [],
+                            question_vancyItems: vancyValue, 
+                            question_compItems: []
+                            } 
+                          }).then(res=>{
+                            if(res.data && res.data.addQuestionChild){
+                              setTextImage(false);
+                              setQuestionImage(false);
+                              setMessage('ثبت شد');
+                              setStatus('1');
+                              setShowMessage(!showMessage);
+                            }else{
+                              setStatus('0')
+                              setMessage('ثبت نشد')
+                              setShowMessage(!showMessage);
+                            }
+                          })
+                        } else {
+                          // alert('اطلاعاتی به درستی ثبت نشد');
+                          setStatus('0')
+                          setMessage('اطلاعاتی به درستی ثبت نشد')
+                          setShowMessage(!showMessage);
+                        }
+                      }
+                    } else {
+                      setQuestionChild({ variables: { 
+                        userName: "211", 
+                        password: "211", 
+                        qpId: props.rowData[0].qpId,
+                        examChildId:courseName,
+                        question: convertText(newData.question), 
+                        question_score: newData.question_score ? newData.question_score : '', 
+                        question_explain: convertText(newData.question_explane),
+                        question_timeToSolveProblem: convertText(newData.question_timeToSolveProblem), 
+                        question_correctOption: "", 
+                        question_optionOne: "",
+                        question_optionTwo: "",
+                        question_optionThree: "",
+                        question_optionFour: "",
+                        question_link: "",
+                        exam_link: "", 
+                        question_type: props.typeQuestion,
+                        question_seqItems: [],
+                        question_vancyItems: vancyValue, 
+                        question_compItems: [],
+                        } 
+                      }).then(res=>{
+                        if(res.data && res.data.addQuestionChild){
+                            setMessage('ثبت شد');
+                            setStatus('1');
+                            setShowMessage(!showMessage);
+                          }else{
+                            setStatus('0')
+                            setMessage('ثبت نشد')
+                            setShowMessage(!showMessage);
+                          }
+                      })
+                    }
+                    ////////////////////////////
+                    // dataUpdate[index] = newData;
+                    // setInnerData([...dataUpdate]);
+                    props.handleFetchData();
+                    resolve();
+                  }, 1000)
+                }else{
+                  setStatus('0')
+                  setMessage('خطایی رخ داده است!!!')
+                  setShowMessage(!showMessage);
                   resolve();
-                }, 1000)
+                }
               }else{
                 setStatus('0')
-                setMessage('خطایی رخ داده است!!!')
+                setMessage('ابتدا درس را انتخاب کنید!!!');
                 setShowMessage(!showMessage);
                 resolve();
               }
+              
               //////////////
               setToggle(false);
             }),
@@ -834,4 +848,8 @@ const mapDispatchToProps = dispatch =>({
   setToggle: toggle => dispatch(setToggle(toggle)),
 });
 
-export default connect(null,mapDispatchToProps)(Vacancy);
+const mapStateToProps = createStructuredSelector({
+  courseName : selectedCourseName,
+});
+
+export default connect(mapStateToProps,mapDispatchToProps)(Vacancy);

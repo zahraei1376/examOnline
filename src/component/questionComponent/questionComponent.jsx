@@ -23,6 +23,7 @@ import SequentialIcon2 from '../../assets/img/SequentialIcon2.png';
 ///////////////////////////////////////////////
 import {connect} from 'react-redux';
 import { createStructuredSelector} from 'reselect';
+import {selectedCourseName} from '../../redux/questionsCourses/questionsCourses.selector';
 import {ToggleQuestion} from '../../redux/toggleQuesion/toggleQuestion.selector';
 // import setToggle from "../../redux/toggleQuesion/toggleQuestion.action.js";
 /////////////////////////query
@@ -113,15 +114,17 @@ const SET_QUESTION_CHILD = gql`
   }
 `;
 /////////////////////////
-const Questions = ({toggle ,selectedCourseName , questions}) =>{
+const Questions = ({toggle ,courseName, examParentId, questions}) =>{
   // const [innerData, setInnerData] = useState([]);
   // const tableRef = React.useRef(null);
   const [setQuestionParent ,{ QuestionParentData }] = useMutation(SET_QUESTIONPARENT);
   const [deleteQuestionParent ,{ DQuestionParentData }] = useMutation(DELETE_QUESTIONPARENT);
   const { loading, error, data ,refetch  } = useQuery(GET_QUESTIONS , {
-    variables: {  userName: "211",
-    password: "211",
-    id: "608fe01c91f240049edbcefb" },
+    variables: {  
+      userName: "211",
+      password: "211",
+      id: examParentId,
+    },
     notifyOnNetworkStatusChange: true
   });
   // const [typeQuestion,setTypeQuestion] =useState('');
@@ -150,7 +153,7 @@ const Questions = ({toggle ,selectedCourseName , questions}) =>{
   // },[typeQuestion])
 
   useEffect(() => {
-    if (data) {
+    if (data && data.examParents && data.examParents.length > 0) {
       console.log('get dataaaaaaaaa' ,data);
       setData(MergeQuestions(data.examParents[0]))
     }
@@ -290,7 +293,9 @@ const Questions = ({toggle ,selectedCourseName , questions}) =>{
                     //   createArray(rowData.questionChild)
                     //   // [{}]
                     // }
-                    return <DescriptiveQuestion selectedCourseName={selectedCourseName} handleFetchData={handleFetchData} 
+                    return <DescriptiveQuestion 
+                    // selectedCourseName={selectedCourseName}
+                     handleFetchData={handleFetchData} 
                       rowData={rowData && rowData.questionChild && rowData.questionChild.length > 0   ? createArray(rowData.questionChild[0]) : 
                         MyCreateArray(rowData.id)
                       // [{}]
@@ -336,7 +341,9 @@ const Questions = ({toggle ,selectedCourseName , questions}) =>{
                 {(() => {
                   // setTypeQuestion(2);
                   // setSelectedRow(rowData.tableData.id);
-                    return <MultipleChoice selectedCourseName={selectedCourseName} handleFetchData={handleFetchData}
+                    return <MultipleChoice 
+                    // selectedCourseName={selectedCourseName}
+                     handleFetchData={handleFetchData}
                     // rowData={rowData && rowData.questionChild.length > 0   ? createArray(rowData.questionChild[0]) : createArray(rowData)}
                     // rowData={createArray(rowData)}
                     rowData={rowData && rowData.questionChild && rowData.questionChild.length > 0   ? createArray(rowData.questionChild[0]) : 
@@ -382,7 +389,9 @@ const Questions = ({toggle ,selectedCourseName , questions}) =>{
                 {(() => {
                   // setTypeQuestion(3);
                   // setSelectedRow(rowData.tableData.id);
-                    return <TrueAndFalse selectedCourseName={selectedCourseName} handleFetchData={handleFetchData} 
+                    return <TrueAndFalse 
+                    // selectedCourseName={selectedCourseName}
+                     handleFetchData={handleFetchData} 
                     // rowData={rowData && rowData.questionChild.length > 0   ? createArray(rowData.questionChild[0]) : createArray(rowData)}
                     // rowData={createArray(rowData)}
                     rowData={rowData && rowData.questionChild && rowData.questionChild.length > 0   ? createArray(rowData.questionChild[0]) : 
@@ -418,7 +427,9 @@ const Questions = ({toggle ,selectedCourseName , questions}) =>{
                 }}
               >
                 {(() => {
-                    return <Vacancy selectedCourseName={selectedCourseName} handleFetchData={handleFetchData} 
+                    return <Vacancy 
+                    // selectedCourseName={selectedCourseName}
+                     handleFetchData={handleFetchData} 
                     // rowData={rowData && rowData.questionChild.length > 0   ? createArray(rowData.questionChild[0]) : createArray(rowData)}
                     // rowData={createArray(rowData)}
                     rowData={rowData && rowData.questionChild && rowData.questionChild.length > 0   ? createArray(rowData.questionChild[0]) : 
@@ -462,7 +473,9 @@ const Questions = ({toggle ,selectedCourseName , questions}) =>{
                 {(() => {
                   // setTypeQuestion(5);
                   // setSelectedRow(rowData.tableData.id);
-                    return <Comparative selectedCourseName={selectedCourseName} handleFetchData={handleFetchData} 
+                    return <Comparative 
+                    // selectedCourseName={selectedCourseName}
+                     handleFetchData={handleFetchData} 
                     // rowData={createArray(rowData)}
                     // rowData={rowData && rowData.questionChild.length > 0   ? createArray(rowData.questionChild[0]) : createArray(rowData)}
                     rowData={rowData && rowData.questionChild && rowData.questionChild.length > 0   ? createArray(rowData.questionChild[0]) : 
@@ -507,7 +520,9 @@ const Questions = ({toggle ,selectedCourseName , questions}) =>{
                 {(() => {
                   // setTypeQuestion(6);
                   // setSelectedRow(rowData.tableData.id);
-                    return <Sequential selectedCourseName={selectedCourseName} handleFetchData={handleFetchData} 
+                    return <Sequential 
+                    // selectedCourseName={selectedCourseName}
+                     handleFetchData={handleFetchData} 
                     // rowData={rowData.questionChild[0] ? createArray(rowData.questionChild[0]) : ''}
                     // rowData={rowData && rowData.questionChild.length > 0   ? createArray(rowData.questionChild[0]) : createArray(rowData)}
                     // rowData={createArray(rowData)}
@@ -535,7 +550,7 @@ const Questions = ({toggle ,selectedCourseName , questions}) =>{
                   setQuestionParent({ variables: { 
                     userName: "211",
                     password: "211",
-                    ecId: selectedCourseName
+                    ecId: courseName
                     } 
                   }).then(res=>{
                     console.log('res = ' , res.data);
@@ -613,8 +628,8 @@ const Questions = ({toggle ,selectedCourseName , questions}) =>{
 // })
 
 const mapStateToProps = createStructuredSelector({
-  toggle:ToggleQuestion
+  toggle:ToggleQuestion,
+  courseName : selectedCourseName,
 });
-
 
 export default connect(mapStateToProps)(Questions);
