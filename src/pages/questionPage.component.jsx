@@ -1,5 +1,5 @@
 import React, { useState ,useEffect } from 'react';
-import { QuestionPageContainer ,QuestionPageDiv,UploadSectionContainer,ComboDiv} from './questionPage.styles';
+import { QuestionPageContainer ,QuestionPageDiv,UploadSectionContainer,QuestionsContainer,ComboDiv} from './questionPage.styles';
 import Questions from '../component/questionComponent/questionComponent';
 import UploadQuestions from '../component/questionComponent/uploadQuestions/uploadQiestions.component';
 import FastAccessToQuestions from '../component/questionComponent/fastAccessToquestions/fastAccessToquestions.component';
@@ -9,10 +9,10 @@ import Autocomplete from '@material-ui/lab/Autocomplete';
 //////////////////////////////
 import QuestionsHeader from '../component/questionsInfo/questionsInfo.components';
 const courses = [
-    { course: 'ریاضی', examChildId: '608e3587e587310916173bdf' },
-    { course: 'فیزیک', examChildId: '608e35e1e587310916173be1' },
-    { course: 'علوم', examChildId: '608e35f7d0832209d2e4bf71' },
-    { course: 'اجتماعی', examChildId: '608e375446851c0a1782b31f'},
+    { course: 'ریاضی', examChildId: '608fe01c91f240049edbcefc' },
+    { course: 'فیزیک', examChildId: '608fe01c91f240049edbcefd' },
+    { course: 'علوم', examChildId: '608fe01c91f240049edbcefe' },
+    { course: 'اجتماعی', examChildId: '608fe01c91f240049edbceff'},
   ]
 
 const QuestionPage = ({questions}) =>{
@@ -29,6 +29,7 @@ const QuestionPage = ({questions}) =>{
             <div>
                 <QuestionsHeader courses={courses} />
             </div>
+            <QuestionsContainer>
              <ComboDiv >
                 <Autocomplete
                     style={{ width: 300 }}
@@ -44,7 +45,7 @@ const QuestionPage = ({questions}) =>{
                     )}
 
                     onChange={(event, newValue) => {
-                        setCourseName(newValue.examChildId);
+                        setCourseName(newValue && newValue.examChildId ? newValue.examChildId : '');
                         // console.log(JSON.stringify(newValue, null, ' '));
                     }}
                 />
@@ -71,6 +72,7 @@ const QuestionPage = ({questions}) =>{
                 </UploadSectionContainer> */}
                 <Questions selectedCourseName={courseName} questions={questions} />
             </QuestionPageDiv>
+            </QuestionsContainer>
         </QuestionPageContainer>
     )
 };

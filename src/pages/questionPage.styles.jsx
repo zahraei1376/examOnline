@@ -45,3 +45,8 @@ export const ComboDiv = styled.div`
     width:100%;
     margin-bottom:4rem;
 `;
+
+export const QuestionsContainer = styled.div`
+    border:2px solid #000;
+    padding:0 2rem;
+`;

@@ -487,6 +487,49 @@ const Sequential = ({setToggle , ...props}) => {
             }
             
           }}
+          // actions={[
+          //   {
+          //     icon: 'delete',
+          //     tooltip: 'حذف',
+          //     // onClick: (event, rowData) => {
+          //       onClick: async(event, rowData) => {
+          //       // Do save operation
+          //       if(props.rowData && props.rowData.length > 0 && props.rowData[0].id){
+          //         const dataDelete = [...innerData];
+          //         const index = rowData.tableData.id;
+          //         console.log('id', props.rowData[0].id);
+          //         await deleteQuestionChild({ variables: { 
+          //           userName: "211",
+          //           password: "211",
+          //           id: props.rowData[0].id
+          //           } 
+          //         }).then(res=>{
+          //           if(res.data && res.data.deleteQuestionChild){
+          //             props.handleFetchData();
+          //             // console.log('data',data);
+          //             // setMessage('امتحان ثبت شد');
+          //             // setStatus('1');
+          //             // setShowMessage(!showMessage);
+          //           }else{
+          //             props.handleFetchData();
+          //             // console.log('data',data);
+          //             // setStatus('0')
+          //             // setMessage('امتحان ثبت نشد')
+          //             // setShowMessage(!showMessage);
+          //           }
+          //         })
+          //         dataDelete.splice(index, 1);
+          //         setInnerData([...dataDelete]);
+          //       }else{
+          //         setStatus('0')
+          //         setMessage('اطلاعاتی برای حذف وجود ندارد!!!')
+          //         setShowMessage(!showMessage);
+          //       }
+                 
+          //     }
+          //   },
+          // ]}
+
           actions={[
             {
               icon: 'delete',
@@ -531,10 +574,18 @@ const Sequential = ({setToggle , ...props}) => {
           ]}
         editable={{
 
-          //////////////////////////////////////////
+           //////////////////////////////////
+           onRowUpdateBefore: () =>
+           new Promise((resolve, reject) => {
+             console.log("onRowUpdateBefore");
+             setToggle(true);
+             // props.setDisableComponents(true);
+             resolve();
+           }),
+         //////////////////////////////////////////
           onRowUpdateCancelled: rowData => {
             loadVariable.load = true;
-            // setToggle(false);
+            setToggle(true);
             console.log('onRowUpdateCancelled',loadVariable.load);
           },
           //////////////////////////////////////////
@@ -708,6 +759,8 @@ const Sequential = ({setToggle , ...props}) => {
                 setShowMessage(!showMessage);
                 resolve();
               }
+              //////////////
+              setToggle(true);
             }),
           // onRowDelete: oldData =>
           //   new Promise((resolve, reject) => {

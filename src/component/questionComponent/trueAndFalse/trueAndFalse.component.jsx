@@ -612,421 +612,472 @@ const TrueAndFalse = ({setToggle ,toggle, ...props}) => {
             
         }}
 
+        // actions={[
+        //   {
+        //     icon: 'delete',
+        //     tooltip: 'حذف',
+        //     // onClick: (event, rowData) => {
+        //       onClick: (event, rowData) => {
+        //       // Do save operation
+        //         const dataDelete = [...innerData];
+        //         const index = rowData.tableData.id;
+        //         dataDelete.splice(index, 1);
+        //         ////////////////////////////////////
+        //       // fetch(graphql_server_uri, {
+        //       //   method: 'POST',
+        //       //   headers: { 'Content-Type': 'application/json' },
+        //       //   body: JSON.stringify({
+        //       //     query: `
+        //       //       mutation{
+        //       //           deleteQuestion(
+        //       //               axamQuestion_input: {
+        //       //                   questionID: "${'1'}"
+        //       //                   axamQuestions_id: "${'1'}"
+        //       //                   question: "${convertText(rowData.question)}"
+        //       //                   question_link: "${rowData.question_link ? rowData.question_link : ''}"
+        //       //                   question_optionOne: "${convertText(rowData.question_optionOne)}"
+        //       //                   question_optionTwo:"${convertText(rowData.question_optionTwo)}"
+        //       //                   question_correctOption: "${rowData.question_correctOption}"
+        //       //                   question_timeToSolveProblem: "${convertText(rowData.question_timeToSolveProblem)}"
+        //       //                   question_score: "${rowData.question_score ? rowData.question_score : ''}"
+        //       //                   question_explane: "${convertText(rowData.question_explane)}"
+        //       //                   exam_link: "${rowData.exam_link ? rowData.exam_link : ''}"
+        //       //             },
+        //       //         ){
+        //       //           axamQuestions_id
+        //       //         }
+        //       //       }                      
+        //       //     `,
+        //       //   }),
+        //       // })
+        //       //   .then(res => res.json())
+        //       //   .then(res => {
+        //       //     // setSumScore(prevState => (prevState - parseFloat(oldScore)));
+        //       //     if (
+        //       //       res.data &&
+        //       //       res.data.deleteQuestion &&
+        //       //       res.data.deleteQuestion.axamQuestions_id
+        //       //     ) {
+        //       //       /////
+        //       //       alert('اطلاعاتی به درستی حذف نشد');
+        //       //       // setStatus(1);
+        //       //       // setShowPopup(true);
+        //       //     } else {
+        //       //       // setQuestionId(data.length)
+        //       //       // setMessage('اطلاعاتی به درستی حذف شد');
+        //       //       // setStatus(0);
+        //       //       // setShowPopup(true);
+        //       //       // refteshData();
+        //       //       //   return res.data;
+        //       //     }
+        //       //     // return res.data;
+        //       //   });
+        //         //////////////////////////////////////////
+        //         setInnerData([...dataDelete]);
+        //         setToggle(false);
+        //     }
+        //   },
+        //   // {
+        //   //   icon: 'edit',
+        //   //   tooltip: 'Edit',
+        //   //   // onClick: (event, rowData) => {
+        //   //     onClick: (event, rowData) => {
+        //   //       setTimeout(() => {
+        //   //         // const dataUpdate = [...innerData];
+        //   //         // const index = rowData.tableData.id;
+        //   //         /////////////myCode
+        //   //         // if (
+        //   //         //     // axamIdProps != '' &&
+        //   //         //     rowData.newData.question_score !== undefined &&
+        //   //         //     rowData.newData.question_correctOption !== undefined
+        //   //         //   ) {
+        //   //         //     if (
+        //   //         //       selectedFile &&
+        //   //         //       ((textImage == true && questionImage == true) ||
+        //   //         //         (questionImage == true && textImage == false))
+        //   //         //     ) {
+        //   //         //       //////////////////////
+        //   //         //       var file = new File(
+        //   //         //         [selectedFile],
+        //   //         //         uuidv4() + `.${format}`,
+        //   //         //         {
+        //   //         //           type: mimeTypeFile,
+        //   //         //         },
+        //   //         //       );
+        //   //         //     //////////////////////////////////////////
+        //   //         //       handleSendToserver();
+        //   //         //       async function handleSendToserver() {
+        //   //         //         var responseCode = await UploadfileToserver(file, format);
+        //   //         //         if (file.name && responseCode) {
+        //   //         //           fetch(graphql_server_uri, {
+        //   //         //             method: 'POST',
+        //   //         //             headers: { 'Content-Type': 'application/json' },
+        //   //         //             body: JSON.stringify({
+        //   //         //               query: `
+        //   //         //                           mutation{
+        //   //         //                               addNewQuestion(
+        //   //         //                                 axamQuestion_input: {
+        //   //         //                                     questionID: "${'1'}"
+        //   //         //                                       axamQuestions_id: "${'1'}"
+        //   //         //                                       question: "${''}"
+        //   //         //                                       question_link: "${file.name
+        //   //         //                 }"
+        //   //         //                                       question_optionOne: "${convertText(rowData.newData.question_optionOne)}"
+        //   //         //                                       question_optionTwo:"${convertText(rowData.newData.question_optionTwo)}"
+        //   //         //                                       question_correctOption: "${rowData.newData.question_correctOption ? rowData.newData.question_correctOption: ''
+        //   //         //                 }"
+        //   //         //                                       question_timeToSolveProblem: "${convertText(rowData.newData.question_timeToSolveProblem)}"
+        //   //         //                                       question_score: "${rowData.newData.question_score ? rowData.newData.question_score : ''
+        //   //         //                 }"
+        //   //         //                                       question_explane: "${convertText(rowData.newData.question_explane)}"
+        //   //         //                                       exam_link: "${''}"
+        //   //         //                               },
+        //   //         //                               axamQuestion_input_old: {
+        //   //         //                                 questionID: "${'1'}"
+        //   //         //                                 axamQuestions_id: "${'1'}"
+        //   //         //                                 question: "${convertText(rowData.oldData.question_optionOne)}"
+        //   //         //                                 question_link: "${convertText(rowData.oldData.question_link)}"
+        //   //         //                                 question_optionOne: "${convertText(rowData.oldData.question_optionOne)}"
+        //   //         //                                 question_optionTwo:"${convertText(rowData.oldData.question_optionTwo)}"
+        //   //         //                                 question_correctOption: "${rowData.oldData.question_correctOption ? rowData.oldData.question_correctOption : ''
+        //   //         //                     }"
+        //   //         //                                 question_timeToSolveProblem: "${convertText(rowData.oldData.question_timeToSolveProblem)}"
+        //   //         //                                 question_score: "${ rowData.oldData.question_score ? rowData.oldData.question_score : ''
+        //   //         //                     }"
+        //   //         //                                 question_explane: "${convertText(rowData.oldData.question_explane)}"
+        //   //         //                                 exam_link: "${rowData.oldData.exam_link}"
+        //   //         //                           }
+        //   //         //                             ){
+        //   //         //                               axamQuestions_id
+        //   //         //                             }
+        //   //         //                           }                      
+        //   //         //                         `,
+        //   //         //             }),
+        //   //         //           })
+        //   //         //             .then(res => res.json())
+        //   //         //             .then(res => {
+        //   //         //               setQuestionImage(false);
+        //   //         //               if (
+        //   //         //                 res.data &&
+        //   //         //                 res.data.addNewQuestion
+        //   //         //                 // &&
+        //   //         //                 // res.data.addNewQuestion.axamQuestions_id
+        //   //         //               ) {
+        //   //         //                 // if (res.data.addNewQuestion && res.data.addNewQuestion.axamQuestions_id) {
+        //   //         //                 // setQuestionId(data.length)
+        //   //         //                 // setQuestionId(prevState => prevState + 1);
+        //   //         //                 // setMessage('اطلاعاتی به درستی ثبت شد');
+        //   //         //                 // setStatus(0);
+        //   //         //                 // setShowPopup(true);
+        //   //         //                 // refteshData();
+        //   //         //                 // return res.data;
+        //   //         //               } else {
+        //   //         //                 alert('اطلاعاتی به درستی ثبت نشد');
+        //   //         //                 // setStatus(1);
+        //   //         //                 // setShowPopup(true);
+        //   //         //                 // refteshData();
+        //   //         //               }
+        //   //         //             });
+        //   //         //           // return { ...state, data };
+        //   //         //         } else {
+        //   //         //           // setLoading(false);
+        //   //         //           alert('اطلاعاتی به درستی ثبت نشد');
+        //   //         //           // setStatus(1);
+        //   //         //           // setShowPopup(true);
+        //   //         //           // refteshData();
+        //   //         //         }
+        //   //         //       }
+        //   //         //       // });
+        //   //         //     } else if (
+        //   //         //       selectedFile &&
+        //   //         //       questionImage == false &&
+        //   //         //       textImage == true
+        //   //         //     ) {
+        //   //         //       // setState(async(prevState) => {
+        //   //         //       //   const data = [...prevState.data];
+        //   //         //       //   data.push(rowData.newData);
+        //   //         //       // var fileIdL = selectedFile.name.split('.');
+        //   //         //       // const format = fileIdL[fileIdL.length - 1].toLowerCase();
+        //   //         //       // ///////////////
+        //   //         //       // var mimetype = '';
+        //   //         //       // ///////////////////////////////
+        //   //         //       // switch (format) {
+        //   //         //       //   case 'jpeg':
+        //   //         //       //     // JPEG Image
+        //   //         //       //     mimetype = 'image/jpeg';
+        //   //         //       //     break;
+        //   //         //       //   case 'jpg':
+        //   //         //       //     // JPEG Image
+        //   //         //       //     mimetype = 'image/jpg';
+        //   //         //       //     break;
+        //   //         //       //   case 'jpgv':
+        //   //         //       //     // JPGVideo
+        //   //         //       //     mimetype = 'video/jpeg';
+        //   //         //       //     break;
+        //   //         //       //   case 'png':
+        //   //         //       //     // Portable Network Graphics (PNG)
+        //   //         //       //     mimetype = 'image/png';
+        //   //         //       //     break;
+        //   //         //       //   default:
+        //   //         //       //     break;
+        //   //         //       // }
+        //   //         //       //////////////////////
+        //   //         //       var file = new File(
+        //   //         //         [selectedFile],
+        //   //         //         uuidv4() + `.${format}`,
+        //   //         //         {
+        //   //         //           type: mimeTypeFile,
+        //   //         //         },
+        //   //         //       );
+    
+        //   //         //       //////////////////////
+        //   //         //       handleSendToserver();
+        //   //         //       async function handleSendToserver() {
+        //   //         //         var responseCode = await UploadfileToserver(file, format);
+        //   //         //         // alert(selectedFileName);
+        //   //         //         if (file.name && responseCode) {
+        //   //         //           fetch(graphql_server_uri, {
+        //   //         //             method: 'POST',
+        //   //         //             headers: { 'Content-Type': 'application/json' },
+        //   //         //             body: JSON.stringify({
+        //   //         //               query: `
+        //   //         //                           mutation{
+        //   //         //                               addNewQuestion(
+        //   //         //                                 axamQuestion_input: {
+        //   //         //                                     questionID: "${'1'}"
+        //   //         //                                       axamQuestions_id: "${'1'}"
+        //   //         //                                       question: "${convertText(rowData.newData.question)}"
+        //   //         //                                       question_link: "${''}"
+        //   //         //                                       question_optionOne: "${convertText(rowData.newData.question_optionOne)}"
+        //   //         //                                       question_optionTwo:"${convertText(rowData.newData.question_optionTwo)}"
+        //   //         //                                       question_correctOption: "${rowData.newData.question_correctOption ? rowData.newData.question_correctOption : ''
+        //   //         //                 }"
+        //   //         //                                       question_timeToSolveProblem: "${convertText(rowData.newData.question_timeToSolveProblem)}"
+        //   //         //                                       question_score: "${rowData.newData.question_score ? rowData.newData.question_score: ''
+        //   //         //                 }"
+        //   //         //                                       question_explane: "${convertText(rowData.newData.question_explane)}"
+        //   //         //                                       exam_link: "${file.name}"
+        //   //         //                               },    axamQuestion_input_old: {
+        //   //         //                                 questionID: "${'1'}"
+        //   //         //                                 axamQuestions_id: "${'1'}"
+        //   //         //                                 question: "${convertText(rowData.oldData.question_optionOne)}"
+        //   //         //                                 question_link: "${convertText(rowData.oldData.question_link)}"
+        //   //         //                                 question_optionOne: "${convertText(rowData.oldData.question_optionOne)}"
+        //   //         //                                 question_optionTwo:"${convertText(rowData.oldData.question_optionTwo)}"
+        //   //         //                                 question_correctOption: "${rowData.oldData.question_correctOption ? rowData.oldData.question_correctOption : ''
+        //   //         //                     }"
+        //   //         //                                 question_timeToSolveProblem: "${convertText(rowData.oldData.question_timeToSolveProblem)}"
+        //   //         //                                 question_score: "${ rowData.oldData.question_score ? rowData.oldData.question_score : ''
+        //   //         //                     }"
+        //   //         //                                 question_explane: "${convertText(rowData.oldData.question_explane)}"
+        //   //         //                                 exam_link: "${rowData.oldData.exam_link}"
+        //   //         //                           }
+        //   //         //                             ){
+        //   //         //                               axamQuestions_id
+        //   //         //                             }
+        //   //         //                           }                      
+        //   //         //                         `,
+        //   //         //             }),
+        //   //         //           })
+        //   //         //             .then(res => res.json())
+        //   //         //             .then(res => {
+        //   //         //               // SetselectedFileName('');
+        //   //         //               // setSumScore(prevState => prevState + parseFloat(newScore));
+        //   //         //               // tesetLoading(false);
+        //   //         //               setTextImage(false);
+        //   //         //               setQuestionImage(false);
+        //   //         //               if (
+        //   //         //                 res.data &&
+        //   //         //                 res.data.addNewQuestion
+        //   //         //                 //  &&
+        //   //         //                 // res.data.addNewQuestion.axamQuestions_id
+        //   //         //               ) {
+        //   //         //                 // if (res.data.addNewQuestion && res.data.addNewQuestion.axamQuestions_id) {
+        //   //         //                 // setQuestionId(data.length)
+        //   //         //                 // setQuestionId(prevState => prevState + 1);
+        //   //         //                 // setMessage('اطلاعاتی به درستی ثبت شد');
+        //   //         //                 // setStatus(0);
+        //   //         //                 // setShowPopup(true);
+        //   //         //                 // refteshData();
+        //   //         //                 // return res.data;
+        //   //         //               } else {
+        //   //         //                 alert('اطلاعاتی به درستی ثبت نشد');
+        //   //         //                 // setStatus(1);
+        //   //         //                 // setShowPopup(true);
+        //   //         //                 // refteshData();
+        //   //         //               }
+        //   //         //             });
+        //   //         //           // return { ...prevState, data };
+        //   //         //         } else {
+        //   //         //           // setLoading(false);
+        //   //         //           alert('اطلاعاتی به درستی ثبت نشد');
+        //   //         //           // setStatus(1);
+        //   //         //           // setShowPopup(true);
+        //   //         //           // refteshData();
+        //   //         //         }
+        //   //         //         // else{
+        //   //         //         //   alert('نیست!!!!!');
+        //   //         //         // }
+        //   //         //       }
+        //   //         //       // });
+        //   //         //     } else {
+                        
+        //   //         //       fetch(graphql_server_uri, {
+        //   //         //         method: 'POST',
+        //   //         //         headers: { 'Content-Type': 'application/json' },
+        //   //         //         body: JSON.stringify({
+        //   //         //           query: `
+        //   //         //                           mutation{
+        //   //         //                               addNewQuestion(
+        //   //         //                                 axamQuestion_input: {
+        //   //         //                                     questionID: "${'1'}"
+        //   //         //                                       axamQuestions_id: "${'1'}"
+        //   //         //                                       question: "${convertText(rowData.newData.question)}"
+        //   //         //                                       question_link: "${''}"
+        //   //         //                                       question_optionOne: "${convertText(rowData.newData.question_optionOne)}"
+        //   //         //                                       question_optionTwo:"${convertText(rowData.newData.question_optionTwo)}"
+        //   //         //                                       question_correctOption: "${rowData.newData.question_correctOption ? rowData.newData.question_correctOption : ''
+        //   //         //             }"
+        //   //         //                                       question_timeToSolveProblem: "${convertText(rowData.newData.question_timeToSolveProblem)}"
+        //   //         //                                       question_score: "${rowData.newData.question_score ? rowData.newData.question_score : ''
+        //   //         //             }"
+        //   //         //                                       question_explane: "${convertText(rowData.newData.question_explane)}"
+        //   //         //                                       exam_link: "${''}"
+        //   //         //                               },    axamQuestion_input_old: {
+        //   //         //                                 questionID: "${'1'}"
+        //   //         //                                 axamQuestions_id: "${'1'}"
+        //   //         //                                 question: "${convertText(rowData.oldData.question_optionOne)}"
+        //   //         //                                 question_link: "${convertText(rowData.oldData.question_link)}"
+        //   //         //                                 question_optionOne: "${convertText(rowData.oldData.question_optionOne)}"
+        //   //         //                                 question_optionTwo:"${convertText(rowData.oldData.question_optionTwo)}"
+        //   //         //                                 question_correctOption: "${rowData.oldData.question_correctOption ? rowData.oldData.question_correctOption : ''
+        //   //         //                     }"
+        //   //         //                                 question_timeToSolveProblem: "${convertText(rowData.oldData.question_timeToSolveProblem)}"
+        //   //         //                                 question_score: "${ rowData.oldData.question_score ? rowData.oldData.question_score : ''
+        //   //         //                     }"
+        //   //         //                                 question_explane: "${convertText(rowData.oldData.question_explane)}"
+        //   //         //                                 exam_link: "${rowData.oldData.exam_link}"
+        //   //         //                           }
+        //   //         //                             ){
+        //   //         //                               axamQuestions_id
+        //   //         //                             }
+        //   //         //                           }                      
+        //   //         //                         `,
+        //   //         //         }),
+        //   //         //       })
+        //   //         //         .then(res => res.json())
+        //   //         //         .then(res => {
+        //   //         //           // SetselectedFileName('');
+        //   //         //           // setLoading(false);
+        //   //         //           setTextImage(false);
+        //   //         //           setQuestionImage(false);
+        //   //         //           // setSumScore(prevState => prevState + parseFloat(newScore));
+        //   //         //           if (
+        //   //         //             res.data &&
+        //   //         //             res.data.addNewQuestion
+        //   //         //             // &&
+        //   //         //             // res.data.addNewQuestion.axamQuestions_id
+        //   //         //           ) {
+        //   //         //             // if (res.data.addNewQuestion && res.data.addNewQuestion.axamQuestions_id) {
+        //   //         //             // setQuestionId(data.length)
+        //   //         //             // setQuestionId(prevState => prevState + 1);
+        //   //         //             // setMessage('اطلاعاتی به درستی ثبت شد');
+        //   //         //             // setStatus(0);
+        //   //         //             // setShowPopup(true);
+        //   //         //             // refteshData();
+        //   //         //             // return res.data;
+        //   //         //           } else {
+        //   //         //             alert('اطلاعاتی به درستی ثبت نشد');
+        //   //         //             // setStatus(1);
+        //   //         //             // setShowPopup(true);
+        //   //         //             // refteshData();
+        //   //         //           }
+        //   //         //           // return res.data;
+        //   //         //         });
+        //   //         //       // return { ...prevState, data };
+        //   //         //       // });
+        //   //         //     }
+        //   //         //   } else {
+        //   //         //     // setLoading(false);
+        //   //         //     setTextImage(false);
+        //   //         //     setQuestionImage(false);
+        //   //         //     alert('ابتدا فیلد های موردنظر را پر کنید!!');
+        //   //         //     // setStatus(1);
+        //   //         //     // setShowPopup(true);
+        //   //         //     // refteshData();
+        //   //         //   }
+        //   //         ////////////////////////////
+        //   //         // dataUpdate[index] = rowData.newData;
+        //   //         // setInnerData([...dataUpdate]);
+        //   //         // setToggle(false)
+    
+        //   //         // resolve(setToggle(false));
+        //   //         // reject(setToggle(true));
+        //   //       }, 1000)
+        //   //       setToggle(true);
+                      
+                      
+        //   //   }
+        //   // },
+         
+        // ]}
+
         actions={[
           {
             icon: 'delete',
             tooltip: 'حذف',
             // onClick: (event, rowData) => {
-              onClick: (event, rowData) => {
+              onClick: async(event, rowData) => {
               // Do save operation
+              if(props.rowData && props.rowData.length > 0 && props.rowData[0].id){
                 const dataDelete = [...innerData];
                 const index = rowData.tableData.id;
+                console.log('id', props.rowData[0].id);
+                await deleteQuestionChild({ variables: { 
+                  userName: "211",
+                  password: "211",
+                  id: props.rowData[0].id
+                  } 
+                }).then(res=>{
+                  if(res.data && res.data.deleteQuestionChild){
+                    props.handleFetchData();
+                    // console.log('data',data);
+                    // setMessage('امتحان ثبت شد');
+                    // setStatus('1');
+                    // setShowMessage(!showMessage);
+                  }else{
+                    props.handleFetchData();
+                    // console.log('data',data);
+                    // setStatus('0')
+                    // setMessage('امتحان ثبت نشد')
+                    // setShowMessage(!showMessage);
+                  }
+                })
                 dataDelete.splice(index, 1);
-                ////////////////////////////////////
-              // fetch(graphql_server_uri, {
-              //   method: 'POST',
-              //   headers: { 'Content-Type': 'application/json' },
-              //   body: JSON.stringify({
-              //     query: `
-              //       mutation{
-              //           deleteQuestion(
-              //               axamQuestion_input: {
-              //                   questionID: "${'1'}"
-              //                   axamQuestions_id: "${'1'}"
-              //                   question: "${convertText(rowData.question)}"
-              //                   question_link: "${rowData.question_link ? rowData.question_link : ''}"
-              //                   question_optionOne: "${convertText(rowData.question_optionOne)}"
-              //                   question_optionTwo:"${convertText(rowData.question_optionTwo)}"
-              //                   question_correctOption: "${rowData.question_correctOption}"
-              //                   question_timeToSolveProblem: "${convertText(rowData.question_timeToSolveProblem)}"
-              //                   question_score: "${rowData.question_score ? rowData.question_score : ''}"
-              //                   question_explane: "${convertText(rowData.question_explane)}"
-              //                   exam_link: "${rowData.exam_link ? rowData.exam_link : ''}"
-              //             },
-              //         ){
-              //           axamQuestions_id
-              //         }
-              //       }                      
-              //     `,
-              //   }),
-              // })
-              //   .then(res => res.json())
-              //   .then(res => {
-              //     // setSumScore(prevState => (prevState - parseFloat(oldScore)));
-              //     if (
-              //       res.data &&
-              //       res.data.deleteQuestion &&
-              //       res.data.deleteQuestion.axamQuestions_id
-              //     ) {
-              //       /////
-              //       alert('اطلاعاتی به درستی حذف نشد');
-              //       // setStatus(1);
-              //       // setShowPopup(true);
-              //     } else {
-              //       // setQuestionId(data.length)
-              //       // setMessage('اطلاعاتی به درستی حذف شد');
-              //       // setStatus(0);
-              //       // setShowPopup(true);
-              //       // refteshData();
-              //       //   return res.data;
-              //     }
-              //     // return res.data;
-              //   });
-                //////////////////////////////////////////
                 setInnerData([...dataDelete]);
-                setToggle(false);
+              }else{
+                setStatus('0')
+                setMessage('اطلاعاتی برای حذف وجود ندارد!!!')
+                setShowMessage(!showMessage);
+              }
+               
             }
           },
-          // {
-          //   icon: 'edit',
-          //   tooltip: 'Edit',
-          //   // onClick: (event, rowData) => {
-          //     onClick: (event, rowData) => {
-          //       setTimeout(() => {
-          //         // const dataUpdate = [...innerData];
-          //         // const index = rowData.tableData.id;
-          //         /////////////myCode
-          //         // if (
-          //         //     // axamIdProps != '' &&
-          //         //     rowData.newData.question_score !== undefined &&
-          //         //     rowData.newData.question_correctOption !== undefined
-          //         //   ) {
-          //         //     if (
-          //         //       selectedFile &&
-          //         //       ((textImage == true && questionImage == true) ||
-          //         //         (questionImage == true && textImage == false))
-          //         //     ) {
-          //         //       //////////////////////
-          //         //       var file = new File(
-          //         //         [selectedFile],
-          //         //         uuidv4() + `.${format}`,
-          //         //         {
-          //         //           type: mimeTypeFile,
-          //         //         },
-          //         //       );
-          //         //     //////////////////////////////////////////
-          //         //       handleSendToserver();
-          //         //       async function handleSendToserver() {
-          //         //         var responseCode = await UploadfileToserver(file, format);
-          //         //         if (file.name && responseCode) {
-          //         //           fetch(graphql_server_uri, {
-          //         //             method: 'POST',
-          //         //             headers: { 'Content-Type': 'application/json' },
-          //         //             body: JSON.stringify({
-          //         //               query: `
-          //         //                           mutation{
-          //         //                               addNewQuestion(
-          //         //                                 axamQuestion_input: {
-          //         //                                     questionID: "${'1'}"
-          //         //                                       axamQuestions_id: "${'1'}"
-          //         //                                       question: "${''}"
-          //         //                                       question_link: "${file.name
-          //         //                 }"
-          //         //                                       question_optionOne: "${convertText(rowData.newData.question_optionOne)}"
-          //         //                                       question_optionTwo:"${convertText(rowData.newData.question_optionTwo)}"
-          //         //                                       question_correctOption: "${rowData.newData.question_correctOption ? rowData.newData.question_correctOption: ''
-          //         //                 }"
-          //         //                                       question_timeToSolveProblem: "${convertText(rowData.newData.question_timeToSolveProblem)}"
-          //         //                                       question_score: "${rowData.newData.question_score ? rowData.newData.question_score : ''
-          //         //                 }"
-          //         //                                       question_explane: "${convertText(rowData.newData.question_explane)}"
-          //         //                                       exam_link: "${''}"
-          //         //                               },
-          //         //                               axamQuestion_input_old: {
-          //         //                                 questionID: "${'1'}"
-          //         //                                 axamQuestions_id: "${'1'}"
-          //         //                                 question: "${convertText(rowData.oldData.question_optionOne)}"
-          //         //                                 question_link: "${convertText(rowData.oldData.question_link)}"
-          //         //                                 question_optionOne: "${convertText(rowData.oldData.question_optionOne)}"
-          //         //                                 question_optionTwo:"${convertText(rowData.oldData.question_optionTwo)}"
-          //         //                                 question_correctOption: "${rowData.oldData.question_correctOption ? rowData.oldData.question_correctOption : ''
-          //         //                     }"
-          //         //                                 question_timeToSolveProblem: "${convertText(rowData.oldData.question_timeToSolveProblem)}"
-          //         //                                 question_score: "${ rowData.oldData.question_score ? rowData.oldData.question_score : ''
-          //         //                     }"
-          //         //                                 question_explane: "${convertText(rowData.oldData.question_explane)}"
-          //         //                                 exam_link: "${rowData.oldData.exam_link}"
-          //         //                           }
-          //         //                             ){
-          //         //                               axamQuestions_id
-          //         //                             }
-          //         //                           }                      
-          //         //                         `,
-          //         //             }),
-          //         //           })
-          //         //             .then(res => res.json())
-          //         //             .then(res => {
-          //         //               setQuestionImage(false);
-          //         //               if (
-          //         //                 res.data &&
-          //         //                 res.data.addNewQuestion
-          //         //                 // &&
-          //         //                 // res.data.addNewQuestion.axamQuestions_id
-          //         //               ) {
-          //         //                 // if (res.data.addNewQuestion && res.data.addNewQuestion.axamQuestions_id) {
-          //         //                 // setQuestionId(data.length)
-          //         //                 // setQuestionId(prevState => prevState + 1);
-          //         //                 // setMessage('اطلاعاتی به درستی ثبت شد');
-          //         //                 // setStatus(0);
-          //         //                 // setShowPopup(true);
-          //         //                 // refteshData();
-          //         //                 // return res.data;
-          //         //               } else {
-          //         //                 alert('اطلاعاتی به درستی ثبت نشد');
-          //         //                 // setStatus(1);
-          //         //                 // setShowPopup(true);
-          //         //                 // refteshData();
-          //         //               }
-          //         //             });
-          //         //           // return { ...state, data };
-          //         //         } else {
-          //         //           // setLoading(false);
-          //         //           alert('اطلاعاتی به درستی ثبت نشد');
-          //         //           // setStatus(1);
-          //         //           // setShowPopup(true);
-          //         //           // refteshData();
-          //         //         }
-          //         //       }
-          //         //       // });
-          //         //     } else if (
-          //         //       selectedFile &&
-          //         //       questionImage == false &&
-          //         //       textImage == true
-          //         //     ) {
-          //         //       // setState(async(prevState) => {
-          //         //       //   const data = [...prevState.data];
-          //         //       //   data.push(rowData.newData);
-          //         //       // var fileIdL = selectedFile.name.split('.');
-          //         //       // const format = fileIdL[fileIdL.length - 1].toLowerCase();
-          //         //       // ///////////////
-          //         //       // var mimetype = '';
-          //         //       // ///////////////////////////////
-          //         //       // switch (format) {
-          //         //       //   case 'jpeg':
-          //         //       //     // JPEG Image
-          //         //       //     mimetype = 'image/jpeg';
-          //         //       //     break;
-          //         //       //   case 'jpg':
-          //         //       //     // JPEG Image
-          //         //       //     mimetype = 'image/jpg';
-          //         //       //     break;
-          //         //       //   case 'jpgv':
-          //         //       //     // JPGVideo
-          //         //       //     mimetype = 'video/jpeg';
-          //         //       //     break;
-          //         //       //   case 'png':
-          //         //       //     // Portable Network Graphics (PNG)
-          //         //       //     mimetype = 'image/png';
-          //         //       //     break;
-          //         //       //   default:
-          //         //       //     break;
-          //         //       // }
-          //         //       //////////////////////
-          //         //       var file = new File(
-          //         //         [selectedFile],
-          //         //         uuidv4() + `.${format}`,
-          //         //         {
-          //         //           type: mimeTypeFile,
-          //         //         },
-          //         //       );
-    
-          //         //       //////////////////////
-          //         //       handleSendToserver();
-          //         //       async function handleSendToserver() {
-          //         //         var responseCode = await UploadfileToserver(file, format);
-          //         //         // alert(selectedFileName);
-          //         //         if (file.name && responseCode) {
-          //         //           fetch(graphql_server_uri, {
-          //         //             method: 'POST',
-          //         //             headers: { 'Content-Type': 'application/json' },
-          //         //             body: JSON.stringify({
-          //         //               query: `
-          //         //                           mutation{
-          //         //                               addNewQuestion(
-          //         //                                 axamQuestion_input: {
-          //         //                                     questionID: "${'1'}"
-          //         //                                       axamQuestions_id: "${'1'}"
-          //         //                                       question: "${convertText(rowData.newData.question)}"
-          //         //                                       question_link: "${''}"
-          //         //                                       question_optionOne: "${convertText(rowData.newData.question_optionOne)}"
-          //         //                                       question_optionTwo:"${convertText(rowData.newData.question_optionTwo)}"
-          //         //                                       question_correctOption: "${rowData.newData.question_correctOption ? rowData.newData.question_correctOption : ''
-          //         //                 }"
-          //         //                                       question_timeToSolveProblem: "${convertText(rowData.newData.question_timeToSolveProblem)}"
-          //         //                                       question_score: "${rowData.newData.question_score ? rowData.newData.question_score: ''
-          //         //                 }"
-          //         //                                       question_explane: "${convertText(rowData.newData.question_explane)}"
-          //         //                                       exam_link: "${file.name}"
-          //         //                               },    axamQuestion_input_old: {
-          //         //                                 questionID: "${'1'}"
-          //         //                                 axamQuestions_id: "${'1'}"
-          //         //                                 question: "${convertText(rowData.oldData.question_optionOne)}"
-          //         //                                 question_link: "${convertText(rowData.oldData.question_link)}"
-          //         //                                 question_optionOne: "${convertText(rowData.oldData.question_optionOne)}"
-          //         //                                 question_optionTwo:"${convertText(rowData.oldData.question_optionTwo)}"
-          //         //                                 question_correctOption: "${rowData.oldData.question_correctOption ? rowData.oldData.question_correctOption : ''
-          //         //                     }"
-          //         //                                 question_timeToSolveProblem: "${convertText(rowData.oldData.question_timeToSolveProblem)}"
-          //         //                                 question_score: "${ rowData.oldData.question_score ? rowData.oldData.question_score : ''
-          //         //                     }"
-          //         //                                 question_explane: "${convertText(rowData.oldData.question_explane)}"
-          //         //                                 exam_link: "${rowData.oldData.exam_link}"
-          //         //                           }
-          //         //                             ){
-          //         //                               axamQuestions_id
-          //         //                             }
-          //         //                           }                      
-          //         //                         `,
-          //         //             }),
-          //         //           })
-          //         //             .then(res => res.json())
-          //         //             .then(res => {
-          //         //               // SetselectedFileName('');
-          //         //               // setSumScore(prevState => prevState + parseFloat(newScore));
-          //         //               // tesetLoading(false);
-          //         //               setTextImage(false);
-          //         //               setQuestionImage(false);
-          //         //               if (
-          //         //                 res.data &&
-          //         //                 res.data.addNewQuestion
-          //         //                 //  &&
-          //         //                 // res.data.addNewQuestion.axamQuestions_id
-          //         //               ) {
-          //         //                 // if (res.data.addNewQuestion && res.data.addNewQuestion.axamQuestions_id) {
-          //         //                 // setQuestionId(data.length)
-          //         //                 // setQuestionId(prevState => prevState + 1);
-          //         //                 // setMessage('اطلاعاتی به درستی ثبت شد');
-          //         //                 // setStatus(0);
-          //         //                 // setShowPopup(true);
-          //         //                 // refteshData();
-          //         //                 // return res.data;
-          //         //               } else {
-          //         //                 alert('اطلاعاتی به درستی ثبت نشد');
-          //         //                 // setStatus(1);
-          //         //                 // setShowPopup(true);
-          //         //                 // refteshData();
-          //         //               }
-          //         //             });
-          //         //           // return { ...prevState, data };
-          //         //         } else {
-          //         //           // setLoading(false);
-          //         //           alert('اطلاعاتی به درستی ثبت نشد');
-          //         //           // setStatus(1);
-          //         //           // setShowPopup(true);
-          //         //           // refteshData();
-          //         //         }
-          //         //         // else{
-          //         //         //   alert('نیست!!!!!');
-          //         //         // }
-          //         //       }
-          //         //       // });
-          //         //     } else {
-                        
-          //         //       fetch(graphql_server_uri, {
-          //         //         method: 'POST',
-          //         //         headers: { 'Content-Type': 'application/json' },
-          //         //         body: JSON.stringify({
-          //         //           query: `
-          //         //                           mutation{
-          //         //                               addNewQuestion(
-          //         //                                 axamQuestion_input: {
-          //         //                                     questionID: "${'1'}"
-          //         //                                       axamQuestions_id: "${'1'}"
-          //         //                                       question: "${convertText(rowData.newData.question)}"
-          //         //                                       question_link: "${''}"
-          //         //                                       question_optionOne: "${convertText(rowData.newData.question_optionOne)}"
-          //         //                                       question_optionTwo:"${convertText(rowData.newData.question_optionTwo)}"
-          //         //                                       question_correctOption: "${rowData.newData.question_correctOption ? rowData.newData.question_correctOption : ''
-          //         //             }"
-          //         //                                       question_timeToSolveProblem: "${convertText(rowData.newData.question_timeToSolveProblem)}"
-          //         //                                       question_score: "${rowData.newData.question_score ? rowData.newData.question_score : ''
-          //         //             }"
-          //         //                                       question_explane: "${convertText(rowData.newData.question_explane)}"
-          //         //                                       exam_link: "${''}"
-          //         //                               },    axamQuestion_input_old: {
-          //         //                                 questionID: "${'1'}"
-          //         //                                 axamQuestions_id: "${'1'}"
-          //         //                                 question: "${convertText(rowData.oldData.question_optionOne)}"
-          //         //                                 question_link: "${convertText(rowData.oldData.question_link)}"
-          //         //                                 question_optionOne: "${convertText(rowData.oldData.question_optionOne)}"
-          //         //                                 question_optionTwo:"${convertText(rowData.oldData.question_optionTwo)}"
-          //         //                                 question_correctOption: "${rowData.oldData.question_correctOption ? rowData.oldData.question_correctOption : ''
-          //         //                     }"
-          //         //                                 question_timeToSolveProblem: "${convertText(rowData.oldData.question_timeToSolveProblem)}"
-          //         //                                 question_score: "${ rowData.oldData.question_score ? rowData.oldData.question_score : ''
-          //         //                     }"
-          //         //                                 question_explane: "${convertText(rowData.oldData.question_explane)}"
-          //         //                                 exam_link: "${rowData.oldData.exam_link}"
-          //         //                           }
-          //         //                             ){
-          //         //                               axamQuestions_id
-          //         //                             }
-          //         //                           }                      
-          //         //                         `,
-          //         //         }),
-          //         //       })
-          //         //         .then(res => res.json())
-          //         //         .then(res => {
-          //         //           // SetselectedFileName('');
-          //         //           // setLoading(false);
-          //         //           setTextImage(false);
-          //         //           setQuestionImage(false);
-          //         //           // setSumScore(prevState => prevState + parseFloat(newScore));
-          //         //           if (
-          //         //             res.data &&
-          //         //             res.data.addNewQuestion
-          //         //             // &&
-          //         //             // res.data.addNewQuestion.axamQuestions_id
-          //         //           ) {
-          //         //             // if (res.data.addNewQuestion && res.data.addNewQuestion.axamQuestions_id) {
-          //         //             // setQuestionId(data.length)
-          //         //             // setQuestionId(prevState => prevState + 1);
-          //         //             // setMessage('اطلاعاتی به درستی ثبت شد');
-          //         //             // setStatus(0);
-          //         //             // setShowPopup(true);
-          //         //             // refteshData();
-          //         //             // return res.data;
-          //         //           } else {
-          //         //             alert('اطلاعاتی به درستی ثبت نشد');
-          //         //             // setStatus(1);
-          //         //             // setShowPopup(true);
-          //         //             // refteshData();
-          //         //           }
-          //         //           // return res.data;
-          //         //         });
-          //         //       // return { ...prevState, data };
-          //         //       // });
-          //         //     }
-          //         //   } else {
-          //         //     // setLoading(false);
-          //         //     setTextImage(false);
-          //         //     setQuestionImage(false);
-          //         //     alert('ابتدا فیلد های موردنظر را پر کنید!!');
-          //         //     // setStatus(1);
-          //         //     // setShowPopup(true);
-          //         //     // refteshData();
-          //         //   }
-          //         ////////////////////////////
-          //         // dataUpdate[index] = rowData.newData;
-          //         // setInnerData([...dataUpdate]);
-          //         // setToggle(false)
-    
-          //         // resolve(setToggle(false));
-          //         // reject(setToggle(true));
-          //       }, 1000)
-          //       setToggle(true);
-                      
-                      
-          //   }
-          // },
-         
         ]}
 
         editable={{
-         //////////////////////////////////////////
+          //////////////////////////////////
+          onRowUpdateBefore: () =>
+          new Promise((resolve, reject) => {
+            console.log("onRowUpdateBefore");
+            setToggle(true);
+            // props.setDisableComponents(true);
+            resolve();
+          }),
+        //////////////////////////////////////////
           onRowUpdateCancelled: rowData => {
           loadVariable.load = true;
-          // setToggle(false);
+          setToggle(false);
           console.log('onRowUpdateCancelled',loadVariable.load);
           },
         //////////////////////////////////////////
@@ -1212,6 +1263,8 @@ const TrueAndFalse = ({setToggle ,toggle, ...props}) => {
                 setShowMessage(!showMessage);
                 resolve();
               }
+              //////////////////////////
+              setToggle(false);
            }),
 
 

@@ -499,91 +499,143 @@ const Vacancy = ({setToggle , ...props}) => {
             }
             
           }}
+        // actions={[
+        //   {
+        //     icon: 'delete',
+        //     tooltip: 'حذف',
+        //     // onClick: (event, rowData) => {
+        //       onClick: (event, rowData) => {
+        //       // Do save operation
+        //         const dataDelete = [...innerData];
+        //         const index = rowData.tableData.id;
+        //         dataDelete.splice(index, 1);
+        //         ////////////////////////////////////
+        //       // fetch(graphql_server_uri, {
+        //       //   method: 'POST',
+        //       //   headers: { 'Content-Type': 'application/json' },
+        //       //   body: JSON.stringify({
+        //       //     query: `
+        //       //       mutation{
+        //       //           deleteQuestion(
+        //       //               axamQuestion_input: {
+        //       //                   questionID: "${'1'}"
+        //       //                   axamQuestions_id: "${'1'}"
+        //       //                   question: "${convertText(rowData.question)}"
+        //       //                   question_link: "${rowData.question_link ? rowData.question_link : ''}"
+        //       //                   question_optionOne: "${convertText(rowData.question_optionOne)}"
+        //       //                   question_optionTwo:"${convertText(rowData.question_optionTwo)}"
+        //       //                   question_optionThree: "${convertText(rowData.question_optionThree)}"
+        //       //                   question_optionFour: "${convertText(rowData.question_optionFour)}"
+        //       //                   question_correctOption: "${rowData.question_correctOption}"
+        //       //                   question_timeToSolveProblem: "${convertText(rowData.question_timeToSolveProblem)}"
+        //       //                   question_score: "${rowData.question_score ? rowData.question_score : ''}"
+        //       //                   question_explane: "${convertText(rowData.question_explane)}"
+        //       //                   exam_link: "${rowData.exam_link ? rowData.exam_link : ''}"
+        //       //             },
+        //       //         ){
+        //       //           axamQuestions_id
+        //       //         }
+        //       //       }                      
+        //       //     `,
+        //       //   }),
+        //       // })
+        //       //   .then(res => res.json())
+        //       //   .then(res => {
+        //       //     // setSumScore(prevState => (prevState - parseFloat(oldScore)));
+        //       //     if (
+        //       //       res.data &&
+        //       //       res.data.deleteQuestion &&
+        //       //       res.data.deleteQuestion.axamQuestions_id
+        //       //     ) {
+        //       //       /////
+        //       //       alert('اطلاعاتی به درستی حذف نشد');
+        //       //       // setStatus(1);
+        //       //       // setShowPopup(true);
+        //       //     } else {
+        //       //       // setQuestionId(data.length)
+        //       //       // setMessage('اطلاعاتی به درستی حذف شد');
+        //       //       // setStatus(0);
+        //       //       // setShowPopup(true);
+        //       //       // refteshData();
+        //       //       //   return res.data;
+        //       //     }
+        //       //     // return res.data;
+        //       //   });
+        //         //////////////////////////////////////////
+        //         setToggle(false);
+        //         setInnerData([...dataDelete]);
+        //     }
+        //   },
+        //   // {
+        //   //   icon: 'edit',
+        //   //   tooltip: 'ویرایش',
+        //   //   onClick: (event, rowData) => {
+        //   //     // Do save operation
+        //   //       const dataDelete = [...innerData];
+        //   //       const index = rowData.tableData.id;
+        //   //       dataDelete.splice(index, 1);
+        //   //       setInnerData([...dataDelete]);
+        //   //   }
+        //   // }
+        // ]}
+
         actions={[
           {
             icon: 'delete',
             tooltip: 'حذف',
             // onClick: (event, rowData) => {
-              onClick: (event, rowData) => {
+              onClick: async(event, rowData) => {
               // Do save operation
+              if(props.rowData && props.rowData.length > 0 && props.rowData[0].id){
                 const dataDelete = [...innerData];
                 const index = rowData.tableData.id;
+                console.log('id', props.rowData[0].id);
+                await deleteQuestionChild({ variables: { 
+                  userName: "211",
+                  password: "211",
+                  id: props.rowData[0].id
+                  } 
+                }).then(res=>{
+                  if(res.data && res.data.deleteQuestionChild){
+                    props.handleFetchData();
+                    // console.log('data',data);
+                    // setMessage('امتحان ثبت شد');
+                    // setStatus('1');
+                    // setShowMessage(!showMessage);
+                  }else{
+                    props.handleFetchData();
+                    // console.log('data',data);
+                    // setStatus('0')
+                    // setMessage('امتحان ثبت نشد')
+                    // setShowMessage(!showMessage);
+                  }
+                })
                 dataDelete.splice(index, 1);
-                ////////////////////////////////////
-              // fetch(graphql_server_uri, {
-              //   method: 'POST',
-              //   headers: { 'Content-Type': 'application/json' },
-              //   body: JSON.stringify({
-              //     query: `
-              //       mutation{
-              //           deleteQuestion(
-              //               axamQuestion_input: {
-              //                   questionID: "${'1'}"
-              //                   axamQuestions_id: "${'1'}"
-              //                   question: "${convertText(rowData.question)}"
-              //                   question_link: "${rowData.question_link ? rowData.question_link : ''}"
-              //                   question_optionOne: "${convertText(rowData.question_optionOne)}"
-              //                   question_optionTwo:"${convertText(rowData.question_optionTwo)}"
-              //                   question_optionThree: "${convertText(rowData.question_optionThree)}"
-              //                   question_optionFour: "${convertText(rowData.question_optionFour)}"
-              //                   question_correctOption: "${rowData.question_correctOption}"
-              //                   question_timeToSolveProblem: "${convertText(rowData.question_timeToSolveProblem)}"
-              //                   question_score: "${rowData.question_score ? rowData.question_score : ''}"
-              //                   question_explane: "${convertText(rowData.question_explane)}"
-              //                   exam_link: "${rowData.exam_link ? rowData.exam_link : ''}"
-              //             },
-              //         ){
-              //           axamQuestions_id
-              //         }
-              //       }                      
-              //     `,
-              //   }),
-              // })
-              //   .then(res => res.json())
-              //   .then(res => {
-              //     // setSumScore(prevState => (prevState - parseFloat(oldScore)));
-              //     if (
-              //       res.data &&
-              //       res.data.deleteQuestion &&
-              //       res.data.deleteQuestion.axamQuestions_id
-              //     ) {
-              //       /////
-              //       alert('اطلاعاتی به درستی حذف نشد');
-              //       // setStatus(1);
-              //       // setShowPopup(true);
-              //     } else {
-              //       // setQuestionId(data.length)
-              //       // setMessage('اطلاعاتی به درستی حذف شد');
-              //       // setStatus(0);
-              //       // setShowPopup(true);
-              //       // refteshData();
-              //       //   return res.data;
-              //     }
-              //     // return res.data;
-              //   });
-                //////////////////////////////////////////
-                setToggle(false);
                 setInnerData([...dataDelete]);
+              }else{
+                setStatus('0')
+                setMessage('اطلاعاتی برای حذف وجود ندارد!!!')
+                setShowMessage(!showMessage);
+              }
+               
             }
           },
-          // {
-          //   icon: 'edit',
-          //   tooltip: 'ویرایش',
-          //   onClick: (event, rowData) => {
-          //     // Do save operation
-          //       const dataDelete = [...innerData];
-          //       const index = rowData.tableData.id;
-          //       dataDelete.splice(index, 1);
-          //       setInnerData([...dataDelete]);
-          //   }
-          // }
         ]}
         
         editable={{
-         //////////////////////////////////////////
-         onRowUpdateCancelled: rowData => {
-          loadVariable.load = true;
-          console.log('onRowUpdateCancelled',loadVariable.load);
+         //////////////////////////////////
+         onRowUpdateBefore: () =>
+         new Promise((resolve, reject) => {
+           console.log("onRowUpdateBefore");
+           setToggle(true);
+           // props.setDisableComponents(true);
+           resolve();
+         }),
+       //////////////////////////////////////////
+       onRowUpdateCancelled: rowData => {
+        loadVariable.load = true;
+        setToggle(false);
+        console.log('onRowUpdateCancelled',loadVariable.load);
         },
         //////////////////////////////////////////
           onRowUpdate: (newData, oldData) =>
@@ -753,6 +805,8 @@ const Vacancy = ({setToggle , ...props}) => {
                 setShowMessage(!showMessage);
                 resolve();
               }
+              //////////////
+              setToggle(false);
             }),
           // onRowDelete: oldData =>
           //   new Promise((resolve, reject) => {

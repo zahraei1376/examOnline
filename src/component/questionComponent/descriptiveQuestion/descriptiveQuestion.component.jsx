@@ -17,7 +17,7 @@ import {SET_QUESTION_CHILD ,DELETE_QUESTIONCHILD} from '../../../graphql/resolve
 import Uploader  from '../../uploader.js';
 import UploaderQuestionsFile from '../uploadQuestions/uploadQiestions.component';
 /////////////////////////query
-const DescriptiveQuestion = (props) => {
+const DescriptiveQuestion = ({setToggle , ...props}) => {
     const tableRef = React.useRef(null);
     const [setQuestionChild ,{ QuestionChildData }] = useMutation(SET_QUESTION_CHILD);
     const [deleteQuestionChild ,{ DQuestionChildData }] = useMutation(DELETE_QUESTIONCHILD);
@@ -405,17 +405,18 @@ const DescriptiveQuestion = (props) => {
         ]}
 
         editable={{
+          //////////////////////////////////
           onRowUpdateBefore: () =>
             new Promise((resolve, reject) => {
               console.log("onRowUpdateBefore");
-              props.setToggle(true);
+              setToggle(true);
               // props.setDisableComponents(true);
               resolve();
             }),
           //////////////////////////////////////////
           onRowUpdateCancelled: rowData => {
             loadVariable.load = true;
-            props.setToggle(false);
+            setToggle(false);
             console.log('onRowUpdateCancelled',loadVariable.load);
           },
           //////////////////////////////////////////
@@ -602,7 +603,7 @@ const DescriptiveQuestion = (props) => {
                 resolve();
               }
 
-              props.setToggle(false);
+              setToggle(false);
             
           }),
           //////////////////////////////////////////
