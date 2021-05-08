@@ -26,6 +26,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 // import axios from 'axios';
 import MySnackbar from '../../messageBox/messageBox.component';
+import MySpinner from '../MySpinner/MySpinner.component';
 // import ApolloClient from "apollo-boost";
 // import { gql } from "apollo-boost";
 
@@ -100,6 +101,8 @@ const AddExamForTeacher = ({MyGroups}) => {
   const [addExamParent ,{ data }] = useMutation(addNewExamMutation);
   const [selectedClass , setSelectedClass] = useState([]);
   const [selectedLevel,setSelectedLevel] = useState('');
+  // const [loading,setLoading] = useState(false);
+  // const [clicked,setClicked] = useState(false);
   const [showMessage,setShowMessage] = useState(false);
   const [message,setMessage] =useState('');
   const [status,setStatus] =useState(0);
@@ -165,6 +168,7 @@ const AddExamForTeacher = ({MyGroups}) => {
     examLevel:'',
     // examLevel:[],
     handleOneClick:false,
+    loading:false,
     examMethod: '0',
     backward: "false",
     random : "true",
@@ -221,7 +225,7 @@ const AddExamForTeacher = ({MyGroups}) => {
           }
         }
         if (!existFlag) {
-          newClassName.push({ pId: Myclass[count].pId, class: Myclass[count].class });
+          newClassName.push({ id: Myclass[count].id, class: Myclass[count].class });
         }
       }
       console.log('newClassName',newClassName);
@@ -249,7 +253,7 @@ const AddExamForTeacher = ({MyGroups}) => {
             }
           }
           if (!existFlag) {
-            newCourseNames.push({ pId: MyCourseNames[count].pId, course: MyCourseNames[count].course });
+            newCourseNames.push({ id: MyCourseNames[count].id, course: MyCourseNames[count].course });
           }
         }
         console.log('getExamCourseNamesTeacher',newCourseNames);
@@ -281,7 +285,7 @@ const AddExamForTeacher = ({MyGroups}) => {
               }
             }
             if (!existFlag) {
-              newCourseNames.push({ pId: MyCourseNames[count].pId, course: MyCourseNames[count].course });
+              newCourseNames.push({ id: MyCourseNames[count].id, course: MyCourseNames[count].course });
             }
           }
           console.log('getExamCourseNamesTeacher',newCourseNames);
@@ -342,7 +346,7 @@ const AddExamForTeacher = ({MyGroups}) => {
         }
       }
       if (!existFlag) {
-        newGrops.push({ pId: MyGroups[count].pId, class: MyGroups[count].class , level: MyGroups[count].level, course: MyGroups[count].course });
+        newGrops.push({ id: MyGroups[count].id, class: MyGroups[count].class , level: MyGroups[count].level, course: MyGroups[count].course });
       }
     }
     console.log('newGrops',newGrops);
@@ -371,7 +375,7 @@ const AddExamForTeacher = ({MyGroups}) => {
       }
       if (!existFlag) {
         // console.log('newLevels',newLevels);
-        newLevels.push({ pId: newGrops[count].pId, level: newGrops[count].level });
+        newLevels.push({ id: newGrops[count].id, level: newGrops[count].level });
       }
     }
     // console.log('newLevels',newLevels);
@@ -399,7 +403,7 @@ const AddExamForTeacher = ({MyGroups}) => {
               group.class === selectedClass[i].class &&
               group.course === vl[j].course);
               console.log("myGroup" ,myGroup);
-              MySelectedGroup.push(myGroup[0].pId);
+              MySelectedGroup.push(myGroup[0].id);
               ////////////////////////////////////////////////////////////
               // MySelectedGroupWithCourseName.push({group: [myGroup[0].pId] , course:myGroup[0].course});
               /////////////////////////////////////////////
@@ -425,11 +429,11 @@ const AddExamForTeacher = ({MyGroups}) => {
                 }
 
                 if (existFlag) {
-                  MySelectedGroupWithCourseName[count].group.push(myGroup[0].pId);
+                  MySelectedGroupWithCourseName[count].group.push(myGroup[0].id);
                   console.log('not exist',MySelectedGroupWithCourseName);
                   // listScoreAndCourse[count].average = avg;
                 } else {
-                  MySelectedGroupWithCourseName.push({group: [myGroup[0].pId] , course:myGroup[0].course});
+                  MySelectedGroupWithCourseName.push({group: [myGroup[0].id] , course:myGroup[0].course});
                   console.log('exist',MySelectedGroupWithCourseName);
                   // console.log('listScoreAndCourse');
                   // console.log(listScoreAndCourse);
@@ -460,122 +464,131 @@ const AddExamForTeacher = ({MyGroups}) => {
  {/* ///////////////////////////////////////////////*/}
   const handleSubmit = async(event) => {
     event.preventDefault();
-    //////////////////////
-    const myPromise = new Promise((resolve, reject) => {
-      var EmD = document.getElementById('examDuration');
-      if(newSelectedStartDate != '' && newSelectedEndDate !='' && newSelectedStartDate == newSelectedEndDate){
-        if(selectedstartTime && selectedEndTime){
-          var newStart = selectedstartTime ? moment2(selectedstartTime).tz('Asia/Tehran').format('HH:mm:00').split(':'):'';
-          var newEnd = selectedEndTime ? moment2(selectedEndTime).tz('Asia/Tehran').format('HH:mm:00').split(':'):'00:00:00';
-          // console.log('selectedEndTime',moment2(selectedEndTime).tz('Asia/Tehran').format('HH:mm:00'));
-          var StartHour = fixNumbers(newStart[0]) || 0;
-          var EndHour = fixNumbers(newEnd[0]) || 0;
-          var StartMinutes = fixNumbers(newStart[1]) || 0;
-          var EndMinutes = fixNumbers(newEnd[1]) || 0;
-          // var StartHour = fixNumbers(newStart[0]) ;
-          // var EndHour = fixNumbers(newEnd[0]);
-          // var StartMinutes = fixNumbers(newStart[1]);
-          // var EndMinutes = fixNumbers(newEnd[1]);
-          // console.log('EndHour',EndHour);
-          // console.log('EndMinutes',EndMinutes);
-          if(StartHour < EndHour && StartMinutes < EndMinutes){
-            var hour = EndHour - StartHour;
-            if(hour < 10){
-              hour = '0' + hour;
-            }
-            var minutes = EndMinutes - StartMinutes;
-            if(minutes < 10){
-              minutes = '0' + minutes;
-            }
-            // EmD.value = `${hour}: ${minutes}: 00`;
-            setState({...state , duration:`${hour}: ${minutes}: 00`});
-            resolve(`${hour}: ${minutes}: 00`);
-            // EmD.defaultValue = `${hour}: ${minutes}: 00`;
-          }
-          else if(StartHour == EndHour && StartMinutes == EndMinutes){
-              // alert('زمان اشتباه است!!!');
-              reject('زمان اشتباه است!!!');
-              // EmD.defaultValue = "";
-          }
-          else{
-            var convertStart = StartHour * 3600 + StartMinutes * 60 ;
-            var convertEnd = EndHour * 3600 + EndMinutes * 60 ;
-            var time = convertEnd - convertStart;
-            // console.log('time' ,time);
-            if(time < 0){
-              // console.log('4');
-              // alert('زمان امتحان اشتباه است');
-              reject('زمان امتحان اشتباه است');
-              // handleSelectedEndTime('');
-              // EmD.value = "";
-            }else{
-              var valueTime =format(time);
-              // EmD.value = valueTime;
-              resolve(valueTime);
-              // EmD.defaultValue = format(time);
-
-            }
-          }
-        }
-      
-      }else if(newSelectedStartDate != '' && newSelectedEndDate !='' && newSelectedStartDate != newSelectedEndDate){
-        // EmD.value = "";
-        resolve(state.examMethod);
-      }
-
-      // resolve();
-    });
-    // var CT = calcTime();
-  myPromise
-  .then( handleResolvedA => {
+    setState({...state , handleOneClick:true});
+    setState({...state , loading:true});
     if(groupsExam.length > 0){
-      addExamParent({ variables: { 
-        userName: "211", 
-        password: "211", 
-        examParent_gId: groupsExam,
-        examParent_start_date: newSelectedStartDate, 
-        examParent_stop_date: newSelectedEndDate,
-        examParent_start:selectedstartTime ?  moment2(selectedstartTime).tz('Asia/Tehran').format('HH:mm:00') : '',
-        examParent_end: selectedEndTime ?  moment2(selectedEndTime).tz('Asia/Tehran').format('HH:mm:00') : '', 
-        examParent_duration:handleResolvedA,
-        examParent_maxScore: state.examMaxScore, 
-        examParent_method: state.examMethod,
-        examParent_topic: state.examTopic,
-        examParent_random: state.random == "true" ? true : false,
-        examParent_backward: state.backward == "true" ? true : false,
-        // //////////////////////////////////////
-     }
-      }).then(res=>{
-        if(res.data && res.data.addExamParent){
-          console.log('groupWithCourseName',groupWithCourseName);
-          console.log('res.data.addExamParent',res.data.addExamParent);
-          setMessage('امتحان ثبت شد');
-          setStatus('1');
-          setShowMessage(!showMessage);
-          setTimeout(()=>{
-            // history.push("/questions");
-            history.push({
-              pathname: '/questions',
-              // search: '?query=abc',
-              state: { courses: groupWithCourseName ,examParentId: res.data.addExamParent && res.data.addExamParent.id ? res.data.addExamParent.id : ''}
-            })
-          },1000)
-        }else{
-          // console.log('data',data);
-          setStatus('0')
-          setMessage('امتحان ثبت نشد')
-          setShowMessage(!showMessage);
+    //////////////////////
+      const myPromise = new Promise((resolve, reject) => {
+        var EmD = document.getElementById('examDuration');
+        if(newSelectedStartDate != '' && newSelectedEndDate !='' && newSelectedStartDate == newSelectedEndDate){
+          if(selectedstartTime && selectedEndTime){
+            var newStart = selectedstartTime ? moment2(selectedstartTime).tz('Asia/Tehran').format('HH:mm:00').split(':'):'';
+            var newEnd = selectedEndTime ? moment2(selectedEndTime).tz('Asia/Tehran').format('HH:mm:00').split(':'):'00:00:00';
+            // console.log('selectedEndTime',moment2(selectedEndTime).tz('Asia/Tehran').format('HH:mm:00'));
+            var StartHour = fixNumbers(newStart[0]) || 0;
+            var EndHour = fixNumbers(newEnd[0]) || 0;
+            var StartMinutes = fixNumbers(newStart[1]) || 0;
+            var EndMinutes = fixNumbers(newEnd[1]) || 0;
+            // var StartHour = fixNumbers(newStart[0]) ;
+            // var EndHour = fixNumbers(newEnd[0]);
+            // var StartMinutes = fixNumbers(newStart[1]);
+            // var EndMinutes = fixNumbers(newEnd[1]);
+            // console.log('EndHour',EndHour);
+            // console.log('EndMinutes',EndMinutes);
+            if(StartHour < EndHour && StartMinutes < EndMinutes){
+              var hour = EndHour - StartHour;
+              if(hour < 10){
+                hour = '0' + hour;
+              }
+              var minutes = EndMinutes - StartMinutes;
+              if(minutes < 10){
+                minutes = '0' + minutes;
+              }
+              // EmD.value = `${hour}: ${minutes}: 00`;
+              setState({...state , duration:`${hour}: ${minutes}: 00`});
+              resolve(`${hour}: ${minutes}: 00`);
+              // EmD.defaultValue = `${hour}: ${minutes}: 00`;
+            }
+            else if(StartHour == EndHour && StartMinutes == EndMinutes){
+                // alert('زمان اشتباه است!!!');
+                reject('زمان اشتباه است!!!');
+                // EmD.defaultValue = "";
+            }
+            else{
+              var convertStart = StartHour * 3600 + StartMinutes * 60 ;
+              var convertEnd = EndHour * 3600 + EndMinutes * 60 ;
+              var time = convertEnd - convertStart;
+              // console.log('time' ,time);
+              if(time < 0){
+                // console.log('4');
+                // alert('زمان امتحان اشتباه است');
+                reject('زمان امتحان اشتباه است');
+                // handleSelectedEndTime('');
+                // EmD.value = "";
+              }else{
+                var valueTime =format(time);
+                // EmD.value = valueTime;
+                resolve(valueTime);
+                // EmD.defaultValue = format(time);
+
+              }
+            }
+          }
+        
+        }else if(newSelectedStartDate != '' && newSelectedEndDate !='' && newSelectedStartDate != newSelectedEndDate){
+          // EmD.value = "";
+          resolve(state.duration);
         }
+
+        // resolve();
+      });
+      // var CT = calcTime();
+      myPromise
+      .then( handleResolvedA => {
+          addExamParent({ variables: { 
+            userName: "211", 
+            password: "211", 
+            examParent_gId: groupsExam,
+            examParent_start_date: newSelectedStartDate, 
+            examParent_stop_date: newSelectedEndDate,
+            examParent_start:selectedstartTime ?  moment2(selectedstartTime).tz('Asia/Tehran').format('HH:mm:00') : '',
+            examParent_end: selectedEndTime ?  moment2(selectedEndTime).tz('Asia/Tehran').format('HH:mm:00') : '', 
+            examParent_duration:handleResolvedA,
+            examParent_maxScore: state.examMaxScore, 
+            examParent_method: state.examMethod,
+            examParent_topic: state.examTopic,
+            examParent_random: state.random == "true" ? true : false,
+            examParent_backward: state.backward == "true" ? true : false,
+            // //////////////////////////////////////
+        }
+          }).then(res=>{
+            if(res.data && res.data.addExamParent){
+              console.log('groupWithCourseName',groupWithCourseName);
+              console.log('res.data.addExamParent',res.data.addExamParent);
+              setMessage('امتحان ثبت شد');
+              setStatus('1');
+              setShowMessage(!showMessage);
+              setState({...state , handleOneClick:false});
+              setState({...state , loading:false});
+              setTimeout(()=>{
+                // history.push("/questions");
+                history.push({
+                  pathname: '/questions',
+                  // search: '?query=abc',
+                  state: { courses: groupWithCourseName ,examParentId: res.data.addExamParent && res.data.addExamParent.id ? res.data.addExamParent.id : ''}
+                })
+              },1000)
+            }else{
+              // console.log('data',data);
+              setStatus('0')
+              setMessage('امتحان ثبت نشد')
+              setShowMessage(!showMessage);
+              setState({...state , handleOneClick:false});
+              setState({...state , loading:false});
+            }
+          })
+      
       })
+      .catch(err =>{
+          alert(err);
+      });
     }else{
       setStatus('0')
       setMessage('باید درسی را انتخاب کنید')
       setShowMessage(!showMessage);
+      setState({...state , handleOneClick:false});
+      setState({...state , loading:false});
     }
-  })
-  .catch(err =>{
-      alert(err);
-  });
     //////////////////////////
     // if(CT){
     //   if(groupsExam.length > 0){
@@ -1189,6 +1202,7 @@ const AddExamForTeacher = ({MyGroups}) => {
               <BtnSend
                 type="submit"
                 value="ارسال"
+                disabled = {state.handleOneClick}
                 onClick={e => handleSubmit(e)}
                 // disabled={handleOneClick}
               />
@@ -1197,6 +1211,7 @@ const AddExamForTeacher = ({MyGroups}) => {
           {
             showMessage ? <MySnackbar message={message} status={status} showMessage={showMessage} setShowMessage={setShowMessage} /> : ''
           }
+          {state.loading ? <MySpinner/> : ''}
         </Grid>
       </ Grid>
     </ContainerForm >

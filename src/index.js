@@ -9,9 +9,10 @@ import { InMemoryCache } from 'apollo-cache-inmemory';
 import { ApolloClient } from 'apollo-boost';
 ////////////////////////////////////////////////////
 import {Provider } from 'react-redux';
-import {Store} from './redux/store';
+import {Store ,Persistor} from './redux/store';
 ///////////////////////////////////////////////////
 import { BrowserRouter } from 'react-router-dom';
+import { PersistGate} from 'redux-persist/integration/react';
 
 
 const cache =new InMemoryCache();
@@ -25,7 +26,13 @@ const httpsLink = createHttpLink({
 const client =new ApolloClient({
   link:httpsLink,
   cache,
-})
+});
+
+// client.writeData({
+//   data:{
+//     courseNameForExamChild:[],
+//   }
+// })
 
 
 ReactDOM.render(
@@ -33,7 +40,9 @@ ReactDOM.render(
     <ApolloProvider client={client}>
       <Provider store ={Store}> 
         <React.StrictMode>
-          <App />
+          <PersistGate persistor={Persistor}>
+            <App />
+          </PersistGate>
         </React.StrictMode>
       </Provider>
     </ApolloProvider>

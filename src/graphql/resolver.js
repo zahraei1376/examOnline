@@ -223,15 +223,17 @@ const SET_INFO_EXAMCHILD = gql`
   mutation updateExamChild(
     $userName: String!,
     $password: String!,
-    $id: String!,
-    $examChild_falseCoefficient: String!,
-    $examChild_courseCoefficient: String!,
-    $examChild_pdf: String!,
+    $examChild_epId: String!,
+    $gId: [String]!,
+    $examChild_falseCoefficient: String,
+    $examChild_courseCoefficient: String,
+    $examChild_pdf: String,
     ){
       updateExamChild(
         userName: $userName,
         password: $password,
-        id: $id,
+        examChild_epId: $examChild_epId,
+        gId: $gId,
         examChild_falseCoefficient: $examChild_falseCoefficient,
         examChild_courseCoefficient: $examChild_courseCoefficient,
         examChild_pdf: $examChild_pdf,

@@ -2,6 +2,7 @@ import QuestionCourseTypes from './questionsCourses.types';
 
 const INITIAL_STATE = {
     courseName: '',
+    examPid : '',
 }
 
 const QuestionsCourseNameReducer = (state = INITIAL_STATE , action) =>{
@@ -10,6 +11,11 @@ const QuestionsCourseNameReducer = (state = INITIAL_STATE , action) =>{
             return {
                 ...state,
                 courseName:action.payload,
+            }
+        case QuestionCourseTypes.SET_EXAM_PARENT_ID:
+            return {
+                ...state,
+                examPid:action.payload,
             }
         default:
            return state;

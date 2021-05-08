@@ -1,80 +1,21 @@
 //جای خالی
-
 import React ,{useState , useEffect} from "react";
-// import SparkMD5 from 'spark-md5';
-import { v4 as uuidv4 } from 'uuid';
-import {UploadfileToserver} from '../uploadToserver/uploadToserver.component';
-// import axios from 'axios';
 import MaterialTable from 'material-table';
 import TextField from '@material-ui/core/TextField';
-// import {Input,Button} from '@material-ui/core';
 import {loadVariable} from '../questionComponent';
 import VacancyModal from './VacancyModal.component';
-import {ComparativeButton} from '../Comparative/Comparative.styles';
-// import AddIcon from '@material-ui/icons/Add';
-import BackupIcon from '@material-ui/icons/Backup';
 import {connect} from 'react-redux';
 import setToggle from '../../../redux/toggleQuesion/toggleQuestion.action';
 import MySnackbar from '../../../messageBox/messageBox.component';
-// import {ToggleQuestion} from '../../../redux/toggleQuesion/toggleQuestion.selector';
-// import { createStructuredSelector} from 'reselect';
-// import {CloudUploadIcon} from '@material-ui/icons';
-// var load = false;
 /////////////////////////query
-import { useQuery ,gql } from 'apollo-boost';
 import { useMutation} from 'react-apollo';
 import {SET_QUESTION_CHILD , DELETE_QUESTIONCHILD} from '../../../graphql/resolver';
 /////////////////////////query
 import {selectedCourseName} from '../../../redux/questionsCourses/questionsCourses.selector';
 import { createStructuredSelector } from 'reselect';
 /////////////////////////////////////////
-// const SET_QUESTION_CHILD = gql`
-//   mutation addQuestionChild(
-//       $userName: String!,
-//       $password: String!,
-//       $qpId: String!,
-//       $question: String!,
-//       $question_score: String!,
-//       $question_explain: String!,
-//       $question_timeToSolveProblem: String!,
-//       $question_correctOption: String!,
-//       $question_optionOne: String!,
-//       $question_optionTwo: String!,
-//       $question_optionThree: String!,
-//       $question_optionFour: String!,
-//       $question_link: String!,
-//       $exam_link: String!,
-//       $question_type: String!,
-//       $question_seqItems: [String]!,
-//       $question_vancyItems: String!,
-//       $question_compItems: [String]!,
-//       ){
-//       addQuestionChild(
-//         userName: $userName,
-//         password: $password,
-//         qpId: $qpId,
-//         question: $question,
-//         question_score: $question_score,
-//         question_explain: $question_explain,
-//         question_timeToSolveProblem: $question_timeToSolveProblem,
-//         question_correctOption: $question_correctOption,
-//         question_optionOne: $question_optionOne,
-//         question_optionTwo: $question_optionTwo,
-//         question_optionThree: $question_optionThree,
-//         question_optionFour: $question_optionFour,
-//         question_link: $question_link,
-//         exam_link: $exam_link,
-//         question_type: $question_type,
-//         question_seqItems: $question_seqItems,
-//         question_vancyItems: $question_vancyItems,
-//         question_compItems: $question_compItems,
-//       ){
-//         id
-//       }
-//   }
-// `;
-const graphql_server_uri ='/qraphql';
-
+import UploaderQuestionsImage from '../uploaderQuestionsImage/uploaderQuestionsImage.component';
+/////////////////////////////////////////
 const Vacancy = ({setToggle ,courseName, ...props}) => {
     const [innerData, setInnerData] = useState([]);
     const [setQuestionChild ,{ QuestionChildData }] = useMutation(SET_QUESTION_CHILD);
@@ -84,18 +25,17 @@ const Vacancy = ({setToggle ,courseName, ...props}) => {
     const [message,setMessage] =useState('');
     const [status,setStatus] =useState(0);
     /////////////////////////////////////////
-    // const [imageQuestion, setImageQuestion] = useState(false);
-    // const [QuestionPic, setQuestionPic] = useState(false);
     const [textImage, setTextImage] = useState(false); //pic with text
     const [questionImage, setQuestionImage] = useState(false); //pic instanse text
-    const [selectedFile, SetselectedFile] = useState(null);
     const [mimeTypeFile, SetMimeTypeFile] = useState('');
     const [clieckedButton, setClieckedButton] = useState(false);
-    
+    //////////////////////////////////////////
+    const [selectedFile, SetselectedFile] = useState(null);
+    const [selectedFileName, SetselectedFileName] = useState(null);
+    ///////////////////////////////////////////
     var format = '';
-
+    ///////////////////////////////////////////
     useEffect(()=>{
-
       if(!loadVariable.load){
         loadVariable.load = true;
         setInnerData(props.rowData);
@@ -220,6 +160,11 @@ const Vacancy = ({setToggle ,courseName, ...props}) => {
       console.log('vc',vc);
       setVancyValue(vc)
     }
+    /////////////////
+    const handleGetFileName = (fn) =>{
+      SetselectedFileName(fn)
+    }
+    ////////////////////////////////////
     ////////////////////////////////////
     const [innerColumns, setInnerColumns] = useState([
         {
@@ -272,22 +217,27 @@ const Vacancy = ({setToggle ,courseName, ...props}) => {
           minWidth: 150,
           render: rowData =>rowData.question_link ? <img src={rowData.question_link} style={{width: 40, borderRadius: '50%'}}/> :'',
           editComponent: props => (
-            <label htmlFor="upload-photo">
-                <input
-                    style={{ display: 'none' }}
-                    // defaultValue=""
-                    id="upload-photo"
-                    name="upload-photo"
-                    type="file"
-                    onChange={e => uploadFileQuestion(e)}
-                />
+            <UploaderQuestionsImage 
+            fileId = {`question_link${props.rowData.id}`}
+            handleGetFileName={handleGetFileName}
+            SetselectedFile={SetselectedFile}
+          />
+            // <label htmlFor="upload-photo">
+            //     <input
+            //         style={{ display: 'none' }}
+            //         // defaultValue=""
+            //         id="upload-photo"
+            //         name="upload-photo"
+            //         type="file"
+            //         onChange={e => uploadFileQuestion(e)}
+            //     />
 
-                <ComparativeButton variant="contained" component="span">
-                    <BackupIcon 
-                    // style={{color:'#009688'}}
-                     />
-                </ComparativeButton>
-            </label>
+            //     <ComparativeButton variant="contained" component="span">
+            //         <BackupIcon 
+            //         // style={{color:'#009688'}}
+            //          />
+            //     </ComparativeButton>
+            // </label>
           ),
         },
         {
@@ -392,23 +342,28 @@ const Vacancy = ({setToggle ,courseName, ...props}) => {
           defaultFilter: '',
           render: rowData => rowData.exam_link ? <img src={rowData.exam_link} style={{width: 40, borderRadius: '50%'}}/> : '',
           editComponent: props => (
+            <UploaderQuestionsImage 
+              fileId = {`exam_link${props.rowData.id}`}
+              handleGetFileName={handleGetFileName}
+              SetselectedFile={SetselectedFile}
+            />
             // <input type="file" defaultValue="" onChange={e => uploadFile(e)} />
-            <label htmlFor="upload-photo">
-                <input
-                    style={{ display: 'none' }}
-                    // defaultValue=""
-                    id="upload-photo"
-                    name="upload-photo"
-                    type="file"
-                    onChange={e => uploadFile(e)}
-                />
+            // <label htmlFor="upload-photo">
+            //     <input
+            //         style={{ display: 'none' }}
+            //         // defaultValue=""
+            //         id="upload-photo"
+            //         name="upload-photo"
+            //         type="file"
+            //         onChange={e => uploadFile(e)}
+            //     />
 
-                <ComparativeButton variant="contained" component="span">
-                    <BackupIcon 
-                    // style={{color:'#009688'}}
-                     />
-                </ComparativeButton>
-            </label>
+            //     <ComparativeButton variant="contained" component="span">
+            //         <BackupIcon 
+            //         // style={{color:'#009688'}}
+            //          />
+            //     </ComparativeButton>
+            // </label>
           ),
         },
         {
@@ -481,6 +436,7 @@ const Vacancy = ({setToggle ,courseName, ...props}) => {
         title=""
         columns={innerColumns}
         data={innerData}
+        ////////////////////////////////////////////////
         options={{
           pageSize: 1,
           
@@ -502,93 +458,12 @@ const Vacancy = ({setToggle ,courseName, ...props}) => {
             }
             
           }}
-        // actions={[
-        //   {
-        //     icon: 'delete',
-        //     tooltip: 'حذف',
-        //     // onClick: (event, rowData) => {
-        //       onClick: (event, rowData) => {
-        //       // Do save operation
-        //         const dataDelete = [...innerData];
-        //         const index = rowData.tableData.id;
-        //         dataDelete.splice(index, 1);
-        //         ////////////////////////////////////
-        //       // fetch(graphql_server_uri, {
-        //       //   method: 'POST',
-        //       //   headers: { 'Content-Type': 'application/json' },
-        //       //   body: JSON.stringify({
-        //       //     query: `
-        //       //       mutation{
-        //       //           deleteQuestion(
-        //       //               axamQuestion_input: {
-        //       //                   questionID: "${'1'}"
-        //       //                   axamQuestions_id: "${'1'}"
-        //       //                   question: "${convertText(rowData.question)}"
-        //       //                   question_link: "${rowData.question_link ? rowData.question_link : ''}"
-        //       //                   question_optionOne: "${convertText(rowData.question_optionOne)}"
-        //       //                   question_optionTwo:"${convertText(rowData.question_optionTwo)}"
-        //       //                   question_optionThree: "${convertText(rowData.question_optionThree)}"
-        //       //                   question_optionFour: "${convertText(rowData.question_optionFour)}"
-        //       //                   question_correctOption: "${rowData.question_correctOption}"
-        //       //                   question_timeToSolveProblem: "${convertText(rowData.question_timeToSolveProblem)}"
-        //       //                   question_score: "${rowData.question_score ? rowData.question_score : ''}"
-        //       //                   question_explane: "${convertText(rowData.question_explane)}"
-        //       //                   exam_link: "${rowData.exam_link ? rowData.exam_link : ''}"
-        //       //             },
-        //       //         ){
-        //       //           axamQuestions_id
-        //       //         }
-        //       //       }                      
-        //       //     `,
-        //       //   }),
-        //       // })
-        //       //   .then(res => res.json())
-        //       //   .then(res => {
-        //       //     // setSumScore(prevState => (prevState - parseFloat(oldScore)));
-        //       //     if (
-        //       //       res.data &&
-        //       //       res.data.deleteQuestion &&
-        //       //       res.data.deleteQuestion.axamQuestions_id
-        //       //     ) {
-        //       //       /////
-        //       //       alert('اطلاعاتی به درستی حذف نشد');
-        //       //       // setStatus(1);
-        //       //       // setShowPopup(true);
-        //       //     } else {
-        //       //       // setQuestionId(data.length)
-        //       //       // setMessage('اطلاعاتی به درستی حذف شد');
-        //       //       // setStatus(0);
-        //       //       // setShowPopup(true);
-        //       //       // refteshData();
-        //       //       //   return res.data;
-        //       //     }
-        //       //     // return res.data;
-        //       //   });
-        //         //////////////////////////////////////////
-        //         setToggle(false);
-        //         setInnerData([...dataDelete]);
-        //     }
-        //   },
-        //   // {
-        //   //   icon: 'edit',
-        //   //   tooltip: 'ویرایش',
-        //   //   onClick: (event, rowData) => {
-        //   //     // Do save operation
-        //   //       const dataDelete = [...innerData];
-        //   //       const index = rowData.tableData.id;
-        //   //       dataDelete.splice(index, 1);
-        //   //       setInnerData([...dataDelete]);
-        //   //   }
-        //   // }
-        // ]}
-
+        ////////////////////////////////////////////////
         actions={[
           {
             icon: 'delete',
             tooltip: 'حذف',
-            // onClick: (event, rowData) => {
               onClick: async(event, rowData) => {
-              // Do save operation
               if(props.rowData && props.rowData.length > 0 && props.rowData[0].id){
                 const dataDelete = [...innerData];
                 const index = rowData.tableData.id;
@@ -626,147 +501,157 @@ const Vacancy = ({setToggle ,courseName, ...props}) => {
         ]}
         
         editable={{
-          //////////////////////////////////
-          onRowUpdateBefore: () =>
-          new Promise((resolve, reject) => {
-            console.log("onRowUpdateBefore");
-            setToggle(true);
-            // props.setDisableComponents(true);
-            resolve();
-          }),
-          //////////////////////////////////////////
-          onRowUpdateCancelled: rowData => {
-            loadVariable.load = true;
-            setToggle(false);
-            console.log('onRowUpdateCancelled',loadVariable.load);
-          },
-          //////////////////////////////////////////
-          onRowUpdate: (newData, oldData) =>
+          //////////////////////////////////============================================
+            //////////////////////////////////
+            onRowUpdateBefore: () =>
             new Promise((resolve, reject) => {
-              if(courseName != ''){
-                if(props.rowData && props.rowData.length > 0 && props.rowData[0].qpId ){
-                  setTimeout(() => {
-                    // const dataUpdate = [...innerData];
-                    // const index = oldData.tableData.id;
-                    /////////////myCode
-                    if (
-                      selectedFile &&
-                      ((textImage == true && questionImage == true) ||
-                        (questionImage == true && textImage == false))
-                    ) {
-                      //////////////////////
-                      var file = new File(
-                        [selectedFile],
-                        uuidv4() + `.${format}`,
-                        {
-                          type: mimeTypeFile,
-                        },
-                      );
-                    //////////////////////////////////////////
-                      handleSendToserver();
-                      async function handleSendToserver() {
-                        var responseCode = await UploadfileToserver(file, format);
-                        if (file.name && responseCode) {
-                          setQuestionChild({ variables: { 
-                            userName: "211", 
-                            password: "211", 
-                            qpId: props.rowData[0].qpId,
-                            examChildId:courseName,
-                            question: "", 
-                            question_score: newData.question_score ? newData.question_score : '', 
-                            question_explain: convertText(newData.question_explane),
-                            question_timeToSolveProblem: convertText(newData.question_timeToSolveProblem), 
-                            question_correctOption: "", 
-                            question_optionOne: "",
-                            question_optionTwo: "",
-                            question_optionThree: "",
-                            question_optionFour: "",
-                            question_link: file.name,
-                            exam_link: "", 
-                            question_type: props.typeQuestion,
-                            question_seqItems: [],
-                            question_vancyItems: vancyValue, 
-                            question_compItems: []
-                            } 
-                          }).then(res=>{
-                            if(res.data && res.data.addQuestionChild){
-                              setQuestionImage(false);
-                              setMessage('ثبت شد');
-                              setStatus('1');
-                              setShowMessage(!showMessage);
-                            }else{
-                              setStatus('0')
-                              setMessage('ثبت نشد')
-                              setShowMessage(!showMessage);
-                            }
-                          })
-                        } else {
-                          // alert('اطلاعاتی به درستی ثبت نشد');
-                          setStatus('0')
-                          setMessage('اطلاعاتی به درستی ثبت نشد')
-                          setShowMessage(!showMessage);
-                        }
-                      }
-                    } else if (
-                      selectedFile &&
-                      questionImage == false &&
-                      textImage == true
-                    ) {
-                      //////////////////////
-                      var file = new File(
-                        [selectedFile],
-                        uuidv4() + `.${format}`,
-                        {
-                          type: mimeTypeFile,
-                        },
-                      );
-                      //////////////////////
-                      handleSendToserver();
-                      async function handleSendToserver() {
-                        var responseCode = await UploadfileToserver(file, format);
-                        if (file.name && responseCode) {
-                          setQuestionChild({ variables: { 
-                            userName: "211", 
-                            password: "211", 
-                            qpId: props.rowData[0].qpId,
-                            examChildId:courseName,
-                            question: convertText(newData.question), 
-                            question_score: newData.question_score ? newData.question_score : '', 
-                            question_explain: convertText(newData.question_explane),
-                            question_timeToSolveProblem: convertText(newData.question_timeToSolveProblem), 
-                            question_correctOption: "", 
-                            question_optionOne: "",
-                            question_optionTwo: "",
-                            question_optionThree: "",
-                            question_optionFour: "",
-                            question_link: "",
-                            exam_link: file.name, 
-                            question_type: props.typeQuestion,
-                            question_seqItems: [],
-                            question_vancyItems: vancyValue, 
-                            question_compItems: []
-                            } 
-                          }).then(res=>{
-                            if(res.data && res.data.addQuestionChild){
-                              setTextImage(false);
-                              setQuestionImage(false);
-                              setMessage('ثبت شد');
-                              setStatus('1');
-                              setShowMessage(!showMessage);
-                            }else{
-                              setStatus('0')
-                              setMessage('ثبت نشد')
-                              setShowMessage(!showMessage);
-                            }
-                          })
-                        } else {
-                          // alert('اطلاعاتی به درستی ثبت نشد');
-                          setStatus('0')
-                          setMessage('اطلاعاتی به درستی ثبت نشد')
-                          setShowMessage(!showMessage);
-                        }
-                      }
-                    } else {
+              console.log("onRowUpdateBefore");
+              setToggle(true);
+              // props.setDisableComponents(true);
+              resolve();
+            }),
+          //////////////////////////////////////////
+           onRowUpdateCancelled: rowData => {
+             loadVariable.load = true;
+             setToggle(false);
+             console.log('onRowUpdateCancelled',loadVariable.load);
+           },
+           //////////////////////////////////////////
+ 
+           onRowUpdate: (newData, oldData) =>
+             new Promise((resolve, reject) => {
+               if(courseName != ''){
+                 if(props.rowData && props.rowData.length > 0 && props.rowData[0].qpId ){
+                   setTimeout(() => {
+                     // const dataUpdate = [...innerData];
+                     // const index = oldData.tableData.id;
+                     /////////////myCode
+                    
+                      if (
+                        selectedFile && selectedFile == "picInsteadText"
+                      ) {
+                        ///////////////////////////////////////
+                        const SendQuestionImagePromise = new Promise((resolve, reject) => {
+                          document.getElementById(`question_link${props.rowData[0].id}`).submit();
+                          // return 'ok';
+                          resolve();
+                        });
+                        SendQuestionImagePromise
+                        .then( handleResolved => {
+                            console.log('handleResolved');
+                            setTimeout(() => {
+                              if (selectedFileName) {
+                              setQuestionChild({ variables: { 
+                                userName: "211", 
+                                password: "211", 
+                                qpId: props.rowData[0].qpId,
+                                examChildId:courseName,
+                                question: "", 
+                                question_score: newData.question_score ? newData.question_score : '', 
+                                question_explain: convertText(newData.question_explane),
+                                question_timeToSolveProblem: convertText(newData.question_timeToSolveProblem), 
+                                question_correctOption: "", 
+                                question_optionOne: "",
+                                question_optionTwo: "",
+                                question_optionThree: "",
+                                question_optionFour: "",
+                                question_link: "https://s3.ir-thr-at1.arvanstorage.com/raysa/" + selectedFileName,
+                                exam_link: "", 
+                                question_type: props.typeQuestion,
+                                question_seqItems: [],
+                                question_vancyItems: vancyValue, 
+                                question_compItems: []
+                                } 
+                              }).then(res=>{
+                                if(res.data && res.data.addQuestionChild){
+                                  setQuestionImage(false);
+                                  setMessage('ثبت شد');
+                                  setStatus('1');
+                                  setShowMessage(!showMessage);
+                                }else{
+                                  setStatus('0')
+                                  setMessage('ثبت نشد')
+                                  setShowMessage(!showMessage);
+                                }
+                              })
+                              } else {
+                                // alert('اطلاعاتی به درستی ثبت نشد');
+                                setStatus('0')
+                                setMessage('اطلاعاتی به درستی ثبت نشد')
+                                setShowMessage(!showMessage);
+                              }
+                            }, 3000);
+                            
+                        })
+                        .catch(err =>{
+                            console.log('err');
+                            alert(err);
+                        });
+                  //////////////////////////////////////////
+                      } else if (
+                        selectedFile && selectedFile == "picWithText"
+                      ) {
+                        ////////////////////////////////////////////
+                        const SendTextImagePromise = new Promise((resolve, reject) => {
+                          document.getElementById(`exam_link${props.rowData[0].id}`).submit();
+                          // return 'ok';
+                          resolve();
+                        });
+                        SendTextImagePromise
+                        .then( handleResolved => {
+                            console.log('handleResolved');
+                            setTimeout(() => {
+                              if (selectedFileName) {
+                              setQuestionChild({ variables: { 
+                                userName: "211", 
+                                password: "211", 
+                                qpId: props.rowData[0].qpId,
+                                examChildId:courseName,
+                                question: convertText(newData.question), 
+                                question_score: newData.question_score ? newData.question_score : '', 
+                                question_explain: convertText(newData.question_explane),
+                                question_timeToSolveProblem: convertText(newData.question_timeToSolveProblem), 
+                                question_correctOption: "", 
+                                question_optionOne: "",
+                                question_optionTwo: "",
+                                question_optionThree: "",
+                                question_optionFour: "",
+                                question_link: "",
+                                exam_link: "https://s3.ir-thr-at1.arvanstorage.com/raysa/" + selectedFileName,
+                                question_type: props.typeQuestion,
+                                question_seqItems: [],
+                                question_vancyItems: vancyValue, 
+                                question_compItems: []
+                                } 
+                              }).then(res=>{
+                                if(res.data && res.data.addQuestionChild){
+                                  setTextImage(false);
+                                  setQuestionImage(false);
+                                  setMessage('ثبت شد');
+                                  setStatus('1');
+                                  setShowMessage(!showMessage);
+                                }else{
+                                  setStatus('0')
+                                  setMessage('ثبت نشد')
+                                  setShowMessage(!showMessage);
+                                }
+                              })
+                              } 
+                              else {
+                                // alert('اطلاعاتی به درستی ثبت نشد');
+                                setStatus('0')
+                                setMessage('اطلاعاتی به درستی ثبت نشد')
+                                setShowMessage(!showMessage);
+                              }
+                            }, 3000);
+                          
+                        })
+                        .catch(err =>{
+                            console.log('err');
+                            alert(err);
+                        });
+                      
+                      } else {
                       setQuestionChild({ variables: { 
                         userName: "211", 
                         password: "211", 
@@ -799,40 +684,37 @@ const Vacancy = ({setToggle ,courseName, ...props}) => {
                             setShowMessage(!showMessage);
                           }
                       })
-                    }
-                    ////////////////////////////
-                    // dataUpdate[index] = newData;
-                    // setInnerData([...dataUpdate]);
-                    props.handleFetchData();
-                    resolve();
-                  }, 1000)
-                }else{
-                  setStatus('0')
-                  setMessage('خطایی رخ داده است!!!')
-                  setShowMessage(!showMessage);
-                  resolve();
-                }
-              }else{
-                setStatus('0')
-                setMessage('ابتدا درس را انتخاب کنید!!!');
-                setShowMessage(!showMessage);
-                resolve();
-              }
+                      }
+                      props.handleFetchData();
+                        
+                       
+   
+                     ////////////////////////////
+                     // dataUpdate[index] = newData;
+                     // setInnerData([...dataUpdate]);
+                       // props.handleFetchData();
+                         // console.log('idEdit', newData);
+                       resolve();
+                     // reject(loadVariable.load = false);
+                   }, 1000)
+                 }else{
+                   setStatus('0')
+                   setMessage('خطایی رخ داده است!!!')
+                   setShowMessage(!showMessage);
+                   resolve();
+                 }
+               }else{
+                 setStatus('0')
+                 setMessage('ابتدا درس را انتخاب کنید!!!');
+                 setShowMessage(!showMessage);
+                 resolve();
+               }
               
-              //////////////
-              setToggle(false);
-            }),
-          // onRowDelete: oldData =>
-          //   new Promise((resolve, reject) => {
-          //     setTimeout(() => {
-          //       const dataDelete = [...innerData];
-          //       const index = oldData.tableData.id;
-          //       dataDelete.splice(index, 1);
-          //       setInnerData([...dataDelete]);
-  
-          //       resolve();
-          //     }, 1000)
-          //   }),
+               ////////////////////////////////////////////
+               setToggle(false);
+              
+             }),
+          ///////////////////////////////////===============================================
         }}
       /> : ''}
       {clieckedButton ? <VacancyModal/> : ''}
