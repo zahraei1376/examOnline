@@ -5,11 +5,15 @@ import { QuestionPageContainer ,QuestionPageDiv,UploadSectionContainer,Questions
 import Questions from '../component/questionComponent/questionComponent';
 import UploadQuestions from '../component/questionComponent/uploadQuestions/uploadQiestions.component';
 import FastAccessToQuestions from '../component/questionComponent/fastAccessToquestions/fastAccessToquestions.component';
-//////////////////////////////
+// import MySpinner from '../component/MySpinner/MySpinner.component';
+/////////////////////////////query
+import { useQuery } from 'react-apollo';
+import { GET_EXAMCHILD_QUESTIONS } from '../graphql/resolver';
+/////////////////////////////
 import TextField from '@material-ui/core/TextField';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 //////////////////////////////
-import {useLocation } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import QuestionsHeader from '../component/questionsInfo/questionsInfo.components';
 // const courses = [
 //     { course: 'ریاضی', examChildId: '608fe01c91f240049edbcefc' },
@@ -19,6 +23,14 @@ import QuestionsHeader from '../component/questionsInfo/questionsInfo.components
 //   ]
 
 const QuestionPage = ({questions , setCourseName,setExamParentId, ...props}) =>{
+    // const { loading, error, data ,refetch  } = useQuery(GET_EXAMCHILD_QUESTIONS , {
+    //     variables: {  
+    //         userName: "211",
+    //         password: "211",
+    //         id: "607fd8fb3fb30a08d7ce1e53" ,
+    //     },
+    //     notifyOnNetworkStatusChange: true
+    // });
     let location = useLocation();
     // const [numberOfQuestions,seNumberOfQuestions] = useState('');
     const [courses,setCourses] = useState(location && location.state.courses ? location.state.courses : [] );
@@ -80,9 +92,7 @@ const QuestionPage = ({questions , setCourseName,setExamParentId, ...props}) =>{
             </ComboDiv>
             {/* <FastAccessToQuestions /> */}
             <QuestionPageDiv>
-                {/* <UploadSectionContainer>
-                    <UploadQuestions seNumberOfQuestions={seNumberOfQuestions} numberOfQuestions={numberOfQuestions} />
-                </UploadSectionContainer> */}
+                {/* {loading ? <MySpinner/> : ''} */}
                 <Questions 
                 //   selectedCourseName={courseName}
                 //   examParentId ={props.location && props.location.state.examParentId ? props.location.state.examParentId : ''}

@@ -45,33 +45,24 @@ const useStyles = makeStyles((theme) => ({
 
 export default function VacancyModal({handleSetVancyItems , existVancyValue}) {
   const classes = useStyles();
-  // getModalStyle is not a pure function, we roll the style only on the first render
+  //////////////////////////////////////
   const [modalStyle] = React.useState(getModalStyle);
   const [open, setOpen] = React.useState(false);
   const [vancyValue , setVancyValue] = useState('');
-//   const [count,setCount] = React.useState(1)
-  // const [items,setItems] = React.useState(existVancyValue ? existVancyValue : '');
-  // const [indexDelete,setIndexDelete] = React.useState(-1);
-
+  /////////////////////////////////////
   useEffect(()=>{
-    // console.log('vancyValue',vancyValue);
     setVancyValue(existVancyValue ? existVancyValue : '')
   },[]);
-
-
-  // useEffect(()=>{
-  //   console.log('existVancyValue',existVancyValue);
-  // },[]);
-
+  ////////////////////////////////////
   useEffect(()=>{
     console.log('vancyValue',vancyValue);
-  },[vancyValue]);
-
+  });
+  ////////////////////////////////////
   const handleChange = (event) => {
     console.log('event.target.value',event.target.value);
     setVancyValue(event.target.value);
   };
-
+  ////////////////////////////////////
   const addVancy = () =>{
     // var myItemV = vancyValue;
     // myItemV += '$%A';
@@ -79,35 +70,27 @@ export default function VacancyModal({handleSetVancyItems , existVancyValue}) {
     setVancyValue(vancyValue + '$%A');
     document.getElementById("Text1").focus();
   }
-
+  ////////////////////////////////////
   const handleOpen = () => {
     setOpen(true);
   };
-
+  ////////////////////////////////////
   const handleClose = () => {
     setOpen(false);
   };
-
-//   const handleIndexDelete =(index)=>{
-//      var temp = [...vancyValue];
-//      temp.splice(index,1);
-//      setVancyValue(temp);
-//      setCount(prev => prev - 1);
-//   }
-
-
+  ////////////////////////////////////
   const handleIndexSet =(index,num , value)=>{
     var temp = [...vancyValue];
     temp[index][num] = value;
     setVancyValue(temp);
  }
-
+ ////////////////////////////////////
  const SeveData = () =>{
    console.log('vancyValue',vancyValue);
-  handleSetVancyItems(vancyValue);
-  setOpen(false);
+    handleSetVancyItems(vancyValue);
+    setOpen(false);
  }
-
+ ////////////////////////////////////
 
 
   const body = (
@@ -122,9 +105,9 @@ export default function VacancyModal({handleSetVancyItems , existVancyValue}) {
       
       <VacancyInputContainer>
       <VacancyInput id="Text1" cols="60" rows="5"  placeholder="متن خود را وارد کنید!!"
-      value={vancyValue}
-        // value={vancyValue.split('$%A').join('..............')}
-        onChange={(e) =>handleChange(e)} 
+      // value={vancyValue}
+        value={vancyValue.split('$%A').join('..............')}
+        onChange={(e) => handleChange(e)} 
       />
        {/* </VacancyInput> */}
       </VacancyInputContainer>

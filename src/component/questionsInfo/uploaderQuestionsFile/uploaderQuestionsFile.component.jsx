@@ -1,10 +1,8 @@
 import React, { useEffect, useState, useRef } from "react";
 import axios from "axios";
-import BackupIcon from '@material-ui/icons/Backup';
-import AddIcon from '@material-ui/icons/Add'
 import {UploadButton  ,UploaderButtonSend} from './uploaderQuestionsFile.styles';
 import InsertDriveFileIcon from '@material-ui/icons/InsertDriveFile';
-import MySnackbar from '../../../messageBox/messageBox.component';
+// import MySnackbar from '../../../messageBox/messageBox.component';
 const AWS = require("aws-sdk");
 
 const s3 = new AWS.S3({
@@ -17,7 +15,7 @@ const s3 = new AWS.S3({
     region: "us-east-1", // Put you region
   });
 
-function UploaderQuestionsFile({handleGetFileName ,fileSend ,fileId}) {
+function UploaderQuestionsFile({handleGetFileName ,SetCanSend ,fileId}) {
     
   const [s3Acl, setS3Acl] = useState();
   const [s3Url, setS3Url] = useState();
@@ -29,13 +27,7 @@ function UploaderQuestionsFile({handleGetFileName ,fileSend ,fileId}) {
   const [s3Date, setS3Date] = useState();
   const [s3Expires, setS3Expires] = useState();
   const [s3Bucket, setS3Bucket] = useState();
-  //////////////////////////////////////////////////
-  const [showMessage,setShowMessage] = useState(false);
-  const [message,setMessage] =useState('');
-  const [status,setStatus] =useState(0);
   /////////////////////////////////////////////////
-  const [myFileNama ,setMyFileNama] = useState('');
-  ////////////////////////////////////////////////
   useEffect(() => {
     console.log("s3Url:", s3Url);
     console.log("s3Key:", s3Key);
@@ -46,7 +38,6 @@ function UploaderQuestionsFile({handleGetFileName ,fileSend ,fileId}) {
     console.log("s3Expires:", s3Expires);
     console.log("s3Bucket:", s3Bucket);
     console.log('fileId',fileId);
-    // console.log('myForm1',`myForm${fileId}`);
   }, [
     s3Url,
     s3Key,
@@ -58,18 +49,25 @@ function UploaderQuestionsFile({handleGetFileName ,fileSend ,fileId}) {
     s3Expires,
     s3Bucket,
   ]);
-  ////////////////////////////////////
-  useEffect(()=>{
-    console.log('fileId',fileId);
-    console.log('myForm2',`myForm${fileId}`);
-    // setMyFileId(course.group && course.group.length > 0 ? course.group[0] : '')
-},[fileId])
   ////////////////////////////////////////////////////////////////
-
-  // function myFunction() {
-  //     console.log('clickeddddddddddddddddddd');
-  //     document.getElementById(`myForm${fileId}`).submit();
-  // }
+ const CheckFile = (myFile) =>{
+  var file = myFile;
+  var fileName = file.name;
+  var fileIdL = fileName.split('.');
+  var format = fileIdL[fileIdL.length - 1].toLowerCase();
+  if (file.size < 15728641) {
+      if (format == 'pdf') {
+          return true;
+      } else {
+        alert('فایل ارسالی باید با فرمت pdf باشد!!!');
+        return false;
+      }
+  } else {
+      alert('حجم فایل ارسالی باید کمتر از 15 مگابایت باشد!!!');
+      return false;
+  }
+}
+////////////////////////////////////
 
   return (
 <div>
@@ -89,30 +87,26 @@ function UploaderQuestionsFile({handleGetFileName ,fileSend ,fileId}) {
         <input type="hidden" name="X-Amz-Algorithm" value={s3Algorithm} />
         <input type="hidden" name="X-Amz-Date" value={s3Date} />
         <UploaderButtonSend type="button" 
-        // onClick={myFunction}
          id={`MySubmit${fileId}`} />
         <label htmlFor={`uploadPhotoAws${fileId}`}>
             <input
                 style={{ display: 'none' }}
-                // defaultValue=""
                 id={`uploadPhotoAws${fileId}`}
-                // name="upload-photo"
                 type="file"
-                // onChange={e => uploadFile(e)}
-                // id="ccc"
-                // type="file"
                 name="file"
                 onChange={(event) => {
-                  var FileNama = Date.now() + "-" + event.target.files[0].name;
-                  // setMyFileNama(FileNama);
-                    axios({
-                    url: "http://t1.ray-sa.ir:4000/sign_post",
-                    method: "post",
-                    data: {
-                        fileName: FileNama,
-                    },
-                    })
-                    .then(async (res) => {
+                  const { target } = event;
+                  if(target.value.length > 0){
+                    if(CheckFile(event.target.files[0])){
+                      var FileNama = Date.now() + "-" + event.target.files[0].name;
+                      axios({
+                        url: "http://t1.ray-sa.ir:4000/sign_post",
+                        method: "post",
+                        data: {
+                            fileName: FileNama,
+                        },
+                      })
+                      .then(async (res) => {
                         console.log(res);
                         handleGetFileName(FileNama);
                         console.log('myFileNama1',FileNama)
@@ -127,34 +121,25 @@ function UploaderQuestionsFile({handleGetFileName ,fileSend ,fileId}) {
                         setS3Credential(data.fields["X-Amz-Credential"]);
                         setS3Algorithm(data.fields["X-Amz-Algorithm"]);
                         setS3Date(data.fields["X-Amz-Date"]);
-
-                        // if(res.statusText == "OK"){
-                        //     return tr
-                        // }
-                        // document.getElementById("myForm").submit();
-                        //////////////////////////////////////////////////////
-                        // document.getElementById("myForm").submit();
-                        // setMessage('ارسال شد');
-                        // setStatus('1');
-                        // setShowMessage(!showMessage);
-                        // console.log('myFileNama',myFileNama);
-                        
-                    })
-                    .catch((error) => {
-                        console.log(error);
-                    });
+                          ////////////////////////////////////////////////////////////////////////////////
+                      })
+                      .catch((error) => {
+                          console.log(error);
+                      });
+                    }else{
+                      SetCanSend(false);
+                    }
+                  } 
                 }}
             />
              <UploadButton variant="contained" component="span">
-                <InsertDriveFileIcon style={{fontSize:'4rem'}}
-                        // style={{color:'#009688'}}
-                        />
+                <InsertDriveFileIcon style={{fontSize:'4rem'}} />
             </UploadButton>
         </label>
         
-        {
+        {/* {
           showMessage ? <MySnackbar message={message} status={status} showMessage={showMessage} setShowMessage={setShowMessage} /> : ''
-        }
+        } */}
         {" "}
         <br />
       </form>

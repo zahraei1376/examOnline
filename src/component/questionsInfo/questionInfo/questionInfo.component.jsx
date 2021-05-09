@@ -1,6 +1,5 @@
 import React ,{ useState ,useEffect } from 'react';
 import { QuestionInfoContainer ,QuestionInfoUpload, QuestionInfoGroup ,QuestionInfoLabel,QuestionInfoCourseName ,QuestionInfoInput ,BtnOk} from './questionInfo.styles';
-import Uploader from '../../uploader';
 import UploaderQuestionsFile from '../uploaderQuestionsFile/uploaderQuestionsFile.component';
 import Tooltip from '@material-ui/core/Tooltip';
 import DoneIcon from '@material-ui/icons/Done';
@@ -28,29 +27,25 @@ const QuestionInfo = ({course ,selectedEPId}) => {
     //////////////////////////////////////////
     const [MyFileId,setMyFileId] = useState('');
     ////////////////////////////////////////////
+    const [canSend , SetCanSend] = useState(true);
     useEffect(()=>{
         console.log('course',course.group && course.group.length > 0 ? course.group[0] : '');
         setMyFileId(course.group && course.group.length > 0 ? course.group[0] : '')
     },[])
-
-    useEffect(()=>{
-        console.log('MyFileId',MyFileId);
-        // setMyFileId(course.group && course.group.length > 0 ? course.group[0] : '')
-    },[MyFileId])
 
     const sendInfo = () =>{
         const SendFilePromise = new Promise((resolve, reject) => {
             
             var myForm = document.getElementById(`myForm${MyFileId}`);
             if(myForm){
-                console.log('myForm', myForm);
-                // console.log('myForm',`myForm${MyFileId}`);
-                document.getElementById(`myForm${MyFileId}`).submit();
-                // return 'ok';
-                resolve();
+                if(!!canSend){
+                    document.getElementById(`myForm${MyFileId}`).submit();
+                    resolve();
+                }else{
+                    reject(new Error("فایل درستی را امتخاب کنید!!!"));
+                }
+                
             }
-            // document.getElementById(`myForm${MyFileId}`).submit();
-            // resolve();
         });
 
         SendFilePromise
@@ -71,12 +66,10 @@ const QuestionInfo = ({course ,selectedEPId}) => {
                 }).then(res=>{
                   console.log('res.data.addExamChildInfo',res.data);
                   if(res.data && res.data.updateExamChild){
-                    // console.log('data',data);
                     setMessage('اطلاعات ثبت شد');
                     setStatus('1');
                     setShowMessage(!showMessage);
                   }else{
-                    // console.log('data',data);
                     setStatus('0')
                     setMessage('اطلاعات ثبت نشد')
                     setShowMessage(!showMessage);
@@ -86,31 +79,11 @@ const QuestionInfo = ({course ,selectedEPId}) => {
             
         })
         .catch(err =>{
-            console.log('err');
-            // alert(err);
+            console.log(err);
+            setStatus('0')
+            // setMessage(err)
+            setShowMessage(!showMessage);
         });
-       
-        // await addExamChildInfo({ variables: { 
-        //     userName: "211",
-        //     password: "211",
-        //     id: course.group,
-        //     examChild_falseCoefficient : negativeCoefficient,
-        //     examChild_courseCoefficient : coefficient,
-        //     examChild_pdf: fileName,
-        //  }
-        //   }).then(res=>{
-        //     if(res.data && res.data.addExamChildInfo){
-        //       // console.log('data',data);
-        //       setMessage('اطلاعات ثبت شد');
-        //       setStatus('1');
-        //       setShowMessage(!showMessage);
-        //     }else{
-        //       // console.log('data',data);
-        //       setStatus('0')
-        //       setMessage('اطلاعات ثبت نشد')
-        //       setShowMessage(!showMessage);
-        //     }
-        //   })
     }
 
     const handleGetFileName = (fileName) => {
@@ -125,7 +98,7 @@ const QuestionInfo = ({course ,selectedEPId}) => {
                     <UploaderQuestionsFile 
                     handleGetFileName={handleGetFileName} 
                     fileId={MyFileId}
-                    // myForm${fileId}
+                    SetCanSend={SetCanSend}
                     />
                 </QuestionInfoUpload>
                 
@@ -159,10 +132,8 @@ const QuestionInfo = ({course ,selectedEPId}) => {
     )
 };
 
-// export default QuestionInfo;
-
 const mapStateToProps = createStructuredSelector({
     selectedEPId:selectedExamParentId,
-  });
+});
   
-  export default connect(mapStateToProps)(QuestionInfo);
+export default connect(mapStateToProps)(QuestionInfo);

@@ -92,7 +92,7 @@ const addNewExamMutation = gql`
                 }
         }
 `;
-var counter = 0;
+
 const AddExamForTeacher = ({MyGroups}) => {
   ////////////////////////////////
    // const appContext = useContext(AppContext);
@@ -174,16 +174,7 @@ const AddExamForTeacher = ({MyGroups}) => {
     random : "true",
     duration: '00:00:00',
   })
-  // const [examCourseName, setExamCourseName] = useState('');
-  // const [examMaxScore, setExamMaxScore] = useState('');
-  // const [axamId, setAxamId] = React.useState('');
-  // const [message, setMessage] = React.useState('');
-  // const [examTopic, setexamTopic] = React.useState('');
-  // const [status, setStatus] = React.useState(0);
-  // const [ShowPopup, setShowPopup] = React.useState(false);
-  ///////////
-  // const [classN, setClassN] = useState("");
-  // const [level, setLevel] = useState("");
+
   const [groups, setGroups] = useState([
     // {class:'الف',level:'اول',course:'علوم',pId:'1'},
     // {class:'الف',level:'اول',course:'ریاضی',pId:'2'},
@@ -306,11 +297,6 @@ const AddExamForTeacher = ({MyGroups}) => {
     }
      
   }
-  // const [Levels, setLevels] = useState([]);
-  // const [classNames, setClassNames] = useState([]);
-  // const [courseNames, setCourseNames] = useState([]);
-  // const [handleOneClick, sethandleOneClick] = useState(false);
-  // const [method, setMethod] = useState('');
   {/* ///////////////////////////////////////////////*/}
   useEffect(() => {
     setNewSelectedStartDate(fixNumbers(moment(selectedStatrtDate,
@@ -323,8 +309,6 @@ const AddExamForTeacher = ({MyGroups}) => {
   }, [selectedEndDate]);
   {/* ///////////////////////////////////////////////*/}
   useEffect(()=>{
-    // var Myclass = groups.filter(group =>group.level === myItem);
-    // console.log('Myclass',Myclass);
     var newGrops = [];
     for (
       var count = 0;
@@ -383,12 +367,7 @@ const AddExamForTeacher = ({MyGroups}) => {
     // setState({...state,getExamCourseNamesTeacher:'' ,getExamClassTeacher : newClassName});
   },[MyGroups])
   {/* ///////////////////////////////////////////////*/}
-  const handleGroupsExam = (vl) =>{
-    // console.log('vl',vl);
-    // var temp =[...groupsExam];
-    // temp.push(vl);
-    // setGroupsExam(temp);
-    
+  const handleGroupsExam = (vl) =>{    
     if(typePfUser === 1){
       setValues(vl);
       var MySelectedGroup = [];
@@ -1206,12 +1185,13 @@ const AddExamForTeacher = ({MyGroups}) => {
                 onClick={e => handleSubmit(e)}
                 // disabled={handleOneClick}
               />
+              {state.loading ? <MySpinner/> : ''}
             </BtnGroupContainer>
           </Form>
           {
             showMessage ? <MySnackbar message={message} status={status} showMessage={showMessage} setShowMessage={setShowMessage} /> : ''
           }
-          {state.loading ? <MySpinner/> : ''}
+          {/* {state.loading ? <MySpinner/> : ''} */}
         </Grid>
       </ Grid>
     </ContainerForm >
