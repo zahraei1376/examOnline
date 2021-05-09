@@ -19,7 +19,7 @@ const s3 = new AWS.S3({
     region: "us-east-1", // Put you region
   });
 
-function UploaderQuestionsImage({handleGetFileName , handleSend , file ,}) {
+function UploaderQuestionsImage({handleGetFileName , SetselectedFile , fileId ,}) {
     
   const [s3Acl, setS3Acl] = useState();
   const [s3Url, setS3Url] = useState();
@@ -36,53 +36,20 @@ function UploaderQuestionsImage({handleGetFileName , handleSend , file ,}) {
   const [message,setMessage] = useState('');
   const [status,setStatus] = useState(0);
   //////////////////////////////////////////////////
-  const [myFileNama ,setMyFileNama] = useState('');
+  // useEffect(()=>{
+  //     if(fileId && fileId.indexOf('question_link') > -1){
+  //       console.log("picInsteadText");
+  //       SetselectedFile("picInsteadText");
+  //     }else if(fileId && fileId.indexOf('exam_link') > -1){
+  //       console.log("picWithText");
+  //       SetselectedFile("picWithText");
+  //     }else{
+  //       console.log("null");
+  //       SetselectedFile(null);
+  //     }
+  // },[])
+  // const [myFileNama ,setMyFileNama] = useState('');
   ////////////////////////////////////
-  useEffect(()=> {
-    // if(handleSend === true){
-    if(file){
-        axios({
-            url: "http://t1.ray-sa.ir:4000/sign_post",
-            method: "post",
-            data: {
-                fileName: file.name,
-            },
-        })
-        .then(async (res) => {
-            console.log(res);
-            var data = res.data;
-            setS3Acl(data.fields.ACL);
-            setS3Url(data.url);
-            setS3Key(data.fields.key);
-            setS3Expires(data.fields.Expires);
-            setS3Bucket(data.fields.bucket);
-            setS3Policy(data.fields.Policy);
-            setS3Signature(data.fields["X-Amz-Signature"]);
-            setS3Credential(data.fields["X-Amz-Credential"]);
-            setS3Algorithm(data.fields["X-Amz-Algorithm"]);
-            setS3Date(data.fields["X-Amz-Date"]);
-            // document.getElementById("myForm").submit();
-            /////////////////////////////////////////////////////////////
-            document.getElementById("myForm").submit();
-            setMessage('ارسال شد');
-            setStatus('1');
-            setShowMessage(!showMessage);
-            console.log('myFileNama',myFileNama);
-            return true;
-            // handleGetFileName(myFileNama , questionImageType);
-            ////////////////////////////////////////////////////////////////////////////////
-            // document.getElementById("MySubmit").click();
-            // var MySubmit = document.getElementById("MySubmit");
-            // console.log('MySubmit',MySubmit);
-            // MySubmit.click();
-        })
-        .catch((error) => {
-            console.log(error);
-        });
-       
-    }
-  },[])
-
   useEffect(() => {
     console.log("s3Url:", s3Url);
     console.log("s3Key:", s3Key);
@@ -112,7 +79,8 @@ function UploaderQuestionsImage({handleGetFileName , handleSend , file ,}) {
   return (
 <div>
 <form
-        id="myForm"
+        // id={`myForm${fileId}`}
+        id={fileId}
         action={s3Url}
         method="post"
         enctype="multipart/form-data"
@@ -128,14 +96,15 @@ function UploaderQuestionsImage({handleGetFileName , handleSend , file ,}) {
         {/* <br /> */}
         <input type="hidden" name="X-Amz-Algorithm" value={s3Algorithm} />
         <input type="hidden" name="X-Amz-Date" value={s3Date} />
-        {/* <UploaderButtonSend type="button" onClick={myFunction}
+        <UploaderButtonSend type="button" 
+        // onClick={myFunction}
         //  name="submit"
          id="MySubmit" />
-        <label htmlFor="uploadPhotoAws">
+        <label htmlFor={`uploadPhotoAws${fileId}`}>
             <input
                 style={{ display: 'none' }}
                 // defaultValue=""
-                id="uploadPhotoAws"
+                id={`uploadPhotoAws${fileId}`}
                 // name="upload-photo"
                 type="file"
                 // onChange={e => uploadFile(e)}
@@ -143,7 +112,7 @@ function UploaderQuestionsImage({handleGetFileName , handleSend , file ,}) {
                 // type="file"
                 name="file"
                 onChange={(event) => {
-                    setMyFileNama(Date.now() + "-" + event.target.files[0].name);
+                    // setMyFileNama(Date.now() + "-" + event.target.files[0].name);
                     var myFileNama = Date.now() + "-" + event.target.files[0].name;
                     axios({
                     url: "http://t1.ray-sa.ir:4000/sign_post",
@@ -165,19 +134,24 @@ function UploaderQuestionsImage({handleGetFileName , handleSend , file ,}) {
                         setS3Credential(data.fields["X-Amz-Credential"]);
                         setS3Algorithm(data.fields["X-Amz-Algorithm"]);
                         setS3Date(data.fields["X-Amz-Date"]);
-                        // document.getElementById("myForm").submit();
                         /////////////////////////////////////////////////////////////
-                        document.getElementById("myForm").submit();
-                        setMessage('ارسال شد');
-                        setStatus('1');
-                        setShowMessage(!showMessage);
-                        console.log('myFileNama',myFileNama);
+                        // document.getElementById("myForm").submit();
+                        // setMessage('ارسال شد');
+                        // setStatus('1');
+                        // setShowMessage(!showMessage);
+                        // console.log('myFileNama',myFileNama);
+                        if(fileId && fileId.indexOf('question_link') > -1){
+                          console.log("picInsteadText");
+                          SetselectedFile("picInsteadText");
+                        }else if(fileId && fileId.indexOf('exam_link') > -1){
+                          console.log("picWithText");
+                          SetselectedFile("picWithText");
+                        }else{
+                          console.log("null");
+                          SetselectedFile(null);
+                        }
                         handleGetFileName(myFileNama);
                         ////////////////////////////////////////////////////////////////////////////////
-                        // document.getElementById("MySubmit").click();
-                        // var MySubmit = document.getElementById("MySubmit");
-                        // console.log('MySubmit',MySubmit);
-                        // MySubmit.click();
                     })
                     .catch((error) => {
                         console.log(error);
@@ -189,7 +163,7 @@ function UploaderQuestionsImage({handleGetFileName , handleSend , file ,}) {
                         // style={{color:'#009688'}}
                         />
             </UploadButton>
-        </label> */}
+        </label>
 
         {/* /////////////////////////////////////////////////////////////////////////////// */}
         

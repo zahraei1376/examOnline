@@ -1,6 +1,6 @@
 import React, { useState ,useEffect } from 'react';
 import {connect} from 'react-redux';
-import {setCourseName}from '../redux/questionsCourses/questionsCourses.action';
+import {setCourseName ,setExamParentId}from '../redux/questionsCourses/questionsCourses.action';
 import { QuestionPageContainer ,QuestionPageDiv,UploadSectionContainer,QuestionsContainer,ComboDiv} from './questionPage.styles';
 import Questions from '../component/questionComponent/questionComponent';
 import UploadQuestions from '../component/questionComponent/uploadQuestions/uploadQiestions.component';
@@ -18,7 +18,7 @@ import QuestionsHeader from '../component/questionsInfo/questionsInfo.components
 //     { course: 'اجتماعی', examChildId: '608fe01c91f240049edbceff'},
 //   ]
 
-const QuestionPage = ({questions , setCourseName, ...props}) =>{
+const QuestionPage = ({questions , setCourseName,setExamParentId, ...props}) =>{
     let location = useLocation();
     // const [numberOfQuestions,seNumberOfQuestions] = useState('');
     const [courses,setCourses] = useState(location && location.state.courses ? location.state.courses : [] );
@@ -27,7 +27,8 @@ const QuestionPage = ({questions , setCourseName, ...props}) =>{
     useEffect(()=>{
         // console.log('courseName',courseName);
         setCourseName(courses && courses.length > 0 && courses[0].group && courses[0].group.length > 0 ?
-            courses[0].group :'')
+            courses[0].group :'');
+        setExamParentId(location && location.state.examParentId ? location.state.examParentId : '');
     },[]);
 
     useEffect(()=>{
@@ -84,7 +85,7 @@ const QuestionPage = ({questions , setCourseName, ...props}) =>{
                 </UploadSectionContainer> */}
                 <Questions 
                 //   selectedCourseName={courseName}
-                  examParentId ={props.location && props.location.state.examParentId ? props.location.state.examParentId : ''}
+                //   examParentId ={props.location && props.location.state.examParentId ? props.location.state.examParentId : ''}
                   questions={questions} />
             </QuestionPageDiv>
             </QuestionsContainer>
@@ -94,6 +95,7 @@ const QuestionPage = ({questions , setCourseName, ...props}) =>{
 
 const mapDispatchToProps = dispatch =>({
     setCourseName: CN => dispatch(setCourseName(CN)),
+    setExamParentId: epid => dispatch(setExamParentId(epid)),
   });
 
 export default connect(null , mapDispatchToProps )(QuestionPage);

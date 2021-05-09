@@ -7,6 +7,7 @@ import AddExamForTeacher from './addExamComponent.component';
 const GET_GROUPS_WITH_ID = gql`
     query groupsListByPerson($userName: String!, $password: String!){
         groupsListByPerson(userName: $userName, password: $password){
+            id
             pId
             class
             level
@@ -31,7 +32,7 @@ const AddExamForTeacherContainer = ()=>(
             {({loading ,error , data }) => {
                     // console.log({loading});
                     // console.log({error});
-                    console.log({data});
+                    console.log('data',data);
                     
                     if(loading) return <MySpinner/>
                     else if(error) return <MySpinner/>

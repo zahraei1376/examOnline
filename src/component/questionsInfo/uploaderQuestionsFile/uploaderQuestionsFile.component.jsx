@@ -45,6 +45,8 @@ function UploaderQuestionsFile({handleGetFileName ,fileSend ,fileId}) {
     console.log("s3Date:", s3Date);
     console.log("s3Expires:", s3Expires);
     console.log("s3Bucket:", s3Bucket);
+    console.log('fileId',fileId);
+    // console.log('myForm1',`myForm${fileId}`);
   }, [
     s3Url,
     s3Key,
@@ -57,59 +59,17 @@ function UploaderQuestionsFile({handleGetFileName ,fileSend ,fileId}) {
     s3Bucket,
   ]);
   ////////////////////////////////////
-  useEffect(()=> {
-    // if(handleSend === true){
-      if(!!fileSend){
-        document.getElementById("MySubmit").click();
-        // setMessage('ارسال شد');
-        // setStatus('1');
-        // setShowMessage(!showMessage);
-        console.log('myFileNama',myFileNama);
-        handleGetFileName(myFileNama);
-      }
-      ////////////////////////////////////
-    // if(file){
-    //     axios({
-    //         url: "http://t1.ray-sa.ir:4000/sign_post",
-    //         method: "post",
-    //         data: {
-    //             fileName: file.name,
-    //         },
-    //     })
-    //     .then(async (res) => {
-    //         console.log(res);
-    //         var data = res.data;
-    //         setS3Acl(data.fields.ACL);
-    //         setS3Url(data.url);
-    //         setS3Key(data.fields.key);
-    //         setS3Expires(data.fields.Expires);
-    //         setS3Bucket(data.fields.bucket);
-    //         setS3Policy(data.fields.Policy);
-    //         setS3Signature(data.fields["X-Amz-Signature"]);
-    //         setS3Credential(data.fields["X-Amz-Credential"]);
-    //         setS3Algorithm(data.fields["X-Amz-Algorithm"]);
-    //         setS3Date(data.fields["X-Amz-Date"]);
-    //         // document.getElementById("myForm").submit();
-    //         /////////////////////////////////////////////////////////////
-    //         document.getElementById("myForm").submit();
-    //         setMessage('ارسال شد');
-    //         setStatus('1');
-    //         setShowMessage(!showMessage);
-    //         // console.log('myFileNama',myFileNama);
-    //         // return true;
-    //     })
-    //     .catch((error) => {
-    //         console.log(error);
-    //     });
-       
-    // }
-  },[fileSend])
+  useEffect(()=>{
+    console.log('fileId',fileId);
+    console.log('myForm2',`myForm${fileId}`);
+    // setMyFileId(course.group && course.group.length > 0 ? course.group[0] : '')
+},[fileId])
   ////////////////////////////////////////////////////////////////
 
-  function myFunction() {
-      console.log('clickeddddddddddddddddddd');
-      document.getElementById("myForm").submit();
-  }
+  // function myFunction() {
+  //     console.log('clickeddddddddddddddddddd');
+  //     document.getElementById(`myForm${fileId}`).submit();
+  // }
 
   return (
 <div>
@@ -130,12 +90,12 @@ function UploaderQuestionsFile({handleGetFileName ,fileSend ,fileId}) {
         <input type="hidden" name="X-Amz-Date" value={s3Date} />
         <UploaderButtonSend type="button" 
         // onClick={myFunction}
-         id="MySubmit" />
-        <label htmlFor="uploadPhotoAws">
+         id={`MySubmit${fileId}`} />
+        <label htmlFor={`uploadPhotoAws${fileId}`}>
             <input
                 style={{ display: 'none' }}
                 // defaultValue=""
-                id="uploadPhotoAws"
+                id={`uploadPhotoAws${fileId}`}
                 // name="upload-photo"
                 type="file"
                 // onChange={e => uploadFile(e)}
@@ -144,7 +104,7 @@ function UploaderQuestionsFile({handleGetFileName ,fileSend ,fileId}) {
                 name="file"
                 onChange={(event) => {
                   var FileNama = Date.now() + "-" + event.target.files[0].name;
-                  setMyFileNama(FileNama);
+                  // setMyFileNama(FileNama);
                     axios({
                     url: "http://t1.ray-sa.ir:4000/sign_post",
                     method: "post",
@@ -154,6 +114,8 @@ function UploaderQuestionsFile({handleGetFileName ,fileSend ,fileId}) {
                     })
                     .then(async (res) => {
                         console.log(res);
+                        handleGetFileName(FileNama);
+                        console.log('myFileNama1',FileNama)
                         var data = res.data;
                         setS3Acl(data.fields.ACL);
                         setS3Url(data.url);
@@ -165,6 +127,10 @@ function UploaderQuestionsFile({handleGetFileName ,fileSend ,fileId}) {
                         setS3Credential(data.fields["X-Amz-Credential"]);
                         setS3Algorithm(data.fields["X-Amz-Algorithm"]);
                         setS3Date(data.fields["X-Amz-Date"]);
+
+                        // if(res.statusText == "OK"){
+                        //     return tr
+                        // }
                         // document.getElementById("myForm").submit();
                         //////////////////////////////////////////////////////
                         // document.getElementById("myForm").submit();
@@ -172,7 +138,7 @@ function UploaderQuestionsFile({handleGetFileName ,fileSend ,fileId}) {
                         // setStatus('1');
                         // setShowMessage(!showMessage);
                         // console.log('myFileNama',myFileNama);
-                        // handleGetFileName(myFileNama);
+                        
                     })
                     .catch((error) => {
                         console.log(error);

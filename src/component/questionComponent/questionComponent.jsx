@@ -23,7 +23,7 @@ import SequentialIcon2 from '../../assets/img/SequentialIcon2.png';
 ///////////////////////////////////////////////
 import {connect} from 'react-redux';
 import { createStructuredSelector} from 'reselect';
-import {selectedCourseName} from '../../redux/questionsCourses/questionsCourses.selector';
+import {selectedCourseName ,selectedExamParentId} from '../../redux/questionsCourses/questionsCourses.selector';
 import {ToggleQuestion} from '../../redux/toggleQuesion/toggleQuestion.selector';
 // import setToggle from "../../redux/toggleQuesion/toggleQuestion.action.js";
 /////////////////////////query
@@ -40,12 +40,14 @@ const SET_QUESTIONPARENT = gql`
   mutation addQuestionParent(
     $userName: String!,
     $password: String!,
-    $ecId: String!,
+    $epId: String!,
+    $gId: [String]!,
     ){
       addQuestionParent(
           userName: $userName,
           password: $password,
-          ecId: $ecId
+          epId: $epId,
+          gId: $gId,
       ){
         id
       }
@@ -114,7 +116,7 @@ const SET_QUESTION_CHILD = gql`
   }
 `;
 /////////////////////////
-const Questions = ({toggle ,courseName, examParentId, questions}) =>{
+const Questions = ({toggle ,courseName, examParentId,selectedEPId, questions}) =>{
   // const [innerData, setInnerData] = useState([]);
   // const tableRef = React.useRef(null);
   const [setQuestionParent ,{ QuestionParentData }] = useMutation(SET_QUESTIONPARENT);
@@ -123,10 +125,14 @@ const Questions = ({toggle ,courseName, examParentId, questions}) =>{
     variables: {  
       userName: "211",
       password: "211",
-      id: examParentId,
+      id: selectedEPId , //examParentId,
     },
     notifyOnNetworkStatusChange: true
   });
+
+  useEffect(()=>{
+    console.log('examParentId' ,examParentId);
+  },[])
   // const [typeQuestion,setTypeQuestion] =useState('');
 
   const MergeQuestions = (examP) => {
@@ -255,7 +261,7 @@ const Questions = ({toggle ,courseName, examParentId, questions}) =>{
       // }}
       
       columns={[
-        { title: 'آیدی سوال', field: 'questionID',},
+        { title: 'آیدی سوال', field: 'questionID'}
       ]}
 
       data={QuestionsData}
@@ -544,13 +550,21 @@ const Questions = ({toggle ,courseName, examParentId, questions}) =>{
       editable={{
             onRowAdd: newData =>
               new Promise((resolve, reject) => {
-                // console.log('ddddddddddd');
+                console.log('courseName' , { variables: { 
+                  userName: "211",
+                  password: "211",
+                  // ecId: courseName,
+                  epId:selectedEPId,
+                  gId: courseName,
+                  }} );
                 setTimeout(() => {
                   // setData([...QuestionsData, newData]);
                   setQuestionParent({ variables: { 
                     userName: "211",
                     password: "211",
-                    ecId: courseName
+                    // ecId: courseName,
+                    epId:selectedEPId,
+                    gId: courseName,
                     } 
                   }).then(res=>{
                     console.log('res = ' , res.data);
@@ -630,6 +644,7 @@ const Questions = ({toggle ,courseName, examParentId, questions}) =>{
 const mapStateToProps = createStructuredSelector({
   toggle:ToggleQuestion,
   courseName : selectedCourseName,
+  selectedEPId:selectedExamParentId,
 });
 
 export default connect(mapStateToProps)(Questions);

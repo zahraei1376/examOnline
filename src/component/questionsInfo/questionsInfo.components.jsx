@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Accordion from '@material-ui/core/Accordion';
 import AccordionDetails from '@material-ui/core/AccordionDetails';
@@ -50,6 +50,10 @@ function QuestionsHeader({ courses }) {
   const handleChange = (panel) => (event, isExpanded) => {
     setExpanded(isExpanded ? panel : false);
   };
+
+  // useEffect(()=>{
+  //     console.log('courses',courses);
+  // },[courses])
 
   return (
     <div className={classes.root}>
