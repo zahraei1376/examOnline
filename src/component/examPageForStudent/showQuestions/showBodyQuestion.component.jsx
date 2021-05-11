@@ -8,10 +8,8 @@ import MyPic2 from '../../../assets/img/image2.jpg';
 /////////////////////////
 import Tooltip from '@material-ui/core/Tooltip';
 import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
-// import ArrowBackIosIcon from '@material-ui/icons/ArrowBackIos';
 import ArrowForwardIosIcon from '@material-ui/icons/ArrowForwardIos';
 import ShowImage from '../../imageShow/showImage.component';
-// import AddIcon from '@material-ui/icons/Add';
 ///////////////////////////////////////////////////////
 import { connect} from 'react-redux';
 import {IncreaseIndex , DecreaseIndex } from '../../../redux/questionIndex/questionIndex.sction';
@@ -23,15 +21,7 @@ import { useMutation} from 'react-apollo';
 import {SET_RESPONSE_STUDENT} from '../../../graphql/resolver';
 //////////////////////query
 import MySnackbar from '../../../messageBox/messageBox.component';
-
-const ShowBodyQuestions = ({question,number,children,IncreaseIndexQuestion,setRepsonseStudent ,DecreaseIndexQuestion,questionIndex ,questionsLenght ,typeIncreaseQuestions ,timeOutToSolveQuestions }) =>{
-
-    // const [state,setState] =useState({
-    //     type:false,
-    //     imageSrc:null,
-    //     captionImage:'',
-    //     showImage:false,
-    // });
+const ShowBodyQuestions = ({question,number,children,IncreaseIndexQuestion,setRepsonseStudent ,DecreaseIndexQuestion,questionIndex ,questionsLenght ,typeIncreaseQuestions ,timeOutSolveQuestions }) =>{
     ////////////////////////////////////////query
     const [addResponse ,{ data }] = useMutation(SET_RESPONSE_STUDENT);
     /////////////////////////////////////////////////////////
@@ -39,7 +29,6 @@ const ShowBodyQuestions = ({question,number,children,IncreaseIndexQuestion,setRe
     const [imageSrc, setImageSrc] = useState('');
     const [captionImage, setCaptionImage] = useState(false);
     const [showImage, setShowImage] = useState(false);
-    // var resForRedux = '';
     ////////////////////////////////////////setToRedux
     const [resForRedux , setResForRedux] = useState('');
     const [responseDesImage ,setResponseDesImage] = useState('');
@@ -53,69 +42,43 @@ const ShowBodyQuestions = ({question,number,children,IncreaseIndexQuestion,setRe
     },[])
     ///////////////////////////////////////////
     useEffect(()=>{
-        // console.log('MyQuestions',question);
         console.log('resForRedux',resForRedux);
       },[resForRedux]);
-
-    // useEffect(()=>{
-    //     console.log('captionImage',captionImage);
-    //   },[captionImage]);
-    
-  const showPic = () => {
-    setShowImage(!showImage);
-    //   setState({...state,showImage:! state.showImage});
-  }
-
-  const handleShowPic = link => {
-    if (question.question) {
-        console.log('question.question1',question.question);
-        // setState({...state,type:true});
-      setType(true);
-        // setState({...state,captionImage:`${question.question.split('%0A').join('\r\n')}(نمره : ${question.question_score
-        // })`});
-      setCaptionImage(
-        `${question.question.split('%0A').join('\r\n')}(نمره : ${question.question_score
-        })`,
-      );
-    // setState({imageSrc:link});
-    // setState({...state,imageSrc:MyPic2});
-    //   setImageSrc(link);
-    setImageSrc(MyPic2);
-      showPic();
-    } else {
-        console.log('question.question2');
-        // setState({type:false});
-        // setState({captionImage:''});
-        // // captionImage('');
-        // setState({imageSrc:link});
-      setType(false);
-      setCaptionImage('');
-    //   setImageSrc(link);
-        setImageSrc(MyPic);
-      showPic();
+    ///////////////////////////////////////////
+    const showPic = () => {
+      setShowImage(!showImage);
     }
-  };
-
+    ///////////////////////////////////////////
+    const handleShowPic = link => {
+      if (question.question) {
+          console.log('question.question1',question.question);
+          // setState({...state,type:true});
+        setType(true);
+          // setState({...state,captionImage:`${question.question.split('%0A').join('\r\n')}(نمره : ${question.question_score
+          // })`});
+        setCaptionImage(
+          `${question.question.split('%0A').join('\r\n')}(نمره : ${question.question_score
+          })`,
+        );
+      // setImageSrc(MyPic2);
+      setImageSrc(link);
+        showPic();
+      } else {
+          console.log('question.question2');
+          // setState({type:false});
+          // setState({captionImage:''});
+          // // captionImage('');
+          // setState({imageSrc:link});
+        setType(false);
+        setCaptionImage('');
+      //   setImageSrc(link);
+          // setImageSrc(MyPic);
+          setImageSrc(link);
+        showPic();
+      }
+    };
+    ///////////////////////////////////////////
     const handleNextQuestion = async() =>{
-        // var promise = new Promise( (resolve, reject) => {
-
-        //     let name = 'Paul'
-          
-        //     if (name === 'Paul') {
-        //      resolve("Promise resolved successfully");
-        //     }
-        //     else {
-        //      reject(Error("Promise rejected"));
-        //     }
-        //    });
-          
-        //    let obj = {newName: ''};
-          
-        //    promise.then( result => {
-        //     this.setState({name: result});
-        //    }, function(error) {
-        //     this.setState({name: error});
-        //    });
         console.log("CCCCCCCCC:", resForRedux);
         await addResponse({ variables: { 
             userName: "210",
@@ -131,7 +94,6 @@ const ShowBodyQuestions = ({question,number,children,IncreaseIndexQuestion,setRe
          } 
         }).then(res=>{
           if(res.data && res.data.addResponse){
-            // console.log('data',data);
             setRepsonseStudent({id: question.id , res: resForRedux});
             setMessage('جواب شما ثبت شد');
             setStatus('1');
@@ -144,7 +106,6 @@ const ShowBodyQuestions = ({question,number,children,IncreaseIndexQuestion,setRe
               alert('سوالات تمام شده است');
             }
           }else{
-            // console.log('data',data);
             setStatus('0')
             setMessage('جواب شما ثبت نشد')
             setShowMessage(!showMessage);
@@ -152,45 +113,23 @@ const ShowBodyQuestions = ({question,number,children,IncreaseIndexQuestion,setRe
         }
           )
         console.log('{id: question.id , res: resForRedux}',{id: question.id , res: resForRedux});
-        // setRepsonseStudent({id: question.id , res: resForRedux});
-        // IncreaseIndexQuestion();
     }
-
+    ///////////////////////////////////////////
     const handlePrevQuestion = () =>{
-        // setRepsonseStudent()
         DecreaseIndexQuestion();
     }
-
+    ///////////////////////////////////////////
     const childrenWithProps = React.Children.map(children, child => {
-        // checking isValidElement is the safe way and avoids a typescript error too
         if (React.isValidElement(child)) {
           return React.cloneElement(child, { setResForRedux: setResForRedux ,setResponseDesImage:setResponseDesImage });
         }
         return child;
     });
-
+    ///////////////////////////////////////////
     return(
     <BodyContainer>
         <BodyQuestionBoxWithChildren>
         <BodyQuestionBox>
-            {/* {question.exam_link ? (
-                 <ImageWithQuestionContainer>
-                 <ImageWithQuestion
-                 onClick={() => handleShowPic(`https://kamal-exam.s3.ir-thr-at1.arvanstorage.com/${question.exam_link}`)}
-                 // onClick={() => handleShowPic(`https://kamal-exam.s3.ir-thr-at1.arvanstorage.com/${question.question_link}`)}
-                 // src={question.question_link}
-                 src={MyPic2}
-                 // src={`https://kamal-exam.s3.ir-thr-at1.arvanstorage.com/${question.question_link}`}
-                 />
-             </ImageWithQuestionContainer>
-             ///////////////////////
-               
-                ) : (
-                    ''
-            )} */}
-            {/* ////////////////////////////////
-             */}
-
             {(() => {
               if(question.question_link){
                   return <ImageQuestionMainContainer>
@@ -198,13 +137,10 @@ const ShowBodyQuestions = ({question,number,children,IncreaseIndexQuestion,setRe
                         <ExplainQuestion number={number} explain={question.question_explain} time={question.question_timeToSolveProblem}/>
                             <ImageQuestion
                             onClick={() =>
-                                handleShowPic(
-                                `https://kamal-exam.s3.ir-thr-at1.arvanstorage.com/${question.question_link}`,
-                                )
+                                handleShowPic(question.question_link)
                             }
-                            src={MyPic}
-                            // src={question.exam_link}
-                            // src={`https://kamal-exam.s3.ir-thr-at1.arvanstorage.com/${question.exam_link}`}
+                            // src={MyPic}
+                            src={question.question_link}
                             />
                             
                         </ImageQuestionContainer>
@@ -220,13 +156,7 @@ const ShowBodyQuestions = ({question,number,children,IncreaseIndexQuestion,setRe
                   return (<QuestionImageContainer>
                     <BodyQDiv>
                       <ExplainQuestion number={number} explain={question.question_explain} time={question.question_timeToSolveProblem}/>
-                      <BodyQuestion
-                          // className={
-                          // question.exam_link
-                          //     ? 'questionComponent__question'
-                          //     : 'questionComponent__questionwidth'
-                          // }
-                      >
+                      <BodyQuestion>
                           {question.question.split('%0A').join('\r\n')}
                           <br/> (
                           {question.question_score} نمره)
@@ -235,24 +165,16 @@ const ShowBodyQuestions = ({question,number,children,IncreaseIndexQuestion,setRe
                   </BodyQDiv>
                     <ImageWithQuestionContainer>
                     <ImageWithQuestion
-                    onClick={() => handleShowPic(`https://kamal-exam.s3.ir-thr-at1.arvanstorage.com/${question.exam_link}`)}
-                    // onClick={() => handleShowPic(`https://kamal-exam.s3.ir-thr-at1.arvanstorage.com/${question.question_link}`)}
-                    // src={question.question_link}
-                    src={MyPic2}
-                    // src={`https://kamal-exam.s3.ir-thr-at1.arvanstorage.com/${question.question_link}`}
+                    onClick={() => handleShowPic(question.exam_link)}
+                    // src={MyPic2}
+                    src={question.exam_link}
                     />
                 </ImageWithQuestionContainer>
                 </QuestionImageContainer>)
                 }else{
                   return (<BodyDiv>
                     <ExplainQuestion number={number} explain={question.question_explain} time={question.question_timeToSolveProblem}/>
-                    <BodyQuestion
-                        // className={
-                        // question.exam_link
-                        //     ? 'questionComponent__question'
-                        //     : 'questionComponent__questionwidth'
-                        // }
-                    >
+                    <BodyQuestion>
                         {question.question.split('%0A').join('\r\n')}
                         <br/> (
                         {question.question_score} نمره)
@@ -265,48 +187,7 @@ const ShowBodyQuestions = ({question,number,children,IncreaseIndexQuestion,setRe
               }
               
             })()}
-            {/* {question.question_link ? (
-                 <ImageQuestionMainContainer>
-                 <ImageQuestionContainer>
-                 <ExplainQuestion number={number} explain={question.question_explain} time={question.question_timeToSolveProblem}/>
-                     <ImageQuestion
-                     onClick={() =>
-                         handleShowPic(
-                         `https://kamal-exam.s3.ir-thr-at1.arvanstorage.com/${question.question_link}`,
-                         )
-                     }
-                     src={MyPic}
-                     // src={question.exam_link}
-                     // src={`https://kamal-exam.s3.ir-thr-at1.arvanstorage.com/${question.exam_link}`}
-                     />
-                     
-                 </ImageQuestionContainer>
-                 <ScoreTag
-                 >
-                 (نمره {question.question_score})
-                 </ScoreTag>
-                 
-                 
-             </ImageQuestionMainContainer>
-            ) : question.question ? (
-                <BodyDiv>
-                    <ExplainQuestion number={number} explain={question.question_explain} time={question.question_timeToSolveProblem}/>
-                    <BodyQuestion
-                        // className={
-                        // question.exam_link
-                        //     ? 'questionComponent__question'
-                        //     : 'questionComponent__questionwidth'
-                        // }
-                    >
-                        {question.question.split('%0A').join('\r\n')}
-                        <br/> (
-                        {question.question_score} نمره)
-                    </BodyQuestion>
-                    
-                </BodyDiv>
-            ) : (
-                ''
-                )} */}
+            
         </BodyQuestionBox>
         {/* //////////////////////////////////////////////children */}
         {childrenWithProps}
@@ -318,7 +199,7 @@ const ShowBodyQuestions = ({question,number,children,IncreaseIndexQuestion,setRe
                 <Tooltip title="سوال بعدی" aria-label="سوال بعدی" style={{ fontSize:'3rem'}} >
                     <FooterBtn 
                     
-                    disabled={timeOutToSolveQuestions == true ? true : false}
+                    disabled={timeOutSolveQuestions == true ? true : false}
                     //  disabled={questionIndex == questionsLenght -1 ? true :false}
                      onClick={handleNextQuestion}>
                         <ArrowForwardIosIcon style={{ fontSize:'3rem'}} />
@@ -327,7 +208,7 @@ const ShowBodyQuestions = ({question,number,children,IncreaseIndexQuestion,setRe
 
                 <Tooltip title="سوال قبلی" aria-label="سوال قبلی"  style={{ fontSize:'3rem'}} >
                     <FooterBtn 
-                     disabled={timeOutToSolveQuestions == true ? true : typeIncreaseQuestions == 'justForward' ? true : questionIndex == 0 ? true :false}
+                     disabled={timeOutSolveQuestions == true ? true : typeIncreaseQuestions == false ? true : questionIndex == 0 ? true :false}
                      onClick={handlePrevQuestion}>
                         <ArrowBackIosIcon style={{ fontSize:'3rem'}} />
                     </FooterBtn>
@@ -345,18 +226,12 @@ const ShowBodyQuestions = ({question,number,children,IncreaseIndexQuestion,setRe
     )
 };
 
-// const mapStateToProps = state =>({
-//     questionIndex:state.questionIndex.indexQuestion
-// });
-
 const mapStateToProps = createStructuredSelector({
     questionIndex:selectIndex,
     questionsLenght:finalIndex,
     typeIncreaseQuestions: typeIncreaseQuestions,
     timeOutSolveQuestions : timeOutToSolveQuestions,
 });
-
-// selectIndex
 
 const mapDispatchToProps = dispatch =>({
     IncreaseIndexQuestion: () => dispatch(IncreaseIndex()),

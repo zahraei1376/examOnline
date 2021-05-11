@@ -258,7 +258,7 @@ const Questions = ({toggle ,courseName, examParentId,selectedEPId, questions}) =
       columns={[
         // { title: 'آیدی سوال', field: 'questionID'},
         {
-          title: 'آیدی سوال' , field: 'questionID', textAlign: 'center',
+          title: 'شماره' , field: 'questionID', textAlign: 'center',
            render : rowData => rowData && (rowData.tableData.id + 1),
           // editable: 'never'
         },

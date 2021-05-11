@@ -77,7 +77,8 @@ const SequentialItems = ({number,items ,ResItem ,setResForRedux})=>{
                     <SequentialResInputContainer key={index}>
                         
                          <SequentialResInput type="number" 
-                        value={ tempRes? tempRes[0] : ''} 
+                        // value={ tempRes? tempRes[0] : ''}
+                        defaultValue={ tempRes ? tempRes[0] : ''}  
                         // readOnly
                         onChange={(e) => handleSetRes(index ,e.target.value)} 
                         />

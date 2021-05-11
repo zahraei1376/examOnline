@@ -7,6 +7,11 @@ export const selectedCourseName = createSelector(
     (QuestionsCourseName) => QuestionsCourseName.courseName,
 );
 
+export const selectedNameOfCourse = createSelector(
+    [selectCourseName],
+    (QuestionsCourseName) => QuestionsCourseName.nameOfCourse,
+);
+
 export const selectedExamParentId = createSelector(
     [selectCourseName],
     (QuestionsCourseName) => QuestionsCourseName.examPid,

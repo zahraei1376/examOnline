@@ -6,6 +6,11 @@ import AccordionSummary from '@material-ui/core/AccordionSummary';
 import Typography from '@material-ui/core/Typography';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 //////////////////////////
+import {finalIndex} from '../../../redux/questionIndex/questionIndex.selector';
+///////////////////////////////
+import {connect} from 'react-redux';
+import { createStructuredSelector} from 'reselect';
+/////////////////////////////////
 var moment2 = require('moment-timezone');
 moment2().tz("Asia/Tehran").format();
 moment2.tz.setDefault('Asia/Tehran');
@@ -50,7 +55,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function ExamInfoHeader({ startDate, startTime, endTime, teacherName }) {
+const ExamInfoHeader = ({ startDate, startTime, endTime, teacherName,questionCount }) => {
   const classes = useStyles();
   const [expanded, setExpanded] = React.useState(false);
 
@@ -110,6 +115,7 @@ export default function ExamInfoHeader({ startDate, startTime, endTime, teacherN
             fontFamily: 'BNazanin',
             fontSize:'1.6rem',
           }}>
+            {/* <span style={{ fontSize: '1.9rem', padding: '0 5px', }}>ساعت شروع امتحان :  </span>{startTime} */}
               <span style={{ fontSize: '1.9rem', padding: '0 5px', }}>ساعت شروع امتحان :  </span>{moment2(startTime).tz('Asia/Tehran').format('HH:mm:00')}
             {/* ساعت شروع امتحان : <span style={{ fontSize: '1.6rem', padding: '0 5px', }}>{startTime}</span> */}
           </Typography>
@@ -126,8 +132,26 @@ export default function ExamInfoHeader({ startDate, startTime, endTime, teacherN
               <span style={{ fontSize: '1.9rem', padding: '0 5px', }}>ساعت پایان امتحان :</span>{moment2(endTime).tz('Asia/Tehran').format('HH:mm:00')}
              {/* <span style={{ fontSize: '1.6rem', padding: '0 5px', }}>{endTime}</span> */}
           </Typography>
+          <Typography style={{
+            textAlign: 'center',
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            marginTop: '10px',
+            fontFamily: 'BNazanin',
+            fontSize:'1.6rem',
+          }}>
+              <span style={{ fontSize: '1.9rem', padding: '0 5px', }}>تعداد سوالات :</span>{questionCount}
+             {/* <span style={{ fontSize: '1.6rem', padding: '0 5px', }}>{endTime}</span> */}
+          </Typography>
         </AccordionDetails>
       </Accordion>
     </div>
   );
 }
+
+const mapStateToProps = createStructuredSelector({
+  questionCount : finalIndex,
+});
+
+export default connect(mapStateToProps)(ExamInfoHeader);

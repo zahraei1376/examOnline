@@ -1,5 +1,7 @@
 import React ,{ useState ,useEffect } from 'react';
-import { QuestionInfoContainer ,QuestionInfoUpload, QuestionInfoGroup ,QuestionInfoLabel,QuestionInfoCourseName ,QuestionInfoInput ,BtnOk} from './questionInfo.styles';
+import { QuestionInfoContainer ,QuestionInfoUpload, QuestionInfoGroup ,
+    QuestionInfoLabel,QuestionInfoCourseName ,QuestionInfoInput ,BtnOk,MyTextField,
+    QuestionNameContainer ,QuestionExteraInfo} from './questionInfo.styles';
 import UploaderQuestionsFile from '../uploaderQuestionsFile/uploaderQuestionsFile.component';
 import Tooltip from '@material-ui/core/Tooltip';
 import DoneIcon from '@material-ui/icons/Done';
@@ -14,16 +16,21 @@ import {selectedCourseName ,selectedExamParentId} from '../../../redux/questions
 import { useMutation} from 'react-apollo';
 import {SET_INFO_EXAMCHILD} from '../../../graphql/resolver';
 //////////////////////////////////////
+import MySpinner from '../../MySpinner/MySpinner.component';
+/////////////////////////////////////
 const QuestionInfo = ({course ,selectedEPId}) => {
     const [addExamChildInfo ,{ data }] = useMutation(SET_INFO_EXAMCHILD);
     ///////////////////////////////////////
+    const [loading,setLoading] = useState(false);
+    /////////////////////////
+    const [clicked,setClicked] = useState(false);
     const [showMessage,setShowMessage] = useState(false);
     const [message,setMessage] =useState('');
     const [status,setStatus] =useState(0);
     //////////////////////////////////////////
     const [fileName , setFileName ] = useState('');
-    const [coefficient , setCoefficient ] = useState(1);
-    const [negativeCoefficient , setNegativeCoefficient ] = useState(0);
+    const [coefficient , setCoefficient ] = useState('');
+    const [negativeCoefficient , setNegativeCoefficient ] = useState('');
     //////////////////////////////////////////
     const [MyFileId,setMyFileId] = useState('');
     ////////////////////////////////////////////
@@ -34,45 +41,66 @@ const QuestionInfo = ({course ,selectedEPId}) => {
     },[])
 
     const sendInfo = () =>{
+        setClicked(true);
+        setLoading(true);
         const SendFilePromise = new Promise((resolve, reject) => {
-            
-            var myForm = document.getElementById(`myForm${MyFileId}`);
-            if(myForm){
-                if(!!canSend){
-                    document.getElementById(`myForm${MyFileId}`).submit();
-                    resolve();
-                }else{
-                    reject(new Error("فایل درستی را امتخاب کنید!!!"));
+            if(fileName != ''){
+                var myForm = document.getElementById(`myForm${MyFileId}`);
+                if(myForm){
+                    if(!!canSend){
+                        document.getElementById(`myForm${MyFileId}`).submit();
+                        resolve();
+                    }else{
+                        reject(new Error("فایل درستی را امتخاب کنید!!!"));
+                    }
+                    
                 }
-                
+            }else{
+                resolve();
             }
         });
 
         SendFilePromise
         .then( handleResolvedA => {
-            console.log('handleResolvedA' , fileName);
-            var dataexam = {
+
+            var dataExam = {
                 userName: "211",
                 password: "211",
                 examChild_epId:selectedEPId,
                 gId: course.group,
-                examChild_falseCoefficient : negativeCoefficient,
-                examChild_courseCoefficient : coefficient,
-                examChild_pdf: fileName,
+                // examChild_falseCoefficient : negativeCoefficient,
+                // examChild_courseCoefficient : coefficient,
+                // examChild_pdf: fileName,
             }
-            console.log('dataexam',dataexam);
+
+            if(negativeCoefficient != ''){
+                dataExam.examChild_falseCoefficient = negativeCoefficient;
+            }
+            if(coefficient != ''){
+                dataExam.examChild_courseCoefficient = coefficient;
+            }
+            if(fileName != ''){
+                dataExam.examChild_pdf = fileName;
+            }
+            console.log('handleResolvedA' , fileName);
+           
+            console.log('dataExam',dataExam);
             setTimeout(()=>{
-                addExamChildInfo({ variables: dataexam
+                addExamChildInfo({ variables: dataExam
                 }).then(res=>{
                   console.log('res.data.addExamChildInfo',res.data);
                   if(res.data && res.data.updateExamChild){
                     setMessage('اطلاعات ثبت شد');
                     setStatus('1');
                     setShowMessage(!showMessage);
+                    setClicked(false);
+                    setLoading(false);
                   }else{
                     setStatus('0')
                     setMessage('اطلاعات ثبت نشد')
                     setShowMessage(!showMessage);
+                    setClicked(false);
+                    setLoading(false);
                   }
                 })
             },3000);
@@ -83,6 +111,8 @@ const QuestionInfo = ({course ,selectedEPId}) => {
             setStatus('0')
             // setMessage(err)
             setShowMessage(!showMessage);
+            setClicked(false);
+            setLoading(false);
         });
     }
 
@@ -94,40 +124,52 @@ const QuestionInfo = ({course ,selectedEPId}) => {
     return (
         <>
             <QuestionInfoContainer>
-                <QuestionInfoUpload>
-                    <UploaderQuestionsFile 
-                    handleGetFileName={handleGetFileName} 
-                    fileId={MyFileId}
-                    SetCanSend={SetCanSend}
-                    />
-                </QuestionInfoUpload>
+                <QuestionNameContainer>
+                    {/* <QuestionInfoGroup> */}
+                        <QuestionInfoCourseName>
+                            {course.course}
+                        </QuestionInfoCourseName>
+                        {loading ? <MySpinner/> : ''}
+                    {/* </QuestionInfoGroup> */}
+                </QuestionNameContainer>
+                <QuestionExteraInfo>
+                    <QuestionInfoUpload>
+                        <UploaderQuestionsFile 
+                            handleGetFileName={handleGetFileName} 
+                            fileId={MyFileId}
+                            SetCanSend={SetCanSend}
+                        />
+                    </QuestionInfoUpload>
                 
-                <QuestionInfoGroup>
-                    <QuestionInfoCourseName>
-                        {course.course}
-                    </QuestionInfoCourseName>
-                    
-                </QuestionInfoGroup>
-                <QuestionInfoGroup>
-                    <QuestionInfoLabel>ضریب درس</QuestionInfoLabel>
-                    <QuestionInfoInput type="number" onChange={e => setCoefficient(e.target.value)} />
-                </QuestionInfoGroup>
-                <QuestionInfoGroup>
-                    <QuestionInfoLabel>ضریب منفی</QuestionInfoLabel>
-                    <QuestionInfoInput type="number" onChange={e => setNegativeCoefficient(e.target.value)}/>
-                </QuestionInfoGroup>
-                <Tooltip title="تایید" aria-label="تایید"  style={{ fontSize:'3rem'}} >
-                    <BtnOk 
-                        onClick={sendInfo}
-                    >
-                        <DoneIcon style={{ fontSize:'3rem'}} />
-                    </BtnOk>
-                </Tooltip>
+                
+                    <QuestionInfoGroup>
+                        <MyTextField id="standard-basic" type="number" label="ضریب درس" onChange={e => setCoefficient(e.target.value)} />
+                        {/* <QuestionInfoLabel>ضریب درس</QuestionInfoLabel>
+                        <QuestionInfoInput type="number" onChange={e => setCoefficient(e.target.value)} /> */}
+                    </QuestionInfoGroup>
+                    <QuestionInfoGroup>
+                        <MyTextField id="standard-basic" type="number" label="ضریب منفی" onChange={e => setNegativeCoefficient(e.target.value)} />
+                        {/* <QuestionInfoLabel>ضریب منفی</QuestionInfoLabel>
+                        <QuestionInfoInput type="number" onChange={e => setNegativeCoefficient(e.target.value)} /> */}
+                    </QuestionInfoGroup>
+                    <Tooltip title="تایید" aria-label="تایید"  style={{ fontSize:'3rem'}} >
+                        {/* <BtnOk 
+                            onClick={sendInfo}
+                        >
+                            <DoneIcon style={{ fontSize:'3rem'}} />
+                        </BtnOk> */}
+                        <BtnOk variant="outlined" color="primary" onClick={sendInfo} disabled={clicked}>
+                            <DoneIcon style={{ fontSize:'3rem'}} />
+                        </BtnOk>
+                    </Tooltip>
             
+                </QuestionExteraInfo>
+                
             </QuestionInfoContainer>
             {
                 showMessage ? <MySnackbar message={message} status={status} showMessage={showMessage} setShowMessage={setShowMessage} /> : ''
             }
+            
         </>
     )
 };

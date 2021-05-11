@@ -1,6 +1,6 @@
 import React, { useState ,useEffect } from 'react';
 import {connect} from 'react-redux';
-import {setCourseName ,setExamParentId}from '../redux/questionsCourses/questionsCourses.action';
+import {setCourseName,setNameOfCourse ,setExamParentId}from '../redux/questionsCourses/questionsCourses.action';
 import { QuestionPageContainer ,QuestionPageDiv,UploadSectionContainer,QuestionsContainer,ComboDiv} from './questionPage.styles';
 import Questions from '../component/questionComponent/questionComponent';
 import UploadQuestions from '../component/questionComponent/uploadQuestions/uploadQiestions.component';
@@ -12,6 +12,7 @@ import { GET_EXAMCHILD_QUESTIONS } from '../graphql/resolver';
 /////////////////////////////
 import TextField from '@material-ui/core/TextField';
 import Autocomplete from '@material-ui/lab/Autocomplete';
+import ShowCourseNameComponent from '../component/selectCourseNameForQuestions/selectCourseNameForQuestions.component';
 //////////////////////////////
 import { useLocation } from "react-router-dom";
 import QuestionsHeader from '../component/questionsInfo/questionsInfo.components';
@@ -22,7 +23,7 @@ import QuestionsHeader from '../component/questionsInfo/questionsInfo.components
 //     { course: 'اجتماعی', examChildId: '608fe01c91f240049edbceff'},
 //   ]
 
-const QuestionPage = ({questions , setCourseName,setExamParentId, ...props}) =>{
+const QuestionPage = ({questions , setCourseName,setNameOfCourse,setExamParentId, ...props}) =>{
     // const { loading, error, data ,refetch  } = useQuery(GET_EXAMCHILD_QUESTIONS , {
     //     variables: {  
     //         userName: "211",
@@ -40,6 +41,8 @@ const QuestionPage = ({questions , setCourseName,setExamParentId, ...props}) =>{
         // console.log('courseName',courseName);
         setCourseName(courses && courses.length > 0 && courses[0].group && courses[0].group.length > 0 ?
             courses[0].group :'');
+        setNameOfCourse(courses && courses.length > 0 && courses[0].course ?
+            courses[0].course :'');
         setExamParentId(location && location.state.examParentId ? location.state.examParentId : '');
     },[]);
 
@@ -56,7 +59,15 @@ const QuestionPage = ({questions , setCourseName,setExamParentId, ...props}) =>{
             </div>
             <QuestionsContainer>
              <ComboDiv >
-                <Autocomplete
+                 {
+                     courses && courses.length > 0 ?
+                     courses.map((course ,index) => (
+                        <ShowCourseNameComponent course={course} />
+                     ))
+                     : ''
+                 }
+                
+                {/* <Autocomplete
                     style={{ width: 300,textAlign:'center' }}
                     id="free-solo-demo"
                     freeSolo
@@ -73,29 +84,10 @@ const QuestionPage = ({questions , setCourseName,setExamParentId, ...props}) =>{
                         setCourseName(newValue && newValue.group ? newValue.group : '');
                         // console.log(JSON.stringify(newValue, null, ' '));
                     }}
-                />
-                {/* <Autocomplete
-                    freeSolo
-                    id="free-solo-2-demo"
-                    disableClearable
-                    options={top100Films.map((option) => option.title)}
-                    renderInput={(params) => (
-                    <TextField
-                        {...params}
-                        label="Search input"
-                        margin="normal"
-                        variant="outlined"
-                        InputProps={{ ...params.InputProps, type: 'search' }}
-                    />
-                    )}
                 /> */}
             </ComboDiv>
-            {/* <FastAccessToQuestions /> */}
             <QuestionPageDiv>
-                {/* {loading ? <MySpinner/> : ''} */}
                 <Questions 
-                //   selectedCourseName={courseName}
-                //   examParentId ={props.location && props.location.state.examParentId ? props.location.state.examParentId : ''}
                   questions={questions} />
             </QuestionPageDiv>
             </QuestionsContainer>
@@ -105,6 +97,7 @@ const QuestionPage = ({questions , setCourseName,setExamParentId, ...props}) =>{
 
 const mapDispatchToProps = dispatch =>({
     setCourseName: CN => dispatch(setCourseName(CN)),
+    setNameOfCourse:CN => dispatch(setNameOfCourse(CN)),
     setExamParentId: epid => dispatch(setExamParentId(epid)),
   });
 

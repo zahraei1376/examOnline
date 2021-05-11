@@ -5,6 +5,7 @@ import BackupIcon from '@material-ui/icons/Backup';
 import AddIcon from '@material-ui/icons/Add'
 import {ShowDescriptionButton} from './uploader.styles';
 import MySnackbar from '../messageBox/messageBox.component';
+import MySpinner from './MySpinner/MySpinner.component';
 const AWS = require("aws-sdk");
 
 const s3 = new AWS.S3({
@@ -17,7 +18,7 @@ const s3 = new AWS.S3({
     region: "us-east-1", // Put you region
   });
 
-function Uploader({handleGetFileName
+function Uploader({handleGetFileName ,fildID
   // , id, setState
 }) {
     
@@ -35,6 +36,8 @@ function Uploader({handleGetFileName
   const [showMessage,setShowMessage] = useState(false);
   const [message,setMessage] =useState('');
   const [status,setStatus] =useState(0);
+  /////////////////////////////////////////////////
+  const [loading,setLoading] = useState(false);
 
   useEffect(() => {
     console.log("s3Url:", s3Url);
@@ -56,17 +59,35 @@ function Uploader({handleGetFileName
     s3Expires,
     s3Bucket,
   ]);
-
+  ////////////////////////
+  const CheckFile = (myFile) =>{
+    var file = myFile;
+    var fileName = file.name;
+    var fileIdL = fileName.split('.');
+    var format = fileIdL[fileIdL.length - 1].toLowerCase();
+    if (file.size < 15728641) {
+        if (format == 'png' || format == 'jpg' || format == 'jpeg') {
+            return true;
+        } else {
+          alert('فایل ارسالی باید با فرمت png , jpg  یا jpeg باشد!!!');
+          return false;
+        }
+    } else {
+        alert('حجم فایل ارسالی باید کمتر از 15 مگابایت باشد!!!');
+        return false;
+    }
+  }
+  /////////////////////////////
   function myFunction() {
       console.log('clickeddddddddddddddddddd');
-      document.getElementById("myForm").submit();
+      document.getElementById(`myForm${fildID}`).submit();
   }
-
+  /////////////////////////////
   return (
 <div>
 <form
         // id={"myForm" + id}
-        id={"myForm"}
+        id={`myForm${fildID}`}
         action={s3Url}
         method="post"
         enctype="multipart/form-data"
@@ -101,6 +122,7 @@ function Uploader({handleGetFileName
                 // type="file"
                 name="file"
                 onChange={(event) => {
+                  setLoading(true);
                   var myFileNama = Date.now() + "-" + event.target.files[0].name;
                     axios({
                     url: "http://t1.ray-sa.ir:4000/sign_post",
@@ -110,25 +132,54 @@ function Uploader({handleGetFileName
                     },
                     })
                     .then(async (res) => {
-                        console.log(res);
-                        var data = res.data;
-                        setS3Acl(data.fields.ACL);
-                        setS3Url(data.url);
-                        setS3Key(data.fields.key);
-                        setS3Expires(data.fields.Expires);
-                        setS3Bucket(data.fields.bucket);
-                        setS3Policy(data.fields.Policy);
-                        setS3Signature(data.fields["X-Amz-Signature"]);
-                        setS3Credential(data.fields["X-Amz-Credential"]);
-                        setS3Algorithm(data.fields["X-Amz-Algorithm"]);
-                        setS3Date(data.fields["X-Amz-Date"]);
-                        // document.getElementById("myForm").submit();
-                        document.getElementById("myForm").submit();
-                        setMessage('ارسال شد');
-                        setStatus('1');
-                        setShowMessage(!showMessage);
-                        console.log('myFileNama',myFileNama);
-                        handleGetFileName(myFileNama);
+                      ////////////////////////////////
+                      const { target } = event;
+                    if(target.value.length > 0){
+                      if(CheckFile(event.target.files[0])){
+                          var myFileNama = Date.now() + "-" + event.target.files[0].name;
+                          axios({
+                          url: "http://t1.ray-sa.ir:4000/sign_post",
+                          method: "post",
+                          data: {
+                              fileName: myFileNama,
+                          },
+                          })
+                          .then(async (res) => {
+                            console.log('res========',res);
+                            var data = res.data;
+                            setS3Acl(data.fields.ACL);
+                            setS3Url(data.url);
+                            setS3Key(data.fields.key);
+                            setS3Expires(data.fields.Expires);
+                            setS3Bucket(data.fields.bucket);
+                            setS3Policy(data.fields.Policy);
+                            setS3Signature(data.fields["X-Amz-Signature"]);
+                            setS3Credential(data.fields["X-Amz-Credential"]);
+                            setS3Algorithm(data.fields["X-Amz-Algorithm"]);
+                            setS3Date(data.fields["X-Amz-Date"]);
+                            // document.getElementById("myForm").submit();
+                            document.getElementById(`myForm${fildID}`).submit();
+                            setTimeout(()=>{
+                              setMessage('فایل ارسال شد');
+                              setStatus('1');
+                              setShowMessage(!showMessage);
+                              console.log('myFileNama',myFileNama);
+                              handleGetFileName(myFileNama);
+                              setLoading(false);
+                            },5000);
+                            
+                              ////////////////////////////////////////////////////////////////////////////////
+                          })
+                          .catch((error) => {
+                              console.log(error);
+                              setLoading(false);
+                          });
+                      }else{
+
+                      }
+                    } 
+                    /////////////////////////////////////////////////
+                        
                         // document.getElementById("MySubmit").click();
                         // var MySubmit = document.getElementById("MySubmit");
                         // console.log('MySubmit',MySubmit);
@@ -185,6 +236,7 @@ function Uploader({handleGetFileName
         {
           showMessage ? <MySnackbar message={message} status={status} showMessage={showMessage} setShowMessage={setShowMessage} /> : ''
         }
+         {loading ? <MySpinner/> : ''}
         {" "}
         <br />
       </form>

@@ -53,11 +53,17 @@ const VacancyItem = ({number,items ,ResItem ,setResForRedux})=>{
         //     }
         // }, 0);
         // NOV = 
-        VItemsCount.map(item => item != "" ?
-        NOV.push(item) : "" )
-        console.log('NOV',NOV);
-        setResponseVancyQuestion(Array(NOV.length).fill(0).map(row => new Array(2).fill('')));
-        setNOfVancy(NOV);
+        if(VItemsCount.length > 1){
+            VItemsCount.map(item => item != "" ?
+            NOV.push(item) : "" )
+            console.log('NOV',NOV);
+            setResponseVancyQuestion(Array(NOV.length).fill(0).map(row => new Array(2).fill('')));
+            setNOfVancy(NOV);
+        }else{
+            setResponseVancyQuestion(Array(0).fill(0).map(row => new Array(2).fill('')));
+            setNOfVancy([]);
+        }
+        
         // handleSetResponseVancy(NOV);
 
         // 
@@ -76,7 +82,7 @@ const VacancyItem = ({number,items ,ResItem ,setResForRedux})=>{
                     NOfVancy.map((item,index)=>(
                         <VnacyTextDiv key={index}>
                         <VnacySpan>{index + 1}</VnacySpan>
-                        <VnacyText type="text" defaultValue={ResItem[index] ? ResItem[index][1] : ''} onChange={e=>handleChange(index,e.target.value)} />
+                        <VnacyText type="text" defaultValue={ResItem && ResItem.length > 0 && ResItem[index] ? ResItem[index][1] : ''} onChange={e=>handleChange(index,e.target.value)} />
                         </VnacyTextDiv>
                     ))
                 }

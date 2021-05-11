@@ -8,6 +8,7 @@ export const QuestionsInfoContainer = styled.div`
     &:not(&:last-child){
         border-bottom:1px dashed #82b1ff;
     }
+
     // border-top:1px solid #000;
     // &:first-child{
     //     border-top:1px solid #000;

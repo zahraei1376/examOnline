@@ -39,7 +39,7 @@ const DescriptionItem = ({number ,setResForRedux ,setResponseDesImage ,ResItem ,
     return(
         <DescriptionItemConatiner>
             <Tooltip title="آپلود جواب">
-                <Uploader handleGetFileName={handleGetFileName} />
+                <Uploader handleGetFileName={handleGetFileName} fildID={number} />
                 {/* <label htmlFor={`upload${number}Pic`}>
                     <input type="file" style={{display:'none'}} id={`upload${number}Pic`}/>
 

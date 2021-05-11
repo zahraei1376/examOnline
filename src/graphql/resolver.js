@@ -115,6 +115,9 @@ const GET_QUESTIONS = gql`
       examParent_maxScore
       examParent_method
       examParent_topic
+      examParent_duration
+      examParent_random
+      examParent_backward
       examChild
       {
         id
@@ -122,7 +125,7 @@ const GET_QUESTIONS = gql`
           id
           people{
             name
-            surName
+            surname
           }
           course
         }
@@ -273,7 +276,7 @@ query examParents(
         id
         people{
           name
-          surName
+          surname
         }
         course
       }
@@ -329,7 +332,7 @@ const SendRequestQuestionChild = async (QuestionData , uploadID , selectedFileNa
       // return 'ok';
       setTimeout(() => {
         SendFileResolve();
-      }, 3000);
+      }, 7000);
       // resolve();
     });
     return SendQuestionImagePromise

@@ -36,6 +36,9 @@ const App = () => {
         <Route exact path="/questions">
           <QuestionPageContainer />
         </Route>
+        <Route exact path="/examPageForStudent">
+          <ExamPageForStudent />
+        </Route>
       </Switch>
     </div>
   );

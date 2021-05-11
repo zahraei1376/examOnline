@@ -1,4 +1,4 @@
-import React , {useState,useEffect} from 'react';
+import React , {useState,useEffect,useRef} from 'react';
 import ShowDescriptiveQuestion from './showQuestions/ShowDescriptiveQuestion/ShowDescriptiveQuestion.component';
 import ShowComparativeQuestion from './showQuestions/ShowComparativeQuestion/ShowComparativeQuestion.component';
 import MultipleChoiceConatiner from './showQuestions/ShowMultipleChoice/ShowMultipleChoice.component';
@@ -6,8 +6,11 @@ import ShowTrueAndFalseQuestion from './showQuestions/ShowTrueAndFalse/ShowTrueA
 import ShowSequentialQuestion from './showQuestions/ShowSequentialQuestion/ShowSequentialQuestion.component';
 import ShowVacancyQuestion from './showQuestions/ShowVacancyQuestion/ShowVacancyuestion.component';
 import {connect} from 'react-redux';
-import {selectIndex} from '../../redux/questionIndex/questionIndex.selector';
-import {setLengthQuestions ,setTypeIncreaseQuestions ,runningTimeOfTimeForSolveQuestions} from '../../redux/questionIndex/questionIndex.sction';
+import {selectIndex } from '../../redux/questionIndex/questionIndex.selector';
+import {setLengthQuestions ,setTypeIncreaseQuestions ,runningTimeOfTimeForSolveQuestions } from '../../redux/questionIndex/questionIndex.sction';
+
+import {getTimeToAttendTheExamPage } from '../../redux/timeToAttendTheExamPage/timeToAttendTheExamPage.selector';
+import {SetTimeToAttendTheExamPage} from '../../redux/timeToAttendTheExamPage/timeToAttendTheExamPage.action';
 import { createStructuredSelector} from 'reselect';
 import ExamInfoHeader from './examInfo/examInfo.component';
 /////////////////////////////////
@@ -35,14 +38,33 @@ moment2().tz("Asia/Tehran").format();
 var moment = require('moment-jalaali');
 moment().format('jYYYY/jMM/jDD')
 /////////////////////////////////////////
-const  ExamPageForStudent = ({questionIndex ,setLengthQuestions , setTypeIncreaseQuestions ,runningTimeOfTimeForSolveQuestions}) =>{
+const  ExamPageForStudent = ({questionIndex ,setLengthQuestions ,getTimeToAttendTheExamPage, setTypeIncreaseQuestions ,runningTimeOfTimeForSolveQuestions ,SetTimeToAttendTheExamPage}) =>{
     ///////////////////////////////////////////////////
     const { loading, error, data ,refetch  } = useQuery(GET_QUESTIONS , {
         variables: {  userName: "211",
         password: "211",
-        id: "607fd8fb3fb30a08d7ce1e53" },
+        id: "609a51ccef8bac062ab0ef51" },
         notifyOnNetworkStatusChange: true
     });
+
+    var second;
+
+    useEffect(()=>{
+        console.log('getTimeToAttendTheExamPage',getTimeToAttendTheExamPage);
+        var convertArray = getTimeToAttendTheExamPage.split(':');
+        var hour = convertArray && convertArray.length > 0 &&  convertArray[0] ? convertArray[0] : 0;
+        var min = convertArray && convertArray.length > 0 &&  convertArray[1] ? convertArray[1] : 0;
+        var sec = convertArray && convertArray.length > 0 &&  convertArray[2] ? convertArray[2] : 0;
+        
+        var timeL = (parseInt(hour) * 3600) + (parseInt(min) * 60) + parseInt(sec) ;
+        console.log('timeL',timeL);
+        second = timeL;
+        setLoginTime(format(timeL));
+        TimerIntervalSolveQuestions = setTimeout(function run() {
+            tick();
+            TimerIntervalSolveQuestions = setTimeout(run, 1000);
+          }, 1000);
+    },[])
 
     const [setDelayResponseStudent ,{ DelayData }] = useMutation(SET_DEALY_RESPONSE_STUDENT);
     ///////////////////////////////////////////////////
@@ -52,20 +74,14 @@ const  ExamPageForStudent = ({questionIndex ,setLengthQuestions , setTypeIncreas
     const [status,setStatus] =useState(0);
     const [time, setTime] = useState('');
     /////////////////////timer
-    var second = 0;
     const [loginTime, setLoginTime] = useState(0);
     ///////////////////////////////////////////////////
-    // useEffect(()=>{
-    //     return ()=>{
-    //         if(sendReqDelay){
-    //             clearInterval(sendReqDelay);
-    //         }
-    //     }
-    // },[])
+    const countRef = useRef(loginTime);
+    countRef.current = loginTime;
     ///////////////////////////////////////////////////
     useEffect(()=>{
-        console.log('data',data);
-        if(data){
+        // console.log('data',data);
+        if(data && data.examParents && data.examParents.length > 0 ){
             setItems(MergeQuestions(data.examParents[0]));
         }
         // else{
@@ -75,22 +91,47 @@ const  ExamPageForStudent = ({questionIndex ,setLengthQuestions , setTypeIncreas
         // }
     },[data]);
 
+    // useEffect(()=>{
+    //     // console.log('items' , items);
+    //     TimerIntervalSolveQuestions = setTimeout(function run() {
+    //         tick();
+    //         TimerIntervalSolveQuestions = setTimeout(run, 1000);
+    //       }, 1000);
+
+    //     // setTimeout(() => {
+    //     //     console.log('toimeeeeeeeee');
+    //     //     SetTimeToAttendTheExamPage(loginTime)
+    //     // }, 300000);
+
+    //     // setTimeout(() => {
+    //     //     console.log('toimeeeeeeeee');
+    //     //     SetTimeToAttendTheExamPage(loginTime)
+    //     // }, 60000);
+
+
+
+    //     // TimerIntervalSolveQuestions = setInterval(() => {
+    //     //     tick();
+    //     // }, 1000);
+    // } ,[items])
+    ///////////////////////////////////////////////////loginTime
+    
     useEffect(()=>{
-        console.log('items' , items);
-        // TimerIntervalSolveQuestions = setTimeout(function run() {
-        //     tick();
-        //     TimerIntervalSolveQuestions = setTimeout(run, 1000);
-        //   }, 1000);
+        setTimeToPageTimeOut = setTimeout(function run() {
+            SetTimeToAttendTheExamPage(countRef.current)
+            setTimeToPageTimeOut = setTimeout(run, 60000);
+        }, 60000);
 
-
-        // TimerIntervalSolveQuestions = setInterval(() => {
-        //     tick();
-        // }, 1000);
-    } ,[items])
+        // setTimeToPageTimeOut = setTimeout(function run() {
+        //     SetTimeToAttendTheExamPage(countRef.current)
+        //     setTimeToPageTimeOut = setTimeout(run, 300000);
+        // }, 300000);
+    },[])
     ///////////////////////////////////////////////////time
     var timerClear;
     var sendReqDelay;
     var TimerIntervalSolveQuestions;
+    var setTimeToPageTimeOut;
     useEffect(() => {
         timerClear = setInterval(() => {
         // setGetDate(moment(realeTime).format('jYYYY/jMM/jDD'));
@@ -120,16 +161,20 @@ const  ExamPageForStudent = ({questionIndex ,setLengthQuestions , setTypeIncreas
             var filterEndTime = newEndTime.split(":").join("");
             var temp = fixNumbers(time);
             var filterGetTime = temp.split(":").join("");
-
+            console.log('filterGetTime',filterGetTime);
+            console.log('filterEndTime',filterEndTime);
             if (filterGetTime > filterEndTime) {
-                if (data.examParents[0].examParent_method == 0) { //not
+                console.log('مخلثققق');
+                if (data.examParents[0].examParent_method == "0") { //not
+                    console.log('nooooooooooooooooooooo');
                     alert('زمان امتحان تمام شده است!!!');
                     runningTimeOfTimeForSolveQuestions(true);
                     clearInterval(timerClear);
                     if(sendReqDelay){
-                        clearInterval(sendReqDelay);
+                        clearTimeout(sendReqDelay);
                     }
-                    clearInterval(TimerIntervalSolveQuestions);
+                    clearTimeout(setTimeToPageTimeOut);
+                    clearTimeout(TimerIntervalSolveQuestions);
                 } 
                 // else if (data.examParents[0].examParent_method == 1) {
                 //     sendReqDelay = setInterval(() => {
@@ -164,24 +209,36 @@ const  ExamPageForStudent = ({questionIndex ,setLengthQuestions , setTypeIncreas
             var temp = fixNumbers(time);
             var filterGetTime = temp.split(":").join("");
 
-            if (filterGetTime > filterEndTime) {
+            // if (filterGetTime > filterEndTime) {
+            //     alert('زمان امتحان تمام شده است!!!');
+            //     runningTimeOfTimeForSolveQuestions(true);
+            //     clearInterval(timerClear);
+            //     clearInterval(TimerIntervalSolveQuestions);
+            // }
+
+            if (getTimeToAttendTheExamPage == data.examParents[0].examParent_duration) {
                 alert('زمان امتحان تمام شده است!!!');
                 runningTimeOfTimeForSolveQuestions(true);
                 clearInterval(timerClear);
-                clearInterval(TimerIntervalSolveQuestions);
+                clearTimeout(setTimeToPageTimeOut);
+                clearTimeout(TimerIntervalSolveQuestions);
             }
         }
     }
     /////////////////////
     function format(time) { 
-        console.log('time', time);
+        // console.log('time', time);
         var hrs = Math.floor(time / 3600);
         var mins = Math.floor((time % 3600) / 60);
         var secs = time % 60;
 
         var ret = "";
-        if (hrs > 0) {
+        if (hrs > 0 && hrs < 10) {
+            ret += "" + "0" + hrs + ":" + (mins < 10 ? "0" : "");
+        }else if(hrs > 0 && hrs >= 10){
             ret += "" + hrs + ":" + (mins < 10 ? "0" : "");
+        }else{
+            ret += "" + "00" + ":" + (mins < 10 ? "0" : "");
         }
         ret += "" + mins + ":" + (secs < 10 ? "0" : "");
         ret += "" + secs;
@@ -196,20 +253,21 @@ const  ExamPageForStudent = ({questionIndex ,setLengthQuestions , setTypeIncreas
     };
     //////////////////////////////////////////////////////
     const MergeQuestions = (examP) => {
-        console.log('examP', examP );
+        // console.log('examP', examP );
+        // console.log('examP.examParent_backward', examP.examParent_backward );
         // setTypeIncreaseQuestions(examP.type ? examP.type : 'Forward');
-        setTypeIncreaseQuestions(examP.type ? examP.type : 'justForward');
+        setTypeIncreaseQuestions(examP && examP.examParent_backward ? examP.examParent_backward : false);
         var mergeQ = [];
         var allQuestons = examP.examChild;
         for (let index = 0; index < allQuestons.length; index++) {
            var counterQuestionsParent = allQuestons[index].questionParent;
            var courseName = allQuestons[index] && allQuestons[index].groups && allQuestons[index].groups.length > 0 ? allQuestons[index].groups[0].course : '';
-           console.log('courseName',courseName); 
-           var teacherName = allQuestons[index] && allQuestons[index].groups && allQuestons[index].groups.length > 0 && allQuestons[index].groups[0].people && allQuestons[index].groups[0].people.length > 0 ?  allQuestons[index].groups[0].people[0].name + ' ' + allQuestons[index].groups[0].people[0].surName : '';
-           console.log('teacherName',teacherName);
+        //    console.log('courseName',courseName); 
+           var teacherName = allQuestons[index] && allQuestons[index].groups && allQuestons[index].groups.length > 0 && allQuestons[index].groups[0].people && allQuestons[index].groups[0].people.length > 0 ?  allQuestons[index].groups[0].people[0].name + ' ' + allQuestons[index].groups[0].people[0].surname : '';
+        //    console.log('teacherName',teacherName);
            if(counterQuestionsParent && counterQuestionsParent.length > 0){
               for (let j = 0; j < counterQuestionsParent.length; j++) {
-                  console.log('allQuestons[index].questionParent[j]', allQuestons[index].questionParent[j] );
+                //   console.log('allQuestons[index].questionParent[j]', allQuestons[index].questionParent[j] );
                   if(allQuestons[index].questionParent[j].questionChild && allQuestons[index].questionParent[j].questionChild.length > 0){
                     mergeQ.push({...allQuestons[index].questionParent[j].questionChild[0] ,
                          courseName:courseName,
@@ -221,7 +279,7 @@ const  ExamPageForStudent = ({questionIndex ,setLengthQuestions , setTypeIncreas
                 // mergeQ.push(allQuestons[index].questionParent[0])
             }
         }
-        console.log('mergeQ',mergeQ);
+        // console.log('mergeQ',mergeQ);
         setLengthQuestions(mergeQ.length);
         
         return mergeQ;
@@ -301,7 +359,7 @@ const  ExamPageForStudent = ({questionIndex ,setLengthQuestions , setTypeIncreas
                 index --;
            }
        }
-       console.log('newItem',newItem);
+    //    console.log('newItem',newItem);
        return newItem;
     }
     ///////////////////////////////////////////////////
@@ -309,9 +367,10 @@ const  ExamPageForStudent = ({questionIndex ,setLengthQuestions , setTypeIncreas
         runningTimeOfTimeForSolveQuestions(true);
         clearInterval(timerClear);
         if(sendReqDelay){
-            clearInterval(sendReqDelay);
+            clearTimeout(sendReqDelay);
         }
-        clearInterval(TimerIntervalSolveQuestions);
+        clearTimeout(setTimeToPageTimeOut);
+        clearTimeout(TimerIntervalSolveQuestions);
         setDelayResponseStudent({ variables: { 
             userName: "210", 
             password: "210", 
@@ -375,7 +434,7 @@ const  ExamPageForStudent = ({questionIndex ,setLengthQuestions , setTypeIncreas
                             ResItemImage = {items[questionIndex].response && items[questionIndex].response.length > 0 ?  items[questionIndex].response[0].response_descriptionImageLink : ''}
                         /> 
                     }else if(items[questionIndex].question_type == '5'){
-                        return <ShowComparativeQuestion question={items[questionIndex]} number={questionIndex} items={RandomArray(items[questionIndex].question_compItems)} ResItem = {items[questionIndex].response && items[questionIndex].response.length > 0 ?  items[questionIndex].response[0].response_comparativeQuestion : ''} /> 
+                        return <ShowComparativeQuestion question={items[questionIndex]} number={questionIndex} items={RandomArray(items[questionIndex].question_compItems)} ResItem = {items[questionIndex].response && items[questionIndex].response.length > 0 ?  items[questionIndex].response[0].response_comparativeQuestion : []} /> 
                     }
                     else if(items[questionIndex].question_type == '2'){
                         return <MultipleChoiceConatiner question={items[questionIndex]} number={questionIndex} ResItem={items[questionIndex].response && items[questionIndex].response.length > 0 ?  items[questionIndex].response[0].response_studentItem : ''} />
@@ -384,7 +443,7 @@ const  ExamPageForStudent = ({questionIndex ,setLengthQuestions , setTypeIncreas
                         return <ShowTrueAndFalseQuestion question={items[questionIndex]} number={questionIndex} ResItem={ items[questionIndex].response && items[questionIndex].response.length > 0 ? items[questionIndex].response[0].response_studentItem : ''} />
                     }
                     else if(items[questionIndex].question_type == '6'){
-                        return <ShowSequentialQuestion question={items[questionIndex]} number={questionIndex} items={SeqRandomArray(items[questionIndex].question_seqItems)} ResItem={items[questionIndex].response && items[questionIndex].response.length > 0 ?  items[questionIndex].response[0].response_sequentialQuestion : ''} />
+                        return <ShowSequentialQuestion question={items[questionIndex]} number={questionIndex} items={SeqRandomArray(items[questionIndex].question_seqItems)} ResItem={items[questionIndex].response && items[questionIndex].response.length > 0 ?  items[questionIndex].response[0].response_sequentialQuestion : []} />
                     }
                     else if(items[questionIndex].question_type == '4'){
                         return <ShowVacancyQuestion question={items[questionIndex]} number={questionIndex} items={items[questionIndex].question_vancyItems} ResItem={items[questionIndex].response && items[questionIndex].response.length > 0 ?  items[questionIndex].response[0].response_vancyQuestion : ''}/>
@@ -402,13 +461,16 @@ const  ExamPageForStudent = ({questionIndex ,setLengthQuestions , setTypeIncreas
 };
 
 const mapStateToProps = createStructuredSelector({
-    questionIndex:selectIndex
+    questionIndex:selectIndex,
+    getTimeToAttendTheExamPage:getTimeToAttendTheExamPage
+    // questionCount : finalIndex,
 });
 
 const mapDispatchToProps = dispatch =>({
     setLengthQuestions: len => dispatch(setLengthQuestions(len)),
     setTypeIncreaseQuestions: type => dispatch(setTypeIncreaseQuestions(type)),
     runningTimeOfTimeForSolveQuestions : (item)=> dispatch(runningTimeOfTimeForSolveQuestions(item)),
+    SetTimeToAttendTheExamPage : (item)=> dispatch(SetTimeToAttendTheExamPage(item)),
 })
 
 export default connect(mapStateToProps ,mapDispatchToProps)(ExamPageForStudent);

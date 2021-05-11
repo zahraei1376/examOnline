@@ -29,7 +29,8 @@ export const UploadButton = styled(Button)`
     // background-color:#3f87a6 !important;
     // border:1px solid #3f87a6 !important;
     width:4rem !important;
-    background-color:#3f87a6 !important;
+    background-color:rgba(63,135,166 ,0.7) !important;
+    // background-color:#3f87a6 !important;
     border:1px solid transparent !important;
     &:hover{
         background-color:#eee !important;

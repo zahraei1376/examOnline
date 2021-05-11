@@ -520,8 +520,10 @@ const AddExamForTeacher = ({MyGroups}) => {
             examParent_gId: groupsExam,
             examParent_start_date: newSelectedStartDate, 
             examParent_stop_date: newSelectedEndDate,
-            examParent_start:selectedstartTime ?  moment2(selectedstartTime).tz('Asia/Tehran').format('HH:mm:00') : '',
-            examParent_end: selectedEndTime ?  moment2(selectedEndTime).tz('Asia/Tehran').format('HH:mm:00') : '', 
+            examParent_start:selectedstartTime ,
+            examParent_end: selectedEndTime , 
+            // examParent_start:selectedstartTime ?  moment2(selectedstartTime).tz('Asia/Tehran').format('HH:mm:00') : '',
+            // examParent_end: selectedEndTime ?  moment2(selectedEndTime).tz('Asia/Tehran').format('HH:mm:00') : '', 
             examParent_duration:handleResolvedA,
             examParent_maxScore: state.examMaxScore, 
             examParent_method: state.examMethod,
@@ -630,10 +632,17 @@ const AddExamForTeacher = ({MyGroups}) => {
     console.log('secs',secs);
     // Output like "1:01" or "4:03:59" or "123:03:59"
     var ret = "";
-    if (hrs > 0) {
+    // if (hrs > 0) {
+    //     ret += "" + hrs + ":" + (mins < 10 ? "0" : "");
+    // }else{
+    //   ret += "00:" + (mins < 10 ? "0" : "");
+    // }
+    if (hrs > 0 && hrs < 10) {
+      ret += "" + "0" + hrs + ":" + (mins < 10 ? "0" : "");
+    }else if(hrs > 0 && hrs >= 10){
         ret += "" + hrs + ":" + (mins < 10 ? "0" : "");
     }else{
-      ret += "00:" + (mins < 10 ? "0" : "");
+        ret += "" + "00" + ":" + (mins < 10 ? "0" : "");
     }
     ret += "" + mins + ":" + (secs < 10 ? "0" : "");
     ret += "" + secs;

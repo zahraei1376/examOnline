@@ -7,7 +7,7 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
     justifyContent:'center',
     alignItems:'center',
-    marginTop:'10rem',
+    // marginTop:'10rem',
     '& > * + *': {
       marginLeft: theme.spacing(2),
     },
