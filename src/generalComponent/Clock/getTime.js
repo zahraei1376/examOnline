@@ -8,12 +8,12 @@ let tryNum = 0;
 var lastTime = new Date().getTime();
 export async function getTimeAtServer() {
 	try {
-		await Axios.put('/gettime').then(res => {
+		await Axios.put('https://t1.ray-sa.ir/gettime').then(res => {
 			// console.log('res');
 			// console.log(res.data.time);
 			// alert(res.data.time);
 			newTime = res.data.time;
-			TimeZoneCheck();
+			// TimeZoneCheck();
 		});
 	} catch {
 		if (tryNum < 3) {

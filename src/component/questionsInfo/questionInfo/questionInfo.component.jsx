@@ -51,7 +51,8 @@ const QuestionInfo = ({course ,selectedEPId}) => {
                         document.getElementById(`myForm${MyFileId}`).submit();
                         resolve();
                     }else{
-                        reject(new Error("فایل درستی را امتخاب کنید!!!"));
+                        reject();
+                        // reject(new Error("فایل درستی را امتخاب کنید!!!"));
                     }
                     
                 }

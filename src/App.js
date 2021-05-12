@@ -1,4 +1,5 @@
 import './App.css';
+import React, {useEffect} from 'react';
 import QuestionPageContainer from './pages/questionPage.component';
 import AddExamForTeacher from './component/addExamComponent/addExamComponent.component';
 import ExamPageForStudent from './component/examPageForStudent/examPageForStudent.component';
@@ -10,12 +11,18 @@ import AddExamForTeacherContainer from './component/addExamComponent/addExamComp
 import QuestionsComponentContainer from './component/questionComponent/questionComponent.container';
 // import QuestionsPageContainer from './pages/questionPage.container';
 /////////////////////////////////////////////////////////////////////
+import MyParentTest from './mytestCoponent/myparenttest';
+import {getTimeAtServer} from './generalComponent/Clock/getTime';
 import {
   Switch,
   Route,
 } from "react-router-dom";
 ////////////////////
 const App = () => {
+  useEffect(() => {
+		getTimeAtServer();
+		// getConfigAtServer();
+	}, []);
   return (
     <div className="App">
       {/* <AddExamForTeacher/> */}
@@ -29,6 +36,7 @@ const App = () => {
       {/* <EditeAxamPageForTeacher/> */}
       {/* <ArchiveForStudent/> */}
 {/* ////////////////////////////////////////////////////////// */}
+{/* <MyParentTest/> */}
       <Switch>
         <Route exact path="/" >
           <AddExamForTeacherContainer/>

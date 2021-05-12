@@ -50,14 +50,14 @@ const  ExamPageForStudent = ({questionIndex ,setLengthQuestions ,getTimeToAttend
     var second;
 
     useEffect(()=>{
-        console.log('getTimeToAttendTheExamPage',getTimeToAttendTheExamPage);
+        // console.log('getTimeToAttendTheExamPage',getTimeToAttendTheExamPage);
         var convertArray = getTimeToAttendTheExamPage.split(':');
         var hour = convertArray && convertArray.length > 0 &&  convertArray[0] ? convertArray[0] : 0;
         var min = convertArray && convertArray.length > 0 &&  convertArray[1] ? convertArray[1] : 0;
         var sec = convertArray && convertArray.length > 0 &&  convertArray[2] ? convertArray[2] : 0;
         
         var timeL = (parseInt(hour) * 3600) + (parseInt(min) * 60) + parseInt(sec) ;
-        console.log('timeL',timeL);
+        // console.log('timeL',timeL);
         second = timeL;
         setLoginTime(format(timeL));
         TimerIntervalSolveQuestions = setTimeout(function run() {
@@ -78,6 +78,9 @@ const  ExamPageForStudent = ({questionIndex ,setLengthQuestions ,getTimeToAttend
     ///////////////////////////////////////////////////
     const countRef = useRef(loginTime);
     countRef.current = loginTime;
+    ///////
+    const checkRef = useRef(time);
+    checkRef.current = time;
     ///////////////////////////////////////////////////
     useEffect(()=>{
         // console.log('data',data);
@@ -128,53 +131,75 @@ const  ExamPageForStudent = ({questionIndex ,setLengthQuestions ,getTimeToAttend
         // }, 300000);
     },[])
     ///////////////////////////////////////////////////time
-    var timerClear;
+    const timerClear = useRef() ;
+    // let timerClear;
     var sendReqDelay;
     var TimerIntervalSolveQuestions;
     var setTimeToPageTimeOut;
+    var CheckTheEndOfTheExam;
     useEffect(() => {
-        timerClear = setInterval(() => {
+        console.log('bbbbbbbbbbbbbbbb');
+        timerClear.current = setInterval(() => {
         // setGetDate(moment(realeTime).format('jYYYY/jMM/jDD'));
-        setTime(
-            realeTime.toLocaleTimeString([], {
-            timeZone: "Asia/Tehran",
-            hour: '2-digit',
-            minute: '2-digit',
-            second: '2-digit',
-            hour12: false,
-            }),
-        );
-            if(data){
-                handleSendWxamDataAfterEndTime();
-            }
+            setTime(
+                realeTime.toLocaleTimeString([], {
+                timeZone: "Asia/Tehran",
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit',
+                hour12: false,
+                }),
+            );
+            console.log('aaaaaaaaaaaaaaaa');
+            // console.log('dddddddddddddddddddd');
+            // handleSendWxamDataAfterEndTime();
+            // if(data){
+            //     console.log('dddddddddddddddddddd');
+            //     handleSendWxamDataAfterEndTime();
+            // }
         }, 1000);
-        return () => {
-        clearInterval(timerClear);
-        };
-    }, [time]);
+        // return () => clearInterval(timerClear.current);
+    }, []);
+
+    // useEffect(()=>{
+    //     CheckTheEndOfTheExam = setInterval(() => {
+    //         console.log('dddddddddddddddddddd');
+    //         if(data){
+                
+    //             handleSendWxamDataAfterEndTime();
+    //         }
+    //     }, 60000);
+    // },[]);
     /////////////////////
     const handleSendWxamDataAfterEndTime = () => {
+        console.log('methossssssss1');
         if(data.examParents[0].examParent_start_date === data.examParents[0].examParent_stop_date){
+            console.log('methossssssss2');
             //////////////////////////////شروع و پایان امتحان در یک روز
             var newEndTime = fixNumbers(moment2(data.examParents[0].examParent_end)
             .tz('Asia/Tehran').format('HH:mm:00'));
+            // console.log('newEndTime',newEndTime);
             var filterEndTime = newEndTime.split(":").join("");
-            var temp = fixNumbers(time);
+            var temp = fixNumbers(checkRef.current);
             var filterGetTime = temp.split(":").join("");
             console.log('filterGetTime',filterGetTime);
             console.log('filterEndTime',filterEndTime);
             if (filterGetTime > filterEndTime) {
                 console.log('مخلثققق');
                 if (data.examParents[0].examParent_method == "0") { //not
-                    console.log('nooooooooooooooooooooo');
+                    console.log('timerClear',timerClear);
+                    
                     alert('زمان امتحان تمام شده است!!!');
                     runningTimeOfTimeForSolveQuestions(true);
-                    clearInterval(timerClear);
+                    
                     if(sendReqDelay){
                         clearTimeout(sendReqDelay);
                     }
                     clearTimeout(setTimeToPageTimeOut);
                     clearTimeout(TimerIntervalSolveQuestions);
+                    clearInterval(timerClear.current);
+                    clearInterval(CheckTheEndOfTheExam);
+                    
                 } 
                 // else if (data.examParents[0].examParent_method == 1) {
                 //     sendReqDelay = setInterval(() => {
@@ -219,7 +244,8 @@ const  ExamPageForStudent = ({questionIndex ,setLengthQuestions ,getTimeToAttend
             if (getTimeToAttendTheExamPage == data.examParents[0].examParent_duration) {
                 alert('زمان امتحان تمام شده است!!!');
                 runningTimeOfTimeForSolveQuestions(true);
-                clearInterval(timerClear);
+                clearInterval(timerClear.current);
+                clearInterval(CheckTheEndOfTheExam);
                 clearTimeout(setTimeToPageTimeOut);
                 clearTimeout(TimerIntervalSolveQuestions);
             }
@@ -281,6 +307,10 @@ const  ExamPageForStudent = ({questionIndex ,setLengthQuestions ,getTimeToAttend
         }
         // console.log('mergeQ',mergeQ);
         setLengthQuestions(mergeQ.length);
+        CheckTheEndOfTheExam = setInterval(() => {
+            console.log('dddddddddddddddddddd');
+            handleSendWxamDataAfterEndTime();
+        }, 60000);
         
         return mergeQ;
     }
@@ -365,7 +395,8 @@ const  ExamPageForStudent = ({questionIndex ,setLengthQuestions ,getTimeToAttend
     ///////////////////////////////////////////////////
     const handleExitPage = () =>{
         runningTimeOfTimeForSolveQuestions(true);
-        clearInterval(timerClear);
+        clearInterval(timerClear.current);
+        clearInterval(CheckTheEndOfTheExam);
         if(sendReqDelay){
             clearTimeout(sendReqDelay);
         }
@@ -437,6 +468,7 @@ const  ExamPageForStudent = ({questionIndex ,setLengthQuestions ,getTimeToAttend
                         return <ShowComparativeQuestion question={items[questionIndex]} number={questionIndex} items={RandomArray(items[questionIndex].question_compItems)} ResItem = {items[questionIndex].response && items[questionIndex].response.length > 0 ?  items[questionIndex].response[0].response_comparativeQuestion : []} /> 
                     }
                     else if(items[questionIndex].question_type == '2'){
+                        // console.log('goooooo');
                         return <MultipleChoiceConatiner question={items[questionIndex]} number={questionIndex} ResItem={items[questionIndex].response && items[questionIndex].response.length > 0 ?  items[questionIndex].response[0].response_studentItem : ''} />
                     }
                     else if(items[questionIndex].question_type == '3'){
