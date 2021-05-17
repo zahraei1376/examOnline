@@ -17,14 +17,21 @@ import { getResponseStudentWithIndex } from '../../../../redux/responsesStudent/
 
 
 
-const DescriptionItem = ({number ,setResForRedux ,setResponseDesImage ,ResItem ,ResItemImage})=>{
+const DescriptionItem = ({number ,setResForRedux ,setResponseDesImage ,ResItem ,ResItemImage ,
+    // setResponseQuestion ,responseQuestion
+})=>{
 
     const [responseQuestion,setResponseQuestion] = useState(ResItem ? ResItem : '');
     useEffect(()=>{
         console.log('ResItem' ,ResItem);
         setResponseDesImage(ResItemImage ? ResItemImage : '')
         setResForRedux(ResItem ? ResItem : '');
-    },[]);
+        setResponseQuestion(ResItem ? ResItem : '');
+    },[ResItem]);
+
+    // useEffect(()=>{
+    //     console.log('createeeeeeeeeeeeeee');
+    // },[])
 
     const handleChange = (e) =>{
         setResponseQuestion(e.target.value);
@@ -58,12 +65,20 @@ const DescriptionItem = ({number ,setResForRedux ,setResponseDesImage ,ResItem ,
 }
 
 const ShowDescriptiveQuestion = ({question, number ,ResItem ,ResItemImage, getResponseStudentWithIndex}) =>{
-    useEffect(()=>{
-        console.log('ResItem',ResItem);
-    },[])
+    
+    // useEffect(()=>{
+    //     console.log('ResItem',ResItem);
+    // },[])
+
+
+
+    // useEffect(()=>{
+    //     console.log('Main createeeeeeeeeeeeeee');
+    //     console.log('ResItem Main' ,ResItem);
+    // },[])
     return(
-        <ShowBodyQuestions question={question} number={number}>
-            <DescriptionItem number={number} ResItem={ResItem ? ResItem : getResponseStudentWithIndex} ResItemImage={ResItemImage} />
+        <ShowBodyQuestions question={question} number={number} ResItem={ResItem ? ResItem : getResponseStudentWithIndex}>
+            <DescriptionItem number={number} ResItem={ResItem ? ResItem : getResponseStudentWithIndex} ResItemImage={ResItemImage} />  
         </ShowBodyQuestions>
     )
 };

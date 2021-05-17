@@ -17,27 +17,59 @@ import { getResponseStudentWithIndex } from '../../../../redux/responsesStudent/
 
 const SequentialItems = ({number,items ,ResItem ,setResForRedux})=>{
 
-    const [resSeqQuestion,setResSeqQuestion] = useState(Array(items.length).fill(0).map(row => new Array(1).fill('')));
+    // const [resSeqQuestion,setResSeqQuestion] = useState(Array(items.length).fill(0).map(row => new Array(1).fill('')));
+    const [resSeqQuestion,setResSeqQuestion] = useState(null);
+    const [myRes , setMyRes] = useState('');
 
-    // const handleChange = (e) =>{
-    //     setResponseQuestion(e.target.value);
-    // }
-    useEffect(()=>{
-        console.log('items',items)//فرستادن رندوم شده
-    },[items]);
+    // useEffect(()=>{
+    //     console.log('items',items)//فرستادن رندوم شده
+    // },[items]);
 
     useEffect(()=>{
         console.log('ResItem' ,ResItem);
-        setResForRedux(ResItem);
-    },[]);
+        // setResSeqQuestion();
+        // setResForRedux(ResItem);
+        // for (let index = 0; index < items.length; index++) {
+        //     var temp = [...resSeqQuestion];
+        //     var tempRes = ResItem && ResItem.length > 0 ? ResItem[index] : '';
+        //     if(tempRes){
+        //         temp[index][0] = tempRes[0];
+        //         console.log('temp',temp);
+        //         setResForRedux(temp);
+        //         setResSeqQuestion(temp);
+        //         setMyRes(temp);
+        //     }else{
+        //         setResForRedux('');
+        //         setResSeqQuestion(Array(items.length).fill(0).map(row => new Array(1).fill('')));
+        //         setMyRes('');
+        //     }
+            
+            
+        // }
+        ///////////////////////////////////////
+        var temp = Array(items.length).fill(0).map(row => new Array(1).fill(''));
+        for (let index = 0; index < items.length; index++) {  
+            var tempRes = ResItem && ResItem.length > 0 ? ResItem[index] : '';
+            if(tempRes){
+                temp[index][0] = tempRes[0];
+            }
+            else{
+                temp[index][0] = '';
+            }
+        }
+        setResForRedux(temp);
+        setResSeqQuestion(temp);
+        setMyRes(temp);
+    },[ResItem]);
+
 
     const handleSetRes = (i , value) =>{
-        
-        var temp =[...resSeqQuestion];
+        var temp = [...resSeqQuestion];
         temp[i][0] = value;
         console.log('temp',temp);
         setResForRedux(temp);
         setResSeqQuestion(temp);
+        setMyRes(temp);
     }
 
     return(
@@ -70,7 +102,7 @@ const SequentialItems = ({number,items ,ResItem ,setResForRedux})=>{
                     
             {
                 items.length > 0 ? items.map((item,index) =>{
-                    var tempRes = ResItem[index];
+                    var tempRes = myRes[index];
                     console.log('tempRes', tempRes);
                     return(
                     // console.log('item',item)
@@ -78,7 +110,7 @@ const SequentialItems = ({number,items ,ResItem ,setResForRedux})=>{
                         
                          <SequentialResInput type="number" 
                         // value={ tempRes? tempRes[0] : ''}
-                        defaultValue={ tempRes ? tempRes[0] : ''}  
+                        value={ tempRes ? tempRes[0] : ''}  
                         // readOnly
                         onChange={(e) => handleSetRes(index ,e.target.value)} 
                         />
@@ -92,15 +124,25 @@ const SequentialItems = ({number,items ,ResItem ,setResForRedux})=>{
 }
 
 const ShowSequentialQuestion = ({question, number , items , ResItem , getResponseStudentWithIndex}) =>{
+    useEffect(()=>{
+        console.log('seqResItem',ResItem);
+        console.log('getResponseStudentWithIndex',getResponseStudentWithIndex);
+    })
     return(
         <ShowBodyQuestions question={question} number={number}>
-            <SequentialItems number={number} items={items} ResItem={ResItem ? ResItem : getResponseStudentWithIndex} />
+
+            {/* {setResForRedux => (
+               <SequentialItems number={number} setResForRedux={setResForRedux} items={items} ResItem={ResItem ? ResItem : getResponseStudentWithIndex} />
+            )} */}
+
+            <SequentialItems number={number} items={items} ResItem={ResItem && ResItem.length > 0  ? ResItem : getResponseStudentWithIndex} />
+            
         </ShowBodyQuestions>
     )
 };
 
 const mapStateToProps = createStructuredSelector({
     getResponseStudentWithIndex : (state, ownProps) => getResponseStudentWithIndex(ownProps.question.id)(state, ownProps),
-  });
+});
 
 export default connect(mapStateToProps)(ShowSequentialQuestion);

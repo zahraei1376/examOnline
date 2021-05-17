@@ -1,7 +1,7 @@
 import TimeLoginToPageTypes from './timeToAttendTheExamPage.types';
 
 const INITIALSTATE = {
-    timeToAttendTheExamPage: '0:00:00',
+    timeToAttendTheExamPage: '00:00:00',
 }
 
 const TimeLoginReducer = (state = INITIALSTATE ,action)=>{

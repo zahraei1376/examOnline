@@ -92,7 +92,6 @@ const addNewExamMutation = gql`
                 }
         }
 `;
-
 const AddExamForTeacher = ({MyGroups}) => {
   ////////////////////////////////
    // const appContext = useContext(AppContext);
@@ -153,6 +152,7 @@ const AddExamForTeacher = ({MyGroups}) => {
   const [groupsExam,setGroupsExam] = useState([]);
   const [groupWithCourseName,setGroupsExamWithCourseName] = useState([]);
   ////////////////////////
+
   const [state,setState] = useState({
     // selectedstartTime:'',
     // selectedEndTime:'',
@@ -539,10 +539,14 @@ const AddExamForTeacher = ({MyGroups}) => {
               setMessage('امتحان ثبت شد');
               setStatus('1');
               setShowMessage(!showMessage);
-              setState({...state , handleOneClick:false});
+              
               setState({...state , loading:false});
+              // setState({...state , handleOneClick:false});
               setTimeout(()=>{
                 // history.push("/questions");
+                
+              // setState({...state , loading:false});
+              setState({...state , handleOneClick:false});
                 history.push({
                   pathname: '/questions',
                   // search: '?query=abc',
@@ -550,25 +554,27 @@ const AddExamForTeacher = ({MyGroups}) => {
                 })
               },1000)
             }else{
-              // console.log('data',data);
               setStatus('0')
               setMessage('امتحان ثبت نشد')
               setShowMessage(!showMessage);
-              setState({...state , handleOneClick:false});
+              
               setState({...state , loading:false});
+              setState({...state , handleOneClick:false});
             }
           })
       
       })
       .catch(err =>{
-          alert(err);
+        setState({...state , loading:false});
+        setState({...state , handleOneClick:false});
+        alert(err);
       });
     }else{
       setStatus('0')
       setMessage('باید درسی را انتخاب کنید')
       setShowMessage(!showMessage);
-      setState({...state , handleOneClick:false});
       setState({...state , loading:false});
+      setState({...state , handleOneClick:false});
     }
     //////////////////////////
     // if(CT){

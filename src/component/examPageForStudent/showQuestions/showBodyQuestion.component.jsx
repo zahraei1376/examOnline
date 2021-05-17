@@ -21,7 +21,10 @@ import { useMutation} from 'react-apollo';
 import {SET_RESPONSE_STUDENT} from '../../../graphql/resolver';
 //////////////////////query
 import MySnackbar from '../../../messageBox/messageBox.component';
-const ShowBodyQuestions = ({question,number,children,IncreaseIndexQuestion,setRepsonseStudent ,DecreaseIndexQuestion,questionIndex ,questionsLenght ,typeIncreaseQuestions ,timeOutSolveQuestions }) =>{
+const ShowBodyQuestions = ({
+  question,number,children,IncreaseIndexQuestion,
+  setRepsonseStudent ,DecreaseIndexQuestion,questionIndex ,
+  questionsLenght ,typeIncreaseQuestions ,timeOutSolveQuestions,ResItem }) =>{
     ////////////////////////////////////////query
     const [addResponse ,{ data }] = useMutation(SET_RESPONSE_STUDENT);
     /////////////////////////////////////////////////////////
@@ -37,8 +40,10 @@ const ShowBodyQuestions = ({question,number,children,IncreaseIndexQuestion,setRe
     const [message,setMessage] =useState('');
     const [status,setStatus] =useState(0);
     //////////////////////////////////////////
+    const [responseQuestion,setResponseQuestion] = useState('');
+    //////////////////////////////////////////
     useEffect(()=>{
-      console.log('question',question);
+      console.log('bodyRes',ResItem);
     },[])
     ///////////////////////////////////////////
     useEffect(()=>{
@@ -94,12 +99,16 @@ const ShowBodyQuestions = ({question,number,children,IncreaseIndexQuestion,setRe
          } 
         }).then(res=>{
           if(res.data && res.data.addResponse){
+            console.log("dddddddddddddddd:", resForRedux);
             setRepsonseStudent({id: question.id , res: resForRedux});
             setMessage('جواب شما ثبت شد');
             setStatus('1');
             setShowMessage(!showMessage);
             if(questionIndex != questionsLenght -1){
               setTimeout(()=>{
+                // setResponseQuestion(ResItem ? ResItem : '');
+                setResForRedux('');
+                setResponseDesImage('');
                 IncreaseIndexQuestion();
               },1000)
             }else{
@@ -116,15 +125,31 @@ const ShowBodyQuestions = ({question,number,children,IncreaseIndexQuestion,setRe
     }
     ///////////////////////////////////////////
     const handlePrevQuestion = () =>{
-        DecreaseIndexQuestion();
+      // setResponseQuestion(ResItem ? ResItem : '');
+      setResForRedux('');
+      setResponseDesImage('');
+      DecreaseIndexQuestion();
     }
+
+    useEffect(()=>{
+      console.log('body createeeeeeeeeeeeeee');
+  },[])
     ///////////////////////////////////////////
     const childrenWithProps = React.Children.map(children, child => {
         if (React.isValidElement(child)) {
-          return React.cloneElement(child, { setResForRedux: setResForRedux ,setResponseDesImage:setResponseDesImage });
+          return React.cloneElement(child, { 
+            setResForRedux: setResForRedux ,
+            setResponseDesImage:setResponseDesImage,
+            // setResponseQuestion:setResponseQuestion,
+            // responseQuestion:responseQuestion,
+          });
         }
         return child;
     });
+
+    // const ReturnChilderen = () =>{
+    //   return childrenWithProps;
+    // }
     ///////////////////////////////////////////
     return(
     <BodyContainer>
@@ -191,6 +216,12 @@ const ShowBodyQuestions = ({question,number,children,IncreaseIndexQuestion,setRe
         </BodyQuestionBox>
         {/* //////////////////////////////////////////////children */}
         {childrenWithProps}
+        {/* {doSomething => (
+          <React.Fragment>
+            <Child doSomething={doSomething} value={1} />
+            <Child doSomething={doSomething} value={2} />
+          </React.Fragment>
+        )} */}
         </BodyQuestionBoxWithChildren>
         {/* /////////////////////////////////footer */}
         <FooterQuestionContainer>

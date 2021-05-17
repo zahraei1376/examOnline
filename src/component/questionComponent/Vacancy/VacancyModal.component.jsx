@@ -49,14 +49,17 @@ export default function VacancyModal({handleSetVancyItems , existVancyValue}) {
   const [modalStyle] = React.useState(getModalStyle);
   const [open, setOpen] = React.useState(false);
   const [vancyValue , setVancyValue] = useState('');
+  const [OrginalVancyValue , setOrginalVancyValue] = useState('');
   /////////////////////////////////////
   useEffect(()=>{
-    setVancyValue(existVancyValue ? existVancyValue : '')
+    setVancyValue(existVancyValue ? existVancyValue : '');
+    // setOrginalVancyValue(existVancyValue ? existVancyValue : '');
   },[]);
   ////////////////////////////////////
   useEffect(()=>{
     console.log('vancyValue',vancyValue);
-  });
+    // setOrginalVancyValue()
+  },[vancyValue]);
   ////////////////////////////////////
   const handleChange = (event) => {
     console.log('event.target.value',event.target.value);
@@ -67,7 +70,8 @@ export default function VacancyModal({handleSetVancyItems , existVancyValue}) {
     // var myItemV = vancyValue;
     // myItemV += '$%A';
     // setVancyValue(myItemV);
-    setVancyValue(vancyValue + '$%A');
+    setVancyValue(vancyValue + '..............');
+    // setOrginalVancyValue(OrginalVancyValue + '$%A')
     document.getElementById("Text1").focus();
   }
   ////////////////////////////////////
@@ -86,8 +90,8 @@ export default function VacancyModal({handleSetVancyItems , existVancyValue}) {
  }
  ////////////////////////////////////
  const SeveData = () =>{
-   console.log('vancyValue',vancyValue);
-    handleSetVancyItems(vancyValue);
+   console.log('vancyValue',vancyValue.split('..............').join('$%A'));
+    handleSetVancyItems(vancyValue.split('..............').join('$%A'));
     setOpen(false);
  }
  ////////////////////////////////////
@@ -95,28 +99,16 @@ export default function VacancyModal({handleSetVancyItems , existVancyValue}) {
 
   const body = (
     <div style={modalStyle} className={classes.paper}>
-      
-        {/* <VacancyButton variant="contained" component="span" style={{float:'right',}}
-          onClick={addVancy}
-        >
-        اضافه کردن جای خالی
-        </VacancyButton> */}
-         <AddCircleIcon style={{fontSize:'40px', color:'#009688',cursor:'pointer'}} onClick={addVancy} />
+
+      <AddCircleIcon style={{fontSize:'40px', color:'#009688',cursor:'pointer'}} onClick={addVancy} />
       
       <VacancyInputContainer>
       <VacancyInput id="Text1" cols="60" rows="5"  placeholder="متن خود را وارد کنید!!"
-      // value={vancyValue}
-        value={vancyValue.split('$%A').join('..............')}
+      value={vancyValue}
+        // value={vancyValue.split('$%A').join('..............')}
         onChange={(e) => handleChange(e)} 
       />
-       {/* </VacancyInput> */}
       </VacancyInputContainer>
-      {/* <VacancyShowText>{vancyValue.split('$%A').join('..............')}</VacancyShowText> */}
-      {/* {vancyValue ? <VacancyButtonSave variant="contained" component="span"
-        onClick={SeveData}
-        >
-        ثبت
-      </VacancyButtonSave> : ''} */}
       <VacancyButtonSave variant="contained" component="span"
         onClick={SeveData}
         >
@@ -127,12 +119,10 @@ export default function VacancyModal({handleSetVancyItems , existVancyValue}) {
 
   return (
     <div>
-      {/* <button type="button" onClick={handleOpen}> */}
         <RecordButton type="button" onClick={handleOpen}>
            سوال جای خالی 
         </RecordButton>
        
-      {/* </button> */}
       <Modal
         open={open}
         onClose={handleClose}

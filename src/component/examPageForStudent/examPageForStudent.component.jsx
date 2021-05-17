@@ -43,14 +43,21 @@ const  ExamPageForStudent = ({questionIndex ,setLengthQuestions ,getTimeToAttend
     const { loading, error, data ,refetch  } = useQuery(GET_QUESTIONS , {
         variables: {  userName: "211",
         password: "211",
-        id: "609a51ccef8bac062ab0ef51" },
+        id: "60a217b4244099062a5ffe8a" },
         notifyOnNetworkStatusChange: true
     });
+
+    window.addEventListener('beforeunload', function (e) {
+        // Cancel the event
+        e.preventDefault(); // If you prevent default behavior in Mozilla Firefox prompt will always be shown
+        // Chrome requires returnValue to be set
+        e.returnValue = 'برای خارج شدن بلید دمه خروج را فشار دهید!!!';
+      });
 
     var second;
 
     useEffect(()=>{
-        // console.log('getTimeToAttendTheExamPage',getTimeToAttendTheExamPage);
+        console.log('getTimeToAttendTheExamPage',getTimeToAttendTheExamPage);
         var convertArray = getTimeToAttendTheExamPage.split(':');
         var hour = convertArray && convertArray.length > 0 &&  convertArray[0] ? convertArray[0] : 0;
         var min = convertArray && convertArray.length > 0 &&  convertArray[1] ? convertArray[1] : 0;
@@ -60,9 +67,10 @@ const  ExamPageForStudent = ({questionIndex ,setLengthQuestions ,getTimeToAttend
         // console.log('timeL',timeL);
         second = timeL;
         setLoginTime(format(timeL));
-        TimerIntervalSolveQuestions = setTimeout(function run() {
+        tickClear.current = setTimeout(function run() {
+            console.log('tickkkkkkk');
             tick();
-            TimerIntervalSolveQuestions = setTimeout(run, 1000);
+            tickClear.current = setTimeout(run, 1000);
           }, 1000);
     },[])
 
@@ -83,40 +91,16 @@ const  ExamPageForStudent = ({questionIndex ,setLengthQuestions ,getTimeToAttend
     checkRef.current = time;
     ///////////////////////////////////////////////////
     useEffect(()=>{
-        // console.log('data',data);
         if(data && data.examParents && data.examParents.length > 0 ){
-            setItems(MergeQuestions(data.examParents[0]));
+            MergeQuestions(data.examParents[0])
+            // setItems(MergeQuestions(data.examParents[0]));
         }
-        // else{
-        //     setMessage('خطایی رخ داده مجددا تلاش کنید');
-        //     setStatus('0');
-        //     setShowMessage(!showMessage);
-        // }
     },[data]);
 
-    // useEffect(()=>{
-    //     // console.log('items' , items);
-    //     TimerIntervalSolveQuestions = setTimeout(function run() {
-    //         tick();
-    //         TimerIntervalSolveQuestions = setTimeout(run, 1000);
-    //       }, 1000);
+    useEffect(()=>{
+        console.log('exist item',items);
+    },[items]);
 
-    //     // setTimeout(() => {
-    //     //     console.log('toimeeeeeeeee');
-    //     //     SetTimeToAttendTheExamPage(loginTime)
-    //     // }, 300000);
-
-    //     // setTimeout(() => {
-    //     //     console.log('toimeeeeeeeee');
-    //     //     SetTimeToAttendTheExamPage(loginTime)
-    //     // }, 60000);
-
-
-
-    //     // TimerIntervalSolveQuestions = setInterval(() => {
-    //     //     tick();
-    //     // }, 1000);
-    // } ,[items])
     ///////////////////////////////////////////////////loginTime
     
     useEffect(()=>{
@@ -124,23 +108,16 @@ const  ExamPageForStudent = ({questionIndex ,setLengthQuestions ,getTimeToAttend
             SetTimeToAttendTheExamPage(countRef.current)
             setTimeToPageTimeOut = setTimeout(run, 60000);
         }, 60000);
-
-        // setTimeToPageTimeOut = setTimeout(function run() {
-        //     SetTimeToAttendTheExamPage(countRef.current)
-        //     setTimeToPageTimeOut = setTimeout(run, 300000);
-        // }, 300000);
     },[])
     ///////////////////////////////////////////////////time
     const timerClear = useRef() ;
-    // let timerClear;
+    const tickClear = useRef() ;
     var sendReqDelay;
-    var TimerIntervalSolveQuestions;
     var setTimeToPageTimeOut;
     var CheckTheEndOfTheExam;
     useEffect(() => {
         console.log('bbbbbbbbbbbbbbbb');
         timerClear.current = setInterval(() => {
-        // setGetDate(moment(realeTime).format('jYYYY/jMM/jDD'));
             setTime(
                 realeTime.toLocaleTimeString([], {
                 timeZone: "Asia/Tehran",
@@ -150,26 +127,10 @@ const  ExamPageForStudent = ({questionIndex ,setLengthQuestions ,getTimeToAttend
                 hour12: false,
                 }),
             );
-            console.log('aaaaaaaaaaaaaaaa');
-            // console.log('dddddddddddddddddddd');
-            // handleSendWxamDataAfterEndTime();
-            // if(data){
-            //     console.log('dddddddddddddddddddd');
-            //     handleSendWxamDataAfterEndTime();
-            // }
+            // console.log('aaaaaaaaaaaaaaaa');
         }, 1000);
         // return () => clearInterval(timerClear.current);
     }, []);
-
-    // useEffect(()=>{
-    //     CheckTheEndOfTheExam = setInterval(() => {
-    //         console.log('dddddddddddddddddddd');
-    //         if(data){
-                
-    //             handleSendWxamDataAfterEndTime();
-    //         }
-    //     }, 60000);
-    // },[]);
     /////////////////////
     const handleSendWxamDataAfterEndTime = () => {
         console.log('methossssssss1');
@@ -196,7 +157,7 @@ const  ExamPageForStudent = ({questionIndex ,setLengthQuestions ,getTimeToAttend
                         clearTimeout(sendReqDelay);
                     }
                     clearTimeout(setTimeToPageTimeOut);
-                    clearTimeout(TimerIntervalSolveQuestions);
+                    clearTimeout(tickClear.current);
                     clearInterval(timerClear.current);
                     clearInterval(CheckTheEndOfTheExam);
                     
@@ -247,7 +208,7 @@ const  ExamPageForStudent = ({questionIndex ,setLengthQuestions ,getTimeToAttend
                 clearInterval(timerClear.current);
                 clearInterval(CheckTheEndOfTheExam);
                 clearTimeout(setTimeToPageTimeOut);
-                clearTimeout(TimerIntervalSolveQuestions);
+                clearTimeout(tickClear.current);
             }
         }
     }
@@ -278,41 +239,126 @@ const  ExamPageForStudent = ({questionIndex ,setLengthQuestions ,getTimeToAttend
         setLoginTime(format(second));
     };
     //////////////////////////////////////////////////////
-    const MergeQuestions = (examP) => {
+    const MergeQuestions = async(examP) => {
         // console.log('examP', examP );
         // console.log('examP.examParent_backward', examP.examParent_backward );
         // setTypeIncreaseQuestions(examP.type ? examP.type : 'Forward');
+        ///////////////////////////////////////////////////////////////////
+
+        /////////////////////////////////////////////////////////////////////
         setTypeIncreaseQuestions(examP && examP.examParent_backward ? examP.examParent_backward : false);
         var mergeQ = [];
         var allQuestons = examP.examChild;
-        for (let index = 0; index < allQuestons.length; index++) {
-           var counterQuestionsParent = allQuestons[index].questionParent;
-           var courseName = allQuestons[index] && allQuestons[index].groups && allQuestons[index].groups.length > 0 ? allQuestons[index].groups[0].course : '';
-        //    console.log('courseName',courseName); 
-           var teacherName = allQuestons[index] && allQuestons[index].groups && allQuestons[index].groups.length > 0 && allQuestons[index].groups[0].people && allQuestons[index].groups[0].people.length > 0 ?  allQuestons[index].groups[0].people[0].name + ' ' + allQuestons[index].groups[0].people[0].surname : '';
-        //    console.log('teacherName',teacherName);
-           if(counterQuestionsParent && counterQuestionsParent.length > 0){
-              for (let j = 0; j < counterQuestionsParent.length; j++) {
-                //   console.log('allQuestons[index].questionParent[j]', allQuestons[index].questionParent[j] );
-                  if(allQuestons[index].questionParent[j].questionChild && allQuestons[index].questionParent[j].questionChild.length > 0){
-                    mergeQ.push({...allQuestons[index].questionParent[j].questionChild[0] ,
-                         courseName:courseName,
-                        teacherName:teacherName });
-                    // mergeQ.push(allQuestons[index].questionParent[j].questionChild[0]);
-                  }
-              }
-                // console.log('allQuestons[index].questionParent', allQuestons[index].questionParent );
-                // mergeQ.push(allQuestons[index].questionParent[0])
-            }
-        }
+        // for (let index = 0; index < allQuestons.length; index++) {
+        //    var counterQuestionsParent = allQuestons[index].questionParent;
+        //    var courseName = allQuestons[index] && allQuestons[index].groups && allQuestons[index].groups.length > 0 ? allQuestons[index].groups[0].course : '';
+        //    var teacherName = allQuestons[index] && allQuestons[index].groups && allQuestons[index].groups.length > 0 && allQuestons[index].groups[0].people && allQuestons[index].groups[0].people.length > 0 ?  allQuestons[index].groups[0].people[0].name + ' ' + allQuestons[index].groups[0].people[0].surname : '';
+        //    if(counterQuestionsParent && counterQuestionsParent.length > 0){
+        //       for (let j = 0; j < counterQuestionsParent.length; j++) {
+        //         //   console.log('allQuestons[index].questionParent[j]', allQuestons[index].questionParent[j] );
+        //           if(allQuestons[index].questionParent[j].questionChild && allQuestons[index].questionParent[j].questionChild.length > 0){
+        //               if(allQuestons[index].questionParent[j].questionChild[0].question_type == '6'){
+                        
+        //                 var mySeqRandomArray = await SeqRandomArray(allQuestons[index].questionParent[j].questionChild[0].question_seqItems)
+        //                 console.log('allQuestons[index].questionParent[j].questionChild[0]666666666666666', {
+        //                     ...allQuestons[index].questionParent[j].questionChild[0] ,
+        //                     question_seqItems: mySeqRandomArray,
+        //                     courseName:courseName,
+        //                    teacherName:teacherName });
+        //                 mergeQ.push({
+        //                     ...allQuestons[index].questionParent[j].questionChild[0] ,
+        //                     question_seqItems: mySeqRandomArray,
+        //                     courseName:courseName,
+        //                    teacherName:teacherName });
+        //               }else if(allQuestons[index].questionParent[j].questionChild[0].question_type == '5')
+        //               {
+        //                 var myRandomArray = await RandomArray(allQuestons[index].questionParent[j].questionChild[0].question_compItems);
+        //                 console.log('allQuestons[index].questionParent[j].questionChild[0]55555555555555555555', {...allQuestons[index].questionParent[j].questionChild[0] ,
+        //                     question_compItems: myRandomArray,
+        //                     courseName:courseName,
+        //                    teacherName:teacherName });
+        //                 mergeQ.push({...allQuestons[index].questionParent[j].questionChild[0] ,
+        //                     question_compItems: myRandomArray,
+        //                     courseName:courseName,
+        //                    teacherName:teacherName });
+        //               }else{
+        //                 console.log('allQuestons[index].questionParent[j].questionChild[0]',allQuestons[index].questionParent[j].questionChild[0].question_type);
+        //                 mergeQ.push({...allQuestons[index].questionParent[j].questionChild[0] ,
+        //                     courseName:courseName,
+        //                    teacherName:teacherName });
+        //               }
+        //             // console.log('allQuestons[index].questionParent[j].questionChild[0]',allQuestons[index].questionParent[j].questionChild[0]);
+        //             // mergeQ.push({...allQuestons[index].questionParent[j].questionChild[0] ,
+        //             //      courseName:courseName,
+        //             //     teacherName:teacherName });
+        //             // mergeQ.push(allQuestons[index].questionParent[j].questionChild[0]);
+        //           }
+        //       }
+        //         // console.log('allQuestons[index].questionParent', allQuestons[index].questionParent );
+        //         // mergeQ.push(allQuestons[index].questionParent[0])
+        //     }
+        // }
         // console.log('mergeQ',mergeQ);
+        ///////////////////////////////////////////////
+        for await (let myallQuestion of allQuestons) {
+            var counterQuestionsParent = myallQuestion;
+            var courseName = myallQuestion && myallQuestion.groups && myallQuestion.groups.length > 0 ? myallQuestion.groups[0].course : '';
+            var teacherName = myallQuestion && myallQuestion.groups && myallQuestion.groups.length > 0 && myallQuestion.groups[0].people && myallQuestion.groups[0].people.length > 0 ?  myallQuestion.groups[0].people[0].name + ' ' + myallQuestion.groups[0].people[0].surname : '';
+            console.log('counterQuestionsParent',counterQuestionsParent);
+            var questionParentForExamChild = counterQuestionsParent.questionParent;
+            if( questionParentForExamChild && questionParentForExamChild.length > 0){
+               for (let j = 0; j < questionParentForExamChild.length; j++) {
+                   console.log('yeyee');
+                   if(questionParentForExamChild[j].questionChild && questionParentForExamChild[j].questionChild.length > 0){
+                       if(questionParentForExamChild[j].questionChild[0].question_type == '6'){
+                         
+                         var mySeqRandomArray = SeqRandomArray(questionParentForExamChild[j].questionChild[0].question_seqItems)
+                         console.log('questionParentForExamChild[j].questionChild[0]666666666666666', {
+                             ...questionParentForExamChild[j].questionChild[0] ,
+                             question_seqItems: mySeqRandomArray,
+                             courseName:courseName,
+                            teacherName:teacherName });
+                         mergeQ.push({
+                             ...questionParentForExamChild[j].questionChild[0] ,
+                             question_seqItems: mySeqRandomArray,
+                             courseName:courseName,
+                            teacherName:teacherName });
+                       }else if(questionParentForExamChild[j].questionChild[0].question_type == '5')
+                       {
+                         var myRandomArray = RandomArray(questionParentForExamChild[j].questionChild[0].question_compItems);
+                         console.log('questionParentForExamChild[j].questionChild[0]55555555555555555555', {...questionParentForExamChild[j].questionChild[0] ,
+                             question_compItems: myRandomArray,
+                             courseName:courseName,
+                            teacherName:teacherName });
+                         mergeQ.push({...questionParentForExamChild[j].questionChild[0] ,
+                             question_compItems: myRandomArray,
+                             courseName:courseName,
+                            teacherName:teacherName });
+                       }else{
+                         console.log('questionParentForExamChild[j].questionChild[0]',questionParentForExamChild[j].questionChild[0].question_type);
+                         mergeQ.push({...questionParentForExamChild[j].questionChild[0] ,
+                             courseName:courseName,
+                            teacherName:teacherName });
+                       }
+                     // console.log('myallQuestion[j].questionChild[0]',myallQuestion[j].questionChild[0]);
+                     // mergeQ.push({...myallQuestion[j].questionChild[0] ,
+                     //      courseName:courseName,
+                     //     teacherName:teacherName });
+                     // mergeQ.push(myallQuestion[j].questionChild[0]);
+                   }
+               }
+                 // console.log('myallQuestion', myallQuestion );
+                 // mergeQ.push(myallQuestion[0])
+             }
+         }
         setLengthQuestions(mergeQ.length);
         CheckTheEndOfTheExam = setInterval(() => {
             console.log('dddddddddddddddddddd');
             handleSendWxamDataAfterEndTime();
         }, 60000);
-        
-        return mergeQ;
+        console.log('mergeQ',mergeQ);
+        setItems(mergeQ);
+        // return mergeQ;
     }
     ///////////////////////////////////////////////////
     const existence = (list , item) => {
@@ -394,6 +440,12 @@ const  ExamPageForStudent = ({questionIndex ,setLengthQuestions ,getTimeToAttend
     }
     ///////////////////////////////////////////////////
     const handleExitPage = () =>{
+        // var exitBt = document.getElementById("exitBtn");
+        // if(exitBt){
+        //     console.log('exitBt',exitBt);
+        //     exitBt.disabled = true;
+        // }
+        // document.getElementById("exitBtn").setAttribute("disabled",true);
         runningTimeOfTimeForSolveQuestions(true);
         clearInterval(timerClear.current);
         clearInterval(CheckTheEndOfTheExam);
@@ -401,7 +453,7 @@ const  ExamPageForStudent = ({questionIndex ,setLengthQuestions ,getTimeToAttend
             clearTimeout(sendReqDelay);
         }
         clearTimeout(setTimeToPageTimeOut);
-        clearTimeout(TimerIntervalSolveQuestions);
+        clearTimeout(tickClear.current);
         setDelayResponseStudent({ variables: { 
             userName: "210", 
             password: "210", 
@@ -439,7 +491,7 @@ const  ExamPageForStudent = ({questionIndex ,setLengthQuestions ,getTimeToAttend
             <ShowInfoExam>
                 <ExitButtonContainer>
                     <Tooltip title="خروج" aria-label="خروج"  >
-                        <ExitButton onClick={handleExitPage}>
+                        <ExitButton onClick={handleExitPage} id="exitBtn">
                             <CloseIcon style={{ fontSize:'3rem'}}/>
                         </ExitButton>
                     </Tooltip>
@@ -450,11 +502,6 @@ const  ExamPageForStudent = ({questionIndex ,setLengthQuestions ,getTimeToAttend
                 <ShowQuestionsCourseNameContainer>
                     <ShowQuestionsCourseName>نام درس : {items.length > 0 ? items[questionIndex].courseName : ''}</ShowQuestionsCourseName>
                 </ShowQuestionsCourseNameContainer>
-
-                {/* <ShowLoginTimeContainer>
-                    <ShowLoginTime> مدت زمان گذشته از امتحان : {loginTime}</ShowLoginTime>
-                </ShowLoginTimeContainer> */}
-                
             </ShowInfoExam>
             {/* ////////////////////////////// */}
             {(() => {
@@ -465,23 +512,23 @@ const  ExamPageForStudent = ({questionIndex ,setLengthQuestions ,getTimeToAttend
                             ResItemImage = {items[questionIndex].response && items[questionIndex].response.length > 0 ?  items[questionIndex].response[0].response_descriptionImageLink : ''}
                         /> 
                     }else if(items[questionIndex].question_type == '5'){
-                        return <ShowComparativeQuestion question={items[questionIndex]} number={questionIndex} items={RandomArray(items[questionIndex].question_compItems)} ResItem = {items[questionIndex].response && items[questionIndex].response.length > 0 ?  items[questionIndex].response[0].response_comparativeQuestion : []} /> 
+                        // return <ShowComparativeQuestion question={items[questionIndex]} number={questionIndex} items={RandomArray(items[questionIndex].question_compItems)} ResItem = {items[questionIndex].response && items[questionIndex].response.length > 0 ?  items[questionIndex].response[0].response_comparativeQuestion : []} /> 
+                        return <ShowComparativeQuestion question={items[questionIndex]} number={questionIndex} items={items[questionIndex].question_compItems} ResItem = {items[questionIndex].response && items[questionIndex].response.length > 0 ?  items[questionIndex].response[0].response_comparativeQuestion : []} /> 
                     }
                     else if(items[questionIndex].question_type == '2'){
-                        // console.log('goooooo');
                         return <MultipleChoiceConatiner question={items[questionIndex]} number={questionIndex} ResItem={items[questionIndex].response && items[questionIndex].response.length > 0 ?  items[questionIndex].response[0].response_studentItem : ''} />
                     }
                     else if(items[questionIndex].question_type == '3'){
                         return <ShowTrueAndFalseQuestion question={items[questionIndex]} number={questionIndex} ResItem={ items[questionIndex].response && items[questionIndex].response.length > 0 ? items[questionIndex].response[0].response_studentItem : ''} />
                     }
                     else if(items[questionIndex].question_type == '6'){
-                        return <ShowSequentialQuestion question={items[questionIndex]} number={questionIndex} items={SeqRandomArray(items[questionIndex].question_seqItems)} ResItem={items[questionIndex].response && items[questionIndex].response.length > 0 ?  items[questionIndex].response[0].response_sequentialQuestion : []} />
+                        return <ShowSequentialQuestion question={items[questionIndex]} number={questionIndex} items={items[questionIndex].question_seqItems} ResItem={items[questionIndex].response && items[questionIndex].response.length > 0 ?  items[questionIndex].response[0].response_sequentialQuestion : []} />
+                        // return <ShowSequentialQuestion question={items[questionIndex]} number={questionIndex} items={SeqRandomArray(items[questionIndex].question_seqItems)} ResItem={items[questionIndex].response && items[questionIndex].response.length > 0 ?  items[questionIndex].response[0].response_sequentialQuestion : []} />
                     }
                     else if(items[questionIndex].question_type == '4'){
                         return <ShowVacancyQuestion question={items[questionIndex]} number={questionIndex} items={items[questionIndex].question_vancyItems} ResItem={items[questionIndex].response && items[questionIndex].response.length > 0 ?  items[questionIndex].response[0].response_vancyQuestion : ''}/>
                     }
                 }
-               
             })()}
             {/* ////////////////////////////// */}
             {

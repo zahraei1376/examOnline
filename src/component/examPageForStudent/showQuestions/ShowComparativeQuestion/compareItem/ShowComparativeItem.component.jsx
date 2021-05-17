@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect ,useState } from 'react';
 import {InputDivContainer , InputPre ,FirstSideContainer,SecondSideContainer,
     FirstSideResContainer,
     FirstSideRes,
@@ -8,13 +8,23 @@ import {InputDivContainer , InputPre ,FirstSideContainer,SecondSideContainer,
 // import Icon from '@material-ui/core/Icon';
 
 const ShowComparativeItem =({myIndex , item ,ResItem ,handleIndexDelete , handleIndexSet,handleRes})=>{
-    // const handleDelete = () =>{
-    //     handleIndexDelete(myIndex);
-    // }
+
+    const [myResItem , setMyResItem] = useState(null);
+    useEffect(()=>{
+        console.log('myResItemmyResItem',myResItem);
+    },[myResItem])
+
     useEffect(()=>{
         console.log('zzzzzzzzzzzzzzzzzzzzzz',item);
-        console.log('eeeeeeeeeeeee',ResItem[1]);
-    },[])
+        console.log('eeeeeeeeeeeee',ResItem);
+        setMyResItem(ResItem && ResItem.length > 0 ? ResItem[1] : '')
+    },[ResItem])
+
+    const hanldeValue = (vl) =>{
+        console.log('vl',vl);
+        setMyResItem(vl);
+        handleRes(myIndex , vl);
+    }
 
 
     return(
@@ -24,7 +34,10 @@ const ShowComparativeItem =({myIndex , item ,ResItem ,handleIndexDelete , handle
                     {item[0]}
                 </InputPre>
                 <FirstSideResContainer>
-                    <FirstSideRes type="number" defaultValue={ResItem[1]} onChange={e => handleRes(myIndex , e.target.value)} />
+                    <FirstSideRes 
+                    // type="number" 
+                    value = {myResItem}
+                     onChange={e => hanldeValue(e.target.value)} />
                 </FirstSideResContainer>
                 
 
