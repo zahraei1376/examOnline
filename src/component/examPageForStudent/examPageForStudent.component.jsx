@@ -47,12 +47,12 @@ const  ExamPageForStudent = ({questionIndex ,setLengthQuestions ,getTimeToAttend
         notifyOnNetworkStatusChange: true
     });
 
-    window.addEventListener('beforeunload', function (e) {
-        // Cancel the event
-        e.preventDefault(); // If you prevent default behavior in Mozilla Firefox prompt will always be shown
-        // Chrome requires returnValue to be set
-        e.returnValue = 'برای خارج شدن بلید دمه خروج را فشار دهید!!!';
-      });
+    // window.addEventListener('beforeunload', function (e) {
+    //     // Cancel the event
+    //     e.preventDefault(); // If you prevent default behavior in Mozilla Firefox prompt will always be shown
+    //     // Chrome requires returnValue to be set
+    //     e.returnValue = 'برای خارج شدن باید دکمه خروج را فشار دهید!!!';
+    //   });
 
     var second;
 
@@ -72,6 +72,10 @@ const  ExamPageForStudent = ({questionIndex ,setLengthQuestions ,getTimeToAttend
             tick();
             tickClear.current = setTimeout(run, 1000);
           }, 1000);
+
+        return () =>{
+            console.log('exittttttttttttttttttttttttttttttttttttt');
+        }
     },[])
 
     const [setDelayResponseStudent ,{ DelayData }] = useMutation(SET_DEALY_RESPONSE_STUDENT);
