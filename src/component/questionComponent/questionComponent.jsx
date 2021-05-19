@@ -7,7 +7,7 @@ import TrueAndFalse from './trueAndFalse/trueAndFalse.component';
 import Comparative from './Comparative/Comparative.component';//تطبیقی
 import Vacancy from './Vacancy/Vacancy.component';//جای خالی
 import Sequential from './Sequential/Sequential.component';//ترتیبی
-import {QuestionImageIconContainer ,QuestionImageIcon ,QuestionImageIconText,QuestionImageIconTextV} from './questionComponent.styles';
+import {QuestionImageIconContainer ,QuestionImageIcon ,QuestionImageIconText,QuestionImageIconTextV,AddRowBtn} from './questionComponent.styles';
 import descriptiveIcon from '../../assets/img/descriptiveQuestion.png';
 import descriptiveIcon2 from '../../assets/img/descriptiveQuestion2.png';
 import multiChoice from '../../assets/img/multiChoice.png';
@@ -30,6 +30,7 @@ import {ToggleQuestion} from '../../redux/toggleQuesion/toggleQuestion.selector'
 import { gql } from 'apollo-boost';
 import { useQuery ,useMutation} from 'react-apollo';
 import { GET_QUESTIONS ,GET_EXAMCHILD_QUESTIONS } from '../../graphql/resolver';
+import { Icon } from "@material-ui/core";
 /////////////////////////query
 export var loadVariable = {
   load:false,
@@ -193,8 +194,9 @@ const Questions = ({toggle ,courseName, examParentId,selectedEPId, questions}) =
   /////////////////////////////////////////
   function MyCreateArray(id , tableId){
     var tempAray=[];
-    tempAray.push(    {
-      'id': tableId ,
+    tempAray.push({
+      // 'id': tableId ,
+      'id': '' ,
       'question': '', 
       'question_score':'',
       'question_explane':'',
@@ -217,23 +219,37 @@ const Questions = ({toggle ,courseName, examParentId,selectedEPId, questions}) =
     console.log('item2', tempAray);
     return tempAray;
   }
+  ///////////////////////////////////////
+  const handleAddRow = () =>{
+    document.querySelector("[data-mycustomid='add-icon-handler']").parentNode.click();
+  }
     
   return (
+    <div style={{position:'relative'}}>
+    <AddRowBtn onClick={handleAddRow}>
+        افزودن سوال
+    </AddRowBtn>
     <MaterialTable
      style={{direction:'rtl'}}
     // dir="rtl"
       title="سوالات"
+      icons={{
+        Add: props => <Icon data-mycustomid={"add-icon-handler"} />
+      }}
       options={{
+        pageSize: 20,
         // actionsColumnIndex: -1,
         search: false,
         // paging: false,
             // search: false,
             // toolbar:false,
-        actionsColumnIndex: -1,
+        
         // tableLayout: "auto", 
         actionsCellStyle:{
           padding:'0 40px',
         },
+        actionsColumnIndex: -1,
+    // toolbarButtonAlignment:"left",
         toolbarButtonAlignment:"right", // here is the option to change toolbar buttons' alignment
         cellStyle: {
           textAlign:'center',
@@ -630,6 +646,7 @@ const Questions = ({toggle ,courseName, examParentId,selectedEPId, questions}) =
               }),
       }}
     />
+    </div>
   )
 }
 

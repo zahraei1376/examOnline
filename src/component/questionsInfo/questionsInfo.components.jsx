@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Accordion from '@material-ui/core/Accordion';
 import AccordionDetails from '@material-ui/core/AccordionDetails';
@@ -6,8 +6,17 @@ import AccordionSummary from '@material-ui/core/AccordionSummary';
 import Typography from '@material-ui/core/Typography';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 /////////////////////////////
-import {QuestionsInfoContainer} from './questionsInfo.styles';
+import {QuestionsInfosContainer , QuestionsInfoContainer,HeaderContainer ,HeaderGroup ,HeaderTitle} from './questionsInfo.styles';
 import QuestionInfo from './questionInfo/questionInfo.component';
+// /////////////////////////////query
+import { useQuery} from 'react-apollo';
+import { GET_EXAMCHILD_QUESTIONSInfo } from '../../graphql/resolver';
+/////////////////////////////////
+import {selectedExamParentId} from '../../redux/questionsCourses/questionsCourses.selector';
+// '../../../redux/questionsCourses/questionsCourses.selector';
+// //////////////////////////////////
+import {connect} from 'react-redux';
+import { createStructuredSelector} from 'reselect';
 /////////////////////////////
 
 const useStyles = makeStyles((theme) => ({
@@ -40,9 +49,60 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function QuestionsHeader({ courses }) {
+const QuestionsHeader = ({ courses ,selectedEPId}) => {
   const classes = useStyles();
   const [expanded, setExpanded] = React.useState(false);
+  const [courseList,setCourseList] = useState(courses ? courses : '')
+  ///////////////////////////////////////////////////////////
+  const { loading, error, data ,refetch  } = useQuery(GET_EXAMCHILD_QUESTIONSInfo , {
+    variables: { 
+      userName: "211",
+      password: "211",
+      id: selectedEPId,
+      // examChild_gId:'',
+    },
+    notifyOnNetworkStatusChange: true
+  });
+
+  useEffect(()=>{
+    console.log('dddddddddddddddddddddddddd');
+  })
+
+
+  useEffect(()=>{
+    console.log('data',data);
+    if(data){
+      var myCourses = [];
+      for (let index = 0; index < courses.length; index++) {
+        console.log('courses[index].group[0]',courses[index].group[0]);
+        console.log('data.examParents[0].examChild[0].Child_gId',data.examParents[0].examChild[0].examChild_gId);
+        if(courses[index].group[0] == data.examParents[0].examChild[0].examChild_gId)
+        {
+          
+          console.log('ffffff');
+          console.log('data.examParents[0].examChild[0].examChild_falseCoefficient',data.examParents[0].examChild[0].examChild_falseCoefficient);
+          console.log('data.examParents[0].examChild[0].examChild_courseCoefficient',data.examParents[0].examChild[0].examChild_courseCoefficient);
+          myCourses.push({
+              ...courses[index] , negativeCoefficient:data.examParents[0].examChild[0].examChild_falseCoefficient ,
+           coefficient:data.examParents[0].examChild[0].examChild_courseCoefficient,
+           examChild_pdf:data.examParents[0].examChild[0].examChild_pdf ? data.examParents[0].examChild[0].examChild_pdf : ''
+            })
+        }else{
+          console.log('nnnnnnnnnnnn');
+          myCourses.push({...courses[index]})
+        }
+        
+      }
+    //  console.log('data.examParents[0].examChild[0].Child_gId',data.examParents[0].examChild[0].examChild_gId);
+    //   var myCourses = courses.map(cour => cour.group[0] == data.examParents[0].examChild[0].examChild_gId ?
+    //      {...cour , negativeCoefficient:data.examParents[0].examChildByGId[0].examChild_falseCoefficient ,
+    //        coefficient:data.examParents[0].examChildByGId[0].examChild_courseCoefficient} 
+    //      : {...cour} );
+
+      setCourseList(myCourses);
+      console.log('myCourses',myCourses);
+    }
+  },[data]);
 
   const handleChange = (panel) => (event, isExpanded) => {
     setExpanded(isExpanded ? panel : false);
@@ -50,7 +110,11 @@ function QuestionsHeader({ courses }) {
 
   // useEffect(()=>{
   //     console.log('courses',courses);
-  // },[courses])
+  //     // for (let index = 0; index < array.length; index++) {
+  //     //   const element = array[index];
+        
+  //     // }
+  // },[data])
 
   return (
     <div className={classes.root}>
@@ -63,6 +127,7 @@ function QuestionsHeader({ courses }) {
           <Typography className={classes.secondaryHeading}>اطلاعات سوالات</Typography>
         </AccordionSummary>
         <AccordionDetails style={{
+          // width:'100%',
           textAlign: 'center',
           display: 'flex',
           flexDirection: 'column',
@@ -70,56 +135,46 @@ function QuestionsHeader({ courses }) {
           alignItems: 'center',
           fontFamily: 'BNazanin',
           fontSize:'1.3rem',
-          direction: 'rtl'
+          direction: 'rtl',
+          // overflowX:'scroll',
+          // position:'relative',
         }}>
-            {
-                courses && courses.length > 0 ? 
-                courses.map((course , index) =>(
-                    <QuestionsInfoContainer key={index}>
-                        <QuestionInfo course={course}/>
-                    </QuestionsInfoContainer>
-                ))
-                : ''
-            }
-{/* 
-          <Typography style={{
-            textAlign: 'center',
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-            fontFamily: 'BNazanin',
-            marginTop: '10px',
-            fontSize:'1.3rem',
-          }}>
-            تعداد افراد شرکت کننده در امتحان <span style={{ color: 'green', padding: '0 5px', }}>{numberTakeAnExam}</span> نفراست.
-          </Typography>
-          <Typography style={{
-            textAlign: 'center',
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-            marginTop: '10px',
-            fontFamily: 'BNazanin',
-            fontSize:'1.3rem',
-          }}>
-            بالا ترین نمره برای دانش آموز <span style={{ color: 'green', padding: '0 5px', }}>{topStudent ? topStudent.split('/')[0] : '-'} </span> با نمره <span style={{ color: 'green', padding: '0 5px', }}>{topStudent ? topStudent.split('/')[1] : '-'} </span> است.
-          </Typography>
-          <Typography style={{
-            textAlign: 'center',
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-            marginTop: '10px',
-            fontFamily: 'BNazanin',
-            fontSize:'1.3rem',
-          }}>
-            میانگین امتحان <span style={{ color: 'green', padding: '0 5px', }}>{averageScore}</span> نمره است.
-          </Typography>
-         */}
+          <QuestionsInfosContainer>
+            <HeaderContainer>
+              <HeaderGroup>
+                  <HeaderTitle>نام درس</HeaderTitle>
+              </HeaderGroup>
+              <HeaderGroup>
+                  <HeaderTitle>فایل</HeaderTitle>
+              </HeaderGroup>
+              <HeaderGroup>
+                  <HeaderTitle>ضریب منفی</HeaderTitle>
+              </HeaderGroup>
+              <HeaderGroup>
+                  <HeaderTitle>ضریب درس</HeaderTitle>
+              </HeaderGroup>
+              <HeaderGroup>
+                  <HeaderTitle>ارسال</HeaderTitle>
+              </HeaderGroup>
+            </HeaderContainer>
+              {
+                  courseList && courseList.length > 0 ? 
+                  courseList.map((course , index) =>(
+                      <QuestionsInfoContainer key={index}>
+                          <QuestionInfo course={course}/>
+                      </QuestionsInfoContainer>
+                  ))
+                  : ''
+              }
+            </QuestionsInfosContainer>
         </AccordionDetails>
       </Accordion>
     </div>
   );
 }
 
-export default QuestionsHeader;
+const mapStateToProps = createStructuredSelector({
+  selectedEPId:selectedExamParentId,
+});
+
+export default connect(mapStateToProps)(QuestionsHeader);

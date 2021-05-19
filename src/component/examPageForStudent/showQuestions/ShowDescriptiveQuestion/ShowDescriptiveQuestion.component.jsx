@@ -78,7 +78,10 @@ const ShowDescriptiveQuestion = ({question, number ,ResItem ,ResItemImage, getRe
     // },[])
     return(
         <ShowBodyQuestions question={question} number={number} ResItem={ResItem ? ResItem : getResponseStudentWithIndex}>
-            <DescriptionItem number={number} ResItem={ResItem ? ResItem : getResponseStudentWithIndex} ResItemImage={ResItemImage} />  
+            <DescriptionItem number={number} 
+            ResItem={getResponseStudentWithIndex  ? getResponseStudentWithIndex : ResItem}
+            // ResItem={ResItem ? ResItem : getResponseStudentWithIndex} ResItemImage={ResItemImage}
+             />  
         </ShowBodyQuestions>
     )
 };

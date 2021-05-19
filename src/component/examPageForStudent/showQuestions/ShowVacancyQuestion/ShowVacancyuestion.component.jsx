@@ -100,7 +100,7 @@ const ShowVacancyQuestion = ({question, number,items ,ResItem ,getResponseStuden
 
     return(
         <ShowBodyQuestions question={question} number={number}>
-            <VacancyItem number={number} items={items} ResItem={ResItem && ResItem.length > 0  ? ResItem : getResponseStudentWithIndex}/>
+            <VacancyItem number={number} items={items} ResItem={getResponseStudentWithIndex  ? getResponseStudentWithIndex : ResItem} />
         </ShowBodyQuestions>
     )
 };

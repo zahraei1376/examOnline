@@ -135,7 +135,10 @@ const ShowSequentialQuestion = ({question, number , items , ResItem , getRespons
                <SequentialItems number={number} setResForRedux={setResForRedux} items={items} ResItem={ResItem ? ResItem : getResponseStudentWithIndex} />
             )} */}
 
-            <SequentialItems number={number} items={items} ResItem={ResItem && ResItem.length > 0  ? ResItem : getResponseStudentWithIndex} />
+            <SequentialItems number={number} items={items} 
+            ResItem={getResponseStudentWithIndex  ? getResponseStudentWithIndex : ResItem}
+            // ResItem={ResItem && ResItem.length > 0  ? ResItem : getResponseStudentWithIndex}
+             />
             
         </ShowBodyQuestions>
     )

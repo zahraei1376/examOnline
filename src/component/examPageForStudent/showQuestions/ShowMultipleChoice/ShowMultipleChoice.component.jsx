@@ -128,7 +128,10 @@ const ShowMultipleChoiceItems = ({number,question,ResItem ,setResForRedux})=>{
 const ShowMultipleChoiceQuestion = ({question, number,ResItem ,getResponseStudentWithIndex}) =>{
     return(
         <ShowBodyQuestions question={question} number={number}>
-          <ShowMultipleChoiceItems number={number} question={question} ResItem={ResItem ? ResItem : getResponseStudentWithIndex}/>
+          <ShowMultipleChoiceItems number={number} question={question} 
+          ResItem={getResponseStudentWithIndex  ? getResponseStudentWithIndex : ResItem}
+          // ResItem={ResItem ? ResItem : getResponseStudentWithIndex}
+          />
         </ShowBodyQuestions>
     )
 };

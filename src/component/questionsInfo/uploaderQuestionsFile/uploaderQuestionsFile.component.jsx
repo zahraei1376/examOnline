@@ -15,7 +15,7 @@ const s3 = new AWS.S3({
     region: "us-east-1", // Put you region
   });
 
-function UploaderQuestionsFile({handleGetFileName ,SetCanSend ,fileId}) {
+function UploaderQuestionsFile({handleGetFileName ,SetCanSend ,fileId ,}) {
     
   const [s3Acl, setS3Acl] = useState();
   const [s3Url, setS3Url] = useState();
@@ -37,7 +37,6 @@ function UploaderQuestionsFile({handleGetFileName ,SetCanSend ,fileId}) {
     console.log("s3Date:", s3Date);
     console.log("s3Expires:", s3Expires);
     console.log("s3Bucket:", s3Bucket);
-    console.log('fileId',fileId);
   }, [
     s3Url,
     s3Key,
@@ -50,6 +49,10 @@ function UploaderQuestionsFile({handleGetFileName ,SetCanSend ,fileId}) {
     s3Bucket,
   ]);
   ////////////////////////////////////////////////////////////////
+  useEffect(()=>{
+
+    console.log('fileId',fileId);
+  },[]);
  const CheckFile = (myFile) =>{
   var file = myFile;
   var fileName = file.name;
@@ -86,14 +89,78 @@ function UploaderQuestionsFile({handleGetFileName ,SetCanSend ,fileId}) {
         <input type="hidden" name="X-Amz-Credential" value={s3Credential} />
         <input type="hidden" name="X-Amz-Algorithm" value={s3Algorithm} />
         <input type="hidden" name="X-Amz-Date" value={s3Date} />
+        {/* ////////////////////////////////////////////// */}
         <UploaderButtonSend type="button" 
+         id={`MySubmit${fileId}`} 
+         />
+        <label htmlFor = {`uploadPhotoAws${fileId}`}>
+            <input
+
+                style={{ display: 'none' }}
+
+                id = {`uploadPhotoAws${fileId}`}
+                type="file"
+                // name="file"
+                onChange={(event) => {
+                  console.log('changeeeeeeeeeeeeeeeeeeeeeeeeeee');
+                  const { target } = event;
+                  if(target.value.length > 0){
+                    if(CheckFile(event.target.files[0])){
+                      var FileNama = Date.now() + "-" + event.target.files[0].name;
+                      axios({
+                        url: "http://t1.ray-sa.ir:4000/sign_post",
+                        method: "post",
+                        data: {
+                            fileName: FileNama,
+                        },
+                      })
+                      .then(async (res) => {
+                        console.log(res);
+                        handleGetFileName(FileNama);
+                        console.log('myFileNama1',FileNama)
+                        var data = res.data;
+                        setS3Acl(data.fields.ACL);
+                        setS3Url(data.url);
+                        setS3Key(data.fields.key);
+                        setS3Expires(data.fields.Expires);
+                        setS3Bucket(data.fields.bucket);
+                        setS3Policy(data.fields.Policy);
+                        setS3Signature(data.fields["X-Amz-Signature"]);
+                        setS3Credential(data.fields["X-Amz-Credential"]);
+                        setS3Algorithm(data.fields["X-Amz-Algorithm"]);
+                        setS3Date(data.fields["X-Amz-Date"]);
+                          ////////////////////////////////////////////////////////////////////////////////
+                      })
+                      .catch((error) => {
+                          console.log(error);
+                      });
+                    }else{
+                      SetCanSend(false);
+                    }
+                  } 
+                }}
+            />
+            {/* <a>bbbbbbbbb</a> */}
+            <UploadButton>
+                <InsertDriveFileIcon style={{fontSize:'4rem',marginTop:'2px',}} />
+            </UploadButton>
+            {/* <UploadButton variant="contained" component="span">
+                <InsertDriveFileIcon style={{fontSize:'4rem'}} />
+            </UploadButton> */}
+        </label>
+
+{/* //////////////////////////////////////////////////////////////////////// */}
+        {/* <UploaderButtonSend type="button" 
          id={`MySubmit${fileId}`} />
         <label htmlFor={`uploadPhotoAws${fileId}`}>
+            <UploadButton variant="contained" component="span">
+                <InsertDriveFileIcon style={{fontSize:'4rem'}} />
+            </UploadButton>
             <input
                 style={{ display: 'none' }}
                 id={`uploadPhotoAws${fileId}`}
-                type="file"
-                name="file"
+                type='file'
+                // name="file"
                 onChange={(event) => {
                   const { target } = event;
                   if(target.value.length > 0){
@@ -132,10 +199,8 @@ function UploaderQuestionsFile({handleGetFileName ,SetCanSend ,fileId}) {
                   } 
                 }}
             />
-             <UploadButton variant="contained" component="span">
-                <InsertDriveFileIcon style={{fontSize:'4rem'}} />
-            </UploadButton>
-        </label>
+            
+        </label> */}
         
         {/* {
           showMessage ? <MySnackbar message={message} status={status} showMessage={showMessage} setShowMessage={setShowMessage} /> : ''
@@ -149,3 +214,8 @@ function UploaderQuestionsFile({handleGetFileName ,SetCanSend ,fileId}) {
 };
 
 export default UploaderQuestionsFile;
+//////////////////////////////////////////////////////
+
+
+
+

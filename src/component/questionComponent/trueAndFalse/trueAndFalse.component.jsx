@@ -341,37 +341,37 @@ const TrueAndFalse = ({setToggle , courseName, ...props}) => {
             
         }}
         ////////////////////////////////
-        actions={[
-          {
-            icon: 'delete',
-            tooltip: 'حذف',
-              onClick: async(event, rowData) => {
-                if(props.rowData && props.rowData.length > 0 && props.rowData[0].id){
-                  const dataDelete = [...innerData];
-                  const index = rowData.tableData.id;
-                  console.log('id', props.rowData[0].id);
-                  await deleteQuestionChild({ variables: { 
-                    userName: "211",
-                    password: "211",
-                    id: props.rowData[0].id
-                    } 
-                  }).then(res=>{
-                    if(res.data && res.data.deleteQuestionChild){
-                      props.handleFetchData();
-                    }else{
-                      props.handleFetchData();
-                    }
-                  })
-                  dataDelete.splice(index, 1);
-                  setInnerData([...dataDelete]);
-                }else{
-                  setStatus('0')
-                  setMessage('اطلاعاتی برای حذف وجود ندارد!!!')
-                  setShowMessage(!showMessage);
-                }
-              }
-          },
-        ]}
+        // actions={[
+        //   {
+        //     icon: 'delete',
+        //     tooltip: 'حذف',
+        //       onClick: async(event, rowData) => {
+        //         if(props.rowData && props.rowData.length > 0 && props.rowData[0].id){
+        //           const dataDelete = [...innerData];
+        //           const index = rowData.tableData.id;
+        //           console.log('id', props.rowData[0].id);
+        //           await deleteQuestionChild({ variables: { 
+        //             userName: "211",
+        //             password: "211",
+        //             id: props.rowData[0].id
+        //             } 
+        //           }).then(res=>{
+        //             if(res.data && res.data.deleteQuestionChild){
+        //               props.handleFetchData();
+        //             }else{
+        //               props.handleFetchData();
+        //             }
+        //           })
+        //           dataDelete.splice(index, 1);
+        //           setInnerData([...dataDelete]);
+        //         }else{
+        //           setStatus('0')
+        //           setMessage('اطلاعاتی برای حذف وجود ندارد!!!')
+        //           setShowMessage(!showMessage);
+        //         }
+        //       }
+        //   },
+        // ]}
         //////////////////////////////////
         editable={{
 
@@ -564,6 +564,43 @@ const TrueAndFalse = ({setToggle , courseName, ...props}) => {
              setToggle(false);
             
            }),
+         /////////////////////////////////////////
+         onRowDelete: oldData =>
+              new Promise((resolve, reject) => {
+                  setTimeout(async() => {
+                      // const dataDelete = [...data];
+                      // const index = oldData.tableData.id;
+                      // dataDelete.splice(index, 1);
+                      // setData([...dataDelete]);
+                      ///////////////////////////////
+                      if(props.rowData && props.rowData.length > 0 && props.rowData[0].id){
+                        // const dataDelete = [...innerData];
+                        // const index = rowData.tableData.id;
+                        console.log('id', props.rowData[0].id);
+                        await deleteQuestionChild({ variables: { 
+                          userName: "211",
+                          password: "211",
+                          id: props.rowData[0].id
+                          } 
+                        }).then(res=>{
+                          if(res.data && res.data.deleteQuestionChild){
+                            props.handleFetchData();
+                          }else{
+                            props.handleFetchData();
+                          }
+                        })
+                        // dataDelete.splice(index, 1);
+                        // setInnerData([...dataDelete]);
+                      }else{
+                        setStatus('0')
+                        setMessage('اطلاعاتی برای حذف وجود ندارد!!!')
+                        setShowMessage(!showMessage);
+                      }
+
+                      resolve();
+                  }, 1000);
+          })
+          ///////////////////////////////////////////////////////////////
        }}
       /> : ''}
       {

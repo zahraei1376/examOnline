@@ -9,30 +9,40 @@ export const QuestionInfoContainer = styled.div`
     justify-content:space-evenly;
     align-items:center;
     margin-bottom:2rem;
-    padding: 1rem 0;
+    padding: 4rem 0 0 0;
     // &:not(last-child){
     //     border-bottom:1px dashed #82b1ff;
     // }
     // border-bottom:1px dashed #000;
+
+    // @media screen and (max-width:375px){
+    //     flex-direction: column;
+    // }
 `;
 
 export const QuestionInfoGroup = styled.div`
     display:flex;
     justify-content:center;
     align-items:center;
+    width:20%;
 `;
 
 export const QuestionInfoCourseName = styled.h2`
     font-family:Bnazanin;
     font-size:2rem;
-    border-bottom:1px solid #000;
-    padding:1rem;
-    margin-left:2rem;
+    color:#37474F;
+    // border-bottom:1px solid #000;
+    // padding:1rem;
+    // margin-left:2rem;
 `;
 
 export const QuestionInfoUpload = styled.div`
-    width:10%;
+    // width:10%;
     // margin-left:2rem;
+    width:20%;
+    display:flex; 
+    justify-content:center;
+    align-items:center;
 `;
 
 
@@ -73,15 +83,34 @@ export const QuestionInfoInput = styled.input`
 //     }
 // `;
 
-export const BtnOk =styled(Button)`
-    font-size:4rem !important;
+// export const BtnOk =styled(Button)`
+//     width: 3rem !important;
+//     font-size:4rem !important;
+//     text-align:center;
+// `;
+
+export const BtnOk =styled.button`
+    width: 5rem;
+    height:4rem;
+    font-size:4rem;
     text-align:center;
+    border-radius:1rem;
+    border:1px solid #546E7A;
+    color:#546E7A;
+    background-color:transparent;
+    transition:all 0.3s;
+    cursor:pointer;
+    margin-left:2rem;
+    &:hover{
+        background-color:#eee;
+    }
 `;
 
-export const MyTextField =styled(TextField)`
+export const MyTextField = styled(TextField)`
     // font-size:4rem !important;
-    // text-align:center;
+    text-align: center !important;
     margin-bottom: 1rem !important;
+    width:50% !important;
 `;
 
 export const QuestionNameContainer = styled.div`

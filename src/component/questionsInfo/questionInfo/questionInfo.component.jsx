@@ -13,10 +13,11 @@ import MySnackbar from '../../../messageBox/messageBox.component';
 /////////////////////////////////
 import {selectedCourseName ,selectedExamParentId} from '../../../redux/questionsCourses/questionsCourses.selector';
 //////////////////////////////query
-import { useMutation} from 'react-apollo';
+import { useQuery ,useMutation} from 'react-apollo';
 import {SET_INFO_EXAMCHILD} from '../../../graphql/resolver';
 //////////////////////////////////////
 import MySpinner from '../../MySpinner/MySpinner.component';
+import { Link } from 'react-router-dom';
 /////////////////////////////////////
 const QuestionInfo = ({course ,selectedEPId}) => {
     const [addExamChildInfo ,{ data }] = useMutation(SET_INFO_EXAMCHILD);
@@ -31,14 +32,38 @@ const QuestionInfo = ({course ,selectedEPId}) => {
     const [fileName , setFileName ] = useState('');
     const [coefficient , setCoefficient ] = useState('');
     const [negativeCoefficient , setNegativeCoefficient ] = useState('');
+    const[examChildPdf,setExamChildPdf] = useState('');
     //////////////////////////////////////////
     const [MyFileId,setMyFileId] = useState('');
+    const [QuesionInfoDataState,setQuesionInfoDataState] = useState('');
     ////////////////////////////////////////////
     const [canSend , SetCanSend] = useState(true);
     useEffect(()=>{
-        console.log('course',course.group && course.group.length > 0 ? course.group[0] : '');
+        console.log('selectedEPId',selectedEPId);
+        console.log('course.group ? course.group : ',course.group ? course.group : '');
+        console.log('course.coefficient',course.coefficient);
+        setExamChildPdf(course.examChild_pdf);
+        setCoefficient(course.coefficient);
+        setNegativeCoefficient(course.negativeCoefficient);
         setMyFileId(course.group && course.group.length > 0 ? course.group[0] : '')
-    },[])
+    },[course])
+
+    // useEffect(()=>{
+    //     console.log('QuesionInfoData',QuesionInfoData);
+    //     setQuesionInfoDataState(QuesionInfoData && QuesionInfoData.examParents && QuesionInfoData.examParents.length > 0 ? QuesionInfoData.examParents[0].examChildByGId[0] : '');
+    // },[QuesionInfoData])
+
+    // useEffect(()=>{
+    //     setCoefficient(QuesionInfoDataState.examChild_courseCoefficient);
+    //     setNegativeCoefficient(QuesionInfoDataState.examChild_falseCoefficient);
+    //     setQuesionInfoDataState(QuesionInfoData && QuesionInfoData.examParents && QuesionInfoData.examParents.length > 0 ? QuesionInfoData.examParents[0].examChildByGId[0] : '');
+    // },[QuesionInfoDataState])
+
+    //////////////////
+    // examChild_falseCoefficient
+    //   examChild_courseCoefficient
+    //   examChild_pdf
+    //   /////////////////////
 
     const sendInfo = () =>{
         setClicked(true);
@@ -81,7 +106,7 @@ const QuestionInfo = ({course ,selectedEPId}) => {
                 dataExam.examChild_courseCoefficient = coefficient;
             }
             if(fileName != ''){
-                dataExam.examChild_pdf = fileName;
+                dataExam.examChild_pdf = `https://s3.ir-thr-at1.arvanstorage.com/raysa/${fileName}`;
             }
             console.log('handleResolvedA' , fileName);
            
@@ -125,15 +150,28 @@ const QuestionInfo = ({course ,selectedEPId}) => {
     return (
         <>
             <QuestionInfoContainer>
-                <QuestionNameContainer>
-                    {/* <QuestionInfoGroup> */}
+                {/* <QuestionNameContainer>
                         <QuestionInfoCourseName>
                             {course.course}
                         </QuestionInfoCourseName>
+                        {
+                            examChildPdf ? <a href = {examChildPdf}>لینک</a> : ''
+                        }
+                        
                         {loading ? <MySpinner/> : ''}
-                    {/* </QuestionInfoGroup> */}
-                </QuestionNameContainer>
+                </QuestionNameContainer> */}
                 <QuestionExteraInfo>
+
+                    <QuestionInfoGroup>
+                        <QuestionInfoCourseName>
+                            {course.course}
+                        </QuestionInfoCourseName>
+                        {/* {
+                            examChildPdf ? <a href = {examChildPdf}>لینک</a> : ''
+                        } */}
+                        
+                        {/* {loading ? <MySpinner/> : ''} */}
+                    </QuestionInfoGroup>
                     <QuestionInfoUpload>
                         <UploaderQuestionsFile 
                             handleGetFileName={handleGetFileName} 
@@ -144,25 +182,32 @@ const QuestionInfo = ({course ,selectedEPId}) => {
                 
                 
                     <QuestionInfoGroup>
-                        <MyTextField id="standard-basic" type="number" label="ضریب درس" onChange={e => setCoefficient(e.target.value)} />
+                        <MyTextField id="standard-basic" style={{textAlign:'center'}} type="number" label="ضریب درس" value={coefficient} onChange={e => setCoefficient(e.target.value)} />
                         {/* <QuestionInfoLabel>ضریب درس</QuestionInfoLabel>
                         <QuestionInfoInput type="number" onChange={e => setCoefficient(e.target.value)} /> */}
                     </QuestionInfoGroup>
                     <QuestionInfoGroup>
-                        <MyTextField id="standard-basic" type="number" label="ضریب منفی" onChange={e => setNegativeCoefficient(e.target.value)} />
+                        <MyTextField id="standard-basic" style={{textAlign:'center'}} type="number" label="ضریب منفی" value={negativeCoefficient} onChange={e => setNegativeCoefficient(e.target.value)} />
                         {/* <QuestionInfoLabel>ضریب منفی</QuestionInfoLabel>
                         <QuestionInfoInput type="number" onChange={e => setNegativeCoefficient(e.target.value)} /> */}
                     </QuestionInfoGroup>
-                    <Tooltip title="تایید" aria-label="تایید"  style={{ fontSize:'3rem'}} >
+                    <QuestionInfoGroup>
+                        <Tooltip title="تایید" aria-label="تایید"  style={{ fontSize:'3rem'}} >
                         {/* <BtnOk 
                             onClick={sendInfo}
                         >
                             <DoneIcon style={{ fontSize:'3rem'}} />
                         </BtnOk> */}
-                        <BtnOk variant="outlined" color="primary" onClick={sendInfo} disabled={clicked}>
+                        {/* <BtnOk variant="outlined" color="primary" onClick={sendInfo} disabled={clicked}>
                             <DoneIcon style={{ fontSize:'3rem'}} />
+                        </BtnOk> */}
+                        <BtnOk onClick={sendInfo} disabled={clicked}>
+                            <DoneIcon style={{ fontSize:'3rem',marginTop:'2px'}} />
                         </BtnOk>
                     </Tooltip>
+                    {loading ? <MySpinner/> : ''}
+                    </QuestionInfoGroup>
+                    
             
                 </QuestionExteraInfo>
                 

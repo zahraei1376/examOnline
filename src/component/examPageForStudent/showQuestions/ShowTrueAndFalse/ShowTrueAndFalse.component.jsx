@@ -94,7 +94,10 @@ const ShowTrueAndFalseItems = ({number,question,ResItem ,setResForRedux})=>{
 const ShowTrueAndFalseQuestion = ({question, number,ResItem ,getResponseStudentWithIndex}) =>{
     return(
         <ShowBodyQuestions question={question} number={number}>
-            <ShowTrueAndFalseItems number={number} question={question} ResItem={ResItem ? ResItem : getResponseStudentWithIndex}/>
+            <ShowTrueAndFalseItems number={number} question={question} 
+            ResItem={getResponseStudentWithIndex  ? getResponseStudentWithIndex : ResItem}
+            // ResItem={ResItem ? ResItem : getResponseStudentWithIndex}
+            />
         </ShowBodyQuestions>
     )
 };

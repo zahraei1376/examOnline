@@ -322,6 +322,36 @@ query examParents(
 }
 `;
 
+///////////////
+const GET_EXAMCHILD_QUESTIONSInfo = gql` 
+query examParents(
+  $userName: String!,
+  $password: String!,
+  $id:  String!,
+  ){
+  examParents(
+    userName: $userName,
+    password: $password,
+    id:$id
+  ){
+    id
+    examChild
+    {
+      id
+      groups{
+        id
+        course
+      }
+      examChild_gId
+      examChild_epId
+      examChild_falseCoefficient
+      examChild_courseCoefficient
+      examChild_pdf
+    }
+  }
+}
+`;
+
 const SendRequestQuestionChild = async (QuestionData , uploadID , selectedFileName ,setQuestionChild) =>{
   console.log('QuestionData',QuestionData);
   console.log('uploadID',uploadID);
@@ -377,4 +407,4 @@ const SendRequestQuestionChild = async (QuestionData , uploadID , selectedFileNa
 
 
 export { SET_QUESTION_CHILD, GET_QUESTIONS ,DELETE_QUESTIONCHILD ,SET_RESPONSE_STUDENT ,
-         SET_DEALY_RESPONSE_STUDENT ,SET_INFO_EXAMCHILD,GET_EXAMCHILD_QUESTIONS ,SendRequestQuestionChild};
+         SET_DEALY_RESPONSE_STUDENT ,SET_INFO_EXAMCHILD,GET_EXAMCHILD_QUESTIONS,GET_EXAMCHILD_QUESTIONSInfo ,SendRequestQuestionChild};

@@ -94,7 +94,10 @@ const ShowComparativeQuestion = ({question, number,items ,ResItem ,getResponseSt
     return(
         <ShowBodyQuestions question={question} number={number}>
 
-            <ShowComparativeItems number={number}  items={items} ResItem={ResItem && ResItem.length > 0 ? ResItem : getResponseStudentWithIndex}/>
+            <ShowComparativeItems number={number}  items={items} 
+            ResItem={getResponseStudentWithIndex  ? getResponseStudentWithIndex : ResItem}
+            // ResItem={ResItem && ResItem.length > 0 ? ResItem : getResponseStudentWithIndex}
+            />
             
         </ShowBodyQuestions>
     )
