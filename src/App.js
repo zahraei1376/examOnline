@@ -10,6 +10,7 @@ import ArchiveForStudent from './component/archiveForStudent/archiveForStudent.c
 import AddExamForTeacherContainer from './component/addExamComponent/addExamComponent.container';
 import QuestionsComponentContainer from './component/questionComponent/questionComponent.container';
 // import QuestionsPageContainer from './pages/questionPage.container';
+import ExamsListPage from './pages/LoginToExamPage/LoginToExamPage.page';
 /////////////////////////////////////////////////////////////////////
 import MyParentTest from './mytestCoponent/myparenttest';
 import {getTimeAtServer} from './generalComponent/Clock/getTime';
@@ -46,6 +47,9 @@ const App = () => {
         </Route>
         <Route exact path="/examPageForStudent">
           <ExamPageForStudent />
+        </Route>
+        <Route exact path="/examsList">
+          <ExamsListPage />
         </Route>
       </Switch>
     </div>

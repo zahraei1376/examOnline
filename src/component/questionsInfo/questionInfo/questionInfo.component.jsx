@@ -70,18 +70,24 @@ const QuestionInfo = ({course ,selectedEPId}) => {
         setLoading(true);
         const SendFilePromise = new Promise((resolve, reject) => {
             if(fileName != ''){
+                console.log('exist file');
                 var myForm = document.getElementById(`myForm${MyFileId}`);
                 if(myForm){
+                    console.log('canSendcanSend',canSend);
                     if(!!canSend){
                         document.getElementById(`myForm${MyFileId}`).submit();
                         resolve();
                     }else{
-                        reject();
+                        // setFileName('');
+                        // document.getElementById(`uploadPhotoAws${MyFileId}`).value='';
+                        reject("فایل درستی را امتخاب کنید!!!");
                         // reject(new Error("فایل درستی را امتخاب کنید!!!"));
                     }
                     
                 }
             }else{
+                console.log('not file');
+                // reject("فایل درستی را امتخاب کنید!!!");
                 resolve();
             }
         });
@@ -129,13 +135,13 @@ const QuestionInfo = ({course ,selectedEPId}) => {
                     setLoading(false);
                   }
                 })
-            },3000);
+            },5000);
             
         })
         .catch(err =>{
             console.log(err);
             setStatus('0')
-            // setMessage(err)
+            setMessage(err)
             setShowMessage(!showMessage);
             setClicked(false);
             setLoading(false);

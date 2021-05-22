@@ -7,6 +7,7 @@ export const ShowQuestionsContainer = styled.div`
 
 export const ShowQuestionsCourseNameContainer = styled.div`
     // margin-top:3rem;
+    // width:33.3%;
     
 `;
 
@@ -43,12 +44,13 @@ export const ShowInfoExam = styled.div`
 `;
 
 export const ExitButtonContainer = styled.div`
-    position:absolute;
+    // position:absolute;
     // top:0;
     right:5rem;
     display:flex;
     justify-content:center;
     align-items:center;
+    // width:33.3%;
 `;
 
 export const ExitButton = styled.button`
@@ -73,4 +75,18 @@ export const ExitButton = styled.button`
         // color:#fff;
         // border:1px solid #fff;
     }
+`;
+
+export const QuestipnsLinkDiv = styled.div`
+ 
+`;
+
+export const QuestipnsLink = styled.a`
+    border-bottom:1px solid #3f87a6;
+    display: inline-block;
+    padding:1rem 0;
+    color:#000;
+    text-decoration:none;
+    font-family:Bnazanin;
+    font-size:1.8rem;
 `;

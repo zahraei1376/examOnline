@@ -153,6 +153,7 @@ const ShowBodyQuestions = ({
     ///////////////////////////////////////////
     return(
     <BodyContainer>
+        {/* {question.examChildLink ? <a href={question.examChildLink}>jjjjjjjjjjjj</a> : ''} */}
         <BodyQuestionBoxWithChildren>
         <BodyQuestionBox>
             {(() => {

@@ -83,6 +83,9 @@ export const UploadButton = styled.div`
     // background-color:#3f87a6 !important;
     border:1px solid transparent;
     text-align:center;
+    display:flex;
+    justify-content: center;
+    align-items:center;
     &:hover{
         background-color:#eee ;
         border:1px solid #3f87a6;

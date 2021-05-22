@@ -131,6 +131,7 @@ const GET_QUESTIONS = gql`
         }
         examChild_gId
         examChild_epId
+        examChild_pdf
         questionParent
         {
           id
@@ -351,7 +352,39 @@ query examParents(
   }
 }
 `;
-
+///////////////////////////
+const GET_EXAMS_FOR_STUDENT = gql`
+  query groupsListByStudent(
+    $userName: String,
+    $password: String,
+    $level: String,
+    $class: String,
+    $date: String,
+    ){
+      groupsListByStudent(
+      userName: $userName,
+      password: $password,
+      level: $level,
+      class: $class,
+    ){
+      id
+      course
+      people{
+        name
+        surname
+      }
+      examParentsListByDate(date: $date)
+      {
+        id
+        examParent_start_date
+        examParent_stop_date
+        examParent_start
+        examParent_end
+      }
+    }
+  }
+`;
+/////////////////////////////////////
 const SendRequestQuestionChild = async (QuestionData , uploadID , selectedFileName ,setQuestionChild) =>{
   console.log('QuestionData',QuestionData);
   console.log('uploadID',uploadID);
@@ -407,4 +440,5 @@ const SendRequestQuestionChild = async (QuestionData , uploadID , selectedFileNa
 
 
 export { SET_QUESTION_CHILD, GET_QUESTIONS ,DELETE_QUESTIONCHILD ,SET_RESPONSE_STUDENT ,
-         SET_DEALY_RESPONSE_STUDENT ,SET_INFO_EXAMCHILD,GET_EXAMCHILD_QUESTIONS,GET_EXAMCHILD_QUESTIONSInfo ,SendRequestQuestionChild};
+         SET_DEALY_RESPONSE_STUDENT ,SET_INFO_EXAMCHILD,GET_EXAMCHILD_QUESTIONS,
+         GET_EXAMCHILD_QUESTIONSInfo ,GET_EXAMS_FOR_STUDENT,SendRequestQuestionChild};

@@ -95,7 +95,7 @@ const ShowComparativeQuestion = ({question, number,items ,ResItem ,getResponseSt
         <ShowBodyQuestions question={question} number={number}>
 
             <ShowComparativeItems number={number}  items={items} 
-            ResItem={getResponseStudentWithIndex  ? getResponseStudentWithIndex : ResItem}
+            ResItem = {getResponseStudentWithIndex  ? getResponseStudentWithIndex : ResItem}
             // ResItem={ResItem && ResItem.length > 0 ? ResItem : getResponseStudentWithIndex}
             />
             

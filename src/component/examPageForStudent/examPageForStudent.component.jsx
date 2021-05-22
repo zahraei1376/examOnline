@@ -1,4 +1,5 @@
 import React , {useState,useEffect,useRef} from 'react';
+import { useLocation } from "react-router-dom";
 import ShowDescriptiveQuestion from './showQuestions/ShowDescriptiveQuestion/ShowDescriptiveQuestion.component';
 import ShowComparativeQuestion from './showQuestions/ShowComparativeQuestion/ShowComparativeQuestion.component';
 import MultipleChoiceConatiner from './showQuestions/ShowMultipleChoice/ShowMultipleChoice.component';
@@ -25,7 +26,7 @@ import MySnackbar from '../../messageBox/messageBox.component';
 ////////////////////////////////
 import {ShowQuestionsContainer,ShowInfoExam ,ShowQuestionsCourseNameContainer ,
      ShowQuestionsCourseName ,ShowLoginTimeContainer ,ShowLoginTime,
-     ExitButtonContainer,ExitButton} from './examPageForStudent.styles';
+     ExitButtonContainer,ExitButton,QuestipnsLinkDiv,QuestipnsLink} from './examPageForStudent.styles';
 ///////////////////////////////////////time
 // import { realeTime } from '@components/Clock/getTime';
 // import { fixNumbers } from '@components/FixNumbers/fixNumbers';
@@ -40,10 +41,13 @@ moment().format('jYYYY/jMM/jDD')
 /////////////////////////////////////////
 const  ExamPageForStudent = ({questionIndex ,setLengthQuestions ,getTimeToAttendTheExamPage, setTypeIncreaseQuestions ,runningTimeOfTimeForSolveQuestions ,SetTimeToAttendTheExamPage}) =>{
     ///////////////////////////////////////////////////
+    
+    let location = useLocation();
+
     const { loading, error, data ,refetch  } = useQuery(GET_QUESTIONS , {
         variables: {  userName: "211",
         password: "211",
-        id: "60a217b4244099062a5ffe8a" },
+        id: location && location.state.examPId ? location.state.examPId : '' },
         notifyOnNetworkStatusChange: true
     });
 
@@ -58,6 +62,10 @@ const  ExamPageForStudent = ({questionIndex ,setLengthQuestions ,getTimeToAttend
 
     useEffect(()=>{
         console.log('getTimeToAttendTheExamPage',getTimeToAttendTheExamPage);
+        console.log('type Of getTimeToAttendTheExamPage',typeof getTimeToAttendTheExamPage);
+        // if(){
+
+        // }
         var convertArray = getTimeToAttendTheExamPage.split(':');
         var hour = convertArray && convertArray.length > 0 &&  convertArray[0] ? convertArray[0] : 0;
         var min = convertArray && convertArray.length > 0 &&  convertArray[1] ? convertArray[1] : 0;
@@ -74,7 +82,13 @@ const  ExamPageForStudent = ({questionIndex ,setLengthQuestions ,getTimeToAttend
           }, 1000);
 
         return () =>{
-            console.log('exittttttttttttttttttttttttttttttttttttt');
+            clearInterval(timerClear.current);
+            clearInterval(CheckTheEndOfTheExam);
+            if(sendReqDelay){
+                clearTimeout(sendReqDelay);
+            }
+            clearTimeout(setTimeToPageTimeOut);
+            clearTimeout(tickClear.current);
         }
     },[])
 
@@ -86,7 +100,7 @@ const  ExamPageForStudent = ({questionIndex ,setLengthQuestions ,getTimeToAttend
     const [status,setStatus] =useState(0);
     const [time, setTime] = useState('');
     /////////////////////timer
-    const [loginTime, setLoginTime] = useState(0);
+    const [loginTime, setLoginTime] = useState('0');
     ///////////////////////////////////////////////////
     const countRef = useRef(loginTime);
     countRef.current = loginTime;
@@ -103,6 +117,32 @@ const  ExamPageForStudent = ({questionIndex ,setLengthQuestions ,getTimeToAttend
 
     useEffect(()=>{
         console.log('exist item',items);
+        if(items.length > 0){///برای فرستادن تاخیر
+            console.log('datadarvakonmonom',data);
+            if (data.examParents[0].examParent_method == 1) {
+                sendReqDelay = setInterval(() => {
+                    setDelayResponseStudent({ variables: { 
+                        userName: "210", 
+                        password: "210", 
+                        delay: time,
+                        ecI: data.examParents[0].id, 
+                    } 
+                    }).then(res=>{
+                        if(res.data && res.data.setDelayResponseStudent){
+                            console.log('data',data);
+                            // setMessage('امتحان ثبت شد');
+                            // setStatus('1');
+                            // setShowMessage(!showMessage);
+                        }else{
+                            console.log('data',data);
+                            // setStatus('0')
+                            // setMessage('امتحان ثبت نشد')
+                            // setShowMessage(!showMessage);
+                        }
+                    })
+                }, 60000);
+            }
+        }
     },[items]);
 
     ///////////////////////////////////////////////////loginTime
@@ -305,6 +345,7 @@ const  ExamPageForStudent = ({questionIndex ,setLengthQuestions ,getTimeToAttend
         // console.log('mergeQ',mergeQ);
         ///////////////////////////////////////////////
         for await (let myallQuestion of allQuestons) {
+            var examChildLink = myallQuestion.examChild_pdf;
             var counterQuestionsParent = myallQuestion;
             var courseName = myallQuestion && myallQuestion.groups && myallQuestion.groups.length > 0 ? myallQuestion.groups[0].course : '';
             var teacherName = myallQuestion && myallQuestion.groups && myallQuestion.groups.length > 0 && myallQuestion.groups[0].people && myallQuestion.groups[0].people.length > 0 ?  myallQuestion.groups[0].people[0].name + ' ' + myallQuestion.groups[0].people[0].surname : '';
@@ -313,6 +354,7 @@ const  ExamPageForStudent = ({questionIndex ,setLengthQuestions ,getTimeToAttend
             if( questionParentForExamChild && questionParentForExamChild.length > 0){
                for (let j = 0; j < questionParentForExamChild.length; j++) {
                    console.log('yeyee');
+                   var questionLink
                    if(questionParentForExamChild[j].questionChild && questionParentForExamChild[j].questionChild.length > 0){
                        if(questionParentForExamChild[j].questionChild[0].question_type == '6'){
                          
@@ -321,12 +363,16 @@ const  ExamPageForStudent = ({questionIndex ,setLengthQuestions ,getTimeToAttend
                              ...questionParentForExamChild[j].questionChild[0] ,
                              question_seqItems: mySeqRandomArray,
                              courseName:courseName,
-                            teacherName:teacherName });
+                            teacherName:teacherName,
+                            examChildLink:examChildLink,
+                         });
                          mergeQ.push({
                              ...questionParentForExamChild[j].questionChild[0] ,
                              question_seqItems: mySeqRandomArray,
                              courseName:courseName,
-                            teacherName:teacherName });
+                            teacherName:teacherName,
+                            examChildLink:examChildLink,
+                        });
                        }else if(questionParentForExamChild[j].questionChild[0].question_type == '5')
                        {
                          var myRandomArray = RandomArray(questionParentForExamChild[j].questionChild[0].question_compItems);
@@ -337,12 +383,14 @@ const  ExamPageForStudent = ({questionIndex ,setLengthQuestions ,getTimeToAttend
                          mergeQ.push({...questionParentForExamChild[j].questionChild[0] ,
                              question_compItems: myRandomArray,
                              courseName:courseName,
-                            teacherName:teacherName });
+                            teacherName:teacherName,
+                            examChildLink:examChildLink, });
                        }else{
                          console.log('questionParentForExamChild[j].questionChild[0]',questionParentForExamChild[j].questionChild[0].question_type);
                          mergeQ.push({...questionParentForExamChild[j].questionChild[0] ,
                              courseName:courseName,
-                            teacherName:teacherName });
+                            teacherName:teacherName,
+                            examChildLink:examChildLink, });
                        }
                      // console.log('myallQuestion[j].questionChild[0]',myallQuestion[j].questionChild[0]);
                      // mergeQ.push({...myallQuestion[j].questionChild[0] ,
@@ -506,6 +554,14 @@ const  ExamPageForStudent = ({questionIndex ,setLengthQuestions ,getTimeToAttend
                 <ShowQuestionsCourseNameContainer>
                     <ShowQuestionsCourseName>نام درس : {items.length > 0 ? items[questionIndex].courseName : ''}</ShowQuestionsCourseName>
                 </ShowQuestionsCourseNameContainer>
+                {
+                    items.length > 0 && items[questionIndex].examChildLink ? 
+                    <QuestipnsLinkDiv>
+                        <QuestipnsLink href={items[questionIndex].examChildLink}>لینک سوالات</QuestipnsLink>
+                    </QuestipnsLinkDiv>
+                    : ''
+                }
+                
             </ShowInfoExam>
             {/* ////////////////////////////// */}
             {(() => {
