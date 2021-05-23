@@ -215,7 +215,7 @@ import BackupIcon from '@material-ui/icons/Backup';
 import AddIcon from '@material-ui/icons/Add';
 import AttachFileIcon from '@material-ui/icons/AttachFile';
 import InsertDriveFileIcon from '@material-ui/icons/InsertDriveFile';
-import {UploadButton  ,UploaderButtonSend} from './uploaderQuestionsFile.styles';
+import {UploadButton , UploadButtonExist  ,UploaderButtonSend} from './uploaderQuestionsFile.styles';
 import MySnackbar from '../../../messageBox/messageBox.component';
 const AWS = require("aws-sdk");
 
@@ -229,7 +229,7 @@ const s3 = new AWS.S3({
     region: "us-east-1", // Put you region
   });
 
-function UploaderQuestionsFile({handleGetFileName ,SetCanSend  , fileId ,}) {
+function UploaderQuestionsFile({handleGetFileName ,SetCanSend  , fileId , existFile}) {
     
   const [s3Acl, setS3Acl] = useState();
   const [s3Url, setS3Url] = useState();
@@ -367,10 +367,32 @@ function UploaderQuestionsFile({handleGetFileName ,SetCanSend  , fileId ,}) {
                     } 
                 }}
             />
-            <UploadButton variant="contained" component="span">
+            {
+              existFile 
+                ? 
+                <UploadButtonExist variant="contained" component="span" >
+                    <InsertDriveFileIcon style={{fontSize:'4rem'}} />
+                </UploadButtonExist>  
+                :
+                <UploadButton variant="contained" component="span" >
+                  <InsertDriveFileIcon style={{fontSize:'4rem'}} />
+                </UploadButton>
+            }
+            {/* <UploadButton variant="contained" component="span" 
+            // {
+            //   (()=>{
+            //       if(existFile){
+            //           return bgColor= existFile
+            //       }
+            //   })()
+            // }
+              // {existFile ? bgColor= existFile : ''}
+              // bgColor = {existFile ? true : null}
+            >
                 <InsertDriveFileIcon style={{fontSize:'4rem'}} />
-            </UploadButton>
+            </UploadButton> */}
         </label>
+        
 
         {/* /////////////////////////////////////////////////////////////////////////////// */}
         {

@@ -8,7 +8,11 @@ import {fixNumbers} from '../../generalComponent/fixNumbers';
 // import { ConvertToString } from '@components/ConvertToString/ConvertToString';
 // import { useSelector } from 'react-redux';
 // import AppContext from 'app/AppContext';
-
+/////////////////////////////
+/////////////////////////////////////////////////query
+import { useQuery} from 'react-apollo';
+import { GET_EXAMS_FOR_STUDENT } from '../../graphql/resolver';
+////////////////////////////////////////////////
 
 var moment2 = require('moment-timezone');
 moment2().tz("Asia/Tehran").format();
@@ -21,9 +25,20 @@ const MaterialTableAxamsForStudent = ({ selectedDate, setCourseName, setLevel, s
   /////////////////////////
   // const appContext = useContext(AppContext);
   // const user = useSelector(({ auth }) => auth.user);
+  /////////////////////////////////////////////////////////////////
+  const { loading, error, data ,refetch  } = useQuery(GET_EXAMS_FOR_STUDENT , {
+    variables: {  userName: "210",
+    password: "210",
+    level: "1",
+    class: "1",
+    date: selectedDate },
+    notifyOnNetworkStatusChange: true
+  });
+////////////////////////////////////////////////////////////////////////
   const [showPopUpScore, setShowPopUpScore] = useState(false);
   const [popUpScoreStudent, setPopUpScoreStudent] = useState(null);
   const [examId , setExamId] = useState('');
+  const [rowsTable,setRowsTable] =  useState([]);
   // const [time, setTime] = useState(
   //   realeTime.toLocaleTimeString([], {
   //     timeZone: "Asia/Tehran",
@@ -44,22 +59,79 @@ const MaterialTableAxamsForStudent = ({ selectedDate, setCourseName, setLevel, s
     // })
     );
 
-  const [getDate, setGetDate] = useState(fixNumbers(moment().format('jYYYY/jMM/jDD')));
+    useEffect(()=>{
+      refetch()
+    },[selectedDate]);
 
+    useEffect(()=>{
+      if(data && data.groupsListByStudent){
+        console.log('data.groupsListByStudent',data.groupsListByStudent);
+          // setDate(data.groupsListByStudent);
+          createRows(data.groupsListByStudent);
+      }
+  },[data]);
+
+  const [getDate, setGetDate] = useState(fixNumbers(moment().format('jYYYY/jMM/jDD')));
+///////////////////////////////////////
+////////////////////////////////////
+function createData(
+  id,
+  course_name ,
+  teacher_name,
+  examParent_topic ,
+  examParent_start_date,
+  examParent_stop_date,
+  examParent_start,
+  examParent_end,
+  ) {
+  return {
+      id : id,
+      exam_courseName : course_name ,
+      teacher_name : teacher_name ,
+      examParent_topic : examParent_topic ,
+      examParent_start_date : examParent_start_date ,
+      examParent_stop_date : examParent_stop_date ,
+      examParent_start : examParent_start ,
+      examParent_end : examParent_end ,
+  }
+}
+////////////////////////////////////
+function createRows(exams){
+  console.log('exams',exams);
+  var MyRows = [];
+  for (let index = 0; index < exams.length; index++) {
+      var EPD = exams[index].examParentsListByDate;
+      if(EPD && EPD.length > 0 ){
+          var cn = exams[index].course;
+          for (let index2 = 0; index2 < EPD.length; index2++) {
+              MyRows.push(createData(
+                  EPD[index2].id,
+                  cn,
+                  exams[index].people[0].name + ' ' + exams[index].people[0].surname ,
+                  EPD[index2].examParent_topic,
+                  EPD[index2].examParent_start_date,
+                  EPD[index2].examParent_stop_date,
+                  EPD[index2].examParent_start,
+                  EPD[index2].examParent_end,
+                  )
+              )
+              
+          }
+          
+      }else{
+
+      }
+  }
+  console.log('MyRowsMyRows',MyRows);
+  setRowsTable(MyRows);
+}
+////////////////////////////////////
 
   const togglePopup = () => {
     // setExamId('');
     // setShowPopUpScore(!showPopUpScore);
     setShowPopUpScore(false);
   };
-  //////////////////////////
-  const [data, setData] = React.useState([
-    {exam_start_date:'14/1/1400',exam_end_date:'14/1/1400',exam_start:'10:30:00',exam_end:'12:30:00',exam_level:'اول',exam_className:'ب',exam_courseName:'ریاضی',exam_topic:'ریاضی' ,exam_maxScore:'20'},
-    {exam_start_date:'14/1/1400',exam_end_date:'14/1/1400',exam_start:'10:30:00',exam_end:'12:30:00',exam_level:'اول',exam_className:'ب',exam_courseName:'ریاضی',exam_topic:'ریاضی' ,exam_maxScore:'20'},
-    {exam_start_date:'14/1/1400',exam_end_date:'14/1/1400',exam_start:'10:30:00',exam_end:'12:30:00',exam_level:'اول',exam_className:'ب',exam_courseName:'ریاضی',exam_topic:'ریاضی' ,exam_maxScore:'20'},
-    {exam_start_date:'14/1/1400',exam_end_date:'14/1/1400',exam_start:'10:30:00',exam_end:'12:30:00',exam_level:'اول',exam_className:'ب',exam_courseName:'ریاضی',exam_topic:'ریاضی' ,exam_maxScore:'20'},
-    {exam_start_date:'14/1/1400',exam_end_date:'14/1/1400',exam_start:'10:30:00',exam_end:'12:30:00',exam_level:'اول',exam_className:'ب',exam_courseName:'ریاضی',exam_topic:'ریاضی' ,exam_maxScore:'20'},
-  ]);
   //////////////////////////
   const [columns, setColumns] = React.useState([
     {
@@ -74,13 +146,13 @@ const MaterialTableAxamsForStudent = ({ selectedDate, setCourseName, setLevel, s
             textAlign: 'center',
             width: '50px'
           }}>
-            {data.exam_data}
+            {data.examParent_start_date}
           </p>)
       },
     },
     {
       title: 'تاریخ پایان امتحان',
-      field: 'exam_end_date',
+      field: 'examParent_stop_date',
       editable: 'never',
       render: data => {
         return (
@@ -90,13 +162,13 @@ const MaterialTableAxamsForStudent = ({ selectedDate, setCourseName, setLevel, s
             textAlign: 'center',
             width: '50px'
           }}>
-            {data.exam_data}
+            {data.examParent_stop_date}
           </p>)
       },
     },
     {
       title: ' شروع امتحان',
-      field: 'exam_start',
+      field: 'examParent_start',
       editable: 'never',
       type: 'datetime',
       render: data => {
@@ -107,14 +179,14 @@ const MaterialTableAxamsForStudent = ({ selectedDate, setCourseName, setLevel, s
             fontFamily: 'BNazaninBold',
             fontSize: 16,
           }}>
-            {data.exam_start}
+            {data.examParent_start}
             {/* {moment(data.exam_start).format('HH:mm:00')} */}
           </p>)
       },
     },
     {
       title: ' پایان امتحان',
-      field: 'exam_end',
+      field: 'examParent_end',
       editable: 'never',
       type: 'datetime',
       render: data => {
@@ -125,67 +197,22 @@ const MaterialTableAxamsForStudent = ({ selectedDate, setCourseName, setLevel, s
             fontFamily: 'BNazaninBold',
             fontSize: 16,
           }}>
-            {data.exam_end}
+            {data.examParent_end}
             {/* {moment(data.exam_end).format('HH:mm:00')} */}
           </p>)
       },
     },
-    // {
-    //   title: 'سوالات',
-    //   field: 'exam_pdf',
-    //   editable: 'never',
-    //   render: data => {
-    //     return (
-    //       <a href={data.exam_pdf} target="_blank" style={{
-    //         textAlign: 'center',
-    //         width: '50px',
-    //         fontFamily: 'BNazaninBold',
-    //         fontSize: 16,
-    //         color:'#000',
-    //         textDecoration:'none',
-    //         backgroundColor:'transparent'
-    //       }}>
-    //         لینک
-    //       </a>)
-    //   },
-    // },
-    {
-      title: 'پایه',
-      field: 'exam_level',
-      editable: 'never',
-      lookup:['اول', 'دوم'],
-      // lookup: appContext.initConfig.newLevel,
-      render: data => {
-        return (<p style={{
-          fontFamily: 'BNazaninBold',
-          fontSize: 16,
-          textAlign: 'center',
-          width: '50px'
-        }}>
-          {parseInt(data.exam_level) === parseInt(data.exam_level, 10)
-            ? 
-            data.exam_level
-            // appContext.initConfig.newLevel[data.exam_level]
-            : data.exam_level}
-        </p>)
-      },
-    },
     {
       title: 'نام کلاس',
-      field: 'exam_className',
+      field: 'teacher_name',
       editable: 'never',
-      lookup:['ب', 'الف'],
+      // lookup:['ب', 'الف'],
       // appContext.initConfig.newClassName,
       render: data => {
         return (
           <p
             style={{ fontFamily: 'BNazaninBold', textAlign: 'center', width: '50px' }}>
-            {parseInt(data.exam_className) ===
-              parseInt(data.exam_className, 10)
-              ? 
-              data.exam_className
-              // appContext.initConfig.newClassName[data.exam_className]
-              : data.exam_className}
+              {data.teacher_name}
           </p>)
       },
     },
@@ -194,22 +221,23 @@ const MaterialTableAxamsForStudent = ({ selectedDate, setCourseName, setLevel, s
       render: data => {
         return (
           <p style={{ fontFamily: 'BNazaninBold', textAlign: 'center', width: '50px' }}>
-            {parseInt(data.exam_courseName) ===
+            {data.exam_courseName}
+            {/* {parseInt(data.exam_courseName) ===
               parseInt(data.exam_courseName, 10)
               ? 
               data.exam_courseName
               // appContext.initConfig.newCourseName[data.exam_courseName]
               : data.exam_courseName
-            }
+            } */}
           </p>)
       },
     },
     {
-      title: 'موضوع امتحان', field: 'exam_topic', editable: 'never',
+      title: 'موضوع امتحان', field: 'examParent_topic', editable: 'never',
       render: data => {
         return (
           <p style={{ fontFamily: 'BNazaninBold', textAlign: 'center', width: '50px' }}>
-           {data.exam_topic}
+           {data.examParent_topic}
           </p>)
       },
     },
@@ -221,23 +249,23 @@ const MaterialTableAxamsForStudent = ({ selectedDate, setCourseName, setLevel, s
           fontSize: 16,
           textAlign: 'center',
           width: '50px'
-        }}>{data.exam_maxScore}</p>)
+        }}>{data.examParent_maxScore}</p>)
       },
     },
   ]);
 
   const [state, setState] = React.useState({
     columns: [
-      { title: 'تاریخ شروع', field: 'exam_start_date', editable: 'never' },
-      { title: 'تاریخ پایان', field: 'exam_end_date', editable: 'never' },
-      { title: ' شروع امتحان', field: 'exam_start', editable: 'never' },
-      { title: ' پایان امتحان', field: 'exam_end', editable: 'never' },
+      { title: 'تاریخ شروع', field: 'examParent_start_date', editable: 'never' },
+      { title: 'تاریخ پایان', field: 'examParent_stop_date', editable: 'never' },
+      { title: ' شروع امتحان', field: 'examParent_start', editable: 'never' },
+      { title: ' پایان امتحان', field: 'examParent_end', editable: 'never' },
       // { title: 'سوالات', field: 'exam_pdf', editable: 'never' },
-      { title: 'پایه', field: 'exam_level', editable: 'never' },
-      { title: 'نام کلاس', field: 'exam_className', editable: 'never' },
+      { title: 'نام معلم', field: 'teacher_name', editable: 'never' },
+      // { title: 'نام کلاس', field: 'exam_className', editable: 'never' },
       { title: 'نام درس', field: 'exam_courseName', editable: 'never' },
-      { title: 'موضوع امتحان', field: 'exam_topic', editable: 'never' },
-      { title: 'حداکثر نمره', field: 'exam_maxScore', editable: 'never' },
+      { title: 'موضوع امتحان', field: 'examParent_topic', editable: 'never' },
+      { title: 'حداکثر نمره', field: 'examParent_maxScore', editable: 'never' },
     ],
     data: [],
   });
@@ -416,7 +444,7 @@ const MaterialTableAxamsForStudent = ({ selectedDate, setCourseName, setLevel, s
       <MaterialTable
         title="امتحان"
         columns={columns}
-        data={data}
+        data={rowsTable}
         actions={[
           {
             icon: 'library_books',

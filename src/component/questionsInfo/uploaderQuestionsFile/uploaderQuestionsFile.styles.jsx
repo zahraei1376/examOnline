@@ -1,5 +1,30 @@
-import styled from 'styled-components';
+import styled ,{css} from 'styled-components';
 import {Button} from '@material-ui/core';
+
+const LikeAndDisLikeCss = css`
+    cursor:pointer;
+    transition:all 0.3s;
+    border-radius:1rem;
+    width:6rem;
+    height:5rem;
+    border:1px solid transparent;
+    text-align:center;
+    display:flex;
+    justify-content: center;
+    align-items:center;
+    &:hover{
+        background-color:#eee ;
+        border:1px solid #3f87a6;
+    }
+
+
+    @media only screen and (max-width: 769px) {
+        min-width: 2rem ;
+        // width:3rem ;
+        margin-bottom: 2rem ;
+        
+    }
+`;
 
 export const UploaderButton = styled(Button)`
     background-color:#fff !important;
@@ -74,30 +99,12 @@ export const UploaderButtonSend = styled.input`
 // `;
 
 export const UploadButton = styled.div`
-    cursor:pointer;
-    transition:all 0.3s;
-    border-radius:1rem;
-    width:6rem;
-    height:5rem;
+    ${LikeAndDisLikeCss}
+    background-color:#FFB300;
+`;
+
+
+export const UploadButtonExist = styled.div`
+    ${LikeAndDisLikeCss}
     background-color:rgba(63,135,166 ,0.7) ;
-    // background-color:#3f87a6 !important;
-    border:1px solid transparent;
-    text-align:center;
-    display:flex;
-    justify-content: center;
-    align-items:center;
-    &:hover{
-        background-color:#eee ;
-        border:1px solid #3f87a6;
-    }
-    
-
-    @media only screen and (max-width: 769px) {
-        min-width: 2rem ;
-        // width:3rem ;
-        margin-bottom: 2rem ;
-        
-    }
-
-
 `;

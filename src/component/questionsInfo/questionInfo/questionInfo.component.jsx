@@ -80,7 +80,7 @@ const QuestionInfo = ({course ,selectedEPId}) => {
                     }else{
                         // setFileName('');
                         // document.getElementById(`uploadPhotoAws${MyFileId}`).value='';
-                        reject("فایل درستی را امتخاب کنید!!!");
+                        reject("فایل درستی را انتخاب کنید!!!");
                         // reject(new Error("فایل درستی را امتخاب کنید!!!"));
                     }
                     
@@ -183,6 +183,7 @@ const QuestionInfo = ({course ,selectedEPId}) => {
                             handleGetFileName={handleGetFileName} 
                             fileId={MyFileId}
                             SetCanSend={SetCanSend}
+                            existFile={examChildPdf ? true : false}
                         />
                     </QuestionInfoUpload>
                 
@@ -207,7 +208,7 @@ const QuestionInfo = ({course ,selectedEPId}) => {
                         {/* <BtnOk variant="outlined" color="primary" onClick={sendInfo} disabled={clicked}>
                             <DoneIcon style={{ fontSize:'3rem'}} />
                         </BtnOk> */}
-                        <BtnOk onClick={sendInfo} disabled={clicked}>
+                        <BtnOk onClick={sendInfo} disabled={clicked} >
                             <DoneIcon style={{ fontSize:'3rem',marginTop:'2px'}} />
                         </BtnOk>
                     </Tooltip>

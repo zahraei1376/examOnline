@@ -51,6 +51,9 @@ const App = () => {
         <Route exact path="/examsList">
           <ExamsListPage />
         </Route>
+        <Route exact path="/archiveForStudent">
+          <ArchiveForStudent />
+        </Route>
       </Switch>
     </div>
   );

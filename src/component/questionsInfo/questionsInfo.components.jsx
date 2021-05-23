@@ -70,27 +70,47 @@ const QuestionsHeader = ({ courses ,selectedEPId}) => {
 
 
   useEffect(()=>{
-    console.log('data',data);
+    console.log('datadatadata',data);
     if(data){
       var myCourses = [];
+      var examChildsInfo = data.examParents[0].examChild;
       for (let index = 0; index < courses.length; index++) {
-        console.log('courses[index].group[0]',courses[index].group[0]);
-        console.log('data.examParents[0].examChild[0].Child_gId',data.examParents[0].examChild[0].examChild_gId);
-        if(courses[index].group[0] == data.examParents[0].examChild[0].examChild_gId)
-        {
+        var flag = false;
+        for (let index2 = 0; index2 < courses[index].group.length; index2++) {
+          for (let index3 = 0; index3 < examChildsInfo.length; index3++) {
+            if(courses[index].group[index2] == examChildsInfo[index3].examChild_gId)
+            {
+              myCourses.push({
+                  ...courses[index] , negativeCoefficient:examChildsInfo[index3].examChild_falseCoefficient ,
+               coefficient:examChildsInfo[index3].examChild_courseCoefficient,
+               examChild_pdf:examChildsInfo[index3].examChild_pdf ? examChildsInfo[index3].examChild_pdf : ''
+                })
+                flag=true;
+            }
+          }
           
-          console.log('ffffff');
-          console.log('data.examParents[0].examChild[0].examChild_falseCoefficient',data.examParents[0].examChild[0].examChild_falseCoefficient);
-          console.log('data.examParents[0].examChild[0].examChild_courseCoefficient',data.examParents[0].examChild[0].examChild_courseCoefficient);
-          myCourses.push({
-              ...courses[index] , negativeCoefficient:data.examParents[0].examChild[0].examChild_falseCoefficient ,
-           coefficient:data.examParents[0].examChild[0].examChild_courseCoefficient,
-           examChild_pdf:data.examParents[0].examChild[0].examChild_pdf ? data.examParents[0].examChild[0].examChild_pdf : ''
-            })
-        }else{
-          console.log('nnnnnnnnnnnn');
+          
+        }
+
+        if(!flag){
+          // console.log('nnnnnnnnnnnn');
           myCourses.push({...courses[index]})
         }
+        // if(courses[index].group[0] == data.examParents[0].examChild[0].examChild_gId)
+        // {
+          
+        //   console.log('ffffff');
+        //   console.log('data.examParents[0].examChild[0].examChild_falseCoefficient',data.examParents[0].examChild[0].examChild_falseCoefficient);
+        //   console.log('data.examParents[0].examChild[0].examChild_courseCoefficient',data.examParents[0].examChild[0].examChild_courseCoefficient);
+        //   myCourses.push({
+        //       ...courses[index] , negativeCoefficient:data.examParents[0].examChild[0].examChild_falseCoefficient ,
+        //    coefficient:data.examParents[0].examChild[0].examChild_courseCoefficient,
+        //    examChild_pdf:data.examParents[0].examChild[0].examChild_pdf ? data.examParents[0].examChild[0].examChild_pdf : ''
+        //     })
+        // }else{
+        //   console.log('nnnnnnnnnnnn');
+        //   myCourses.push({...courses[index]})
+        // }
         
       }
     //  console.log('data.examParents[0].examChild[0].Child_gId',data.examParents[0].examChild[0].examChild_gId);
