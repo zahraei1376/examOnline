@@ -12,6 +12,7 @@ import ArrowForwardIosIcon from '@material-ui/icons/ArrowForwardIos';
 import ShowImage from '../../imageShow/showImage.component';
 ///////////////////////////////////////////////////////
 import { connect} from 'react-redux';
+import {getExamParentIdResponse} from '../../../redux/responsesStudent/responsesStudent.selector';
 import {IncreaseIndex , DecreaseIndex } from '../../../redux/questionIndex/questionIndex.sction';
 import {setRepsonseStudent} from '../../../redux/responsesStudent/responsesStudent.action';
 import {selectIndex ,finalIndex ,typeIncreaseQuestions ,timeOutToSolveQuestions} from '../../../redux/questionIndex/questionIndex.selector';
@@ -22,7 +23,7 @@ import {SET_RESPONSE_STUDENT} from '../../../graphql/resolver';
 //////////////////////query
 import MySnackbar from '../../../messageBox/messageBox.component';
 const ShowBodyQuestions = ({
-  question,number,children,IncreaseIndexQuestion,
+  question,number,children,IncreaseIndexQuestion,getExamParentIdResponse,
   setRepsonseStudent ,DecreaseIndexQuestion,questionIndex ,
   questionsLenght ,typeIncreaseQuestions ,timeOutSolveQuestions,ResItem }) =>{
     ////////////////////////////////////////query
@@ -100,7 +101,7 @@ const ShowBodyQuestions = ({
         }).then(res=>{
           if(res.data && res.data.addResponse){
             console.log("dddddddddddddddd:", resForRedux);
-            setRepsonseStudent({id: question.id , res: resForRedux});
+            setRepsonseStudent({examPID : getExamParentIdResponse ,examEndTime:question.examEndTime , examEndDate : question.examEndDate , id : question.id , res : resForRedux});
             setMessage('جواب شما ثبت شد');
             setStatus('1');
             setShowMessage(!showMessage);
@@ -263,6 +264,7 @@ const mapStateToProps = createStructuredSelector({
     questionsLenght:finalIndex,
     typeIncreaseQuestions: typeIncreaseQuestions,
     timeOutSolveQuestions : timeOutToSolveQuestions,
+    getExamParentIdResponse : getExamParentIdResponse,
 });
 
 const mapDispatchToProps = dispatch =>({

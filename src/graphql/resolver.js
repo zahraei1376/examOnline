@@ -210,6 +210,8 @@ const SET_DEALY_RESPONSE_STUDENT = gql`
     $delay: String!,
     $totalScore: String!,
     $countScore: String!,
+    $startTime: String! ,
+    $startDate: String! ,
     ){
       addResponseInfo(
         userName: $userName,
@@ -218,6 +220,8 @@ const SET_DEALY_RESPONSE_STUDENT = gql`
         delay: $delay,
         totalScore: $totalScore,
         countScore: $countScore,
+        startTime: $startTime,
+        startDate: $startDate,
       ){
         id
       }
@@ -384,6 +388,30 @@ const GET_EXAMS_FOR_STUDENT = gql`
     }
   }
 `;
+////////////////////////////////
+const GET_EXAMSINFO_FOR_STUDENT = gql`
+  query responseInfoListByPerson(
+    $userName: String,
+    $password: String,
+    $epId: String,
+    ){
+      responseInfoListByPerson(
+      userName: $userName,
+      password: $password,
+      epId: $epId,
+    ){
+      id
+      pId
+      epId
+      delay
+      totalScore
+      countScore
+      startTime
+      startDate
+    }
+  }
+`;
+
 /////////////////////////////////////
 const SendRequestQuestionChild = async (QuestionData , uploadID , selectedFileName ,setQuestionChild) =>{
   console.log('QuestionData',QuestionData);
@@ -441,4 +469,4 @@ const SendRequestQuestionChild = async (QuestionData , uploadID , selectedFileNa
 
 export { SET_QUESTION_CHILD, GET_QUESTIONS ,DELETE_QUESTIONCHILD ,SET_RESPONSE_STUDENT ,
          SET_DEALY_RESPONSE_STUDENT ,SET_INFO_EXAMCHILD,GET_EXAMCHILD_QUESTIONS,
-         GET_EXAMCHILD_QUESTIONSInfo ,GET_EXAMS_FOR_STUDENT,SendRequestQuestionChild};
+         GET_EXAMCHILD_QUESTIONSInfo ,GET_EXAMS_FOR_STUDENT,GET_EXAMSINFO_FOR_STUDENT,SendRequestQuestionChild};

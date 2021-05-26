@@ -55,7 +55,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const ExamInfoHeader = ({ startDate, startTime, endTime, teacherName,questionCount }) => {
+const ExamInfoHeader = ({ startDate,stopDate, startTime, endTime,examDuration, teacherName,questionCount }) => {
   const classes = useStyles();
   const [expanded, setExpanded] = React.useState(false);
 
@@ -106,32 +106,67 @@ const ExamInfoHeader = ({ startDate, startTime, endTime, teacherName,questionCou
               <span style={{ fontSize: '1.9rem', padding: '0 5px', }}>تاریخ شروع امتحان :  </span>{startDate}
             {/* تاریخ شروع امتحان : <span style={{ fontSize: '1.6rem', padding: '0 5px', }}>{startDate}</span> */}
           </Typography>
-          <Typography style={{
-            textAlign: 'center',
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-            marginTop: '10px',
-            fontFamily: 'BNazanin',
-            fontSize:'1.6rem',
-          }}>
-            {/* <span style={{ fontSize: '1.9rem', padding: '0 5px', }}>ساعت شروع امتحان :  </span>{startTime} */}
-              <span style={{ fontSize: '1.9rem', padding: '0 5px', }}>ساعت شروع امتحان :  </span>{moment2(startTime).tz('Asia/Tehran').format('HH:mm:00')}
-            {/* ساعت شروع امتحان : <span style={{ fontSize: '1.6rem', padding: '0 5px', }}>{startTime}</span> */}
-          </Typography>
-
-          <Typography style={{
-            textAlign: 'center',
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-            marginTop: '10px',
-            fontFamily: 'BNazanin',
-            fontSize:'1.6rem',
-          }}>
-              <span style={{ fontSize: '1.9rem', padding: '0 5px', }}>ساعت پایان امتحان :</span>{moment2(endTime).tz('Asia/Tehran').format('HH:mm:00')}
-             {/* <span style={{ fontSize: '1.6rem', padding: '0 5px', }}>{endTime}</span> */}
-          </Typography>
+          {
+              startDate === stopDate 
+              ? 
+              <>
+              <Typography style={{
+                textAlign: 'center',
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+                marginTop: '10px',
+                fontFamily: 'BNazanin',
+                fontSize:'1.6rem',
+              }}>
+                {/* <span style={{ fontSize: '1.9rem', padding: '0 5px', }}>ساعت شروع امتحان :  </span>{startTime} */}
+                  <span style={{ fontSize: '1.9rem', padding: '0 5px', }}>ساعت شروع امتحان :  </span>{startTime}
+                {/* ساعت شروع امتحان : <span style={{ fontSize: '1.6rem', padding: '0 5px', }}>{startTime}</span> */}
+              </Typography>
+    
+              <Typography style={{
+                textAlign: 'center',
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+                marginTop: '10px',
+                fontFamily: 'BNazanin',
+                fontSize:'1.6rem',
+              }}>
+                  <span style={{ fontSize: '1.9rem', padding: '0 5px', }}>ساعت پایان امتحان :</span>{endTime}
+                 {/* <span style={{ fontSize: '1.6rem', padding: '0 5px', }}>{endTime}</span> */}
+              </Typography>
+              </>
+              
+              : 
+              <>
+                <Typography style={{
+                  textAlign: 'center',
+                  display: 'flex',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  marginTop: '10px',
+                  fontFamily: 'BNazanin',
+                  fontSize:'1.6rem',
+                }}>
+                    <span style={{ fontSize: '1.9rem', padding: '0 5px', }}>تاریخ پایان امتحان :  </span>{stopDate}
+                  {/* تاریخ شروع امتحان : <span style={{ fontSize: '1.6rem', padding: '0 5px', }}>{startDate}</span> */}
+                </Typography>
+                <Typography style={{
+                  textAlign: 'center',
+                  display: 'flex',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  marginTop: '10px',
+                  fontFamily: 'BNazanin',
+                  fontSize:'1.6rem',
+                }}>
+                    <span style={{ fontSize: '1.9rem', padding: '0 5px', }}>مدت زمان امتحان :  </span>{examDuration}
+                  {/* تاریخ شروع امتحان : <span style={{ fontSize: '1.6rem', padding: '0 5px', }}>{startDate}</span> */}
+                </Typography>
+              </>
+          }
+         
           <Typography style={{
             textAlign: 'center',
             display: 'flex',

@@ -1,7 +1,9 @@
 import TimeLoginToPageTypes from './timeToAttendTheExamPage.types';
+import {foundTimeToAttend , setTimeToAttend } from './timeToAttendTheExamPage.utils';
 
 const INITIALSTATE = {
-    timeToAttendTheExamPage: '00:00:00',
+    // timeToAttendTheExamPage: '00:00:00',
+    timeToAttendTheExamPage: [],
 }
 
 const TimeLoginReducer = (state = INITIALSTATE ,action)=>{
@@ -9,8 +11,17 @@ const TimeLoginReducer = (state = INITIALSTATE ,action)=>{
         case TimeLoginToPageTypes.TIMETOATTENDTHEEXAMPAGE:
             return {
                 ...state,
-                timeToAttendTheExamPage:action.payload,
+                timeToAttendTheExamPage:setTimeToAttend(action.payload.id , state.timeToAttendTheExamPage , action.payload.time),
+                // timeToAttendTheExamPage:action.payload,
             }
+
+        case TimeLoginToPageTypes.CLEARTIMETOATTENDTHEEXAMPAGE:{
+            console.log('clearrrrrrrrrrrrrrrrrrrrrrrrrrrrr', action.payload);
+            return {
+                ...state,
+                timeToAttendTheExamPage:foundTimeToAttend(action.payload , state.timeToAttendTheExamPage),
+                // timeToAttendTheExamPage:'00:00:00',
+            }}
             
         default:
             return state;

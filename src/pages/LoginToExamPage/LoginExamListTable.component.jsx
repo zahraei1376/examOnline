@@ -67,6 +67,7 @@ const ExamsListTable = ({newSelectedDate}) => {
     ////////////////////////////////////
     useEffect(()=>{
         if(data && data.groupsListByStudent){
+          console.log('datadata', data);
             setDate(data.groupsListByStudent);
             createRows(data.groupsListByStudent);
         }
@@ -146,16 +147,18 @@ const ExamsListTable = ({newSelectedDate}) => {
     }
     ////////////////////////////////////
     const buttonInput = (loginInfo, index) => {
-        let startClock = fixNumbers(
-          moment(loginInfo.examParent_start)
-            .tz('Asia/Tehran')
-            .format('HH:mm:00')
-            .split(':').join(''))
-        let endClock = fixNumbers(
-          moment(loginInfo.examParent_end)
-            .tz('Asia/Tehran')
-            .format('HH:mm:00')
-            .split(':').join(''));
+        // let startClock = fixNumbers(
+        //   moment(loginInfo.examParent_start)
+        //     .tz('Asia/Tehran')
+        //     .format('HH:mm:00')
+        //     .split(':').join(''))
+        // let endClock = fixNumbers(
+        //   moment(loginInfo.examParent_end)
+        //     .tz('Asia/Tehran')
+        //     .format('HH:mm:00')
+        //     .split(':').join(''));
+        let startClock = loginInfo.examParent_start.split(':').join('')
+        let endClock = loginInfo.examParent_end.split(':').join('');
         let temp = fixNumbers(time);
         var nowClock = temp.split(":").join('');
         var newDate = fixNumbers(moment(getDate).format('jYYYY/jMM/jDD'));
@@ -282,8 +285,10 @@ const ExamsListTable = ({newSelectedDate}) => {
                             <StyledTableCell align="right">{row.examParent_topic}</StyledTableCell>
                             <StyledTableCell align="right">{row.examParent_start_date}</StyledTableCell>
                             <StyledTableCell align="right">{row.examParent_stop_date}</StyledTableCell>
-                            <StyledTableCell align="right">{row.examParent_start ? fixNumbers(moment(row.examParent_start).tz('Asia/Tehran').format('HH:mm:00')) : ''}</StyledTableCell>
-                            <StyledTableCell align="right">{row.examParent_end ? fixNumbers(moment(row.examParent_end).tz('Asia/Tehran').format('HH:mm:00')) : ''}</StyledTableCell>
+                            <StyledTableCell align="right">{row.examParent_start }</StyledTableCell>
+                            <StyledTableCell align="right">{row.examParent_end}</StyledTableCell>
+                            {/* <StyledTableCell align="right">{row.examParent_start ? fixNumbers(moment(row.examParent_start).tz('Asia/Tehran').format('HH:mm:00')) : ''}</StyledTableCell>
+                            <StyledTableCell align="right">{row.examParent_end ? fixNumbers(moment(row.examParent_end).tz('Asia/Tehran').format('HH:mm:00')) : ''}</StyledTableCell> */}
                             <StyledTableCell align="right">{buttonInput(row, index)}</StyledTableCell>
                         </StyledTableRow>
                     ))}

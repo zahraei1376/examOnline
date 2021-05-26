@@ -7,6 +7,11 @@ export const getResponseStudentArray = createSelector(
     (SaveResponseStudent) => SaveResponseStudent.responseStudent,
 );
 
+export const getExamParentIdResponse = createSelector(
+    [getResponse],
+    (SaveResponseStudent) => SaveResponseStudent.responseExamParentID,
+);
+
 export const getResponseStudentWithIndex = (questionId) =>{
     console.log('questionId' ,questionId);
     return(
@@ -14,25 +19,27 @@ export const getResponseStudentWithIndex = (questionId) =>{
         [getResponseStudentArray],
         (responseStudent) => 
         {
-            var existID =  responseStudent.find(item => item.id === questionId);
-            console.log('existID' ,existID);
-            if(existID) {
-                for (let index = 0; index < responseStudent.length; index++) {
-                    if(responseStudent[index].id === questionId){
-                        return responseStudent[index].res;
+            console.log('responseStudentresponseStudent',responseStudent);
+            if(responseStudent.length > 0){
+                var existID =  responseStudent.find(item => item.id === questionId);
+                console.log('existID' ,existID);
+                if(existID) {
+                    for (let index = 0; index < responseStudent.length; index++) {
+                        if(responseStudent[index].id === questionId){
+                            return responseStudent[index].res;
+                        }
+                        // else{
+                        //     return null;
+                        // }                 
                     }
-                    // else{
-                    //     return null;
-                    // }                 
+    
+                    // return null;
+                    // console.log('existIDIf' ,existID);
+                    // responseStudent.map(item => item.id === questionId ? item.res : null );
+                }else{
+                    return null;
                 }
-
-                // return null;
-                // console.log('existIDIf' ,existID);
-                // responseStudent.map(item => item.id === questionId ? item.res : null );
-            }else{
-                return null;
             }
-            
         }
     )
 )}
