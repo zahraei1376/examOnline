@@ -12,10 +12,14 @@ function Alert(props) {
 const useStyles = makeStyles((theme) => ({
   root: {
     fontSize: '2rem',
+    // direction:'rtl',
+    // textAlign:'right',
     // width: '100%',
     '& > * + *': {
       marginTop: theme.spacing(2),
       fontSize: '2rem',
+      // direction:'rtl',
+      // textAlign:'right',
     },
   },
 }));
@@ -44,10 +48,18 @@ function MySnackbar({message ,status,showMessage,setShowMessage}) {
       {/* <Button variant="outlined" onClick={handleClick}>
         Open success snackbar
       </Button> */}
-      <MySnackbarDiv open={open} style={{width:'100%',textAlign:'center',fontSize: '2rem',}}
+      <MySnackbarDiv open={open} 
+      style={{width:'100%',textAlign:'center',fontSize: '2rem',cursor:'pointer'}}
       autoHideDuration={6000}
+      onClick={handleClose}
        onClose={handleClose}>
-        <Alert style={{width:'70%',textAlign:'center',fontSize: '2rem', direction: 'ltr',}} onClose={handleClose} severity={status === '1' ? "success" : "error" }>
+        <Alert style={{
+          // width:'70%',
+          textAlign:'right',fontSize: '2rem',
+        //  direction: 'ltr',
+      }} 
+        //  onClose={handleClose}
+          severity={status === '1' ? "success" : "error" }>
           {message}
         </Alert>
       </MySnackbarDiv>

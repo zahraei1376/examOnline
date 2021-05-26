@@ -36,19 +36,23 @@ function UploaderQuestionsImage({handleGetFileName , SetselectedFile , fileId ,}
   const [message,setMessage] = useState('');
   const [status,setStatus] = useState(0);
   //////////////////////////////////////////////////
-  // useEffect(()=>{
-  //     if(fileId && fileId.indexOf('question_link') > -1){
-  //       console.log("picInsteadText");
-  //       SetselectedFile("picInsteadText");
-  //     }else if(fileId && fileId.indexOf('exam_link') > -1){
-  //       console.log("picWithText");
-  //       SetselectedFile("picWithText");
-  //     }else{
-  //       console.log("null");
-  //       SetselectedFile(null);
-  //     }
-  // },[])
-  // const [myFileNama ,setMyFileNama] = useState('');
+  const CheckFile = (myFile) =>{
+    var file = myFile;
+    var fileName = file.name;
+    var fileIdL = fileName.split('.');
+    var format = fileIdL[fileIdL.length - 1].toLowerCase();
+    if (file.size < 15728641) {
+        if (format == 'png' || format == 'jpg' || format == 'jpeg') {
+            return true;
+        } else {
+          alert('فایل ارسالی باید با فرمت png , jpg  یا jpeg باشد!!!');
+          return false;
+        }
+    } else {
+        alert('حجم فایل ارسالی باید کمتر از 15 مگابایت باشد!!!');
+        return false;
+    }
+  }
   ////////////////////////////////////
   useEffect(() => {
     console.log("s3Url:", s3Url);
@@ -78,8 +82,7 @@ function UploaderQuestionsImage({handleGetFileName , SetselectedFile , fileId ,}
 
   return (
 <div>
-<form
-        // id={`myForm${fileId}`}
+  <form
         id={fileId}
         action={s3Url}
         method="post"
@@ -92,81 +95,72 @@ function UploaderQuestionsImage({handleGetFileName , SetselectedFile , fileId ,}
         <input type="hidden" name="X-Amz-Signature" value={s3Signature} />
         <input type="hidden" name="Expires" value={s3Expires} />
         <input type="hidden" name="X-Amz-Credential" value={s3Credential} />
-        {/* <input type="input" name="x-amz-meta-tag" value="" /> */}
-        {/* <br /> */}
         <input type="hidden" name="X-Amz-Algorithm" value={s3Algorithm} />
         <input type="hidden" name="X-Amz-Date" value={s3Date} />
         <UploaderButtonSend type="button" 
-        // onClick={myFunction}
-        //  name="submit"
          id="MySubmit" />
         <label htmlFor={`uploadPhotoAws${fileId}`}>
             <input
                 style={{ display: 'none' }}
-                // defaultValue=""
                 id={`uploadPhotoAws${fileId}`}
-                // name="upload-photo"
                 type="file"
-                // onChange={e => uploadFile(e)}
-                // id="ccc"
-                // type="file"
                 name="file"
                 onChange={(event) => {
-                    // setMyFileNama(Date.now() + "-" + event.target.files[0].name);
-                    var myFileNama = Date.now() + "-" + event.target.files[0].name;
-                    axios({
-                    url: "http://t1.ray-sa.ir:4000/sign_post",
-                    method: "post",
-                    data: {
-                        fileName: myFileNama,
-                    },
-                    })
-                    .then(async (res) => {
-                        console.log(res);
-                        var data = res.data;
-                        setS3Acl(data.fields.ACL);
-                        setS3Url(data.url);
-                        setS3Key(data.fields.key);
-                        setS3Expires(data.fields.Expires);
-                        setS3Bucket(data.fields.bucket);
-                        setS3Policy(data.fields.Policy);
-                        setS3Signature(data.fields["X-Amz-Signature"]);
-                        setS3Credential(data.fields["X-Amz-Credential"]);
-                        setS3Algorithm(data.fields["X-Amz-Algorithm"]);
-                        setS3Date(data.fields["X-Amz-Date"]);
-                        /////////////////////////////////////////////////////////////
-                        // document.getElementById("myForm").submit();
-                        // setMessage('ارسال شد');
-                        // setStatus('1');
-                        // setShowMessage(!showMessage);
-                        // console.log('myFileNama',myFileNama);
-                        if(fileId && fileId.indexOf('question_link') > -1){
-                          console.log("picInsteadText");
-                          SetselectedFile("picInsteadText");
-                        }else if(fileId && fileId.indexOf('exam_link') > -1){
-                          console.log("picWithText");
-                          SetselectedFile("picWithText");
-                        }else{
-                          console.log("null");
-                          SetselectedFile(null);
-                        }
-                        handleGetFileName(myFileNama);
-                        ////////////////////////////////////////////////////////////////////////////////
-                    })
-                    .catch((error) => {
-                        console.log(error);
-                    });
+                    const { target } = event;
+                    if(target.value.length > 0){
+                      if(CheckFile(event.target.files[0])){
+                        var myFileNama = Date.now() + "-" + event.target.files[0].name;
+                        axios({
+                        url: "http://t1.ray-sa.ir:4000/sign_post",
+                        method: "post",
+                        data: {
+                            fileName: myFileNama,
+                        },
+                        })
+                        .then(async (res) => {
+                            console.log(res);
+                            var data = res.data;
+                            setS3Acl(data.fields.ACL);
+                            setS3Url(data.url);
+                            setS3Key(data.fields.key);
+                            setS3Expires(data.fields.Expires);
+                            setS3Bucket(data.fields.bucket);
+                            setS3Policy(data.fields.Policy);
+                            setS3Signature(data.fields["X-Amz-Signature"]);
+                            setS3Credential(data.fields["X-Amz-Credential"]);
+                            setS3Algorithm(data.fields["X-Amz-Algorithm"]);
+                            setS3Date(data.fields["X-Amz-Date"]);
+                            /////////////////////////////////////////////////////////////
+                            if(res.statusText == "OK"){
+                              if(fileId && fileId.indexOf('question_link') > -1){
+                                console.log("picInsteadText");
+                                SetselectedFile("picInsteadText");
+                              }else if(fileId && fileId.indexOf('exam_link') > -1){
+                                console.log("picWithText");
+                                SetselectedFile("picWithText");
+                              }else{
+                                console.log("null");
+                                SetselectedFile(null);
+                              }
+                              handleGetFileName(myFileNama);
+                            }
+                            ////////////////////////////////////////////////////////////////////////////////
+                        })
+                        .catch((error) => {
+                            console.log(error);
+                        });
+                      }else{
+
+                      }
+                    } 
                 }}
             />
             <UploadButton variant="contained" component="span">
-                <InsertDriveFileIcon style={{fontSize:'4rem'}}
-                        // style={{color:'#009688'}}
-                        />
+                <InsertDriveFileIcon style={{fontSize:'4rem'}} />
             </UploadButton>
         </label>
 
         {/* /////////////////////////////////////////////////////////////////////////////// */}
-        
         {
           showMessage ? <MySnackbar message={message} status={status} showMessage={showMessage} setShowMessage={setShowMessage} /> : ''
         }
@@ -179,7 +173,5 @@ function UploaderQuestionsImage({handleGetFileName , SetselectedFile , fileId ,}
 };
 
 export default UploaderQuestionsImage;
-
-
 //////////////////////////////////////////////////////
 

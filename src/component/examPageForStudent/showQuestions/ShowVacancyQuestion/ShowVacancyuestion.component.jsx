@@ -18,55 +18,60 @@ import { getResponseStudentWithIndex } from '../../../../redux/responsesStudent/
 
 const VacancyItem = ({number,items ,ResItem ,setResForRedux})=>{
 
-    const [responseVancyQuestion,setResponseVancyQuestion] = useState(ResItem ? ResItem : []);
+    const [responseVancyQuestion,setResponseVancyQuestion] = useState(null);
     const [NOfVancy,setNOfVancy] = useState([]);
-
+    const [myRes , setMyRes] = useState(null);
     useEffect(()=>{
-        console.log('ResItem' ,ResItem);
-        setResForRedux(ResItem);
-    },[]);
+        console.log('myResmyResmyResmyRes' ,myRes);
+        // setResForRedux(ResItem);
+        // setResponseVancyQuestion(ResItem ? ResItem : []);
+    },[myRes]);
 
     const handleChange = (i,value) =>{
         var temp =[...responseVancyQuestion];
-        temp[i][0]=i;
-        temp[i][1]=value;
+        temp[i][0] = i == 0 ? '0' : (i).toString();
+        temp[i][1] = value;
         setResForRedux(temp);
         setResponseVancyQuestion(temp);
+        setMyRes(temp);
     }
 
-    // const handleSetResponseVancy = (num)=>{
-    //     const [responseVancyQuestion,setResponseVancyQuestion] = useState(Array(num.length).fill(0).map(row => new Array(2).fill('')))
-    // }
-
-    
-
     useEffect(()=>{
+        // console.log('ResItemVancy' ,ResItem);
+        // setResForRedux(ResItem);
+        // setResponseVancyQuestion(ResItem ? ResItem : []);
 
-        console.log('items',items);
+        // console.log('items',items);
         var VItemsCount = items.split('$%A'); 
         var NOV = [];
-        // items.split(' ').reduce((acc,cur) => {
-        //     if(cur.indexOf('$%A') > -1){
-        //         NOV.push('1');
-        //         // NOV ++;
-        //         return acc + 1;
-        //     }
-        // }, 0);
-        // NOV = 
-        VItemsCount.map(item => item != "" ?
-        NOV.push(item) : "" )
-        console.log('NOV',NOV);
-        setResponseVancyQuestion(Array(NOV.length).fill(0).map(row => new Array(2).fill('')));
-        setNOfVancy(NOV);
-        // handleSetResponseVancy(NOV);
-
-        // 
-    },[])
-
-    useEffect(()=>{
-        console.log('responseVancyQuestion',responseVancyQuestion);
-        // const [responseVancyQuestion,setResponseVancyQuestion] = useState(Array(NOfVancy.length).fill(0).map(row => new Array(2).fill('')))
-    },[responseVancyQuestion])
+        ///////////////////////////////////////////////
+        if(VItemsCount.length > 1){
+            VItemsCount.map(item => item != "" ?
+            NOV.push(item) : "" )
+            setNOfVancy(NOV);
+            var temp = Array(NOV.length).fill(0).map(row => new Array(2).fill(''));
+            for (let i = 0; i < NOV.length; i++) {  
+                var tempRes = ResItem && ResItem.length > 0 ? ResItem[i] : '';
+                if(tempRes){
+                    temp[i][0] = i == 0 ? '0' : (i).toString();
+                    temp[i][1] = tempRes[1];
+                }
+                else{
+                    temp[i][0] = i == 0 ? '0' : (i).toString();
+                    temp[i][1] = '';
+                }
+            }
+            setResForRedux(temp);
+            setResponseVancyQuestion(temp);
+            console.log('temptemptemptemp',temp);
+            setMyRes(temp);
+        }else{
+            setResForRedux([]);
+            setResponseVancyQuestion(Array(0).fill(0).map(row => new Array(2).fill('')));
+            setNOfVancy([]);
+            setMyRes([]);
+        }
+    },[ResItem])
 
     return(
         <VacancyItemConatiner>
@@ -76,7 +81,8 @@ const VacancyItem = ({number,items ,ResItem ,setResForRedux})=>{
                     NOfVancy.map((item,index)=>(
                         <VnacyTextDiv key={index}>
                         <VnacySpan>{index + 1}</VnacySpan>
-                        <VnacyText type="text" defaultValue={ResItem[index] ? ResItem[index][1] : ''} onChange={e=>handleChange(index,e.target.value)} />
+                        {/* <VnacyText type="text" defaultValue={ResItem && ResItem.length > 0 && ResItem[index] ? ResItem[index][1] : ''} onChange={e=>handleChange(index,e.target.value)} /> */}
+                        <VnacyText type="text" value={myRes && myRes.length > 0 && myRes[index] ? myRes[index][1] : ''} onChange={e => handleChange(index,e.target.value)} />
                         </VnacyTextDiv>
                     ))
                 }
@@ -86,12 +92,15 @@ const VacancyItem = ({number,items ,ResItem ,setResForRedux})=>{
 }
 
 const ShowVacancyQuestion = ({question, number,items ,ResItem ,getResponseStudentWithIndex}) =>{
-    // useEffect(()=>{
-    //     console.log('question.items',question.items);
+    console.log('ResItemVancyQuestion',ResItem);
+
+    // useEffect(() =>{
+
     // },[]);
+
     return(
         <ShowBodyQuestions question={question} number={number}>
-            <VacancyItem number={number} items={items} ResItem={ResItem ? ResItem : getResponseStudentWithIndex}/>
+            <VacancyItem number={number} items={items} ResItem={getResponseStudentWithIndex  ? getResponseStudentWithIndex : ResItem} />
         </ShowBodyQuestions>
     )
 };

@@ -96,21 +96,77 @@ import { fixNumbers } from '../../generalComponent/fixNumbers';
 // import PersianDatePicker from '@components/MaterialDatePicker/MaterialDatePicker';
 import { Grid } from '@material-ui/core';
 import { useSelector } from 'react-redux';
+/////////////////////////////////////////////////query
+import { useQuery} from 'react-apollo';
+import { GET_EXAMS_FOR_STUDENT } from '../../graphql/resolver';
+////////////////////////////////////////////////
 
 var moment = require('moment-jalaali');
 const graphql_server_uri = '/graphql';
 
 const ArchiveForStudent = () => {
-
+  //////////////////////////////////////////
   const [selectedDate, handleDateChange] = useState(moment());
   const [newSelectedDate, setNewSelectedDate] = useState('');
-  /////////////////////////
-  const [courseName, setCourseName] = useState('');
-  const [Nameclass, setClassName] = useState('');
-  const [level, setLevel] = useState('');
-  const [axamId, setExamID] = React.useState('');
-  const [ShowRank, setShowRank] = useState(false);
+  const [dataTable, setDataTable] = useState([]);
+  //////////////////////////////////////////
+  const { loading, error, data ,refetch  } = useQuery(GET_EXAMS_FOR_STUDENT , {
+    variables: {  userName: "210",
+    password: "210",
+    level: "1",
+    class: "1",
+    date: newSelectedDate },
+    notifyOnNetworkStatusChange: true
+  });
   ////////////////////////////////////////////////////////////
+  function createRows(exams){
+    console.log('exams',exams);
+    var MyRows = [];
+    for (let index = 0; index < exams.length; index++) {
+        var EPD = exams[index].examParentsListByDate;
+        console.log('EPDEPD',EPD);
+        if(EPD && EPD.length > 0 ){
+            var cn = exams[index].course;
+            for (let index2 = 0; index2 < EPD.length; index2++) {
+                MyRows.push({
+                  id : EPD[index2].id,
+                  exam_courseName : cn,
+                  teacher_name : exams[index].people[0].name + ' ' + exams[index].people[0].surname ,
+                  examParent_topic : EPD[index2].examParent_topic,
+                  examParent_start_date : EPD[index2].examParent_start_date,
+                  examParent_stop_date : EPD[index2].examParent_stop_date,
+                  examParent_start : EPD[index2].examParent_start ,
+                  examParent_end : EPD[index2].examParent_end ,
+                  // examParent_start : EPD[index2].examParent_start ? fixNumbers(moment(EPD[index2].examParent_start).tz('Asia/Tehran').format('HH:mm:00')) : '',
+                  // examParent_end : EPD[index2].examParent_end ? fixNumbers(moment(EPD[index2].examParent_end).tz('Asia/Tehran').format('HH:mm:00')) : '',
+                  }
+              )
+              
+            }
+            
+        }else{
+
+        }
+    }
+    setDataTable(MyRows);
+  }
+  ////////////////////////////////////
+  useEffect(()=>{
+    var getReq = setInterval(() => {
+      refetch();
+    }, 60000);
+
+    return () => {
+      clearInterval(getReq);
+    };
+  },[])
+
+  useEffect(()=>{
+    if(data && data.groupsListByStudent){
+      console.log('data.groupsListByStudent',data.groupsListByStudent);
+        createRows(data.groupsListByStudent);
+    }
+  },[data]);
 
   useEffect(() => {
     setNewSelectedDate(
@@ -118,32 +174,13 @@ const ArchiveForStudent = () => {
     );
   }, [selectedDate]);
 
-  // const togglePopup = () => {
-  //   setShowPopup(!ShowPopup);
-  // };
-
-
-  // const closePopUp = () => {
-  //   setShowDetails(!showDetails);
-  // }
-  /////////////////
-
-  const handleSetExamID = (
-    exam_id,
-    exam_className,
-    exam_level,
-  ) => {
-    setExamID(exam_id);
-    setClassName(exam_className);
-    setLevel(exam_level);
-  };
-  /////////////////////////
+  useEffect(()=>{
+    refetch();
+  },[newSelectedDate]);
+  ////////////////////////////////////
   return (
     <div>
-      <Grid 
-      // container spacing={3}
-      style={{border:'1px solid #000',margin:'3rem'}}
-      >
+      <Grid style={{border:'1px solid #000',margin:'3rem'}} >
         <TableContainer >
         <DateContainer>
           <LableDiv>
@@ -158,17 +195,10 @@ const ArchiveForStudent = () => {
         </DateContainer>
         <Grid item xs={12} sm={12} md={12}>
           <MaterialTableAxamsForStudent
-            selectedDate={newSelectedDate}
-            // setShowRank={setShowRank}
-            // setShowStudentList={setShowStudentList}
-            // setShowDetails={setShowDetails}
-            // handleSetExamID={handleSetExamID}
+            dataTable={dataTable}
           />
         </Grid>
         </TableContainer>
-        {/* {ShowPopup ? (
-          <PopUp message={message} status={status} closePopup={togglePopup} />
-        ) : null} */}
       </Grid>
     </div >
   );

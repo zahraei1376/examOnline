@@ -5,6 +5,11 @@ export const setCourseName = ( courseName ) =>({
     payload:courseName,
 });
 
+export const setNameOfCourse = ( courseName ) =>({
+    type:QuestionCourseTypes.SET_QUESTIONS_NAME_OF_COURSE,
+    payload:courseName,
+});
+
 export const setExamParentId = (id) => ({
     type:QuestionCourseTypes.SET_EXAM_PARENT_ID,
     payload:id,

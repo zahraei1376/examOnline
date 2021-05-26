@@ -23,7 +23,8 @@ export const SequentialItemContainer = styled.div`
     height:80%;
     overflow:scroll;
    display:grid;
-   grid-template-columns: auto auto auto auto auto auto;
+   grid-template-columns: auto auto auto;
+//    grid-template-columns: auto auto auto auto auto auto;
 //    grid-column-gap:1rem;
 `;
 

@@ -1,4 +1,5 @@
 import './App.css';
+import React, {useEffect} from 'react';
 import QuestionPageContainer from './pages/questionPage.component';
 import AddExamForTeacher from './component/addExamComponent/addExamComponent.component';
 import ExamPageForStudent from './component/examPageForStudent/examPageForStudent.component';
@@ -9,13 +10,20 @@ import ArchiveForStudent from './component/archiveForStudent/archiveForStudent.c
 import AddExamForTeacherContainer from './component/addExamComponent/addExamComponent.container';
 import QuestionsComponentContainer from './component/questionComponent/questionComponent.container';
 // import QuestionsPageContainer from './pages/questionPage.container';
+import ExamsListPage from './pages/LoginToExamPage/LoginToExamPage.page';
 /////////////////////////////////////////////////////////////////////
+import MyParentTest from './mytestCoponent/myparenttest';
+import {getTimeAtServer} from './generalComponent/Clock/getTime';
 import {
   Switch,
   Route,
 } from "react-router-dom";
 ////////////////////
 const App = () => {
+  useEffect(() => {
+		getTimeAtServer();
+		// getConfigAtServer();
+	}, []);
   return (
     <div className="App">
       {/* <AddExamForTeacher/> */}
@@ -29,12 +37,22 @@ const App = () => {
       {/* <EditeAxamPageForTeacher/> */}
       {/* <ArchiveForStudent/> */}
 {/* ////////////////////////////////////////////////////////// */}
+{/* <MyParentTest/> */}
       <Switch>
         <Route exact path="/" >
           <AddExamForTeacherContainer/>
         </Route>
         <Route exact path="/questions">
           <QuestionPageContainer />
+        </Route>
+        <Route exact path="/examPageForStudent">
+          <ExamPageForStudent />
+        </Route>
+        <Route exact path="/examsList">
+          <ExamsListPage />
+        </Route>
+        <Route exact path="/archiveForStudent">
+          <ArchiveForStudent />
         </Route>
       </Switch>
     </div>

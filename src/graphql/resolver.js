@@ -1,4 +1,6 @@
 import { gql } from 'apollo-boost';
+import { useMutation} from 'react-apollo';
+
 
 const addNewExamMutation = gql`
     mutation addExamParent(
@@ -113,6 +115,9 @@ const GET_QUESTIONS = gql`
       examParent_maxScore
       examParent_method
       examParent_topic
+      examParent_duration
+      examParent_random
+      examParent_backward
       examChild
       {
         id
@@ -120,12 +125,13 @@ const GET_QUESTIONS = gql`
           id
           people{
             name
-            surName
+            surname
           }
           course
         }
         examChild_gId
         examChild_epId
+        examChild_pdf
         questionParent
         {
           id
@@ -195,8 +201,7 @@ const SET_RESPONSE_STUDENT = gql`
       }
   }
 `;
-// $userName: String!,
-//     $password: String!,
+
 const SET_DEALY_RESPONSE_STUDENT = gql`
   mutation addResponseInfo(
     $userName: String!,
@@ -205,6 +210,8 @@ const SET_DEALY_RESPONSE_STUDENT = gql`
     $delay: String!,
     $totalScore: String!,
     $countScore: String!,
+    $startTime: String! ,
+    $startDate: String! ,
     ){
       addResponseInfo(
         userName: $userName,
@@ -213,6 +220,8 @@ const SET_DEALY_RESPONSE_STUDENT = gql`
         delay: $delay,
         totalScore: $totalScore,
         countScore: $countScore,
+        startTime: $startTime,
+        startDate: $startDate,
       ){
         id
       }
@@ -243,5 +252,221 @@ const SET_INFO_EXAMCHILD = gql`
   }
 `;
 
+const GET_EXAMCHILD_QUESTIONS = gql` 
+query examParents(
+  $userName: String!,
+  $password: String!,
+  $id:  String!,
+  $examChild_gId: String,
+  ){
+  examParents(
+    userName: $userName,
+    password: $password,
+    id:$id
+  ){
+    id
+    examParent_start_date
+    examParent_stop_date
+    examParent_start
+    examParent_end
+    examParent_pId
+    examParent_gId
+    examParent_maxScore
+    examParent_method
+    examParent_topic
+    examChildByGId(examChild_gId: $examChild_gId)
+    {
+      id
+      groups{
+        id
+        people{
+          name
+          surname
+        }
+        course
+      }
+      examChild_gId
+      examChild_epId
+      questionParent
+      {
+        id
+        ecId
+        questionChild
+        {
+          id
+          response
+          {
+            response_descriptionImageLink
+            response_sequentialQuestion
+            response_studentItem
+            response_comparativeQuestion
+            response_descriptionQuestion
+            response_vancyQuestion
+            response_score
+          }
+          qpId
+          question
+          question_score
+          question_explain
+          question_timeToSolveProblem
+          question_correctOption
+          question_optionOne
+          question_optionTwo
+          question_optionThree
+          question_optionFour
+          question_link
+          exam_link
+          question_type
+          question_seqItems
+          question_vancyItems
+          question_compItems
+        }
+      }
+    }
+  }
+}
+`;
 
-export { SET_QUESTION_CHILD, GET_QUESTIONS ,DELETE_QUESTIONCHILD ,SET_RESPONSE_STUDENT ,SET_DEALY_RESPONSE_STUDENT ,SET_INFO_EXAMCHILD};
+///////////////
+const GET_EXAMCHILD_QUESTIONSInfo = gql` 
+query examParents(
+  $userName: String!,
+  $password: String!,
+  $id:  String!,
+  ){
+  examParents(
+    userName: $userName,
+    password: $password,
+    id:$id
+  ){
+    id
+    examChild
+    {
+      id
+      groups{
+        id
+        course
+      }
+      examChild_gId
+      examChild_epId
+      examChild_falseCoefficient
+      examChild_courseCoefficient
+      examChild_pdf
+    }
+  }
+}
+`;
+///////////////////////////
+const GET_EXAMS_FOR_STUDENT = gql`
+  query groupsListByStudent(
+    $userName: String,
+    $password: String,
+    $level: String,
+    $class: String,
+    $date: String,
+    ){
+      groupsListByStudent(
+      userName: $userName,
+      password: $password,
+      level: $level,
+      class: $class,
+    ){
+      id
+      course
+      people{
+        name
+        surname
+      }
+      examParentsListByDate(date: $date)
+      {
+        id
+        examParent_start_date
+        examParent_stop_date
+        examParent_start
+        examParent_end
+      }
+    }
+  }
+`;
+////////////////////////////////
+const GET_EXAMSINFO_FOR_STUDENT = gql`
+  query responseInfoListByPerson(
+    $userName: String,
+    $password: String,
+    $epId: String,
+    ){
+      responseInfoListByPerson(
+      userName: $userName,
+      password: $password,
+      epId: $epId,
+    ){
+      id
+      pId
+      epId
+      delay
+      totalScore
+      countScore
+      startTime
+      startDate
+    }
+  }
+`;
+
+/////////////////////////////////////
+const SendRequestQuestionChild = async (QuestionData , uploadID , selectedFileName ,setQuestionChild) =>{
+  console.log('QuestionData',QuestionData);
+  console.log('uploadID',uploadID);
+  console.log('selectedFileName',selectedFileName);
+  if(uploadID != ''){
+    const SendQuestionImagePromise = new Promise((SendFileResolve, SendFileReject) => {
+      document.getElementById(uploadID).submit();
+      // return 'ok';
+      setTimeout(() => {
+        SendFileResolve();
+      }, 7000);
+      // resolve();
+    });
+    return SendQuestionImagePromise
+    .then( handleResolved => {
+        console.log('handleResolved');
+        // return setTimeout(() => {
+          if (selectedFileName) {
+            return setQuestionChild({ variables: QuestionData})
+            .then(res=>{
+              if(res.data && res.data.addQuestionChild){
+                return {err:false , message:" ثبت شد"};
+              }else{
+                return {err:true , message:" ثبت نشد مجددا تلاش کنید"};
+              }
+            }).catch(error =>{
+              return {err:true , message:error};
+            })
+          } else {
+            return {err:true , message:"فایل آپلود نشد مجددا تلاش کنید"};
+          }
+        // }, 3000);
+        
+    })
+    .catch(error =>{
+        return {err:true , message:error};
+    });
+  }else{
+    return setQuestionChild({ variables: QuestionData})
+    .then(res=>{
+      if(res.data && res.data.addQuestionChild){
+        return {err:false , message:" ثبت شد"};
+      }else{
+        return {err:true , message:" ثبت نشد مجددا تلاش کنید"};
+      }
+    }).catch(error =>{
+      return {err:true , message:error};
+    })
+  }
+  
+  //////////////////////////////////////////////////////
+}
+
+
+export { SET_QUESTION_CHILD, GET_QUESTIONS ,DELETE_QUESTIONCHILD ,SET_RESPONSE_STUDENT ,
+         SET_DEALY_RESPONSE_STUDENT ,SET_INFO_EXAMCHILD,GET_EXAMCHILD_QUESTIONS,
+         GET_EXAMCHILD_QUESTIONSInfo ,GET_EXAMS_FOR_STUDENT,GET_EXAMSINFO_FOR_STUDENT,SendRequestQuestionChild};

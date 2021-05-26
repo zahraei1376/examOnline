@@ -4,7 +4,7 @@ import {AddIndexQuestion ,LowOffIndexQuestion} from './questionIndex.utils';
 const INITIALSTATE = {
     indexQuestion: 0,
     questionsLenght:0,
-    typeIncreaseQuestions : 'justForward',
+    typeIncreaseQuestions : false,
     runningTomeOfTime:false,
 }
 

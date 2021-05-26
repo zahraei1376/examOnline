@@ -28,12 +28,6 @@ const client =new ApolloClient({
   cache,
 });
 
-// client.writeData({
-//   data:{
-//     courseNameForExamChild:[],
-//   }
-// })
-
 
 ReactDOM.render(
   <BrowserRouter>

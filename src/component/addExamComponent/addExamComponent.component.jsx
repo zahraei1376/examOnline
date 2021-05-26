@@ -92,7 +92,6 @@ const addNewExamMutation = gql`
                 }
         }
 `;
-var counter = 0;
 const AddExamForTeacher = ({MyGroups}) => {
   ////////////////////////////////
    // const appContext = useContext(AppContext);
@@ -153,6 +152,7 @@ const AddExamForTeacher = ({MyGroups}) => {
   const [groupsExam,setGroupsExam] = useState([]);
   const [groupWithCourseName,setGroupsExamWithCourseName] = useState([]);
   ////////////////////////
+
   const [state,setState] = useState({
     // selectedstartTime:'',
     // selectedEndTime:'',
@@ -174,16 +174,7 @@ const AddExamForTeacher = ({MyGroups}) => {
     random : "true",
     duration: '00:00:00',
   })
-  // const [examCourseName, setExamCourseName] = useState('');
-  // const [examMaxScore, setExamMaxScore] = useState('');
-  // const [axamId, setAxamId] = React.useState('');
-  // const [message, setMessage] = React.useState('');
-  // const [examTopic, setexamTopic] = React.useState('');
-  // const [status, setStatus] = React.useState(0);
-  // const [ShowPopup, setShowPopup] = React.useState(false);
-  ///////////
-  // const [classN, setClassN] = useState("");
-  // const [level, setLevel] = useState("");
+
   const [groups, setGroups] = useState([
     // {class:'الف',level:'اول',course:'علوم',pId:'1'},
     // {class:'الف',level:'اول',course:'ریاضی',pId:'2'},
@@ -306,11 +297,6 @@ const AddExamForTeacher = ({MyGroups}) => {
     }
      
   }
-  // const [Levels, setLevels] = useState([]);
-  // const [classNames, setClassNames] = useState([]);
-  // const [courseNames, setCourseNames] = useState([]);
-  // const [handleOneClick, sethandleOneClick] = useState(false);
-  // const [method, setMethod] = useState('');
   {/* ///////////////////////////////////////////////*/}
   useEffect(() => {
     setNewSelectedStartDate(fixNumbers(moment(selectedStatrtDate,
@@ -323,8 +309,6 @@ const AddExamForTeacher = ({MyGroups}) => {
   }, [selectedEndDate]);
   {/* ///////////////////////////////////////////////*/}
   useEffect(()=>{
-    // var Myclass = groups.filter(group =>group.level === myItem);
-    // console.log('Myclass',Myclass);
     var newGrops = [];
     for (
       var count = 0;
@@ -383,12 +367,7 @@ const AddExamForTeacher = ({MyGroups}) => {
     // setState({...state,getExamCourseNamesTeacher:'' ,getExamClassTeacher : newClassName});
   },[MyGroups])
   {/* ///////////////////////////////////////////////*/}
-  const handleGroupsExam = (vl) =>{
-    // console.log('vl',vl);
-    // var temp =[...groupsExam];
-    // temp.push(vl);
-    // setGroupsExam(temp);
-    
+  const handleGroupsExam = (vl) =>{    
     if(typePfUser === 1){
       setValues(vl);
       var MySelectedGroup = [];
@@ -541,8 +520,10 @@ const AddExamForTeacher = ({MyGroups}) => {
             examParent_gId: groupsExam,
             examParent_start_date: newSelectedStartDate, 
             examParent_stop_date: newSelectedEndDate,
-            examParent_start:selectedstartTime ?  moment2(selectedstartTime).tz('Asia/Tehran').format('HH:mm:00') : '',
-            examParent_end: selectedEndTime ?  moment2(selectedEndTime).tz('Asia/Tehran').format('HH:mm:00') : '', 
+            examParent_start:selectedstartTime ,
+            examParent_end: selectedEndTime , 
+            // examParent_end: selectedEndTime ?  fixNumbers(moment2(selectedEndTime).tz('Asia/Tehran').format('HH:mm:00')) : '', 
+            // examParent_start:selectedstartTime ?  fixNumbers(moment2(selectedstartTime).tz('Asia/Tehran').format('HH:mm:00')) : '',
             examParent_duration:handleResolvedA,
             examParent_maxScore: state.examMaxScore, 
             examParent_method: state.examMethod,
@@ -558,10 +539,14 @@ const AddExamForTeacher = ({MyGroups}) => {
               setMessage('امتحان ثبت شد');
               setStatus('1');
               setShowMessage(!showMessage);
-              setState({...state , handleOneClick:false});
+              
               setState({...state , loading:false});
+              // setState({...state , handleOneClick:false});
               setTimeout(()=>{
                 // history.push("/questions");
+                
+              // setState({...state , loading:false});
+              setState({...state , handleOneClick:false});
                 history.push({
                   pathname: '/questions',
                   // search: '?query=abc',
@@ -569,25 +554,27 @@ const AddExamForTeacher = ({MyGroups}) => {
                 })
               },1000)
             }else{
-              // console.log('data',data);
               setStatus('0')
               setMessage('امتحان ثبت نشد')
               setShowMessage(!showMessage);
-              setState({...state , handleOneClick:false});
+              
               setState({...state , loading:false});
+              setState({...state , handleOneClick:false});
             }
           })
       
       })
       .catch(err =>{
-          alert(err);
+        setState({...state , loading:false});
+        setState({...state , handleOneClick:false});
+        alert(err);
       });
     }else{
       setStatus('0')
       setMessage('باید درسی را انتخاب کنید')
       setShowMessage(!showMessage);
-      setState({...state , handleOneClick:false});
       setState({...state , loading:false});
+      setState({...state , handleOneClick:false});
     }
     //////////////////////////
     // if(CT){
@@ -651,10 +638,17 @@ const AddExamForTeacher = ({MyGroups}) => {
     console.log('secs',secs);
     // Output like "1:01" or "4:03:59" or "123:03:59"
     var ret = "";
-    if (hrs > 0) {
+    // if (hrs > 0) {
+    //     ret += "" + hrs + ":" + (mins < 10 ? "0" : "");
+    // }else{
+    //   ret += "00:" + (mins < 10 ? "0" : "");
+    // }
+    if (hrs > 0 && hrs < 10) {
+      ret += "" + "0" + hrs + ":" + (mins < 10 ? "0" : "");
+    }else if(hrs > 0 && hrs >= 10){
         ret += "" + hrs + ":" + (mins < 10 ? "0" : "");
     }else{
-      ret += "00:" + (mins < 10 ? "0" : "");
+        ret += "" + "00" + ":" + (mins < 10 ? "0" : "");
     }
     ret += "" + mins + ":" + (secs < 10 ? "0" : "");
     ret += "" + secs;
@@ -1206,12 +1200,13 @@ const AddExamForTeacher = ({MyGroups}) => {
                 onClick={e => handleSubmit(e)}
                 // disabled={handleOneClick}
               />
+              {state.loading ? <MySpinner/> : ''}
             </BtnGroupContainer>
           </Form>
           {
             showMessage ? <MySnackbar message={message} status={status} showMessage={showMessage} setShowMessage={setShowMessage} /> : ''
           }
-          {state.loading ? <MySpinner/> : ''}
+          {/* {state.loading ? <MySpinner/> : ''} */}
         </Grid>
       </ Grid>
     </ContainerForm >

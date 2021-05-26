@@ -9,7 +9,7 @@ import setToggle from '../../../redux/toggleQuesion/toggleQuestion.action';
 import MySnackbar from '../../../messageBox/messageBox.component';
 /////////////////////////query
 import { useMutation} from 'react-apollo';
-import {SET_QUESTION_CHILD , DELETE_QUESTIONCHILD} from '../../../graphql/resolver';
+import {SET_QUESTION_CHILD , DELETE_QUESTIONCHILD , SendRequestQuestionChild} from '../../../graphql/resolver';
 /////////////////////////query
 import {selectedCourseName} from '../../../redux/questionsCourses/questionsCourses.selector';
 import { createStructuredSelector } from 'reselect';
@@ -25,15 +25,10 @@ const Vacancy = ({setToggle ,courseName, ...props}) => {
     const [message,setMessage] =useState('');
     const [status,setStatus] =useState(0);
     /////////////////////////////////////////
-    const [textImage, setTextImage] = useState(false); //pic with text
-    const [questionImage, setQuestionImage] = useState(false); //pic instanse text
-    const [mimeTypeFile, SetMimeTypeFile] = useState('');
     const [clieckedButton, setClieckedButton] = useState(false);
     //////////////////////////////////////////
     const [selectedFile, SetselectedFile] = useState(null);
     const [selectedFileName, SetselectedFileName] = useState(null);
-    ///////////////////////////////////////////
-    var format = '';
     ///////////////////////////////////////////
     useEffect(()=>{
       if(!loadVariable.load){
@@ -47,115 +42,6 @@ const Vacancy = ({setToggle ,courseName, ...props}) => {
 
     },[]);
     ////////////////////////////////////
-    const CheckFile = (myFile) =>{
-        var file = myFile;
-        var fileName = file.name;
-        var fileIdL = fileName.split('.');
-        format = fileIdL[fileIdL.length - 1].toLowerCase();
-        if (file.size < 10485760) {
-            if (format == 'png' || format == 'jpg' || format == 'jpeg') {
-            //   SetselectedFile(file);
-                var mimetype = '';
-                    ///////////////////////////////
-                switch (format) {
-                case 'jpeg':
-                    // JPEG Image
-                    mimetype = 'image/jpeg';
-                    break;
-                case 'jpg':
-                    // JPEG Image
-                    mimetype = 'image/jpg';
-                    break;
-                case 'jpgv':
-                    // JPGVideo
-                    mimetype = 'video/jpeg';
-                    break;
-                case 'png':
-                    // Portable Network Graphics (PNG)
-                    mimetype = 'image/png';
-                    break;
-                default:
-                    break;
-                }
-                SetMimeTypeFile(mimetype);
-                return true;
-            } else {
-              alert('فایل ارسالی باید با فرمت png , jpg  یا jpeg باشد!!!');
-              return false;
-            }
-        } else {
-            alert('حجم فایل ارسالی باید کمتر از 10 مگابایت باشد!!!');
-            return false;
-        }
-    }
-    ////////////////////////////////////
-    const uploadFile = event => {//pic by text
-        SetselectedFile(null);
-        if (questionImage == true) {
-            setQuestionImage(false);
-        } else {
-            setTextImage(true);
-            var file = event.target.files[0];
-            // SetselectedFile(null);
-            // setQuestionImage(true);
-            // setTextImage(false);
-            if(CheckFile(file)){
-                SetselectedFile(file);
-            }
-            // var file = event.target.files[0];
-            // var fileName = file ?  file.name : '';
-            // var fileIdL = fileName ? fileName.split('.') : '';
-            // const format = fileIdL[fileIdL.length - 1].toLowerCase();
-            // if (file.size < 10485760) {
-            //     if (format == 'png' || format == 'jpg' || format == 'jpeg') {
-            //         SetselectedFile(file);
-            //     } else {
-            //         alert('فایل ارسالی باید با فرمت png , jpg  یا jpeg باشد!!!');
-            //         // setStatus(0);
-            //         // setShowPopup(true);
-            //     // setMessage('فایل ارسالی باید با فرمت png , jpg  یا jpeg باشد!!!');
-            //     // setStatus(0);
-            //     // setShowPopup(true);
-            //     }
-            // } else {
-            //     alert('حجم فایل ارسالی باید کمتر از 10 مگابایت باشد!!!');
-            //     // setMessage('حجم فایل ارسالی باید کمتر از 10 مگابایت باشد!!!');
-            //     // setStatus(0);
-            //     // setShowPopup(true);
-            // }
-        }
-    
-        // alert('imageQuestion');
-        // alert(imageQuestion);
-        // alert('QuestionPic');
-        // alert(QuestionPic);
-        // SetselectedFileName('');
-    };
-    //////////////////////////////////////////
-    const uploadFileQuestion = event => { //picQuestion
-        var file = event.target.files[0];
-        SetselectedFile(null);
-        setQuestionImage(true);
-        setTextImage(false);
-        if(CheckFile(file)){
-            SetselectedFile(file);
-        }
-    
-        // var file = event.target.files[0];
-        // var fileName = event.target.files[0].name;
-        // var fileIdL = fileName.split('.');
-        // const format = fileIdL[fileIdL.length - 1].toLowerCase();
-        // if (file.size < 10485760) {
-        //   if (format == 'png' || format == 'jpg' || format == 'jpeg') {
-        //     SetselectedFile(file);
-        //   } else {
-        //     alert('فایل ارسالی باید با فرمت png , jpg  یا jpeg باشد!!!');
-        //   }
-        // } else {
-        //     alert('حجم فایل ارسالی باید کمتر از 10 مگابایت باشد!!!');
-        // }
-    };
-    ////////////////////////////////////
     const handleSetVancyItems = (vc) =>{
       console.log('vc',vc);
       setVancyValue(vc)
@@ -164,7 +50,6 @@ const Vacancy = ({setToggle ,courseName, ...props}) => {
     const handleGetFileName = (fn) =>{
       SetselectedFileName(fn)
     }
-    ////////////////////////////////////
     ////////////////////////////////////
     const [innerColumns, setInnerColumns] = useState([
         {
@@ -222,22 +107,6 @@ const Vacancy = ({setToggle ,courseName, ...props}) => {
             handleGetFileName={handleGetFileName}
             SetselectedFile={SetselectedFile}
           />
-            // <label htmlFor="upload-photo">
-            //     <input
-            //         style={{ display: 'none' }}
-            //         // defaultValue=""
-            //         id="upload-photo"
-            //         name="upload-photo"
-            //         type="file"
-            //         onChange={e => uploadFileQuestion(e)}
-            //     />
-
-            //     <ComparativeButton variant="contained" component="span">
-            //         <BackupIcon 
-            //         // style={{color:'#009688'}}
-            //          />
-            //     </ComparativeButton>
-            // </label>
           ),
         },
         {
@@ -245,12 +114,7 @@ const Vacancy = ({setToggle ,courseName, ...props}) => {
           textAlign: 'center',
           field: 'question_timeToSolveProblem',
           minWidth: 150,
-        //   validate: rowData =>
-        //     rowData.question_timeToSolveProblem !== ''
-        //       ? 'Name cannot be empty'
-        //       : '',
           render: data => {
-            // return moment(data.group_start_time).format('HH:mm:00');
             return (
               <p
                 style={{
@@ -270,13 +134,10 @@ const Vacancy = ({setToggle ,courseName, ...props}) => {
           type: 'numeric',
           textAlign: 'center',
           field: 'question_score',
-        //   validate: rowData =>
-        //     rowData.question_score !== '' ? 'Name cannot be empty' : '',
           editComponent: props => (
             <input
               style={{
                 minWidth: '50px',
-                // border: "2px solid red",
                 borderRadius: "4px",
                 textAlign: 'center'
               }}
@@ -306,7 +167,6 @@ const Vacancy = ({setToggle ,courseName, ...props}) => {
           textAlign: 'center',
           field: 'question_explane',
           render: data => {
-            // return moment(data.group_start_time).format('HH:mm:00');
             return (
               <pre
                 style={{
@@ -347,23 +207,6 @@ const Vacancy = ({setToggle ,courseName, ...props}) => {
               handleGetFileName={handleGetFileName}
               SetselectedFile={SetselectedFile}
             />
-            // <input type="file" defaultValue="" onChange={e => uploadFile(e)} />
-            // <label htmlFor="upload-photo">
-            //     <input
-            //         style={{ display: 'none' }}
-            //         // defaultValue=""
-            //         id="upload-photo"
-            //         name="upload-photo"
-            //         type="file"
-            //         onChange={e => uploadFile(e)}
-            //     />
-
-            //     <ComparativeButton variant="contained" component="span">
-            //         <BackupIcon 
-            //         // style={{color:'#009688'}}
-            //          />
-            //     </ComparativeButton>
-            // </label>
           ),
         },
         {
@@ -374,29 +217,13 @@ const Vacancy = ({setToggle ,courseName, ...props}) => {
           minWidth: 150,
           editComponent: props => (
             <VacancyModal 
-              // vancyValue={props.value}
-              // setVancyValue={props.onChange}
               handleSetVancyItems={handleSetVancyItems}
               existVancyValue={props.rowData.question_vancyItems}
-              // setVancyValue={setVancyValue}
-              // vancyValue={vancyValue}
              />
             
           ),
           render: data => {
-            // return moment(data.group_start_time).format('HH:mm:00');
             return (
-            //   <input
-            //   style={{
-            //     minWidth: '50px',
-            //     // border: "2px solid red",
-            //     borderRadius: "4px",
-            //     textAlign: 'center'
-            //   }}
-            //   type="number"
-            //   value={props.value}
-            //   onChange={e => props.onChange(e.target.value)}
-            // />
             <pre
                 style={{
                   fontSize: '20px',
@@ -459,55 +286,45 @@ const Vacancy = ({setToggle ,courseName, ...props}) => {
             
           }}
         ////////////////////////////////////////////////
-        actions={[
-          {
-            icon: 'delete',
-            tooltip: 'حذف',
-              onClick: async(event, rowData) => {
-              if(props.rowData && props.rowData.length > 0 && props.rowData[0].id){
-                const dataDelete = [...innerData];
-                const index = rowData.tableData.id;
-                console.log('id', props.rowData[0].id);
-                await deleteQuestionChild({ variables: { 
-                  userName: "211",
-                  password: "211",
-                  id: props.rowData[0].id
-                  } 
-                }).then(res=>{
-                  if(res.data && res.data.deleteQuestionChild){
-                    props.handleFetchData();
-                    // console.log('data',data);
-                    // setMessage('امتحان ثبت شد');
-                    // setStatus('1');
-                    // setShowMessage(!showMessage);
-                  }else{
-                    props.handleFetchData();
-                    // console.log('data',data);
-                    // setStatus('0')
-                    // setMessage('امتحان ثبت نشد')
-                    // setShowMessage(!showMessage);
-                  }
-                })
-                dataDelete.splice(index, 1);
-                setInnerData([...dataDelete]);
-              }else{
-                setStatus('0')
-                setMessage('اطلاعاتی برای حذف وجود ندارد!!!')
-                setShowMessage(!showMessage);
-              }
+        // actions={[
+        //   {
+        //     icon: 'delete',
+        //     tooltip: 'حذف',
+        //       onClick: async(event, rowData) => {
+        //       if(props.rowData && props.rowData.length > 0 && props.rowData[0].id){
+        //         const dataDelete = [...innerData];
+        //         const index = rowData.tableData.id;
+        //         console.log('id', props.rowData[0].id);
+        //         await deleteQuestionChild({ variables: { 
+        //           userName: "211",
+        //           password: "211",
+        //           id: props.rowData[0].id
+        //           } 
+        //         }).then(res=>{
+        //           if(res.data && res.data.deleteQuestionChild){
+        //             props.handleFetchData();
+        //           }else{
+        //             props.handleFetchData();
+        //           }
+        //         })
+        //         dataDelete.splice(index, 1);
+        //         setInnerData([...dataDelete]);
+        //       }else{
+        //         setStatus('0')
+        //         setMessage('اطلاعاتی برای حذف وجود ندارد!!!')
+        //         setShowMessage(!showMessage);
+        //       }
                
-            }
-          },
-        ]}
+        //     }
+        //   },
+        // ]}
         
         editable={{
-          //////////////////////////////////============================================
             //////////////////////////////////
             onRowUpdateBefore: () =>
             new Promise((resolve, reject) => {
               console.log("onRowUpdateBefore");
               setToggle(true);
-              // props.setDisableComponents(true);
               resolve();
             }),
           //////////////////////////////////////////
@@ -517,204 +334,207 @@ const Vacancy = ({setToggle ,courseName, ...props}) => {
              console.log('onRowUpdateCancelled',loadVariable.load);
            },
            //////////////////////////////////////////
- 
            onRowUpdate: (newData, oldData) =>
              new Promise((resolve, reject) => {
                if(courseName != ''){
                  if(props.rowData && props.rowData.length > 0 && props.rowData[0].qpId ){
-                   setTimeout(() => {
-                     // const dataUpdate = [...innerData];
-                     // const index = oldData.tableData.id;
+                   setTimeout(async() => {
                      /////////////myCode
-                    
                       if (
                         selectedFile && selectedFile == "picInsteadText"
                       ) {
-                        ///////////////////////////////////////
-                        const SendQuestionImagePromise = new Promise((resolve, reject) => {
-                          document.getElementById(`question_link${props.rowData[0].id}`).submit();
-                          // return 'ok';
+                        //////////////////////////////////////////
+                        var questionData = { 
+                          userName: "211", 
+                          password: "211", 
+                          qpId: props.rowData[0].qpId,
+                          examChildId:courseName,
+                          question: "", 
+                          question_score: newData.question_score ? newData.question_score : '', 
+                          question_explain: convertText(newData.question_explane),
+                          question_timeToSolveProblem: convertText(newData.question_timeToSolveProblem), 
+                          question_correctOption: "", 
+                          question_optionOne: "",
+                          question_optionTwo: "",
+                          question_optionThree: "",
+                          question_optionFour: "",
+                          question_link: "https://s3.ir-thr-at1.arvanstorage.com/raysa/" + selectedFileName,
+                          exam_link: "", 
+                          question_type: props.typeQuestion,
+                          question_seqItems: [],
+                          question_vancyItems: vancyValue, 
+                          question_compItems: []
+                        } 
+
+                        console.log(`question_link${props.rowData[0].id}`);
+                        
+                        var callBack = await SendRequestQuestionChild(questionData , `question_link${props.rowData[0].id}` , selectedFileName ,setQuestionChild);
+                        console.log('callBack',callBack);  
+                        if(callBack && callBack.err === false){
+                          SetselectedFile(null);
+                          SetselectedFileName(null);
+                          setMessage(callBack.message);
+                          setStatus('1');
+                          setShowMessage(!showMessage);
                           resolve();
-                        });
-                        SendQuestionImagePromise
-                        .then( handleResolved => {
-                            console.log('handleResolved');
-                            setTimeout(() => {
-                              if (selectedFileName) {
-                              setQuestionChild({ variables: { 
-                                userName: "211", 
-                                password: "211", 
-                                qpId: props.rowData[0].qpId,
-                                examChildId:courseName,
-                                question: "", 
-                                question_score: newData.question_score ? newData.question_score : '', 
-                                question_explain: convertText(newData.question_explane),
-                                question_timeToSolveProblem: convertText(newData.question_timeToSolveProblem), 
-                                question_correctOption: "", 
-                                question_optionOne: "",
-                                question_optionTwo: "",
-                                question_optionThree: "",
-                                question_optionFour: "",
-                                question_link: "https://s3.ir-thr-at1.arvanstorage.com/raysa/" + selectedFileName,
-                                exam_link: "", 
-                                question_type: props.typeQuestion,
-                                question_seqItems: [],
-                                question_vancyItems: vancyValue, 
-                                question_compItems: []
-                                } 
-                              }).then(res=>{
-                                if(res.data && res.data.addQuestionChild){
-                                  setQuestionImage(false);
-                                  setMessage('ثبت شد');
-                                  setStatus('1');
-                                  setShowMessage(!showMessage);
-                                }else{
-                                  setStatus('0')
-                                  setMessage('ثبت نشد')
-                                  setShowMessage(!showMessage);
-                                }
-                              })
-                              } else {
-                                // alert('اطلاعاتی به درستی ثبت نشد');
-                                setStatus('0')
-                                setMessage('اطلاعاتی به درستی ثبت نشد')
-                                setShowMessage(!showMessage);
-                              }
-                            }, 3000);
-                            
-                        })
-                        .catch(err =>{
-                            console.log('err');
-                            alert(err);
-                        });
-                  //////////////////////////////////////////
+                          props.handleFetchData();
+                        }else if (callBack && callBack.err === true){
+                          setStatus('0')
+                          setMessage(callBack.message)
+                          setShowMessage(!showMessage);
+                          reject();
+                        }else{
+                          setStatus('0')
+                          setMessage('خطایی رخ داده است!!!');
+                          setShowMessage(!showMessage);
+                          reject();
+                        }
+                        ////////////////////////////////////////////////
                       } else if (
                         selectedFile && selectedFile == "picWithText"
                       ) {
-                        ////////////////////////////////////////////
-                        const SendTextImagePromise = new Promise((resolve, reject) => {
-                          document.getElementById(`exam_link${props.rowData[0].id}`).submit();
-                          // return 'ok';
-                          resolve();
-                        });
-                        SendTextImagePromise
-                        .then( handleResolved => {
-                            console.log('handleResolved');
-                            setTimeout(() => {
-                              if (selectedFileName) {
-                              setQuestionChild({ variables: { 
-                                userName: "211", 
-                                password: "211", 
-                                qpId: props.rowData[0].qpId,
-                                examChildId:courseName,
-                                question: convertText(newData.question), 
-                                question_score: newData.question_score ? newData.question_score : '', 
-                                question_explain: convertText(newData.question_explane),
-                                question_timeToSolveProblem: convertText(newData.question_timeToSolveProblem), 
-                                question_correctOption: "", 
-                                question_optionOne: "",
-                                question_optionTwo: "",
-                                question_optionThree: "",
-                                question_optionFour: "",
-                                question_link: "",
-                                exam_link: "https://s3.ir-thr-at1.arvanstorage.com/raysa/" + selectedFileName,
-                                question_type: props.typeQuestion,
-                                question_seqItems: [],
-                                question_vancyItems: vancyValue, 
-                                question_compItems: []
-                                } 
-                              }).then(res=>{
-                                if(res.data && res.data.addQuestionChild){
-                                  setTextImage(false);
-                                  setQuestionImage(false);
-                                  setMessage('ثبت شد');
-                                  setStatus('1');
-                                  setShowMessage(!showMessage);
-                                }else{
-                                  setStatus('0')
-                                  setMessage('ثبت نشد')
-                                  setShowMessage(!showMessage);
-                                }
-                              })
-                              } 
-                              else {
-                                // alert('اطلاعاتی به درستی ثبت نشد');
-                                setStatus('0')
-                                setMessage('اطلاعاتی به درستی ثبت نشد')
-                                setShowMessage(!showMessage);
-                              }
-                            }, 3000);
+                         //////////////////////////////////////
+                          var questionData = { 
+                            userName: "211", 
+                            password: "211", 
+                            qpId: props.rowData[0].qpId,
+                            examChildId:courseName,
+                            question: convertText(newData.question), 
+                            question_score: newData.question_score ? newData.question_score : '', 
+                            question_explain: convertText(newData.question_explane),
+                            question_timeToSolveProblem: convertText(newData.question_timeToSolveProblem), 
+                            question_correctOption: "", 
+                            question_optionOne: "",
+                            question_optionTwo: "",
+                            question_optionThree: "",
+                            question_optionFour: "",
+                            question_link: "",
+                            exam_link: "https://s3.ir-thr-at1.arvanstorage.com/raysa/" + selectedFileName,
+                            question_type: props.typeQuestion,
+                            question_seqItems: [],
+                            question_vancyItems: vancyValue, 
+                            question_compItems: []
+                          } 
                           
-                        })
-                        .catch(err =>{
-                            console.log('err');
-                            alert(err);
-                        });
-                      
-                      } else {
-                      setQuestionChild({ variables: { 
-                        userName: "211", 
-                        password: "211", 
-                        qpId: props.rowData[0].qpId,
-                        examChildId:courseName,
-                        question: convertText(newData.question), 
-                        question_score: newData.question_score ? newData.question_score : '', 
-                        question_explain: convertText(newData.question_explane),
-                        question_timeToSolveProblem: convertText(newData.question_timeToSolveProblem), 
-                        question_correctOption: "", 
-                        question_optionOne: "",
-                        question_optionTwo: "",
-                        question_optionThree: "",
-                        question_optionFour: "",
-                        question_link: "",
-                        exam_link: "", 
-                        question_type: props.typeQuestion,
-                        question_seqItems: [],
-                        question_vancyItems: vancyValue, 
-                        question_compItems: [],
-                        } 
-                      }).then(res=>{
-                        if(res.data && res.data.addQuestionChild){
-                            setMessage('ثبت شد');
+                          var callBack = await SendRequestQuestionChild(questionData , `exam_link${props.rowData[0].id}`, selectedFileName ,setQuestionChild);
+                          if(callBack && callBack.err === false){
+                            SetselectedFile(null);
+                            SetselectedFileName(null);
+                            setMessage(callBack.message);
                             setStatus('1');
                             setShowMessage(!showMessage);
-                          }else{
+                            resolve();
+                            props.handleFetchData();
+                          }else if (callBack && callBack.err === true){
                             setStatus('0')
-                            setMessage('ثبت نشد')
+                            setMessage(callBack.message)
                             setShowMessage(!showMessage);
+                            reject();
                           }
-                      })
-                      }
-                      props.handleFetchData();
+                          else{
+                            setStatus('0')
+                            setMessage('خطایی رخ داده است!!!');
+                            setShowMessage(!showMessage);
+                            reject();
+                          }
+                        ////////////////////////////////////////////
+                      } else {
+                        ////////////////////////////////////////////
+                        var questionData = { 
+                          userName: "211", 
+                          password: "211", 
+                          qpId: props.rowData[0].qpId,
+                          examChildId:courseName,
+                          question: convertText(newData.question), 
+                          question_score: newData.question_score ? newData.question_score : '', 
+                          question_explain: convertText(newData.question_explane),
+                          question_timeToSolveProblem: convertText(newData.question_timeToSolveProblem), 
+                          question_correctOption: "", 
+                          question_optionOne: "",
+                          question_optionTwo: "",
+                          question_optionThree: "",
+                          question_optionFour: "",
+                          question_link: "",
+                          exam_link: "", 
+                          question_type: props.typeQuestion,
+                          question_seqItems: [],
+                          question_vancyItems: vancyValue, 
+                          question_compItems: [],
+                        } 
                         
-                       
-   
+                        var callBack = await SendRequestQuestionChild(questionData , '', selectedFileName ,setQuestionChild);
+                        if(callBack && callBack.err === false){
+                          SetselectedFile(null);
+                          SetselectedFileName(null);
+                          setMessage(callBack.message);
+                          setStatus('1');
+                          setShowMessage(!showMessage);
+                          resolve();
+                          props.handleFetchData();
+                        }else if (callBack && callBack.err === true){
+                          setStatus('0')
+                          setMessage(callBack.message)
+                          setShowMessage(!showMessage);
+                          reject();
+                        }
+                        ////////////////////////////
+                      }
                      ////////////////////////////
-                     // dataUpdate[index] = newData;
-                     // setInnerData([...dataUpdate]);
-                       // props.handleFetchData();
-                         // console.log('idEdit', newData);
-                       resolve();
-                     // reject(loadVariable.load = false);
                    }, 1000)
                  }else{
                    setStatus('0')
                    setMessage('خطایی رخ داده است!!!')
                    setShowMessage(!showMessage);
-                   resolve();
+                   reject();
                  }
                }else{
                  setStatus('0')
                  setMessage('ابتدا درس را انتخاب کنید!!!');
                  setShowMessage(!showMessage);
-                 resolve();
+                 reject();
                }
               
                ////////////////////////////////////////////
                setToggle(false);
               
-             }),
-          ///////////////////////////////////===============================================
+            }),
+            //////////////////////////////////////////
+            onRowDelete: oldData =>
+              new Promise((resolve, reject) => {
+                  setTimeout(async() => {
+                      // const dataDelete = [...data];
+                      // const index = oldData.tableData.id;
+                      // dataDelete.splice(index, 1);
+                      // setData([...dataDelete]);
+                      ///////////////////////////////
+                      if(props.rowData && props.rowData.length > 0 && props.rowData[0].id){
+                        // const dataDelete = [...innerData];
+                        // const index = rowData.tableData.id;
+                        console.log('id', props.rowData[0].id);
+                        await deleteQuestionChild({ variables: { 
+                          userName: "211",
+                          password: "211",
+                          id: props.rowData[0].id
+                          } 
+                        }).then(res=>{
+                          if(res.data && res.data.deleteQuestionChild){
+                            props.handleFetchData();
+                          }else{
+                            props.handleFetchData();
+                          }
+                        })
+                        // dataDelete.splice(index, 1);
+                        // setInnerData([...dataDelete]);
+                      }else{
+                        setStatus('0')
+                        setMessage('اطلاعاتی برای حذف وجود ندارد!!!')
+                        setShowMessage(!showMessage);
+                      }
+
+                      resolve();
+                  }, 1000);
+            })
+            ///////////////////////////////////////////
         }}
       /> : ''}
       {clieckedButton ? <VacancyModal/> : ''}
@@ -725,7 +545,6 @@ const Vacancy = ({setToggle ,courseName, ...props}) => {
     )
 };
 
-// export default Vacancy;
 const mapDispatchToProps = dispatch =>({
   setToggle: toggle => dispatch(setToggle(toggle)),
 });

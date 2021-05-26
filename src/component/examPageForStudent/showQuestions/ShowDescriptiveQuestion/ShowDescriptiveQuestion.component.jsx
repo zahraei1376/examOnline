@@ -17,14 +17,21 @@ import { getResponseStudentWithIndex } from '../../../../redux/responsesStudent/
 
 
 
-const DescriptionItem = ({number ,setResForRedux ,setResponseDesImage ,ResItem ,ResItemImage})=>{
+const DescriptionItem = ({number ,setResForRedux ,setResponseDesImage ,ResItem ,ResItemImage ,
+    // setResponseQuestion ,responseQuestion
+})=>{
 
     const [responseQuestion,setResponseQuestion] = useState(ResItem ? ResItem : '');
     useEffect(()=>{
         console.log('ResItem' ,ResItem);
         setResponseDesImage(ResItemImage ? ResItemImage : '')
         setResForRedux(ResItem ? ResItem : '');
-    },[]);
+        setResponseQuestion(ResItem ? ResItem : '');
+    },[ResItem]);
+
+    // useEffect(()=>{
+    //     console.log('createeeeeeeeeeeeeee');
+    // },[])
 
     const handleChange = (e) =>{
         setResponseQuestion(e.target.value);
@@ -39,7 +46,7 @@ const DescriptionItem = ({number ,setResForRedux ,setResponseDesImage ,ResItem ,
     return(
         <DescriptionItemConatiner>
             <Tooltip title="آپلود جواب">
-                <Uploader handleGetFileName={handleGetFileName} />
+                <Uploader handleGetFileName={handleGetFileName} fildID={number} />
                 {/* <label htmlFor={`upload${number}Pic`}>
                     <input type="file" style={{display:'none'}} id={`upload${number}Pic`}/>
 
@@ -58,12 +65,23 @@ const DescriptionItem = ({number ,setResForRedux ,setResponseDesImage ,ResItem ,
 }
 
 const ShowDescriptiveQuestion = ({question, number ,ResItem ,ResItemImage, getResponseStudentWithIndex}) =>{
-    useEffect(()=>{
-        console.log('ResItem',ResItem);
-    },[])
+    
+    // useEffect(()=>{
+    //     console.log('ResItem',ResItem);
+    // },[])
+
+
+
+    // useEffect(()=>{
+    //     console.log('Main createeeeeeeeeeeeeee');
+    //     console.log('ResItem Main' ,ResItem);
+    // },[])
     return(
-        <ShowBodyQuestions question={question} number={number}>
-            <DescriptionItem number={number} ResItem={ResItem ? ResItem : getResponseStudentWithIndex} ResItemImage={ResItemImage} />
+        <ShowBodyQuestions question={question} number={number} ResItem={ResItem ? ResItem : getResponseStudentWithIndex}>
+            <DescriptionItem number={number} 
+            ResItem={getResponseStudentWithIndex  ? getResponseStudentWithIndex : ResItem}
+            // ResItem={ResItem ? ResItem : getResponseStudentWithIndex} ResItemImage={ResItemImage}
+             />  
         </ShowBodyQuestions>
     )
 };

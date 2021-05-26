@@ -29,3 +29,8 @@ export const DecreaseIndex = ()=>({
     type:QuestionIndexTypes.DECREASE_INDEX,
     // payload:index,
 });
+
+export const SetTimeToAttendTheExamPage = (time)=>({
+    type:QuestionIndexTypes.TIMETOATTENDTHEEXAMPAGE,
+    payload:time,
+});

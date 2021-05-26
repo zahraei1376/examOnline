@@ -7,7 +7,7 @@ import TrueAndFalse from './trueAndFalse/trueAndFalse.component';
 import Comparative from './Comparative/Comparative.component';//تطبیقی
 import Vacancy from './Vacancy/Vacancy.component';//جای خالی
 import Sequential from './Sequential/Sequential.component';//ترتیبی
-import {QuestionImageIconContainer ,QuestionImageIcon ,QuestionImageIconText,QuestionImageIconTextV} from './questionComponent.styles';
+import {QuestionImageIconContainer ,QuestionImageIcon ,QuestionImageIconText,QuestionImageIconTextV,AddRowBtn} from './questionComponent.styles';
 import descriptiveIcon from '../../assets/img/descriptiveQuestion.png';
 import descriptiveIcon2 from '../../assets/img/descriptiveQuestion2.png';
 import multiChoice from '../../assets/img/multiChoice.png';
@@ -29,7 +29,8 @@ import {ToggleQuestion} from '../../redux/toggleQuesion/toggleQuestion.selector'
 /////////////////////////query
 import { gql } from 'apollo-boost';
 import { useQuery ,useMutation} from 'react-apollo';
-import { GET_QUESTIONS } from '../../graphql/resolver';
+import { GET_QUESTIONS ,GET_EXAMCHILD_QUESTIONS } from '../../graphql/resolver';
+import { Icon } from "@material-ui/core";
 /////////////////////////query
 export var loadVariable = {
   load:false,
@@ -121,11 +122,21 @@ const Questions = ({toggle ,courseName, examParentId,selectedEPId, questions}) =
   // const tableRef = React.useRef(null);
   const [setQuestionParent ,{ QuestionParentData }] = useMutation(SET_QUESTIONPARENT);
   const [deleteQuestionParent ,{ DQuestionParentData }] = useMutation(DELETE_QUESTIONPARENT);
-  const { loading, error, data ,refetch  } = useQuery(GET_QUESTIONS , {
+  // const { loading, error, data ,refetch  } = useQuery(GET_QUESTIONS , {
+  //   variables: {  
+  //     userName: "211",
+  //     password: "211",
+  //     id: selectedEPId , //examParentId,
+  //   },
+  //   notifyOnNetworkStatusChange: true
+  // });
+  //////////
+  const { loading, error, data ,refetch  } = useQuery(GET_EXAMCHILD_QUESTIONS , {
     variables: {  
       userName: "211",
       password: "211",
       id: selectedEPId , //examParentId,
+      examChild_gId : courseName && courseName.length > 0 ? courseName[0] : '',
     },
     notifyOnNetworkStatusChange: true
   });
@@ -138,7 +149,7 @@ const Questions = ({toggle ,courseName, examParentId,selectedEPId, questions}) =
   const MergeQuestions = (examP) => {
     console.log('examP', examP );
     var mergeQ = [];
-    var allQuestons = examP.examChild;
+    var allQuestons = examP.examChildByGId;
     for (let index = 0; index < allQuestons.length; index++) {
        var counterQuestionsParent = allQuestons[index].questionParent;
         if(counterQuestionsParent && counterQuestionsParent.length > 0){
@@ -181,9 +192,11 @@ const Questions = ({toggle ,courseName, examParentId,selectedEPId, questions}) =
     return tempAray;
   }
   /////////////////////////////////////////
-  function MyCreateArray(id){
+  function MyCreateArray(id , tableId){
     var tempAray=[];
-    tempAray.push(    {
+    tempAray.push({
+      // 'id': tableId ,
+      'id': '' ,
       'question': '', 
       'question_score':'',
       'question_explane':'',
@@ -206,23 +219,37 @@ const Questions = ({toggle ,courseName, examParentId,selectedEPId, questions}) =
     console.log('item2', tempAray);
     return tempAray;
   }
+  ///////////////////////////////////////
+  const handleAddRow = () =>{
+    document.querySelector("[data-mycustomid='add-icon-handler']").parentNode.click();
+  }
     
   return (
+    <div style={{position:'relative'}}>
+    <AddRowBtn onClick={handleAddRow}>
+        افزودن سوال
+    </AddRowBtn>
     <MaterialTable
      style={{direction:'rtl'}}
     // dir="rtl"
       title="سوالات"
+      icons={{
+        Add: props => <Icon data-mycustomid={"add-icon-handler"} />
+      }}
       options={{
+        pageSize: 20,
         // actionsColumnIndex: -1,
         search: false,
         // paging: false,
             // search: false,
             // toolbar:false,
-        actionsColumnIndex: -1,
+        
         // tableLayout: "auto", 
         actionsCellStyle:{
           padding:'0 40px',
         },
+        actionsColumnIndex: -1,
+    // toolbarButtonAlignment:"left",
         toolbarButtonAlignment:"right", // here is the option to change toolbar buttons' alignment
         cellStyle: {
           textAlign:'center',
@@ -243,25 +270,14 @@ const Questions = ({toggle ,courseName, examParentId,selectedEPId, questions}) =
         //       : "#fff" 
         //   })
       }}
-
-      // localization={{
-      //   body: {
-      //     AddRow: {
-      //       saveTooltip: "Salvar",
-      //       cancelTooltip: "Cancelar",
-      //       AddText: "Tem certeza que deseja deletar este registro?"
-      //     },
-      //     // addTooltip: "Adicionar",
-      //     // deleteTooltip: "Deletar",
-      //     // editTooltip: "Editar"
-      //   },
-      //   // header: {
-      //   //   actions: 'Acciones',
-      //   // }
-      // }}
       
       columns={[
-        { title: 'آیدی سوال', field: 'questionID'}
+        // { title: 'آیدی سوال', field: 'questionID'},
+        {
+          title: 'شماره' , field: 'questionID', textAlign: 'center',
+           render : rowData => rowData && (rowData.tableData.id + 1),
+          // editable: 'never'
+        },
       ]}
 
       data={QuestionsData}
@@ -303,7 +319,7 @@ const Questions = ({toggle ,courseName, examParentId,selectedEPId, questions}) =
                     // selectedCourseName={selectedCourseName}
                      handleFetchData={handleFetchData} 
                       rowData={rowData && rowData.questionChild && rowData.questionChild.length > 0   ? createArray(rowData.questionChild[0]) : 
-                        MyCreateArray(rowData.id)
+                        MyCreateArray(rowData.id ,rowData.tableData.id + 1 )
                       // [{}]
                     }
                     // MyCreateArray
@@ -353,7 +369,7 @@ const Questions = ({toggle ,courseName, examParentId,selectedEPId, questions}) =
                     // rowData={rowData && rowData.questionChild.length > 0   ? createArray(rowData.questionChild[0]) : createArray(rowData)}
                     // rowData={createArray(rowData)}
                     rowData={rowData && rowData.questionChild && rowData.questionChild.length > 0   ? createArray(rowData.questionChild[0]) : 
-                      MyCreateArray(rowData.id)
+                      MyCreateArray(rowData.id ,rowData.tableData.id + 1 )
                     // [{}]
                   }
                      typeQuestion={"2"}/>
@@ -401,7 +417,7 @@ const Questions = ({toggle ,courseName, examParentId,selectedEPId, questions}) =
                     // rowData={rowData && rowData.questionChild.length > 0   ? createArray(rowData.questionChild[0]) : createArray(rowData)}
                     // rowData={createArray(rowData)}
                     rowData={rowData && rowData.questionChild && rowData.questionChild.length > 0   ? createArray(rowData.questionChild[0]) : 
-                      MyCreateArray(rowData.id)
+                      MyCreateArray(rowData.id ,rowData.tableData.id + 1 )
                     // [{}]
                   }
                      typeQuestion={"3"}/>
@@ -439,7 +455,7 @@ const Questions = ({toggle ,courseName, examParentId,selectedEPId, questions}) =
                     // rowData={rowData && rowData.questionChild.length > 0   ? createArray(rowData.questionChild[0]) : createArray(rowData)}
                     // rowData={createArray(rowData)}
                     rowData={rowData && rowData.questionChild && rowData.questionChild.length > 0   ? createArray(rowData.questionChild[0]) : 
-                      MyCreateArray(rowData.id)
+                      MyCreateArray(rowData.id ,rowData.tableData.id + 1 )
                   }
                      typeQuestion={"4"}/>
                 })()}
@@ -485,7 +501,7 @@ const Questions = ({toggle ,courseName, examParentId,selectedEPId, questions}) =
                     // rowData={createArray(rowData)}
                     // rowData={rowData && rowData.questionChild.length > 0   ? createArray(rowData.questionChild[0]) : createArray(rowData)}
                     rowData={rowData && rowData.questionChild && rowData.questionChild.length > 0   ? createArray(rowData.questionChild[0]) : 
-                      MyCreateArray(rowData.id)
+                      MyCreateArray(rowData.id ,rowData.tableData.id + 1 )
                     // [{}]
                   } 
                     typeQuestion={"5"}/>
@@ -533,7 +549,7 @@ const Questions = ({toggle ,courseName, examParentId,selectedEPId, questions}) =
                     // rowData={rowData && rowData.questionChild.length > 0   ? createArray(rowData.questionChild[0]) : createArray(rowData)}
                     // rowData={createArray(rowData)}
                     rowData={rowData && rowData.questionChild && rowData.questionChild.length > 0   ? createArray(rowData.questionChild[0]) : 
-                      MyCreateArray(rowData.id)
+                      MyCreateArray(rowData.id ,rowData.tableData.id + 1 )
                     // [{}]
                   }
                      typeQuestion={"6"}/>
@@ -630,6 +646,7 @@ const Questions = ({toggle ,courseName, examParentId,selectedEPId, questions}) =
               }),
       }}
     />
+    </div>
   )
 }
 

@@ -9,32 +9,26 @@ import { getResponseStudentWithIndex } from '../../../../redux/responsesStudent/
 /////////////////////////////////////////////////
 const ShowMultipleChoiceItems = ({number,question,ResItem ,setResForRedux})=>{
 
-    // const [questionRes,setQuestionRes] = useState(Array(questions.length).fill(0).map(row => new Array(2).fill('')));
-
-    // const handleRes = (i , text) =>{
-    //     var temp =[...questionRes];
-    //     temp[i][0]=i;
-    //     temp[i][1]=text;
-    //     setQuestionRes(temp);
-    // }
-
-    // useEffect(()=>{
-    //     console.log('questionRes',questionRes);
-    // },[questionRes])
-
-    // const [checked ,setChecked] = useState(ResItem ? ResItem : '');
     const [checked , setChecked] = useState(ResItem);
     useEffect(()=>{
+      console.log('question.id' , question.id);
       console.log('MyResItem' , ResItem);
       console.log('number' , number);
       setResForRedux(ResItem);
-      // setChecked(ResItem);
-    },[number]);
+      setChecked(ResItem);
+    },[ResItem]);
 
     const setOneAnswer = (e) =>{
+      /////////////////////
       console.log('e.target.value',e.target.value);
+      setChecked(e.target.value);
+      // checkedRef.current = e.target.value;
       setResForRedux(e.target.value);
     }
+
+    useEffect(()=>{
+      console.log('createeeeeeeeeeeeeee');
+  },[])
 
     return(
         <MultipleChoiceConatiner>
@@ -47,29 +41,13 @@ const ShowMultipleChoiceItems = ({number,question,ResItem ,setResForRedux})=>{
                   name={number}
                   value={'1'}
                   onChange={e => setOneAnswer(e)}
-                  // defaultChecked={ResItem == '1'}
-                  // defaultChecked={ResItem != null && ResItem == '1' ? true : false}
-                  // defaultChecked={checked == '1' ? true : false}
-                  // checked={checked == '1' ? true : false}
-                  defaultChecked={ResItem == '1' ? true : false}
+                  checked = {checked == '1'}
+                  // defaultChecked={checked === '1' ? true : false}
+                  
+                  // defaultChecked={number === '1' ? true : false}
                 />
                 <InputLabel
-                  // htmlFor="optionOne"
                   htmlFor={`optionOne${number}`}
-                  // style={{
-                  //   fontSize: '20px',
-                  //   paddingRight: '10px',
-                  //   paddingTop: '5px',
-                  //   width:'100%',
-                  //   borderRadius:'10px'
-                  // }}
-                // style={{
-                //   fontSize: '20px',
-                //   paddingRight: '10px',
-                //   paddingTop: '5px',
-                //   width:'100%',
-                //   borderRadius:'10px'
-                // }}
                 >
                   {question.question_optionOne.split('%0A').join('\r\n')}
                 </InputLabel>
@@ -84,24 +62,17 @@ const ShowMultipleChoiceItems = ({number,question,ResItem ,setResForRedux})=>{
                   type="radio"
                   id={`optionTwo${number}`}
                   name={number}
-                  // value={number < 9 ? `0${number + 1},2` : `${number + 1},2`}
                   value={'2'}
                   onChange={e => setOneAnswer(e)}
-                  // checked={checked == '2' ? true : false}
-                  // defaultChecked={ResItem == '2'}
-                  defaultChecked={ResItem == '2' ? true : false}
+                  checked = {checked == '2'}
                   // defaultChecked={checked == '2' ? true : false}
+                  // defaultChecked={number === '2' ? true : false}
                 />
                 <InputLabel
-                  // htmlFor="optionTwo"
                   htmlFor={`optionTwo${number}`}
                 >
                   {question.question_optionTwo.split('%0A').join('\r\n')}
                 </InputLabel>
-                {/* <div className="questionComponent_questionSquare"></div>
-        <div className="questionComponent_questionItem">
-          {question.question_optionTwo}
-        </div> */}
               </MultipleChoiceitemDiv>
             ) : (
                 ''
@@ -113,26 +84,17 @@ const ShowMultipleChoiceItems = ({number,question,ResItem ,setResForRedux})=>{
                   type="radio"
                   id={`optionTree${number}`}
                   name={number}
-                  // value={number < 9 ? `0${number + 1},3` : `${number + 1},3`}
                   value={'3'}
                   onChange={e => setOneAnswer(e)}
-                  // checked={checked == '3' ? true : false}
-                  defaultChecked={ResItem == '3' ? true : false}
-                  // defaultChecked={checked == '3' ? true : false}
-                  // defaultChecked={ResItem == '3'}
-                  // defaultChecked={ResItem != null && ResItem == '3' ? true : false}
-                  // defaultChecked={checked == '3' ? true : false}
+                  // defaultChecked={checked === '3' ? true : false}
+                  checked = {checked == '3'}
+                  // defaultChecked={number === '3' ? true : false}
                 />
                 <InputLabel
-                  // htmlFor="optionTree"
                   htmlFor={`optionTree${number}`}
                 >
                   {question.question_optionThree.split('%0A').join('\r\n')}
                 </InputLabel>
-                {/* <div className="questionComponent_questionSquare"></div>
-            <div className="questionComponent_questionItem">
-              {question.question_optionThree}
-            </div> */}
               </MultipleChoiceitemDiv>
             ) : (
                 ''
@@ -144,25 +106,17 @@ const ShowMultipleChoiceItems = ({number,question,ResItem ,setResForRedux})=>{
                   type="radio"
                   id={`optionFour${number}`}
                   name={number}
-                  // value={number < 9 ? `0${number + 1},4` : `${number + 1},4`}
                   value={'4'}
                   onChange={e => setOneAnswer(e)}
-                  // defaultChecked={ResItem == '4'}
-                  // checked={checked == '4' ? true : false}
-                  defaultChecked={ResItem == '4' ? true : false}
-                  // defaultChecked={checked == '4' ? true : false}
-                  // defaultChecked={ResItem != null && ResItem == '4' ? true : false}
-
+                  checked = {checked == '4'}
+                  // defaultChecked={checked === '4' ? true : false}
+                  // defaultChecked={number === '4' ? true : false}
                 />
                 <InputLabel
                   htmlFor={`optionFour${number}`}
                 >
                   {question.question_optionFour.split('%0A').join('\r\n')}
                 </InputLabel>
-                {/* <div className="questionComponent_questionSquare"></div>
-            <div className="questionComponent_questionItem">
-              {question.question_optionFour}
-            </div> */}
               </MultipleChoiceitemDiv>
             ) : (
                 ''
@@ -172,10 +126,12 @@ const ShowMultipleChoiceItems = ({number,question,ResItem ,setResForRedux})=>{
 }
 
 const ShowMultipleChoiceQuestion = ({question, number,ResItem ,getResponseStudentWithIndex}) =>{
-  // console.log('ResItemMain' ,ResItem)
     return(
         <ShowBodyQuestions question={question} number={number}>
-          <ShowMultipleChoiceItems number={number} question={question} ResItem={ResItem ? ResItem : getResponseStudentWithIndex}/>
+          <ShowMultipleChoiceItems number={number} question={question} 
+          ResItem={getResponseStudentWithIndex  ? getResponseStudentWithIndex : ResItem}
+          // ResItem={ResItem ? ResItem : getResponseStudentWithIndex}
+          />
         </ShowBodyQuestions>
     )
 };
