@@ -26,7 +26,7 @@ const SequentialItems = ({number,items ,ResItem ,setResForRedux})=>{
     // },[items]);
 
     useEffect(()=>{
-        console.log('ResItem' ,ResItem);
+        // console.log('ResItem' ,ResItem);
         // setResSeqQuestion();
         // setResForRedux(ResItem);
         // for (let index = 0; index < items.length; index++) {
@@ -66,7 +66,7 @@ const SequentialItems = ({number,items ,ResItem ,setResForRedux})=>{
     const handleSetRes = (i , value) =>{
         var temp = [...resSeqQuestion];
         temp[i][0] = value;
-        console.log('temp',temp);
+        // console.log('temp',temp);
         setResForRedux(temp);
         setResSeqQuestion(temp);
         setMyRes(temp);
@@ -103,7 +103,7 @@ const SequentialItems = ({number,items ,ResItem ,setResForRedux})=>{
             {
                 items.length > 0 ? items.map((item,index) =>{
                     var tempRes = myRes[index];
-                    console.log('tempRes', tempRes);
+                    // console.log('tempRes', tempRes);
                     return(
                     // console.log('item',item)
                     <SequentialResInputContainer key={index}>
@@ -124,10 +124,10 @@ const SequentialItems = ({number,items ,ResItem ,setResForRedux})=>{
 }
 
 const ShowSequentialQuestion = ({question, number , items , ResItem , getResponseStudentWithIndex}) =>{
-    useEffect(()=>{
-        console.log('seqResItem',ResItem);
-        console.log('getResponseStudentWithIndex',getResponseStudentWithIndex);
-    })
+    // useEffect(()=>{
+    //     console.log('seqResItem',ResItem);
+    //     console.log('getResponseStudentWithIndex',getResponseStudentWithIndex);
+    // })
     return(
         <ShowBodyQuestions question={question} number={number}>
 

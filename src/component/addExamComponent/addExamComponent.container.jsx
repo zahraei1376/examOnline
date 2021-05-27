@@ -32,7 +32,7 @@ const AddExamForTeacherContainer = ()=>(
             {({loading ,error , data }) => {
                     // console.log({loading});
                     // console.log({error});
-                    console.log('data',data);
+                    // console.log('data',data);
                     
                     if(loading) return <MySpinner/>
                     else if(error) return <MySpinner/>

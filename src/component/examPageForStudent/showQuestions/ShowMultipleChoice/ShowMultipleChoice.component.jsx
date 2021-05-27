@@ -11,24 +11,24 @@ const ShowMultipleChoiceItems = ({number,question,ResItem ,setResForRedux})=>{
 
     const [checked , setChecked] = useState(ResItem);
     useEffect(()=>{
-      console.log('question.id' , question.id);
-      console.log('MyResItem' , ResItem);
-      console.log('number' , number);
+      // console.log('question.id' , question.id);
+      // console.log('MyResItem' , ResItem);
+      // console.log('number' , number);
       setResForRedux(ResItem);
       setChecked(ResItem);
     },[ResItem]);
 
     const setOneAnswer = (e) =>{
       /////////////////////
-      console.log('e.target.value',e.target.value);
+      // console.log('e.target.value',e.target.value);
       setChecked(e.target.value);
       // checkedRef.current = e.target.value;
       setResForRedux(e.target.value);
     }
 
-    useEffect(()=>{
-      console.log('createeeeeeeeeeeeeee');
-  },[])
+  //   useEffect(()=>{
+  //     console.log('createeeeeeeeeeeeeee');
+  // },[])
 
     return(
         <MultipleChoiceConatiner>

@@ -14,7 +14,7 @@ const ShowComparativeItems = ({number,items ,ResItem, setResForRedux})=>{
     const [MyRes,setMyRes] = useState(null);
 
     useEffect(()=>{
-        console.log('ResItem' , ResItem);
+        // console.log('ResItem' , ResItem);
         // setQuestionRes(Array(items.length).fill(0).map(row => new Array(2).fill('')));
         // setResForRedux(ResItem);
         // setMyRes(ResItem);
@@ -53,24 +53,24 @@ const ShowComparativeItems = ({number,items ,ResItem, setResForRedux})=>{
         setMyRes(temp);
     },[ResItem]);
 
-    useEffect(()=>{
-        console.log('MyRes',MyRes);
-    },[MyRes])
+    // useEffect(()=>{
+    //     console.log('MyRes',MyRes);
+    // },[MyRes])
 
     const handleRes = (i , text) =>{
        
         var temp =[...questionRes];
         temp[i][0] = i == 0 ? '0' : (i).toString();
         temp[i][1] = text;
-        console.log('temp',temp);
+        // console.log('temp',temp);
         setResForRedux(temp);
         setQuestionRes(temp);
         setMyRes(temp);
     }
 
-    useEffect(()=>{
-        console.log('items',items);//فرستادن مقدار رندوم شده
-    },[items])
+    // useEffect(()=>{
+    //     console.log('items',items);//فرستادن مقدار رندوم شده
+    // },[items])
 
     return(
         <ComparativeItemsConatiner>
@@ -90,7 +90,7 @@ const ShowComparativeItems = ({number,items ,ResItem, setResForRedux})=>{
 }
 
 const ShowComparativeQuestion = ({question, number,items ,ResItem ,getResponseStudentWithIndex}) =>{
-    console.log('ResItemComparativeQuestion',ResItem);
+    // console.log('ResItemComparativeQuestion',ResItem);
     return(
         <ShowBodyQuestions question={question} number={number}>
 

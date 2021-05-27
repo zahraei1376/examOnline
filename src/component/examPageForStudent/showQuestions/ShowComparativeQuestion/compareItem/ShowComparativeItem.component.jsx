@@ -10,18 +10,18 @@ import {InputDivContainer , InputPre ,FirstSideContainer,SecondSideContainer,
 const ShowComparativeItem =({myIndex , item ,ResItem ,handleIndexDelete , handleIndexSet,handleRes})=>{
 
     const [myResItem , setMyResItem] = useState(null);
-    useEffect(()=>{
-        console.log('myResItemmyResItem',myResItem);
-    },[myResItem])
+    // useEffect(()=>{
+    //     console.log('myResItemmyResItem',myResItem);
+    // },[myResItem])
 
     useEffect(()=>{
-        console.log('zzzzzzzzzzzzzzzzzzzzzz',item);
-        console.log('eeeeeeeeeeeee',ResItem);
+        // console.log('zzzzzzzzzzzzzzzzzzzzzz',item);
+        // console.log('eeeeeeeeeeeee',ResItem);
         setMyResItem(ResItem && ResItem.length > 0 ? ResItem[1] : '')
     },[ResItem])
 
     const hanldeValue = (vl) =>{
-        console.log('vl',vl);
+        // console.log('vl',vl);
         setMyResItem(vl);
         handleRes(myIndex , vl);
     }

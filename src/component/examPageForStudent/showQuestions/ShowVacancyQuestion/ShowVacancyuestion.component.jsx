@@ -21,11 +21,11 @@ const VacancyItem = ({number,items ,ResItem ,setResForRedux})=>{
     const [responseVancyQuestion,setResponseVancyQuestion] = useState(null);
     const [NOfVancy,setNOfVancy] = useState([]);
     const [myRes , setMyRes] = useState(null);
-    useEffect(()=>{
-        console.log('myResmyResmyResmyRes' ,myRes);
-        // setResForRedux(ResItem);
-        // setResponseVancyQuestion(ResItem ? ResItem : []);
-    },[myRes]);
+    // useEffect(()=>{
+    //     console.log('myResmyResmyResmyRes' ,myRes);
+    //     // setResForRedux(ResItem);
+    //     // setResponseVancyQuestion(ResItem ? ResItem : []);
+    // },[myRes]);
 
     const handleChange = (i,value) =>{
         var temp =[...responseVancyQuestion];
@@ -63,7 +63,7 @@ const VacancyItem = ({number,items ,ResItem ,setResForRedux})=>{
             }
             setResForRedux(temp);
             setResponseVancyQuestion(temp);
-            console.log('temptemptemptemp',temp);
+            // console.log('temptemptemptemp',temp);
             setMyRes(temp);
         }else{
             setResForRedux([]);
@@ -92,7 +92,7 @@ const VacancyItem = ({number,items ,ResItem ,setResForRedux})=>{
 }
 
 const ShowVacancyQuestion = ({question, number,items ,ResItem ,getResponseStudentWithIndex}) =>{
-    console.log('ResItemVancyQuestion',ResItem);
+    // console.log('ResItemVancyQuestion',ResItem);
 
     // useEffect(() =>{
 

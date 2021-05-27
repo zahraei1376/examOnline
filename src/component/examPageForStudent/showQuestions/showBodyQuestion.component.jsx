@@ -43,13 +43,13 @@ const ShowBodyQuestions = ({
     //////////////////////////////////////////
     const [responseQuestion,setResponseQuestion] = useState('');
     //////////////////////////////////////////
-    useEffect(()=>{
-      console.log('bodyRes',ResItem);
-    },[])
+    // useEffect(()=>{
+    //   console.log('bodyRes',ResItem);
+    // },[])
     ///////////////////////////////////////////
-    useEffect(()=>{
-        console.log('resForRedux',resForRedux);
-      },[resForRedux]);
+    // useEffect(()=>{
+    //     console.log('resForRedux',resForRedux);
+    // },[resForRedux]);
     ///////////////////////////////////////////
     const showPic = () => {
       setShowImage(!showImage);
@@ -57,7 +57,7 @@ const ShowBodyQuestions = ({
     ///////////////////////////////////////////
     const handleShowPic = link => {
       if (question.question) {
-          console.log('question.question1',question.question);
+          // console.log('question.question1',question.question);
           // setState({...state,type:true});
         setType(true);
           // setState({...state,captionImage:`${question.question.split('%0A').join('\r\n')}(نمره : ${question.question_score
@@ -70,7 +70,7 @@ const ShowBodyQuestions = ({
       setImageSrc(link);
         showPic();
       } else {
-          console.log('question.question2');
+          // console.log('question.question2');
           // setState({type:false});
           // setState({captionImage:''});
           // // captionImage('');
@@ -85,7 +85,7 @@ const ShowBodyQuestions = ({
     };
     ///////////////////////////////////////////
     const handleNextQuestion = async() =>{
-        console.log("CCCCCCCCC:", resForRedux);
+        // console.log("CCCCCCCCC:", resForRedux);
         await addResponse({ variables: { 
             userName: "210",
             password: "210",
@@ -100,7 +100,7 @@ const ShowBodyQuestions = ({
          } 
         }).then(res=>{
           if(res.data && res.data.addResponse){
-            console.log("dddddddddddddddd:", resForRedux);
+            // console.log("dddddddddddddddd:", resForRedux);
             setRepsonseStudent({examPID : getExamParentIdResponse ,examEndTime:question.examEndTime , examEndDate : question.examEndDate , id : question.id , res : resForRedux});
             setMessage('جواب شما ثبت شد');
             setStatus('1');
@@ -122,7 +122,7 @@ const ShowBodyQuestions = ({
           }
         }
           )
-        console.log('{id: question.id , res: resForRedux}',{id: question.id , res: resForRedux});
+        // console.log('{id: question.id , res: resForRedux}',{id: question.id , res: resForRedux});
     }
     ///////////////////////////////////////////
     const handlePrevQuestion = () =>{
@@ -132,9 +132,9 @@ const ShowBodyQuestions = ({
       DecreaseIndexQuestion();
     }
 
-    useEffect(()=>{
-      console.log('body createeeeeeeeeeeeeee');
-  },[])
+  //   useEffect(()=>{
+  //     console.log('body createeeeeeeeeeeeeee');
+  // },[])
     ///////////////////////////////////////////
     const childrenWithProps = React.Children.map(children, child => {
         if (React.isValidElement(child)) {
