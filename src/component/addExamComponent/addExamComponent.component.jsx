@@ -185,7 +185,7 @@ const AddExamForTeacher = ({MyGroups}) => {
   const [uniqGroups,setUniqGroups] = useState([]);
   {/* ///////////////////////////////////////////////*/}
   const handleItems = (item,myItem) => {
-    console.log('myItem',myItem);
+    // console.log('myItem',myItem);
     // var MyClass = groups.map(group => {group.level === myLevel ?  group : ""})
     if(item =="selectedLevel"){
       clearSelected();
@@ -193,7 +193,7 @@ const AddExamForTeacher = ({MyGroups}) => {
       // setState({...state ,getExamClassTeacher: []});
       setSelectedLevel(myItem);
       var Myclass = uniqGroups.filter(group =>group.level === myItem);
-      console.log('Myclass',Myclass);
+      // console.log('Myclass',Myclass);
       var newClassName = [];
       for (
         var count = 0;
@@ -219,14 +219,14 @@ const AddExamForTeacher = ({MyGroups}) => {
           newClassName.push({ id: Myclass[count].id, class: Myclass[count].class });
         }
       }
-      console.log('newClassName',newClassName);
+      // console.log('newClassName',newClassName);
       setState({...state,getExamCourseNamesTeacher:'' ,getExamClassTeacher : newClassName});
     }else if(item =="selectedClass"){
       if(typePfUser == 0){
         var itemsClass = myItem.split(',');
-        console.log('itemsClass',itemsClass);
+        // console.log('itemsClass',itemsClass);
         var MyCourseNames = uniqGroups.filter(group =>group.class === itemsClass[0]);
-        console.log('MyCourseNames',MyCourseNames);
+        // console.log('MyCourseNames',MyCourseNames);
         var newCourseNames = [];
         for (
           var count = 0;
@@ -247,7 +247,7 @@ const AddExamForTeacher = ({MyGroups}) => {
             newCourseNames.push({ id: MyCourseNames[count].id, course: MyCourseNames[count].course });
           }
         }
-        console.log('getExamCourseNamesTeacher',newCourseNames);
+        // console.log('getExamCourseNamesTeacher',newCourseNames);
         setState({...state, getExamCourseNamesTeacher : newCourseNames});
       }
       else if(typePfUser == 1){
@@ -256,9 +256,9 @@ const AddExamForTeacher = ({MyGroups}) => {
           setValuesClass(myItem);
           setSelectedClass(myItem);
           var itemsClass = myItem[0].class;
-          console.log('itemsClass',itemsClass);
+          // console.log('itemsClass',itemsClass);
           var MyCourseNames = uniqGroups.filter(group =>group.class === itemsClass);
-          console.log('MyCourseNames',MyCourseNames);
+          // console.log('MyCourseNames',MyCourseNames);
           var newCourseNames = [];
           for (
             var count = 0;
@@ -279,7 +279,7 @@ const AddExamForTeacher = ({MyGroups}) => {
               newCourseNames.push({ id: MyCourseNames[count].id, course: MyCourseNames[count].course });
             }
           }
-          console.log('getExamCourseNamesTeacher',newCourseNames);
+          // console.log('getExamCourseNamesTeacher',newCourseNames);
           setState({...state, getExamCourseNamesTeacher : newCourseNames});
         }else{
           // clearSelectedCourse();
@@ -333,7 +333,7 @@ const AddExamForTeacher = ({MyGroups}) => {
         newGrops.push({ id: MyGroups[count].id, class: MyGroups[count].class , level: MyGroups[count].level, course: MyGroups[count].course });
       }
     }
-    console.log('newGrops',newGrops);
+    // console.log('newGrops',newGrops);
     setUniqGroups(newGrops);
     // setGroups(MyGroups);
     var newLevels = [];
@@ -372,16 +372,16 @@ const AddExamForTeacher = ({MyGroups}) => {
       setValues(vl);
       var MySelectedGroup = [];
       var MySelectedGroupWithCourseName = [];
-      console.log("uniqGroups",uniqGroups);
+      // console.log("uniqGroups",uniqGroups);
         for (let i = 0; i < selectedClass.length; i++) {
           for (let j = 0; j < vl.length; j++) {
-            console.log("selectedLevel",selectedLevel);
-            console.log("selectedClass[i]",selectedClass[i].class);
-            console.log("vl[j]",vl[j].course);
+            // console.log("selectedLevel",selectedLevel);
+            // console.log("selectedClass[i]",selectedClass[i].class);
+            // console.log("vl[j]",vl[j].course);
             var myGroup = uniqGroups.filter(group => group.level === selectedLevel && 
               group.class === selectedClass[i].class &&
               group.course === vl[j].course);
-              console.log("myGroup" ,myGroup);
+              // console.log("myGroup" ,myGroup);
               MySelectedGroup.push(myGroup[0].id);
               ////////////////////////////////////////////////////////////
               // MySelectedGroupWithCourseName.push({group: [myGroup[0].pId] , course:myGroup[0].course});
@@ -409,11 +409,11 @@ const AddExamForTeacher = ({MyGroups}) => {
 
                 if (existFlag) {
                   MySelectedGroupWithCourseName[count].group.push(myGroup[0].id);
-                  console.log('not exist',MySelectedGroupWithCourseName);
+                  // console.log('not exist',MySelectedGroupWithCourseName);
                   // listScoreAndCourse[count].average = avg;
                 } else {
                   MySelectedGroupWithCourseName.push({group: [myGroup[0].id] , course:myGroup[0].course});
-                  console.log('exist',MySelectedGroupWithCourseName);
+                  // console.log('exist',MySelectedGroupWithCourseName);
                   // console.log('listScoreAndCourse');
                   // console.log(listScoreAndCourse);
                 }
@@ -428,8 +428,8 @@ const AddExamForTeacher = ({MyGroups}) => {
           }
           
         }
-        console.log("MySelectedGroup" ,MySelectedGroup);
-        console.log('MySelectedGroupWithCourseName',MySelectedGroupWithCourseName);
+        // console.log("MySelectedGroup" ,MySelectedGroup);
+        // console.log('MySelectedGroupWithCourseName',MySelectedGroupWithCourseName);
         setGroupsExam(MySelectedGroup);
         setGroupsExamWithCourseName(MySelectedGroupWithCourseName);
     }else if(typePfUser === 0){
@@ -520,10 +520,10 @@ const AddExamForTeacher = ({MyGroups}) => {
             examParent_gId: groupsExam,
             examParent_start_date: newSelectedStartDate, 
             examParent_stop_date: newSelectedEndDate,
-            examParent_start:selectedstartTime ,
-            examParent_end: selectedEndTime , 
-            // examParent_end: selectedEndTime ?  fixNumbers(moment2(selectedEndTime).tz('Asia/Tehran').format('HH:mm:00')) : '', 
-            // examParent_start:selectedstartTime ?  fixNumbers(moment2(selectedstartTime).tz('Asia/Tehran').format('HH:mm:00')) : '',
+            // examParent_start:selectedstartTime ,
+            // examParent_end: selectedEndTime , 
+            examParent_end: selectedEndTime ?  fixNumbers(moment2(selectedEndTime).tz('Asia/Tehran').format('HH:mm:00')) : '', 
+            examParent_start:selectedstartTime ?  fixNumbers(moment2(selectedstartTime).tz('Asia/Tehran').format('HH:mm:00')) : '',
             examParent_duration:handleResolvedA,
             examParent_maxScore: state.examMaxScore, 
             examParent_method: state.examMethod,
@@ -534,8 +534,8 @@ const AddExamForTeacher = ({MyGroups}) => {
         }
           }).then(res=>{
             if(res.data && res.data.addExamParent){
-              console.log('groupWithCourseName',groupWithCourseName);
-              console.log('res.data.addExamParent',res.data.addExamParent);
+              // console.log('groupWithCourseName',groupWithCourseName);
+              // console.log('res.data.addExamParent',res.data.addExamParent);
               setMessage('امتحان ثبت شد');
               setStatus('1');
               setShowMessage(!showMessage);
@@ -625,7 +625,7 @@ const AddExamForTeacher = ({MyGroups}) => {
   };
   {/* ///////////////////////////////////////////////*/}
   function format(time) { 
-    console.log('time',time);  
+    // console.log('time',time);  
     // Hours, minutes and seconds
     // var hrs = ~~(time / 3600);
     // var mins = ~~((time % 3600) / 60);
@@ -633,9 +633,9 @@ const AddExamForTeacher = ({MyGroups}) => {
     var hrs = Math.floor(time / 3600);
     var mins = Math.floor((time % 3600) / 60);
     var secs = time % 60;
-    console.log('hrs',hrs);
-    console.log('mins',mins);
-    console.log('secs',secs);
+    // console.log('hrs',hrs);
+    // console.log('mins',mins);
+    // console.log('secs',secs);
     // Output like "1:01" or "4:03:59" or "123:03:59"
     var ret = "";
     // if (hrs > 0) {
@@ -652,7 +652,7 @@ const AddExamForTeacher = ({MyGroups}) => {
     }
     ret += "" + mins + ":" + (secs < 10 ? "0" : "");
     ret += "" + secs;
-    console.log('ret',ret);
+    // console.log('ret',ret);
     setState({...state , duration:ret});
     return ret;
   }
@@ -740,18 +740,18 @@ const AddExamForTeacher = ({MyGroups}) => {
   const checkValue = (field , value) => {
     // console.log('field',field);
     // console.log('value',value);
-    console.log('field',field,'value',value);
+    // console.log('field',field,'value',value);
     // var selectedLevel = document.getElementById("selectedLevel").options.length;
     var selectedLevel = document.getElementById("selectedLevel");
     var selectedClass = document.getElementById("selectedClass");
     var selectedCourse = document.getElementById("selectedCourse");
 
     if(field === "selectedCourse"){
-      console.log('1');
-      console.log('state.examclassName',state.examclassName,'state.examLevel',state.examLevel);
-      console.log(!state.examclassName && !state.examLevel);
+      // console.log('1');
+      // console.log('state.examclassName',state.examclassName,'state.examLevel',state.examLevel);
+      // console.log(!state.examclassName && !state.examLevel);
         if(!state.examclassName && !state.examLevel){
-          console.log('2');
+          // console.log('2');
          
           selectedLevel.style.border="1px solid #000";
           selectedClass.style.border="1px solid #000";
@@ -762,7 +762,7 @@ const AddExamForTeacher = ({MyGroups}) => {
           });
           // setState({examLevel:value});
         }else{
-          console.log('3');
+          // console.log('3');
           selectedLevel.style.border="1px solid red";
           selectedClass.style.border="1px solid red";
         }

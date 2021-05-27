@@ -23,7 +23,7 @@ const DescriptionItem = ({number ,setResForRedux ,setResponseDesImage ,ResItem ,
 
     const [responseQuestion,setResponseQuestion] = useState(ResItem ? ResItem : '');
     useEffect(()=>{
-        console.log('ResItem' ,ResItem);
+        // console.log('ResItem' ,ResItem);
         setResponseDesImage(ResItemImage ? ResItemImage : '')
         setResForRedux(ResItem ? ResItem : '');
         setResponseQuestion(ResItem ? ResItem : '');

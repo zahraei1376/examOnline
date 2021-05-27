@@ -9,17 +9,17 @@ import { getResponseStudentWithIndex } from '../../../../redux/responsesStudent/
 /////////////////////////////////////////////////
 const ShowTrueAndFalseItems = ({number,question,ResItem ,setResForRedux})=>{
     // const checkedRef = useRef(null);
-    useEffect(()=>{
-        console.log('createeeeeeeeeeeeeee');
-        // return ()=>{
-        //   checkedRef.current = null;
-        // }
-    },[])
+    // useEffect(()=>{
+    //     console.log('createeeeeeeeeeeeeee');
+    //     // return ()=>{
+    //     //   checkedRef.current = null;
+    //     // }
+    // },[])
 
     const [checked ,setChecked] = useState(ResItem ? ResItem : '');
 
     useEffect(()=>{
-      console.log('ResItem' ,ResItem);
+      // console.log('ResItem' ,ResItem);
       setResForRedux(ResItem);
       setChecked(ResItem);
 
@@ -27,7 +27,7 @@ const ShowTrueAndFalseItems = ({number,question,ResItem ,setResForRedux})=>{
     },[ResItem]);
 
     const setOneAnswer = (e) =>{
-      console.log('e.target.value',e.target.value);
+      // console.log('e.target.value',e.target.value);
       setChecked(e.target.value);
       // checkedRef.current = e.target.value;
       setResForRedux(e.target.value);

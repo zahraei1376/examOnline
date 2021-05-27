@@ -120,11 +120,11 @@ const ArchiveForStudent = () => {
   });
   ////////////////////////////////////////////////////////////
   function createRows(exams){
-    console.log('exams',exams);
+    // console.log('exams',exams);
     var MyRows = [];
     for (let index = 0; index < exams.length; index++) {
         var EPD = exams[index].examParentsListByDate;
-        console.log('EPDEPD',EPD);
+        // console.log('EPDEPD',EPD);
         if(EPD && EPD.length > 0 ){
             var cn = exams[index].course;
             for (let index2 = 0; index2 < EPD.length; index2++) {
@@ -163,7 +163,7 @@ const ArchiveForStudent = () => {
 
   useEffect(()=>{
     if(data && data.groupsListByStudent){
-      console.log('data.groupsListByStudent',data.groupsListByStudent);
+      // console.log('data.groupsListByStudent',data.groupsListByStudent);
         createRows(data.groupsListByStudent);
     }
   },[data]);

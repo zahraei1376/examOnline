@@ -69,7 +69,7 @@ const ArchiveForTeacher = () => {
         listOfStudentsScore[index].score_absencePresence,
       );
       score_group_id.push(listOfStudentsScore[index].score_group_id);
-      console.log(score_group_id);
+      // console.log(score_group_id);
     }
 
     fetch(graphql_server_uri, {

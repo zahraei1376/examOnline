@@ -2,9 +2,9 @@ import React,{useEffect} from 'react';
 import {ShowImageContainer ,ShowImageContent,ShowImageImgText ,ShowImageImgQuestion,ShowImageCaption} from './showImageForArchive.styles';
 
 const ShowImageForArchive =(props)=>{
-  useEffect(()=>{
-    console.log('props',props);
-  },[]);
+  // useEffect(()=>{
+  //   console.log('props',props);
+  // },[]);
     return (
         <ShowImageContainer>
           <ShowImageContent>
