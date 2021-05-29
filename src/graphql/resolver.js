@@ -384,6 +384,7 @@ const GET_EXAMS_FOR_STUDENT = gql`
         examParent_stop_date
         examParent_start
         examParent_end
+        examParent_duration
       }
     }
   }

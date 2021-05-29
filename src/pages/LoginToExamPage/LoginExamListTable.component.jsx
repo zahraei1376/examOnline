@@ -104,6 +104,7 @@ const ExamsListTable = ({newSelectedDate}) => {
         examParent_stop_date,
         examParent_start,
         examParent_end,
+        examParent_duration,
         ) {
         return {
             id : id,
@@ -114,6 +115,7 @@ const ExamsListTable = ({newSelectedDate}) => {
             examParent_stop_date : examParent_stop_date ,
             examParent_start : examParent_start ,
             examParent_end : examParent_end ,
+            examParent_duration : examParent_duration,
         }
     }
     ////////////////////////////////////
@@ -134,6 +136,7 @@ const ExamsListTable = ({newSelectedDate}) => {
                         EPD[index2].examParent_stop_date,
                         EPD[index2].examParent_start,
                         EPD[index2].examParent_end,
+                        EPD[index2].examParent_duration,
                         )
                     )
                     
@@ -271,6 +274,7 @@ const ExamsListTable = ({newSelectedDate}) => {
                         <StyledTableCell align="right">تاریخ پایان</StyledTableCell>
                         <StyledTableCell align="right">ساعت شروع</StyledTableCell>
                         <StyledTableCell align="right">ساعت پایان</StyledTableCell>
+                        <StyledTableCell align="right">مدت زمان امتحان</StyledTableCell>
                         <StyledTableCell align="right">ورود</StyledTableCell>
                     </TableRow>
                 </TableHead>
@@ -285,8 +289,9 @@ const ExamsListTable = ({newSelectedDate}) => {
                             <StyledTableCell align="right">{row.examParent_topic}</StyledTableCell>
                             <StyledTableCell align="right">{row.examParent_start_date}</StyledTableCell>
                             <StyledTableCell align="right">{row.examParent_stop_date}</StyledTableCell>
-                            <StyledTableCell align="right">{row.examParent_start }</StyledTableCell>
-                            <StyledTableCell align="right">{row.examParent_end}</StyledTableCell>
+                            <StyledTableCell align="right">{row.examParent_start_date == row.examParent_stop_date ? row.examParent_start : '-' }</StyledTableCell>
+                            <StyledTableCell align="right">{row.examParent_start_date == row.examParent_stop_date ? row.examParent_end : '-'}</StyledTableCell>
+                            <StyledTableCell align="right">{row.examParent_start_date != row.examParent_stop_date ? row.examParent_duration : '-'}</StyledTableCell>
                             {/* <StyledTableCell align="right">{row.examParent_start ? fixNumbers(moment(row.examParent_start).tz('Asia/Tehran').format('HH:mm:00')) : ''}</StyledTableCell>
                             <StyledTableCell align="right">{row.examParent_end ? fixNumbers(moment(row.examParent_end).tz('Asia/Tehran').format('HH:mm:00')) : ''}</StyledTableCell> */}
                             <StyledTableCell align="right">{buttonInput(row, index)}</StyledTableCell>

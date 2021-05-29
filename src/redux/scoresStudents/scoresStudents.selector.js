@@ -11,7 +11,7 @@ export const getStudentId = createSelector(
 export const getStudents = createSelector(
     [getStudent],
     (arraysStudentsScores) => {
-        console.log('arraysStudentsScores.students',arraysStudentsScores.students);
+        // console.log('arraysStudentsScores.students',arraysStudentsScores.students);
         return arraysStudentsScores.students
     },
 );
@@ -24,7 +24,7 @@ export const totalScore = (studentId) =>(
             const ArrStudents = arraysStudentsScores.students;
             // console.log('ArrStudents',ArrStudents);
             // console.log('ArrStudents.length',ArrStudents.length);
-            console.log('studentId',studentId);
+            // console.log('studentId',studentId);
             ///////////////////
             for (let index = 0; index < ArrStudents.length; index++) {
                 // console.log('ArrStudents[index]',ArrStudents[index]);
@@ -33,7 +33,7 @@ export const totalScore = (studentId) =>(
                     ArrStudents[index].scores.map(score =>{
                         total += parseFloat(score);
                     })
-                    console.log('total',total);
+                    // console.log('total',total);
                     return total;
                 }
                 // else{

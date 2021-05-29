@@ -16,7 +16,7 @@ const TimeLoginReducer = (state = INITIALSTATE ,action)=>{
             }
 
         case TimeLoginToPageTypes.CLEARTIMETOATTENDTHEEXAMPAGE:{
-            console.log('clearrrrrrrrrrrrrrrrrrrrrrrrrrrrr', action.payload);
+            // console.log('clearrrrrrrrrrrrrrrrrrrrrrrrrrrrr', action.payload);
             return {
                 ...state,
                 timeToAttendTheExamPage:foundTimeToAttend(action.payload , state.timeToAttendTheExamPage),

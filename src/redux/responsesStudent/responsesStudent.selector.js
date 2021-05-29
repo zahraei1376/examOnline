@@ -13,16 +13,16 @@ export const getExamParentIdResponse = createSelector(
 );
 
 export const getResponseStudentWithIndex = (questionId) =>{
-    console.log('questionId' ,questionId);
+    // console.log('questionId' ,questionId);
     return(
     createSelector(
         [getResponseStudentArray],
         (responseStudent) => 
         {
-            console.log('responseStudentresponseStudent',responseStudent);
+            // console.log('responseStudentresponseStudent',responseStudent);
             if(responseStudent.length > 0){
                 var existID =  responseStudent.find(item => item.id === questionId);
-                console.log('existID' ,existID);
+                // console.log('existID' ,existID);
                 if(existID) {
                     for (let index = 0; index < responseStudent.length; index++) {
                         if(responseStudent[index].id === questionId){

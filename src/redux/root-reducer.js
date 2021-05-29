@@ -7,13 +7,13 @@ import QuestionsCourseNameReducer from './questionsCourses/questionsCourses.redu
 import TimeLoginReducer from './timeToAttendTheExamPage/timeToAttendTheExamPage.reducer';
 ///////////////////////////////////////////////////////////////////////////////////////////
 import { persistReducer } from 'redux-persist';
-// import storage from 'redux-persist/lib/storage'
-import storageSession from 'redux-persist/lib/storage/session';
+import storage from 'redux-persist/lib/storage'
+// import storageSession from 'redux-persist/lib/storage/session';
 
 
 const ConfigPersist = {
     key:'root',
-    storage: storageSession,
+    storage: storage,
     whiteList:['QuestionsCourseName','TimeLoginReducer']
 }
 
