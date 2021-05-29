@@ -6,7 +6,7 @@ export const setExamParentIdForResponse = (res) => ({
 });
 
 export const setRepsonseStudent = (res) => {
-    console.log('res', res);
+    // console.log('res', res);
     return({
     type:ResponsesStudentTypes.SET_RESPONSE_STUDENT,
     payload:res,

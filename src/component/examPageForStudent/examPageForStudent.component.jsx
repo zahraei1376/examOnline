@@ -74,28 +74,40 @@ const  ExamPageForStudent = ({location,questionIndex ,setLengthQuestions , getTi
         { loading: loading2, data: data2 ,refetch : refetch2 }
     ] = QueryMultiple()
     ///////////////////////////////////////////////////
+    useEffect(()=>{
+        console.log('createeeeeeeeeeeeeeeeeee');
+    },[])
     const [setDelayResponseStudent ,{ DelayData }] = useMutation(SET_DEALY_RESPONSE_STUDENT);
     ///////////////////////////////////////////////////
     const [items,setItems] = useState([]);
     const [showMessage,setShowMessage] = useState(false);
     const [message,setMessage] =useState('');
     const [status,setStatus] =useState(0);
-    const [time, setTime] = useState('');
+    const [time, setTime] = useState('0');
     const [getDate, setGetDate] = useState('');
     /////////////////////timer
     const [loginTime, setLoginTime] = useState('0');
     const [sleep, setSleep] = useState(false);
+    const [examParentID , setExamParentID] = useState('');
     ///////////////////////////////////////////////////
     const countRef = useRef(loginTime);
     countRef.current = loginTime;
     ///////
     const checkRef = useRef(time);
     checkRef.current = time;
+    ////////
+    const setRefExamParentID = useRef(examParentID);
+    setRefExamParentID.current = examParentID;
+    /////////
+    const getRefExamTime = useRef(getTimeToAttendTheExamPageWithID);
+    getRefExamTime.current = getTimeToAttendTheExamPageWithID;
     //////////////////////////////////////////////////////
     function spliterTime(myTime){
         var spliterMyTime = myTime.split(':');
-        var MyTimeHour = spliterMyTime[0];
-        var MyTimeMinutes = spliterMyTime[1];
+        // var MyTimeHour = spliterMyTime[0] ? parseInt(spliterMyTime[0]) : 0;
+        // var MyTimeMinutes = spliterMyTime[1] ? parseInt(spliterMyTime[1]) : 0;
+        var MyTimeHour = spliterMyTime[0] ? spliterMyTime[0] : 0;
+        var MyTimeMinutes = spliterMyTime[1] ? spliterMyTime[1] : 0;
         var convertMyTimeToSecond = MyTimeHour * 3600 + MyTimeMinutes * 60 ;
         return convertMyTimeToSecond;
     }
@@ -237,19 +249,31 @@ const  ExamPageForStudent = ({location,questionIndex ,setLengthQuestions , getTi
      },[]);
      ///////////////////////////////////////////////
     useEffect(()=>{
+        // if(!data2){
+        //     refetch2();
+        // }else{
+        //     console.log('loginnnnnnnnnnn');
+        //     if(data1 && data1.examParents && data1.examParents.length > 0 ){
+        //         setExamParentID(location && location.state.examPId ? location.state.examPId : '');
+        //         MergeQuestions(data1.examParents[0])
+        //         // setItems(MergeQuestions(data1.examParents[0]));
+        //     }
+        // }
         if(data1 && data1.examParents && data1.examParents.length > 0 ){
+            setExamParentID(location && location.state.examPId ? location.state.examPId : '');
             MergeQuestions(data1.examParents[0])
             // setItems(MergeQuestions(data1.examParents[0]));
         }
     },[data1]);
     ///////////////////////////////////////////////////loginTime
-    useEffect(()=>{
-        setTimeToPageTimeOut = setTimeout(function run() {
-            console.log("getExamParentIdResponse",getExamParentIdResponse);
-            SetTimeToAttendTheExamPage({id: getExamParentIdResponse ,time: countRef.current});
-            setTimeToPageTimeOut = setTimeout(run, 30000);
-        }, 30000);
-    },[])
+    // useEffect(()=>{
+    //     setTimeToPageTimeOut = setTimeout(function run() {
+    //         console.log("getExamParentIdResponse",getExamParentIdResponse);
+    //         SetTimeToAttendTheExamPage({id: setRefExamParentID.current ,time: countRef.current});
+    //         // SetTimeToAttendTheExamPage({id: getExamParentIdResponse ,time: countRef.current});
+    //         setTimeToPageTimeOut = setTimeout(run, 30000);
+    //     }, 30000);
+    // },[])
     ///////////////////////////////////////////////////time
     const timerClear = useRef() ;
     const tickClear = useRef() ;
@@ -259,6 +283,16 @@ const  ExamPageForStudent = ({location,questionIndex ,setLengthQuestions , getTi
     useEffect(() => {
         // console.log('bbbbbbbbbbbbbbbb');
         clearResponseStudentTimeOut();
+        setGetDate(fixNumbers(moment(realeTime).format('jYYYY/jMM/jDD')));
+        setTime(
+            realeTime.toLocaleTimeString([], {
+            timeZone: "Asia/Tehran",
+            hour: '2-digit',
+            minute: '2-digit',
+            second: '2-digit',
+            hour12: false,
+            }),
+        );
         timerClear.current = setInterval(() => {
             setGetDate(fixNumbers(moment(realeTime).format('jYYYY/jMM/jDD')));
             setTime(
@@ -340,22 +374,26 @@ const  ExamPageForStudent = ({location,questionIndex ,setLengthQuestions , getTi
             }
         }
     },[items]);
-    /////////////////////////////////////////////////
-    useEffect(()=>{
-        // examPID : getExamParentIdResponse ,examEndTime:question.examEndTime , examEndDate : question.examEndDate ,
-        setGetDate(fixNumbers(moment(realeTime).format('jYYYY/jMM/jDD')));
-            setTime(
-                realeTime.toLocaleTimeString([], {
-                timeZone: "Asia/Tehran",
-                hour: '2-digit',
-                minute: '2-digit',
-                second: '2-digit',
-                hour12: false,
-                }),
-            );
 
-        // clearRepsonseStudent()
-    },[]);
+    useEffect(()=>{
+        console.log('data2data2data2data2data2',data2);
+    },[data2])
+    /////////////////////////////////////////////////
+    // useEffect(()=>{
+    //     // examPID : getExamParentIdResponse ,examEndTime:question.examEndTime , examEndDate : question.examEndDate ,
+    //     setGetDate(fixNumbers(moment(realeTime).format('jYYYY/jMM/jDD')));
+    //         setTime(
+    //             realeTime.toLocaleTimeString([], {
+    //             timeZone: "Asia/Tehran",
+    //             hour: '2-digit',
+    //             minute: '2-digit',
+    //             second: '2-digit',
+    //             hour12: false,
+    //             }),
+    //         );
+
+    //     // clearRepsonseStudent()
+    // },[]);
 
     const handleSendWxamDataAfterEndTime = () => {
         console.log('methossssssss1');
@@ -375,7 +413,7 @@ const  ExamPageForStudent = ({location,questionIndex ,setLengthQuestions , getTi
                 if (data1.examParents[0].examParent_method == "0") { //not
                     // console.log('timerClear',timerClear);
                     runningTimeOfTimeForSolveQuestions(true);
-                    ClearTimeToAttendTheExamPage(getExamParentIdResponse);
+                    // ClearTimeToAttendTheExamPage(getExamParentIdResponse);
                     clearRepsonseStudent(getExamParentIdResponse);
                     if(sendReqDelay){
                         clearTimeout(sendReqDelay);
@@ -413,6 +451,7 @@ const  ExamPageForStudent = ({location,questionIndex ,setLengthQuestions , getTi
             }
         }else{
             ////////////////////////////// شروع و پایان امتحان در یک روز نباشد
+            console.log('data2.responseInfoListByPerson[0]',data2);
             // var newEndTime = data1.examParents[0].examParent_end;
             // var filterEndTime = newEndTime.split(":").join("");
             // var temp = fixNumbers(time);// checkRef.current
@@ -436,7 +475,7 @@ const  ExamPageForStudent = ({location,questionIndex ,setLengthQuestions , getTi
     
                 if(dateSplited > stopDateSplitedExam ){
                     runningTimeOfTimeForSolveQuestions(true);
-                    ClearTimeToAttendTheExamPage(getExamParentIdResponse);
+                    // ClearTimeToAttendTheExamPage(getExamParentIdResponse);
                     clearRepsonseStudent(getExamParentIdResponse);
                     clearInterval(timerClear.current);
                     clearInterval(CheckTheEndOfTheExam);
@@ -456,7 +495,7 @@ const  ExamPageForStudent = ({location,questionIndex ,setLengthQuestions , getTi
                     console.log('calcTime',calcTime);
                     if(calcTime > convertDuraionToSecond){
                         runningTimeOfTimeForSolveQuestions(true);
-                        ClearTimeToAttendTheExamPage(getExamParentIdResponse);
+                        // ClearTimeToAttendTheExamPage(getExamParentIdResponse);
                         clearRepsonseStudent(getExamParentIdResponse);
                         clearInterval(timerClear.current);
                         clearInterval(CheckTheEndOfTheExam);
@@ -472,13 +511,19 @@ const  ExamPageForStudent = ({location,questionIndex ,setLengthQuestions , getTi
                 }
             }else{
                 console.log('دیتا وجود ندارد');
-                console.log(getTimeToAttendTheExamPageWithID)
+                console.log(getRefExamTime.current)
                 console.log(data1.examParents[0].examParent_duration)
-                if (getTimeToAttendTheExamPageWithID == data1.examParents[0].examParent_duration) {
+                var timeExam = getRefExamTime.current;
+                // var timeExam = getTimeToAttendTheExamPageWithID;
+                var newTimeExam = timeExam.split(':').join('');
+                var endExam = data1.examParents[0].examParent_duration;
+                var newEndTimeExam = endExam.split(':').join('');
+                if (newTimeExam >= newEndTimeExam) {
+                // if (getTimeToAttendTheExamPageWithID == data1.examParents[0].examParent_duration) {
                 // if (getTimeToAttendTheExamPage == data1.examParents[0].examParent_duration) {
                     console.log('2دیتا وجود ندارد')    
                     runningTimeOfTimeForSolveQuestions(true);
-                    ClearTimeToAttendTheExamPage(getExamParentIdResponse);
+                    // ClearTimeToAttendTheExamPage(getExamParentIdResponse);
                     clearRepsonseStudent(getExamParentIdResponse);
                     clearInterval(timerClear.current);
                     clearInterval(CheckTheEndOfTheExam);
@@ -534,6 +579,7 @@ const  ExamPageForStudent = ({location,questionIndex ,setLengthQuestions , getTi
     };
     //////////////////////////////////////////////////////
     const MergeQuestions = async(examP) => {
+        // setExamParentIdForResponse(location && location.state.examPId ? location.state.examPId : '');
         // console.log('examP', examP );
         // console.log('examP.examParent_backward', examP.examParent_backward );
         // setTypeIncreaseQuestions(examP.type ? examP.type : 'Forward');
@@ -561,9 +607,10 @@ const  ExamPageForStudent = ({location,questionIndex ,setLengthQuestions , getTi
                  var nowTime = time.split(':').join('');
                  var newEnd = examData.examParent_end.split(':').join('');
      
-                 if(dateSplited > stopDateSplitedExam ){
+                 if(dateSplited >= stopDateSplitedExam ){
+                     console.log('problem');
                      runningTimeOfTimeForSolveQuestions(true);
-                     ClearTimeToAttendTheExamPage(getExamParentIdResponse);
+                    //  ClearTimeToAttendTheExamPage(getExamParentIdResponse);
                      clearRepsonseStudent(getExamParentIdResponse);
                      clearInterval(timerClear.current);
                      clearInterval(CheckTheEndOfTheExam);
@@ -574,16 +621,24 @@ const  ExamPageForStudent = ({location,questionIndex ,setLengthQuestions , getTi
                      alert('زمان امتحان تمام شده است!!!');
                  }else{
                      var convertInfo =  spliterTime(examDataInfo.startTime);
-                     var convertEnd =  spliterTime(checkRef.current);
-                     console.log('convertInfo',convertInfo);
-                     console.log('convertEnd',convertEnd);
+                    //  var convertEnd =  spliterTime(checkRef.current);
+                     var convertEnd =  spliterTime(realeTime.toLocaleTimeString([], {
+                        timeZone: "Asia/Tehran",
+                        hour: '2-digit',
+                        minute: '2-digit',
+                        second: '2-digit',
+                        hour12: false,
+                        }),);
+                     
+                     console.log('convertInfo', convertInfo);
+                     console.log('convertEnd', convertEnd);
                      var calcTime = convertEnd - convertInfo;
                      var convertDuraionToSecond = spliterTime(examDuration);
                      console.log('convertDuraionToSecond',convertDuraionToSecond);
-                     console.log('calcTime',calcTime);
-                     if(calcTime > convertDuraionToSecond){
+                     console.log('calcTimeeeeeeeeeeeeeeee',calcTime);
+                     if(convertDuraionToSecond <= calcTime ){
                          runningTimeOfTimeForSolveQuestions(true);
-                         ClearTimeToAttendTheExamPage(getExamParentIdResponse);
+                        //  ClearTimeToAttendTheExamPage(getExamParentIdResponse);
                          clearRepsonseStudent(getExamParentIdResponse);
                          clearInterval(timerClear.current);
                          clearInterval(CheckTheEndOfTheExam);
@@ -593,6 +648,7 @@ const  ExamPageForStudent = ({location,questionIndex ,setLengthQuestions , getTi
                          // clearRepsonseStudent(getExamParentIdResponse);
                          alert('زمان امتحان تمام شده است!!!');
                      }else{
+                        console.log('calcTime', calcTime);
                          second = calcTime;
                          /////////////////////////////////////
                         //  var gTime = getTimeToAttendTheExamPageWithID;
@@ -736,7 +792,8 @@ const  ExamPageForStudent = ({location,questionIndex ,setLengthQuestions , getTi
             }else{
                 ///////////////////////////////////////
                 console.log('3333333333333');
-                var gTime = getTimeToAttendTheExamPageWithID;
+                // var gTime = getTimeToAttendTheExamPageWithID;
+                var gTime = getRefExamTime.current;
                 console.log('gTime',gTime);
                 var convertArray;
                 var hour;
@@ -748,12 +805,12 @@ const  ExamPageForStudent = ({location,questionIndex ,setLengthQuestions , getTi
                    min = convertArray && convertArray.length > 0 &&  convertArray[1] ? convertArray[1] : 0;
                    sec = convertArray && convertArray.length > 0 &&  convertArray[2] ? convertArray[2] : 0;
                 }else{
-                   hour = 0;
-                   min = 0;
-                   sec = 0;
+                   hour = '0';
+                   min = '0';
+                   sec = '0';
                 }
                
-                
+                console.log('hour', hour);
                 var timeL = (parseInt(hour) * 3600) + (parseInt(min) * 60) + parseInt(sec) ;
                 second = timeL;
                 setLoginTime(format(timeL));
@@ -994,6 +1051,12 @@ const  ExamPageForStudent = ({location,questionIndex ,setLengthQuestions , getTi
         //      }
         //  }
         // setLengthQuestions(mergeQ.length);
+        setTimeToPageTimeOut = setTimeout(function run() {
+            console.log("getExamParentIdResponse",getExamParentIdResponse);
+            SetTimeToAttendTheExamPage({id: setRefExamParentID.current ,time: countRef.current});
+            // SetTimeToAttendTheExamPage({id: getExamParentIdResponse ,time: countRef.current});
+            setTimeToPageTimeOut = setTimeout(run, 30000);
+        }, 30000);
         CheckTheEndOfTheExam = setInterval(() => {
             // console.log('dddddddddddddddddddd');
             handleSendWxamDataAfterEndTime();

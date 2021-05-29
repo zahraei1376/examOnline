@@ -26,7 +26,7 @@ const ScoreReducer = (state = INITIALATATE , action) =>{
             }
 
         case ScoresStudents.SET_STUDENTID:
-            console.log('action.payload',action.payload);
+            // console.log('action.payload',action.payload);
             return{
                 // 'index':number, 'score':score , studentId: '1'
                 ...state,

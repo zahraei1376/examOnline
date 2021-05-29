@@ -15,10 +15,10 @@ export const getTimeToAttendTheExamPageWithID = (epId) =>{
         [getTimeToAttendTheExamPage],
         (timeToAttendTheExamPage) => 
         {
-            console.log('responseStudentresponseStudentTomeeeeeeeeeeeeee',epId);
+            // console.log('responseStudentresponseStudentTomeeeeeeeeeeeeee',epId);
             var timeAttendReturn = '';
             if(timeToAttendTheExamPage.length > 0){
-                console.log('timeToAttendTheExamPage',timeToAttendTheExamPage);
+                // console.log('timeToAttendTheExamPage',timeToAttendTheExamPage);
                 // var existID =  responseStudent.find(item => item.id === questionId);
                 // console.log('existID' ,existID);
                 // if(existID) {
@@ -45,7 +45,7 @@ export const getTimeToAttendTheExamPageWithID = (epId) =>{
                 }
 
                 if(!flag){
-                    console.log('timeLiginIs foundddd');
+                    // console.log('timeLiginIs foundddd');
                     timeAttendReturn = '00:00:00';
                 }
     
@@ -56,10 +56,10 @@ export const getTimeToAttendTheExamPageWithID = (epId) =>{
                 //     return null;
                 // }
             }else{
-                console.log('timeLiginIsnot found');
+                // console.log('timeLiginIsnot found');
                 timeAttendReturn = '00:00:00';
             }
-            console.log('timeAttendReturn',timeAttendReturn);
+            // console.log('timeAttendReturn',timeAttendReturn);
             return timeAttendReturn;
         }
     )

@@ -7,7 +7,7 @@ const INITIAL_STATE = {
 };
 
 const ResponseStudentReducer = (state = INITIAL_STATE , action) =>{
-    console.log('action',action);
+    // console.log('action',action);
     switch (action.type) {
         case ResponsesStudentTypes.SET_EXAM_PARENT_ID_FOR_RESPONSR:
             return {
