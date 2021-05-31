@@ -98,7 +98,10 @@ const GET_QUESTIONS = gql`
   query examParents(
     $userName: String!,
     $password: String!,
-    $id:  String!
+    $userNameS: String!,
+    $passwordS: String!,
+    $id:  String!,
+    $epId: String!,
     ){
     examParents(
       userName: $userName,
@@ -168,6 +171,20 @@ const GET_QUESTIONS = gql`
           }
         }
       }
+    }
+    responseInfoListByPerson(
+    userName: $userNameS,
+    password: $passwordS,
+    epId: $epId,
+    ){
+      id
+      pId
+      epId
+      delay
+      totalScore
+      countScore
+      startTime
+      startDate
     }
   }
 `;

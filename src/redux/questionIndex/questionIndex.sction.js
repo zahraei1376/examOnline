@@ -10,10 +10,20 @@ export const setTypeIncreaseQuestions = (type)=>({
     payload:type,
 });
 
-export const runningTimeOfTimeForSolveQuestions = (type)=>({
+export const runningTimeOfTimeForSolveQuestions = (val)=>({
     type:QuestionIndexTypes.RUNNING_OUT_OF_TIME,
-    payload:type,
+    payload:val,
 });
+
+export const getRunningTimeOfTimeForSolveQuestions = (val)=>({
+    type:QuestionIndexTypes.GET_RUNNING_OUT_OF_TIME,
+    payload:val,
+});
+
+export const clearRunningTimeOfTimeForSolveQuestions =(id)=>({
+    type:QuestionIndexTypes.CLEAR_RUNNING_OUT_OF_TIME,
+    payload:id,
+})
 
 export const setIndex = (index)=>({
     type:QuestionIndexTypes.SET_INDEX,

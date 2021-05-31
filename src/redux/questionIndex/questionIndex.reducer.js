@@ -1,11 +1,11 @@
 import QuestionIndexTypes from './questionIndex.types';
-import {AddIndexQuestion ,LowOffIndexQuestion} from './questionIndex.utils';
+import {AddIndexQuestion ,LowOffIndexQuestion,foundExamIDForDisable,clearDataForDisable} from './questionIndex.utils';
 
 const INITIALSTATE = {
     indexQuestion: 0,
     questionsLenght:0,
     typeIncreaseQuestions : false,
-    runningTomeOfTime:false,
+    runningTomeOfTime:[],
 }
 
 const QuestionIndexReducer = (state = INITIALSTATE ,action)=>{
@@ -46,9 +46,22 @@ const QuestionIndexReducer = (state = INITIALSTATE ,action)=>{
         case QuestionIndexTypes.RUNNING_OUT_OF_TIME:
             return {
                 ...state,
-                runningTomeOfTime:action.payload,
+                runningTomeOfTime:foundExamIDForDisable(action.payload.id,state.runningTomeOfTime,action.payload.val),
             }
             // break;
+
+        case QuestionIndexTypes.CLEAR_RUNNING_OUT_OF_TIME:
+            return {
+                ...state,
+                runningTomeOfTime:clearDataForDisable(action.payload.id,state.runningTomeOfTime),
+            }
+
+        // case QuestionIndexTypes.GET_RUNNING_OUT_OF_TIME:
+        //     return {
+        //         ...state,
+        //         runningTomeOfTime:clearDataForDisable(action.payload.id,state.runningTomeOfTime),
+        //     }
+                // break;
         default:
             return state;
             // break;

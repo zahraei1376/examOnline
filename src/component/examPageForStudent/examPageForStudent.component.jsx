@@ -10,10 +10,10 @@ import ShowVacancyQuestion from './showQuestions/ShowVacancyQuestion/ShowVacancy
 import {connect} from 'react-redux';
 import {getExamParentIdResponse} from '../../redux/responsesStudent/responsesStudent.selector';
 import {selectIndex } from '../../redux/questionIndex/questionIndex.selector';
-import {setLengthQuestions ,setTypeIncreaseQuestions ,runningTimeOfTimeForSolveQuestions } from '../../redux/questionIndex/questionIndex.sction';
+import {setLengthQuestions ,setTypeIncreaseQuestions ,runningTimeOfTimeForSolveQuestions,clearRunningTimeOfTimeForSolveQuestions } from '../../redux/questionIndex/questionIndex.sction';
 import {clearRepsonseStudent ,setExamParentIdForResponse,clearResponseStudentTimeOut } from '../../redux/responsesStudent/responsesStudent.action';
 import {getTimeToAttendTheExamPage ,getTimeToAttendTheExamPageWithID } from '../../redux/timeToAttendTheExamPage/timeToAttendTheExamPage.selector';
-import {SetTimeToAttendTheExamPage , ClearTimeToAttendTheExamPage} from '../../redux/timeToAttendTheExamPage/timeToAttendTheExamPage.action';
+import {SetTimeToAttendTheExamPage , ClearTimeToAttendTheExamPage ,ClearTimeToAttendTheExamPageWithTimeOut} from '../../redux/timeToAttendTheExamPage/timeToAttendTheExamPage.action';
 import { createStructuredSelector} from 'reselect';
 import ExamInfoHeader from './examInfo/examInfo.component';
 /////////////////////////////////
@@ -42,41 +42,64 @@ var moment = require('moment-jalaali');
 moment().format('jYYYY/jMM/jDD')
 /////////////////////////////////////////
 const  ExamPageForStudent = ({location,questionIndex ,setLengthQuestions , getTimeToAttendTheExamPage,getTimeToAttendTheExamPageWithID,
-    ClearTimeToAttendTheExamPage,clearRepsonseStudent,clearResponseStudentTimeOut,setExamParentIdForResponse,
-    setTypeIncreaseQuestions ,runningTimeOfTimeForSolveQuestions ,SetTimeToAttendTheExamPage,
+    ClearTimeToAttendTheExamPage,ClearTimeToAttendTheExamPageWithTimeOut,clearRepsonseStudent,clearResponseStudentTimeOut,setExamParentIdForResponse,
+    setTypeIncreaseQuestions ,runningTimeOfTimeForSolveQuestions ,clearRunningTimeOfTimeForSolveQuestions , SetTimeToAttendTheExamPage,
     getExamParentIdResponse}) =>{
     ///////////////////////////////////////////////////
     let history = useHistory();
     // let location = useLocation();
     //////////////////////////////////
-    const QueryMultiple = () => {
-        const data1 = useQuery(GET_QUESTIONS , {
-            variables: {  
-                userName: "211",
-                password: "211",
-                id: location && location.state.examPId ? location.state.examPId : '',
-            },
-            notifyOnNetworkStatusChange: true
-        });
-        const data2 = useQuery(GET_EXAMSINFO_FOR_STUDENT , {
-            variables: {  
-                userName: "210",
-                password: "210",
-                epId: location && location.state.examPId ? location.state.examPId : '',
-            },
-            notifyOnNetworkStatusChange: true
-        });
-        return [data1, data2];
-    }
+    // const QueryMultiple = () => {
+    //     const data = useQuery(GET_QUESTIONS , {
+    //         variables: {  
+    //             userName: "211",
+    //             password: "211",
+    //             id: location && location.state.examPId ? location.state.examPId : '',
+    //         },
+    //         notifyOnNetworkStatusChange: true
+    //     });
+    //     const data2 = useQuery(GET_EXAMSINFO_FOR_STUDENT , {
+    //         variables: {  
+    //             userName: "210",
+    //             password: "210",
+    //             epId: location && location.state.examPId ? location.state.examPId : '',
+    //         },
+    //         notifyOnNetworkStatusChange: true
+    //     });
+    //     return [data, data2];
+    // }
       
-    const [
-        { loading: loading1, data : data1 ,refetch : refetch1 },
-        { loading: loading2, data: data2 ,refetch : refetch2 }
-    ] = QueryMultiple()
+    // const [
+    //     { loading: loading1, data : data ,refetch : refetch1 },
+    //     { loading: loading2, data: data2 ,refetch : refetch2 }
+    // ] = QueryMultiple()
     ///////////////////////////////////////////////////
+  
+    const { loading, error, data ,refetch  } = useQuery(GET_QUESTIONS , {
+        variables: {  
+            userName: "211",
+            password: "211",
+            userNameS: "210",
+            passwordS: "210",
+            id: location && location.state.examPId ? location.state.examPId : '',
+            epId: location && location.state.examPId ? location.state.examPId : '',
+        },
+        notifyOnNetworkStatusChange: true
+    });
+
     useEffect(()=>{
-        console.log('createeeeeeeeeeeeeeeeeee');
-    },[])
+        console.log('createeeeeeeeeeeeeeeeeee',data);
+    },[data])
+
+    // const { loading, error, data ,refetch  } = useQuery(GET_EXAMCHILD_QUESTIONS , {
+    //     variables: {  
+    //       userName: "211",
+    //       password: "211",
+    //       id: selectedEPId , //examParentId,
+    //       examChild_gId : courseName && courseName.length > 0 ? courseName[0] : '',
+    //     },
+    //     notifyOnNetworkStatusChange: true
+    //   });
     const [setDelayResponseStudent ,{ DelayData }] = useMutation(SET_DEALY_RESPONSE_STUDENT);
     ///////////////////////////////////////////////////
     const [items,setItems] = useState([]);
@@ -114,8 +137,8 @@ const  ExamPageForStudent = ({location,questionIndex ,setLengthQuestions , getTi
     //////////////////////////////////////////////////////
 
     // useEffect(()=>{
-    //     if(!sleep && data1){
-    //         var examData = data1.examParents[0];
+    //     if(!sleep && data){
+    //         var examData = data.examParents[0];
     //         var examDuration = examData.examParent_duration;
     //         var examDataInfo = data2.responseInfoListByPerson[0];
     //         // console.log('data2data2',data2.responseInfoListByPerson[0]);
@@ -253,18 +276,18 @@ const  ExamPageForStudent = ({location,questionIndex ,setLengthQuestions , getTi
         //     refetch2();
         // }else{
         //     console.log('loginnnnnnnnnnn');
-        //     if(data1 && data1.examParents && data1.examParents.length > 0 ){
+        //     if(data && data.examParents && data.examParents.length > 0 ){
         //         setExamParentID(location && location.state.examPId ? location.state.examPId : '');
-        //         MergeQuestions(data1.examParents[0])
-        //         // setItems(MergeQuestions(data1.examParents[0]));
+        //         MergeQuestions(data.examParents[0])
+        //         // setItems(MergeQuestions(data.examParents[0]));
         //     }
         // }
-        if(data1 && data1.examParents && data1.examParents.length > 0 ){
+        if(data && data.examParents && data.examParents.length > 0 ){
             setExamParentID(location && location.state.examPId ? location.state.examPId : '');
-            MergeQuestions(data1.examParents[0])
-            // setItems(MergeQuestions(data1.examParents[0]));
+            MergeQuestions(data.examParents[0])
+            // setItems(MergeQuestions(data.examParents[0]));
         }
-    },[data1]);
+    },[data]);
     ///////////////////////////////////////////////////loginTime
     // useEffect(()=>{
     //     setTimeToPageTimeOut = setTimeout(function run() {
@@ -282,7 +305,10 @@ const  ExamPageForStudent = ({location,questionIndex ,setLengthQuestions , getTi
     var CheckTheEndOfTheExam;
     useEffect(() => {
         // console.log('bbbbbbbbbbbbbbbb');
+        // clearRunningTimeOfTimeForSolveQuestions('1');
         clearResponseStudentTimeOut();
+        ClearTimeToAttendTheExamPageWithTimeOut();
+        runningTimeOfTimeForSolveQuestions({id:location && location.state.examPId ? location.state.examPId : '',val:false});
         setGetDate(fixNumbers(moment(realeTime).format('jYYYY/jMM/jDD')));
         setTime(
             realeTime.toLocaleTimeString([], {
@@ -312,12 +338,12 @@ const  ExamPageForStudent = ({location,questionIndex ,setLengthQuestions , getTi
     useEffect(()=>{
         // console.log('exist item',items);
         if(items.length > 0){///برای فرستادن زمان
-            // console.log('datadarvakonmonom',data1);
+            // console.log('datadarvakonmonom',data);
             // console.log('getDategetDate',getDate);
             setDelayResponseStudent({ variables: { 
                 userName: "210", 
                 password: "210", 
-                epId: data1.examParents[0].id, 
+                epId: data.examParents[0].id, 
                 delay: '',
                 totalScore: '',
                 countScore: '',
@@ -343,13 +369,13 @@ const  ExamPageForStudent = ({location,questionIndex ,setLengthQuestions , getTi
     useEffect(()=>{
         // console.log('exist item',items);
         if(items.length > 0){///برای فرستادن تاخیر
-            // console.log('datadarvakonmonom',data1);
-            if (data1.examParents[0].examParent_method == 1) {
+            // console.log('datadarvakonmonom',data);
+            if (data.examParents[0].examParent_method == 1) {
                 sendReqDelay = setInterval(() => {
                     setDelayResponseStudent({ variables: { 
                         userName: "210", 
                         password: "210",
-                        epId: data1.examParents[0].id,  
+                        epId: data.examParents[0].id,  
                         delay: time,
                         totalScore: '',
                         countScore: '',
@@ -375,9 +401,9 @@ const  ExamPageForStudent = ({location,questionIndex ,setLengthQuestions , getTi
         }
     },[items]);
 
-    useEffect(()=>{
-        console.log('data2data2data2data2data2',data2);
-    },[data2])
+    // useEffect(()=>{
+    //     console.log('data2data2data2data2data2',data2);
+    // },[data2])
     /////////////////////////////////////////////////
     // useEffect(()=>{
     //     // examPID : getExamParentIdResponse ,examEndTime:question.examEndTime , examEndDate : question.examEndDate ,
@@ -397,10 +423,10 @@ const  ExamPageForStudent = ({location,questionIndex ,setLengthQuestions , getTi
 
     const handleSendWxamDataAfterEndTime = () => {
         console.log('methossssssss1');
-        if(data1.examParents[0].examParent_start_date === data1.examParents[0].examParent_stop_date){
+        if(data.examParents[0].examParent_start_date === data.examParents[0].examParent_stop_date){
             // console.log('methossssssss2');
             //////////////////////////////شروع و پایان امتحان در یک روز
-            var newEndTime = fixNumbers(moment2(data1.examParents[0].examParent_end)
+            var newEndTime = fixNumbers(moment2(data.examParents[0].examParent_end)
             .tz('Asia/Tehran').format('HH:mm:00'));
             // console.log('newEndTime',newEndTime);
             var filterEndTime = newEndTime.split(":").join("");
@@ -410,9 +436,9 @@ const  ExamPageForStudent = ({location,questionIndex ,setLengthQuestions , getTi
             // console.log('filterEndTime',filterEndTime);
             if (filterGetTime > filterEndTime) {
                 console.log('مخلثققق');
-                if (data1.examParents[0].examParent_method == "0") { //not
+                if (data.examParents[0].examParent_method == "0") { //not
                     // console.log('timerClear',timerClear);
-                    runningTimeOfTimeForSolveQuestions(true);
+                    runningTimeOfTimeForSolveQuestions({id:setRefExamParentID.current,val:true});
                     // ClearTimeToAttendTheExamPage(getExamParentIdResponse);
                     clearRepsonseStudent(getExamParentIdResponse);
                     if(sendReqDelay){
@@ -424,13 +450,13 @@ const  ExamPageForStudent = ({location,questionIndex ,setLengthQuestions , getTi
                     clearInterval(CheckTheEndOfTheExam);
                     alert('زمان امتحان تمام شده است!!!');
                 } 
-                // else if (data1.examParents[0].examParent_method == 1) {
+                // else if (data.examParents[0].examParent_method == 1) {
                 //     sendReqDelay = setInterval(() => {
                 //         setDelayResponseStudent({ variables: { 
                 //             userName: "210", 
                 //             password: "210", 
                 //             delay: time,
-                //             ecI: data1.examParents[0].id, 
+                //             ecI: data.examParents[0].id, 
                 //         } 
                 //         }).then(res=>{
                 //         if(res.data && res.data.addResponseInfo){
@@ -451,20 +477,20 @@ const  ExamPageForStudent = ({location,questionIndex ,setLengthQuestions , getTi
             }
         }else{
             ////////////////////////////// شروع و پایان امتحان در یک روز نباشد
-            console.log('data2.responseInfoListByPerson[0]',data2);
-            // var newEndTime = data1.examParents[0].examParent_end;
+            // console.log('data2.responseInfoListByPerson[0]',data2);
+            // var newEndTime = data.examParents[0].examParent_end;
             // var filterEndTime = newEndTime.split(":").join("");
             // var temp = fixNumbers(time);// checkRef.current
             // var filterGetTime = temp.split(":").join("");
             ///////////////////////////////////////////////////
-            if(data2 && data2.responseInfoListByPerson.length > 0 && data2.responseInfoListByPerson[0].startTime ){
+            if(data && data.responseInfoListByPerson.length > 0 && data.responseInfoListByPerson[0].startTime ){
                
                console.log('11');
-                var examData = data1.examParents[0];
+                var examData = data.examParents[0];
                 var examDuration = examData.examParent_duration;
-                console.log('data3data3',data2);
-                var examDataInfo = data2.responseInfoListByPerson[0];
-                console.log('data2data2',data2.responseInfoListByPerson[0]);
+                console.log('data3data3',data);
+                var examDataInfo = data.responseInfoListByPerson[0];
+                console.log('data2data2',data.responseInfoListByPerson[0]);
                 /////////////////date
                 var dateSplited = getDate.split(':').join('');
                 var stopDateExam = examData.examParent_stop_date;
@@ -474,7 +500,7 @@ const  ExamPageForStudent = ({location,questionIndex ,setLengthQuestions , getTi
                 var newEnd = examData.examParent_end.split(':').join('');
     
                 if(dateSplited > stopDateSplitedExam ){
-                    runningTimeOfTimeForSolveQuestions(true);
+                    runningTimeOfTimeForSolveQuestions({id:setRefExamParentID.current,val:true});
                     // ClearTimeToAttendTheExamPage(getExamParentIdResponse);
                     clearRepsonseStudent(getExamParentIdResponse);
                     clearInterval(timerClear.current);
@@ -493,8 +519,8 @@ const  ExamPageForStudent = ({location,questionIndex ,setLengthQuestions , getTi
                     var convertDuraionToSecond = spliterTime(examDuration);
                     console.log('convertDuraionToSecond',convertDuraionToSecond);
                     console.log('calcTime',calcTime);
-                    if(calcTime > convertDuraionToSecond){
-                        runningTimeOfTimeForSolveQuestions(true);
+                    if(convertDuraionToSecond <= calcTime){
+                        runningTimeOfTimeForSolveQuestions({id:setRefExamParentID.current,val:true});
                         // ClearTimeToAttendTheExamPage(getExamParentIdResponse);
                         clearRepsonseStudent(getExamParentIdResponse);
                         clearInterval(timerClear.current);
@@ -512,17 +538,17 @@ const  ExamPageForStudent = ({location,questionIndex ,setLengthQuestions , getTi
             }else{
                 console.log('دیتا وجود ندارد');
                 console.log(getRefExamTime.current)
-                console.log(data1.examParents[0].examParent_duration)
+                console.log(data.examParents[0].examParent_duration)
                 var timeExam = getRefExamTime.current;
                 // var timeExam = getTimeToAttendTheExamPageWithID;
                 var newTimeExam = timeExam.split(':').join('');
-                var endExam = data1.examParents[0].examParent_duration;
+                var endExam = data.examParents[0].examParent_duration;
                 var newEndTimeExam = endExam.split(':').join('');
                 if (newTimeExam >= newEndTimeExam) {
-                // if (getTimeToAttendTheExamPageWithID == data1.examParents[0].examParent_duration) {
-                // if (getTimeToAttendTheExamPage == data1.examParents[0].examParent_duration) {
+                // if (getTimeToAttendTheExamPageWithID == data.examParents[0].examParent_duration) {
+                // if (getTimeToAttendTheExamPage == data.examParents[0].examParent_duration) {
                     console.log('2دیتا وجود ندارد')    
-                    runningTimeOfTimeForSolveQuestions(true);
+                    runningTimeOfTimeForSolveQuestions({id:setRefExamParentID.current,val:true});
                     // ClearTimeToAttendTheExamPage(getExamParentIdResponse);
                     clearRepsonseStudent(getExamParentIdResponse);
                     clearInterval(timerClear.current);
@@ -536,8 +562,8 @@ const  ExamPageForStudent = ({location,questionIndex ,setLengthQuestions , getTi
             }
            
             /////////////////////////////////////////////////
-            // if (getTimeToAttendTheExamPageWithID == data1.examParents[0].examParent_duration) {
-            // // if (getTimeToAttendTheExamPage == data1.examParents[0].examParent_duration) {
+            // if (getTimeToAttendTheExamPageWithID == data.examParents[0].examParent_duration) {
+            // // if (getTimeToAttendTheExamPage == data.examParents[0].examParent_duration) {
             //     runningTimeOfTimeForSolveQuestions(true);
             //     ClearTimeToAttendTheExamPage(getExamParentIdResponse);
             //     clearRepsonseStudent(getExamParentIdResponse);
@@ -590,15 +616,23 @@ const  ExamPageForStudent = ({location,questionIndex ,setLengthQuestions , getTi
         var examEndDate = examP.examParent_stop_date;
         var examEndTime = examP.examParent_end;
         var allQuestons = examP.examChild;
+        var examParentId = examP.id;
+        // setRefExamParentID.current
+        console.log('setRefExamParentID.current',setRefExamParentID.current);
+        console.log('examParentId',examParentId);
         if(examEndDate != examStartDate){
             console.log('1111111111111');
-            if(data2 && data2.responseInfoListByPerson.length > 0 && data2.responseInfoListByPerson[0].startTime ){ 
+            // console.log('data2',data.responseInfoListByPerson);
+            // console.log('data2.responseInfoListByPerson.length > 0',data.responseInfoListByPerson.length > 0);
+            // console.log('data2.responseInfoListByPerson[0]',data.responseInfoListByPerson[0]);
+            // console.log('data2.responseInfoListByPerson[0].startTime',data.responseInfoListByPerson[0].startTime);
+            if(data && data.responseInfoListByPerson.length > 0 && data.responseInfoListByPerson[0].startTime ){ 
                 console.log('2222222222222');
-                 var examData = data1.examParents[0];
+                 var examData = data.examParents[0];
                  var examDuration = examData.examParent_duration;
-                 console.log('data3data3',data2);
-                 var examDataInfo = data2.responseInfoListByPerson[0];
-                 console.log('data2data2',data2.responseInfoListByPerson[0]);
+                 console.log('data3data3',data);
+                 var examDataInfo = data.responseInfoListByPerson[0];
+                 console.log('datadata',data.responseInfoListByPerson[0]);
                  /////////////////date
                  var dateSplited = getDate.split(':').join('');
                  var stopDateExam = examData.examParent_stop_date;
@@ -609,7 +643,7 @@ const  ExamPageForStudent = ({location,questionIndex ,setLengthQuestions , getTi
      
                  if(dateSplited >= stopDateSplitedExam ){
                      console.log('problem');
-                     runningTimeOfTimeForSolveQuestions(true);
+                     runningTimeOfTimeForSolveQuestions({id:setRefExamParentID.current,val:true});
                     //  ClearTimeToAttendTheExamPage(getExamParentIdResponse);
                      clearRepsonseStudent(getExamParentIdResponse);
                      clearInterval(timerClear.current);
@@ -635,9 +669,10 @@ const  ExamPageForStudent = ({location,questionIndex ,setLengthQuestions , getTi
                      var calcTime = convertEnd - convertInfo;
                      var convertDuraionToSecond = spliterTime(examDuration);
                      console.log('convertDuraionToSecond',convertDuraionToSecond);
+                     console.log('calcTimeeeeeeeeeeeeeeee2',typeof calcTime);
                      console.log('calcTimeeeeeeeeeeeeeeee',calcTime);
                      if(convertDuraionToSecond <= calcTime ){
-                         runningTimeOfTimeForSolveQuestions(true);
+                         runningTimeOfTimeForSolveQuestions({id:setRefExamParentID.current,val:true});
                         //  ClearTimeToAttendTheExamPage(getExamParentIdResponse);
                          clearRepsonseStudent(getExamParentIdResponse);
                          clearInterval(timerClear.current);
@@ -742,6 +777,7 @@ const  ExamPageForStudent = ({location,questionIndex ,setLengthQuestions , getTi
                                           var mySeqRandomArray = SeqRandomArray(questionParentForExamChild[j].questionChild[0].question_seqItems)
                                           mergeQ.push({
                                               ...questionParentForExamChild[j].questionChild[0] ,
+                                              examParentId:setRefExamParentID.current,
                                               question_seqItems: mySeqRandomArray,
                                               courseName:courseName,
                                              teacherName:teacherName,
@@ -753,7 +789,8 @@ const  ExamPageForStudent = ({location,questionIndex ,setLengthQuestions , getTi
                                         {
                                           var myRandomArray = RandomArray(questionParentForExamChild[j].questionChild[0].question_compItems);
                                           mergeQ.push({...questionParentForExamChild[j].questionChild[0] ,
-                                              question_compItems: myRandomArray,
+                                            examParentId:setRefExamParentID.current,  
+                                            question_compItems: myRandomArray,
                                               courseName:courseName,
                                              teacherName:teacherName,
                                              examChildLink:examChildLink,
@@ -762,7 +799,8 @@ const  ExamPageForStudent = ({location,questionIndex ,setLengthQuestions , getTi
                                           });
                                         }else{
                                           mergeQ.push({...questionParentForExamChild[j].questionChild[0] ,
-                                              courseName:courseName,
+                                            examParentId:setRefExamParentID.current,  
+                                            courseName:courseName,
                                              teacherName:teacherName,
                                              examChildLink:examChildLink,
                                              examEndDate :examEndDate,
@@ -832,6 +870,7 @@ const  ExamPageForStudent = ({location,questionIndex ,setLengthQuestions , getTi
                                 var mySeqRandomArray = SeqRandomArray(questionParentForExamChild[j].questionChild[0].question_seqItems)
                                 mergeQ.push({
                                     ...questionParentForExamChild[j].questionChild[0] ,
+                                    examParentId:setRefExamParentID.current,
                                     question_seqItems: mySeqRandomArray,
                                     courseName:courseName,
                                     teacherName:teacherName,
@@ -843,6 +882,7 @@ const  ExamPageForStudent = ({location,questionIndex ,setLengthQuestions , getTi
                             {
                                 var myRandomArray = RandomArray(questionParentForExamChild[j].questionChild[0].question_compItems);
                                 mergeQ.push({...questionParentForExamChild[j].questionChild[0] ,
+                                    examParentId:setRefExamParentID.current,
                                     question_compItems: myRandomArray,
                                     courseName:courseName,
                                     teacherName:teacherName,
@@ -852,6 +892,7 @@ const  ExamPageForStudent = ({location,questionIndex ,setLengthQuestions , getTi
                                 });
                             }else{
                                 mergeQ.push({...questionParentForExamChild[j].questionChild[0] ,
+                                    examParentId:setRefExamParentID.current,
                                     courseName:courseName,
                                     teacherName:teacherName,
                                     examChildLink:examChildLink,
@@ -894,6 +935,7 @@ const  ExamPageForStudent = ({location,questionIndex ,setLengthQuestions , getTi
                             var mySeqRandomArray = SeqRandomArray(questionParentForExamChild[j].questionChild[0].question_seqItems)
                             mergeQ.push({
                                 ...questionParentForExamChild[j].questionChild[0] ,
+                                examParentId:setRefExamParentID.current,
                                 question_seqItems: mySeqRandomArray,
                                 courseName:courseName,
                                 teacherName:teacherName,
@@ -905,6 +947,7 @@ const  ExamPageForStudent = ({location,questionIndex ,setLengthQuestions , getTi
                         {
                             var myRandomArray = RandomArray(questionParentForExamChild[j].questionChild[0].question_compItems);
                             mergeQ.push({...questionParentForExamChild[j].questionChild[0] ,
+                                examParentId:setRefExamParentID.current,
                                 question_compItems: myRandomArray,
                                 courseName:courseName,
                                 teacherName:teacherName,
@@ -914,6 +957,7 @@ const  ExamPageForStudent = ({location,questionIndex ,setLengthQuestions , getTi
                             });
                         }else{
                             mergeQ.push({...questionParentForExamChild[j].questionChild[0] ,
+                                examParentId:setRefExamParentID.current,
                                 courseName:courseName,
                                 teacherName:teacherName,
                                 examChildLink:examChildLink,
@@ -1053,10 +1097,10 @@ const  ExamPageForStudent = ({location,questionIndex ,setLengthQuestions , getTi
         // setLengthQuestions(mergeQ.length);
         setTimeToPageTimeOut = setTimeout(function run() {
             console.log("getExamParentIdResponse",getExamParentIdResponse);
-            SetTimeToAttendTheExamPage({id: setRefExamParentID.current ,time: countRef.current});
+            SetTimeToAttendTheExamPage({id: setRefExamParentID.current ,time: countRef.current , endDateExam:examP.examParent_stop_date});
             // SetTimeToAttendTheExamPage({id: getExamParentIdResponse ,time: countRef.current});
-            setTimeToPageTimeOut = setTimeout(run, 30000);
-        }, 30000);
+            setTimeToPageTimeOut = setTimeout(run, 20000);
+        }, 20000);
         CheckTheEndOfTheExam = setInterval(() => {
             // console.log('dddddddddddddddddddd');
             handleSendWxamDataAfterEndTime();
@@ -1149,7 +1193,7 @@ const  ExamPageForStudent = ({location,questionIndex ,setLengthQuestions , getTi
     }
     ///////////////////////////////////////////////////
     const handleExitPage = () =>{
-        runningTimeOfTimeForSolveQuestions(true);
+        runningTimeOfTimeForSolveQuestions({id:setRefExamParentID.current,val:true});
         // clearInterval(timerClear.current);
         // clearInterval(CheckTheEndOfTheExam);
         // ClearTimeToAttendTheExamPage(getExamParentIdResponse);
@@ -1193,11 +1237,11 @@ const  ExamPageForStudent = ({location,questionIndex ,setLengthQuestions , getTi
         <ShowQuestionsContainer>
             {/* ////////////////////////////// */}
             <ExamInfoHeader 
-                startDate = {data1 && data1.examParents.length > 0 ? data1.examParents[0].examParent_start_date : ''}
-                stopDate = {data1 && data1.examParents.length > 0 ? data1.examParents[0].examParent_stop_date : ''}
-                examDuration = {data1 && data1.examParents.length > 0 ? data1.examParents[0].examParent_duration : ''}
-                startTime = {data1 && data1.examParents.length > 0 ? data1.examParents[0].examParent_start : ''}
-                endTime = {data1 && data1.examParents.length > 0 ? data1.examParents[0].examParent_end : ''}
+                startDate = {data && data.examParents.length > 0 ? data.examParents[0].examParent_start_date : ''}
+                stopDate = {data && data.examParents.length > 0 ? data.examParents[0].examParent_stop_date : ''}
+                examDuration = {data && data.examParents.length > 0 ? data.examParents[0].examParent_duration : ''}
+                startTime = {data && data.examParents.length > 0 ? data.examParents[0].examParent_start : ''}
+                endTime = {data && data.examParents.length > 0 ? data.examParents[0].examParent_end : ''}
                 teacherName = {items.length > 0 ? items[questionIndex].teacherName : ''} 
             />
             {/* ////////////////////////////// */}
@@ -1272,8 +1316,10 @@ const mapDispatchToProps = dispatch =>({
     setLengthQuestions: len => dispatch(setLengthQuestions(len)),
     setTypeIncreaseQuestions: type => dispatch(setTypeIncreaseQuestions(type)),
     runningTimeOfTimeForSolveQuestions : (item)=> dispatch(runningTimeOfTimeForSolveQuestions(item)),
+    clearRunningTimeOfTimeForSolveQuestions : (item)=> dispatch(clearRunningTimeOfTimeForSolveQuestions(item)),
     SetTimeToAttendTheExamPage : (item)=> dispatch(SetTimeToAttendTheExamPage(item)),
     ClearTimeToAttendTheExamPage : (id) => dispatch(ClearTimeToAttendTheExamPage(id)),
+    ClearTimeToAttendTheExamPageWithTimeOut : () => dispatch(ClearTimeToAttendTheExamPageWithTimeOut()),
     clearRepsonseStudent : (id) => dispatch(clearRepsonseStudent(id)),
     clearResponseStudentTimeOut : () => dispatch(clearResponseStudentTimeOut()),
     setExamParentIdForResponse : (id) => dispatch(setExamParentIdForResponse(id)),
