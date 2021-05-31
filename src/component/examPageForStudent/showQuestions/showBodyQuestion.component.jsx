@@ -15,7 +15,7 @@ import { connect} from 'react-redux';
 import {getExamParentIdResponse} from '../../../redux/responsesStudent/responsesStudent.selector';
 import {IncreaseIndex , DecreaseIndex } from '../../../redux/questionIndex/questionIndex.sction';
 import {setRepsonseStudent} from '../../../redux/responsesStudent/responsesStudent.action';
-import {selectIndex ,finalIndex ,typeIncreaseQuestions ,timeOutToSolveQuestions} from '../../../redux/questionIndex/questionIndex.selector';
+import {selectIndex ,finalIndex ,typeIncreaseQuestions ,timeOutToSolveQuestions ,getValueTimeOutToSolveQuestions} from '../../../redux/questionIndex/questionIndex.selector';
 import { createStructuredSelector} from 'reselect';
 //////////////////////query
 import { useMutation} from 'react-apollo';
@@ -25,7 +25,7 @@ import MySnackbar from '../../../messageBox/messageBox.component';
 const ShowBodyQuestions = ({
   question,number,children,IncreaseIndexQuestion,getExamParentIdResponse,
   setRepsonseStudent ,DecreaseIndexQuestion,questionIndex ,
-  questionsLenght ,typeIncreaseQuestions ,timeOutSolveQuestions,ResItem }) =>{
+  questionsLenght ,typeIncreaseQuestions ,timeOutSolveQuestions,getValueTimeOutToSolveQuestions,ResItem }) =>{
     ////////////////////////////////////////query
     const [addResponse ,{ data }] = useMutation(SET_RESPONSE_STUDENT);
     /////////////////////////////////////////////////////////
@@ -47,9 +47,9 @@ const ShowBodyQuestions = ({
     //   console.log('bodyRes',ResItem);
     // },[])
     ///////////////////////////////////////////
-    // useEffect(()=>{
-    //     console.log('resForRedux',resForRedux);
-    // },[resForRedux]);
+    useEffect(()=>{
+        console.log('getValueTimeOutToSolveQuestions',getValueTimeOutToSolveQuestions);
+    });
     ///////////////////////////////////////////
     const showPic = () => {
       setShowImage(!showImage);
@@ -232,7 +232,7 @@ const ShowBodyQuestions = ({
                 <Tooltip title="سوال بعدی" aria-label="سوال بعدی" style={{ fontSize:'3rem'}} >
                     <FooterBtn 
                     
-                    disabled={timeOutSolveQuestions == true ? true : false}
+                    disabled={getValueTimeOutToSolveQuestions == true ? true : false}
                     //  disabled={questionIndex == questionsLenght -1 ? true :false}
                      onClick={handleNextQuestion}>
                         <ArrowForwardIosIcon style={{ fontSize:'3rem'}} />
@@ -241,7 +241,7 @@ const ShowBodyQuestions = ({
 
                 <Tooltip title="سوال قبلی" aria-label="سوال قبلی"  style={{ fontSize:'3rem'}} >
                     <FooterBtn 
-                     disabled={timeOutSolveQuestions == true ? true : typeIncreaseQuestions == false ? true : questionIndex == 0 ? true :false}
+                     disabled={getValueTimeOutToSolveQuestions == true ? true : typeIncreaseQuestions == false ? true : questionIndex == 0 ? true :false}
                      onClick={handlePrevQuestion}>
                         <ArrowBackIosIcon style={{ fontSize:'3rem'}} />
                     </FooterBtn>
@@ -264,6 +264,8 @@ const mapStateToProps = createStructuredSelector({
     questionsLenght:finalIndex,
     typeIncreaseQuestions: typeIncreaseQuestions,
     timeOutSolveQuestions : timeOutToSolveQuestions,
+    getValueTimeOutToSolveQuestions : (state, ownProps) => getValueTimeOutToSolveQuestions(ownProps.question.examParentId)(state, ownProps),
+    // getValueTimeOutToSolveQuestions : getValueTimeOutToSolveQuestions,
     getExamParentIdResponse : getExamParentIdResponse,
 });
 

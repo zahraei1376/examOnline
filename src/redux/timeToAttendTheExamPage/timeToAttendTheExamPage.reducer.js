@@ -1,5 +1,5 @@
 import TimeLoginToPageTypes from './timeToAttendTheExamPage.types';
-import {foundTimeToAttend , setTimeToAttend } from './timeToAttendTheExamPage.utils';
+import {foundTimeToAttend ,foundTimeToAttendWithTimeOut, setTimeToAttend } from './timeToAttendTheExamPage.utils';
 
 const INITIALSTATE = {
     // timeToAttendTheExamPage: '00:00:00',
@@ -22,7 +22,15 @@ const TimeLoginReducer = (state = INITIALSTATE ,action)=>{
                 timeToAttendTheExamPage:foundTimeToAttend(action.payload , state.timeToAttendTheExamPage),
                 // timeToAttendTheExamPage:'00:00:00',
             }}
-            
+
+        case TimeLoginToPageTypes.CLEARTIMETOATTENDTHEEXAMPAGEWITHTIMEOUT:{
+            // console.log('clearrrrrrrrrrrrrrrrrrrrrrrrrrrrr', action.payload);
+            return {
+                ...state,
+                timeToAttendTheExamPage:foundTimeToAttendWithTimeOut(state.timeToAttendTheExamPage),
+                // timeToAttendTheExamPage:'00:00:00',
+            }}    
+
         default:
             return state;
             // break;

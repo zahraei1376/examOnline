@@ -9,3 +9,7 @@ export const ClearTimeToAttendTheExamPage = (id)=>({
     type:TimeLoginToPageTypes.CLEARTIMETOATTENDTHEEXAMPAGE,
     payload:id,
 });
+
+export const ClearTimeToAttendTheExamPageWithTimeOut = ()=>({
+    type:TimeLoginToPageTypes.CLEARTIMETOATTENDTHEEXAMPAGEWITHTIMEOUT,
+});
