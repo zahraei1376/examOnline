@@ -15,7 +15,7 @@ import { getResponseStudentWithIndex } from '../../../../redux/responsesStudent/
 
 
 
-const SequentialItems = ({number,items ,ResItem ,setResForRedux})=>{
+const SequentialItems = ({number,items ,ResItem ,setResForRedux , setRandomValue})=>{
 
     // const [resSeqQuestion,setResSeqQuestion] = useState(Array(items.length).fill(0).map(row => new Array(1).fill('')));
     const [resSeqQuestion,setResSeqQuestion] = useState(null);
@@ -26,6 +26,7 @@ const SequentialItems = ({number,items ,ResItem ,setResForRedux})=>{
     // },[items]);
 
     useEffect(()=>{
+        setRandomValue(items);
         // console.log('ResItem' ,ResItem);
         // setResSeqQuestion();
         // setResForRedux(ResItem);
@@ -136,7 +137,7 @@ const ShowSequentialQuestion = ({question, number , items , ResItem , getRespons
             )} */}
 
             <SequentialItems number={number} items={items} 
-            ResItem={getResponseStudentWithIndex  ? getResponseStudentWithIndex : ResItem}
+            // ResItem = {getResponseStudentWithIndex  ? getResponseStudentWithIndex : ResItem}
             // ResItem={ResItem && ResItem.length > 0  ? ResItem : getResponseStudentWithIndex}
              />
             

@@ -26,7 +26,7 @@ const ShowComparativeItemForArchive =({myIndex , item ,resItem})=>{
                     <FirstSideRes 
                     type="text" 
                     readOnly
-                    value={resItem[1]}
+                    value={resItem ? resItem[1] :''}
                     // onChange={e => handleRes(myIndex , e.target.value)}
                      />
                 </FirstSideResContainer>

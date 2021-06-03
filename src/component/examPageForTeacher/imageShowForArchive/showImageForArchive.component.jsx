@@ -1,5 +1,6 @@
 import React,{useEffect} from 'react';
-import {ShowImageContainer ,ShowImageContent,ShowImageImgText ,ShowImageImgQuestion,ShowImageCaption} from './showImageForArchive.styles';
+import {ShowImageContainer ,ShowImageContent,ShowImageImgText ,
+  ShowImageImgQuestion,ShowImageCaption,BtnClose} from './showImageForArchive.styles';
 
 const ShowImageForArchive =(props)=>{
   // useEffect(()=>{
@@ -18,6 +19,7 @@ const ShowImageForArchive =(props)=>{
               onClick={props.close}
           />
             }
+            <BtnClose onClick={props.close}>بستن</BtnClose>
             <ShowImageCaption>{props.caption}</ShowImageCaption>
           </ShowImageContent>
         </ShowImageContainer>

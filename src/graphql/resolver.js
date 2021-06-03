@@ -1,7 +1,5 @@
 import { gql } from 'apollo-boost';
-import { useMutation} from 'react-apollo';
-
-
+/////////////////////////////////////
 const addNewExamMutation = gql`
     mutation addExamParent(
         $userName: String!,
@@ -31,7 +29,25 @@ const addNewExamMutation = gql`
                 }
         }
 `;
-
+/////////////////////////////////////
+const ADD_NEW_EXPLAIN = gql`
+  mutation updateResponse(
+    $userName: String!,
+    $password: String!,
+    $id: String!,
+    $response_teacherResponse: String!,
+    ){
+      updateResponse(
+        userName: $userName,
+        password: $password,
+        id: $id,
+        response_teacherResponse: $response_teacherResponse,
+      ){
+        id
+      }
+  }
+`
+/////////////////////////////////////
 const SET_QUESTION_CHILD = gql`
   mutation addQuestionChild(
       $userName: String!,
@@ -78,6 +94,8 @@ const SET_QUESTION_CHILD = gql`
   }
 `;
 
+//////////////////////////////////////
+/////////////////////////////////////
 const DELETE_QUESTIONCHILD = gql`
   mutation deleteQuestionChild(
     $userName: String!,
@@ -93,7 +111,7 @@ const DELETE_QUESTIONCHILD = gql`
       }
   }
 `;
-
+/////////////////////////////////////
 const GET_QUESTIONS = gql`
   query examParents(
     $userName: String!,
@@ -188,7 +206,7 @@ const GET_QUESTIONS = gql`
     }
   }
 `;
-
+/////////////////////////////////////
 const SET_RESPONSE_STUDENT = gql`
   mutation addResponse(
     $userName: String!,
@@ -200,6 +218,8 @@ const SET_RESPONSE_STUDENT = gql`
     $response_comparativeQuestion: [[String]]!,
     $response_descriptionQuestion: String!,
     $response_vancyQuestion: [[String]]!,
+    $response_comparativeQuestionRandom: [[String]],
+    $response_sequentialQuestionRandom: [[String]],
     $response_score: String!,
     ){
       addResponse(
@@ -212,13 +232,15 @@ const SET_RESPONSE_STUDENT = gql`
         response_comparativeQuestion: $response_comparativeQuestion,
         response_descriptionQuestion: $response_descriptionQuestion,
         response_vancyQuestion: $response_vancyQuestion,
+        response_comparativeQuestionRandom: $response_comparativeQuestionRandom,
+        response_sequentialQuestionRandom: $response_sequentialQuestionRandom,
         response_score: $response_score,
       ){
         id
       }
   }
 `;
-
+/////////////////////////////////////
 const SET_DEALY_RESPONSE_STUDENT = gql`
   mutation addResponseInfo(
     $userName: String!,
@@ -268,7 +290,7 @@ const SET_INFO_EXAMCHILD = gql`
       }
   }
 `;
-
+/////////////////////////////////////
 const GET_EXAMCHILD_QUESTIONS = gql` 
 query examParents(
   $userName: String!,
@@ -343,8 +365,7 @@ query examParents(
   }
 }
 `;
-
-///////////////
+/////////////////////////////////////
 const GET_EXAMCHILD_QUESTIONSInfo = gql` 
 query examParents(
   $userName: String!,
@@ -373,7 +394,7 @@ query examParents(
   }
 }
 `;
-///////////////////////////
+/////////////////////////////////////
 const GET_EXAMS_FOR_STUDENT = gql`
   query groupsListByStudent(
     $userName: String,
@@ -402,11 +423,14 @@ const GET_EXAMS_FOR_STUDENT = gql`
         examParent_start
         examParent_end
         examParent_duration
+        examChild{
+          id
+        }
       }
     }
   }
 `;
-////////////////////////////////
+/////////////////////////////////////
 const GET_EXAMSINFO_FOR_STUDENT = gql`
   query responseInfoListByPerson(
     $userName: String,
@@ -429,7 +453,89 @@ const GET_EXAMSINFO_FOR_STUDENT = gql`
     }
   }
 `;
-
+/////////////////////////////////////
+const GET_EXAMQUESTIONS_FOR_STUDENT_AND_TEACHER = gql`
+query examChilds(
+  $userName: String!,
+  $password: String!,
+  $id:  String!,
+  ){
+  examChilds(
+    userName: $userName,
+    password: $password,
+    id:$id
+  ){
+    id
+    examChild_gId
+    examChild_epId
+    examChild_falseCoefficient
+    examChild_courseCoefficient
+    examChild_pdf
+    questionParent{
+      id
+      ecId
+      questionChild{
+        id
+        qpId
+        question
+        question_score
+        question_explain
+        question_timeToSolveProblem
+        question_correctOption
+        question_optionOne
+        question_optionTwo
+        question_optionThree
+        question_optionFour
+        question_link
+        exam_link
+        question_type
+        question_seqItems
+        question_vancyItems
+        question_compItems
+        response{
+          id
+          qcId
+          pId
+          response_descriptionImageLink
+          response_sequentialQuestion
+          response_studentItem
+          response_comparativeQuestion
+          response_descriptionQuestion
+          response_vancyQuestion
+          response_score
+          response_teacherResponse
+          response_comparativeQuestionRandom
+          response_sequentialQuestionRandom
+        }
+      }
+    }
+    examParent{
+      id
+      responseInfo{
+        id
+        delay
+      }
+    }
+  }
+}
+`;
+/////////////////////////////////////
+/////////////////////////////////////
+const GET_RESPONSE_WITH_ID = gql`
+query responses(
+  $userName: String!,
+  $password: String!,
+  $qcId:  String!,
+  ){
+    responses(
+    userName: $userName,
+    password: $password,
+    qcId: $qcId,
+  ){
+    response_teacherResponse
+  }
+}
+`;
 /////////////////////////////////////
 const SendRequestQuestionChild = async (QuestionData , uploadID , selectedFileName ,setQuestionChild) =>{
   console.log('QuestionData',QuestionData);
@@ -483,8 +589,8 @@ const SendRequestQuestionChild = async (QuestionData , uploadID , selectedFileNa
   
   //////////////////////////////////////////////////////
 }
-
-
+////////////////////////////////////
 export { SET_QUESTION_CHILD, GET_QUESTIONS ,DELETE_QUESTIONCHILD ,SET_RESPONSE_STUDENT ,
          SET_DEALY_RESPONSE_STUDENT ,SET_INFO_EXAMCHILD,GET_EXAMCHILD_QUESTIONS,
-         GET_EXAMCHILD_QUESTIONSInfo ,GET_EXAMS_FOR_STUDENT,GET_EXAMSINFO_FOR_STUDENT,SendRequestQuestionChild};
+         GET_EXAMCHILD_QUESTIONSInfo ,GET_EXAMS_FOR_STUDENT,GET_EXAMSINFO_FOR_STUDENT,
+         GET_EXAMQUESTIONS_FOR_STUDENT_AND_TEACHER,ADD_NEW_EXPLAIN,GET_RESPONSE_WITH_ID,SendRequestQuestionChild};

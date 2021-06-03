@@ -7,7 +7,7 @@ import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { getResponseStudentWithIndex } from '../../../../redux/responsesStudent/responsesStudent.selector';
 /////////////////////////////////////////////////
-const ShowComparativeItems = ({number,items ,ResItem, setResForRedux})=>{
+const ShowComparativeItems = ({number,items ,ResItem, setResForRedux , setRandomValue})=>{
 
     // const [questionRes,setQuestionRes] = useState(null);
     const [questionRes,setQuestionRes] = useState(null);      
@@ -20,6 +20,7 @@ const ShowComparativeItems = ({number,items ,ResItem, setResForRedux})=>{
         // setMyRes(ResItem);
         ///////////////////////////
         // var temp = [...questionRes];
+        setRandomValue(items);
         var temp = Array(items.length).fill(0).map(row => new Array(2).fill(''));
         for (let index = 0; index < items.length; index++) {  
             var tempRes = ResItem && ResItem.length > 0 ? ResItem[index] : '';
@@ -95,7 +96,7 @@ const ShowComparativeQuestion = ({question, number,items ,ResItem ,getResponseSt
         <ShowBodyQuestions question={question} number={number}>
 
             <ShowComparativeItems number={number}  items={items} 
-            ResItem = {getResponseStudentWithIndex  ? getResponseStudentWithIndex : ResItem}
+            // ResItem = {getResponseStudentWithIndex  ? getResponseStudentWithIndex : ResItem}
             // ResItem={ResItem && ResItem.length > 0 ? ResItem : getResponseStudentWithIndex}
             />
             

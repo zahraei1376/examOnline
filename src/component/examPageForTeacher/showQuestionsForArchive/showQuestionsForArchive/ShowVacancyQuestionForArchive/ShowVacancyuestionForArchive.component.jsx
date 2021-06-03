@@ -81,10 +81,10 @@ const VacancyItemForArchive = ({number,items ,vancyRes})=>{
     )
 }
 
-const ShowVacancyQuestionForArchive = ({question, number ,type }) =>{
+const ShowVacancyQuestionForArchive = ({question, number ,type ,responseQuestion }) =>{
     return(
-        <ShowBodyQuestionsForArchive myType={type} question={question} number={number} responseScore = {question.response_score}>
-            <VacancyItemForArchive number={number} items={question} vancyRes={question.response_vancyQuestion} />
+        <ShowBodyQuestionsForArchive myType={type} question={question} number={number} responseScore = {responseQuestion ? responseQuestion.response_score : ''}>
+            <VacancyItemForArchive number={number} items={question} vancyRes={responseQuestion ? responseQuestion.response_vancyQuestion : ''} />
         </ShowBodyQuestionsForArchive>
     )
 };

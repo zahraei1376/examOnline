@@ -1,4 +1,4 @@
-import React,{useState} from "react";
+import React,{useEffect, useState} from "react";
 import {TextArea ,ShowDescriptionButton,DescriptionItemConatiner,DescriptionResImageContainer,DescriptionResImage} from './ShowDescriptiveQuestionForArchive.styles';
 // import {DescriptiveContainer,DescriptiveQuestion,DescriptiveQuestionBox,DescriptiveDiv,ImageQuestion,ImageQuestionContainer,
 //     ImageWithQuestionContainer , ImageWithQuestion,ScoreTag,ImageQuestionMainContainer} from './ShowDescriptiveQuestion.styles';
@@ -13,13 +13,17 @@ import IamgeRes  from '../../../../../assets/img/image2.jpg';
 
 
 
-const DescriptionItemForArchive = ({number,descriptionRes,descriptionResLink,changeShowImage})=>{
+const DescriptionItemForArchive = ({number,descriptionRes,descriptionResLink , setShowImage ,setImageSrc})=>{
 
     // const [responseQuestion,setResponseQuestion] = useState('');
 
     // const handleChange = (e) =>{
     //     setResponseQuestion(e.target.value);
     // }
+    const handleShowImage = () =>{
+        setImageSrc(IamgeRes);
+        setShowImage(true);
+    }
 
     return(
         <DescriptionItemConatiner>
@@ -34,7 +38,7 @@ const DescriptionItemForArchive = ({number,descriptionRes,descriptionResLink,cha
             {descriptionResLink ? <DescriptionResImageContainer>
                 <DescriptionResImage 
                     src={IamgeRes} 
-                    onClick={changeShowImage}
+                    onClick={handleShowImage}
                     // src={descriptionResLink} 
                 />
             </DescriptionResImageContainer> : ''}
@@ -53,14 +57,22 @@ const DescriptionItemForArchive = ({number,descriptionRes,descriptionResLink,cha
     )
 }
 
-const ShowDescriptiveQuestionForArchive = ({question, number ,type}) =>{
-    const changeShowImage = () => {
-        //changedData
-    }
+const ShowDescriptiveQuestionForArchive = ({question, number ,type,responseQuestion}) =>{
+
+    useEffect(()=>{
+        console.log('questionnnnnnnnnnnnnnnn',question);
+    },[])
+    // const changeShowImage = () => {
+    //     //changedData
+    // }
 
     return(
-        <ShowBodyQuestionsForArchive myType={type} changeShowImage = {changeShowImage()} question={question} number={number} responseScore = {question.response_score} >
-            <DescriptionItemForArchive changeShowImage = {changeShowImage()} number={number} descriptionRes={question.response_descriptionQuestion} descriptionResLink={question.response_descriptionImageLink}/>
+        <ShowBodyQuestionsForArchive myType={type} 
+        // changeShowImage = {changeShowImage()}
+         question={question} number={number} responseScore = {responseQuestion ? responseQuestion.response_score : ''} >
+            <DescriptionItemForArchive 
+            // changeShowImage = {changeShowImage()}
+             number={number} descriptionRes={responseQuestion ? responseQuestion.response_descriptionQuestion : ''} descriptionResLink={responseQuestion ? responseQuestion.response_descriptionImageLink : ''}/>
         </ShowBodyQuestionsForArchive>
     )
 };

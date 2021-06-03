@@ -111,10 +111,10 @@ const ShowTrueAndFalseItemsForArchive = ({number,item ,StudentItem})=>{
     )
 }
 
-const ShowTrueAndFalseQuestionForArchive = ({question, number,type}) =>{
+const ShowTrueAndFalseQuestionForArchive = ({question, number,type ,responseQuestion}) =>{
     return(
-        <ShowBodyQuestionsForArchive myType={type} question={question} number={number} responseScore = {question.response_score}>
-          <ShowTrueAndFalseItemsForArchive number={number} item={question} StudentItem={question.response_studentItem} />
+        <ShowBodyQuestionsForArchive myType={type} question={question} number={number} responseScore = {responseQuestion ? responseQuestion.response_score : ''}>
+          <ShowTrueAndFalseItemsForArchive number={number} item={question} StudentItem={responseQuestion ? responseQuestion.response_studentItem : ''} />
         </ShowBodyQuestionsForArchive>
     )
 };
