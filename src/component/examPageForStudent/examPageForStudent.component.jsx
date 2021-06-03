@@ -124,6 +124,10 @@ const  ExamPageForStudent = ({location,questionIndex ,setLengthQuestions , getTi
     /////////
     const getRefExamTime = useRef(getTimeToAttendTheExamPageWithID);
     getRefExamTime.current = getTimeToAttendTheExamPageWithID;
+    // useEffect(()=>{
+    //     console.log('loginTime',loginTime);
+    //     console.log('second',second);
+    // },[loginTime])
     //////////////////////////////////////////////////////
     function spliterTime(myTime){
         var spliterMyTime = myTime.split(':');
@@ -213,7 +217,7 @@ const  ExamPageForStudent = ({location,questionIndex ,setLengthQuestions , getTi
      ///////////////////////////////////////////////////
      var second;
      useEffect(()=>{
-         console.log('location.state.examPId',location.state.examPId);
+        //  console.log('location.state.examPId',location.state.examPId);
          setExamParentIdForResponse(location && location.state.examPId ? location.state.examPId : '');
         //  SetTimeToAttendTheExamPage({id: location && location.state.examPId ? location.state.examPId : '' ,time: countRef.current});
          // console.log('getTimeToAttendTheExamPageWithID',getTimeToAttendTheExamPageWithID);
@@ -426,14 +430,15 @@ const  ExamPageForStudent = ({location,questionIndex ,setLengthQuestions , getTi
         if(data.examParents[0].examParent_start_date === data.examParents[0].examParent_stop_date){
             // console.log('methossssssss2');
             //////////////////////////////شروع و پایان امتحان در یک روز
-            var newEndTime = fixNumbers(moment2(data.examParents[0].examParent_end)
-            .tz('Asia/Tehran').format('HH:mm:00'));
+            // var newEndTime = fixNumbers(moment2(data.examParents[0].examParent_end)
+            // .tz('Asia/Tehran').format('HH:mm:00'));
+            var newEndTime = data.examParents[0].examParent_end
             // console.log('newEndTime',newEndTime);
             var filterEndTime = newEndTime.split(":").join("");
             var temp = fixNumbers(checkRef.current);
             var filterGetTime = temp.split(":").join("");
-            // console.log('filterGetTime',filterGetTime);
-            // console.log('filterEndTime',filterEndTime);
+            console.log('filterGetTime',filterGetTime);
+            console.log('filterEndTime',filterEndTime);
             if (filterGetTime > filterEndTime) {
                 console.log('مخلثققق');
                 if (data.examParents[0].examParent_method == "0") { //not
@@ -603,6 +608,10 @@ const  ExamPageForStudent = ({location,questionIndex ,setLengthQuestions , getTi
         // console.log('second', second);
         setLoginTime(format(second));
     };
+
+    // const tickTime = () =>{
+    //     setLoginTime()
+    // }
     //////////////////////////////////////////////////////
     const MergeQuestions = async(examP) => {
         // setExamParentIdForResponse(location && location.state.examPId ? location.state.examPId : '');
@@ -634,9 +643,9 @@ const  ExamPageForStudent = ({location,questionIndex ,setLengthQuestions , getTi
                  var examDataInfo = data.responseInfoListByPerson[0];
                  console.log('datadata',data.responseInfoListByPerson[0]);
                  /////////////////date
-                 var dateSplited = getDate.split(':').join('');
+                 var dateSplited = getDate.split('/').join('');
                  var stopDateExam = examData.examParent_stop_date;
-                 var stopDateSplitedExam = stopDateExam.split(':').join('');
+                 var stopDateSplitedExam = stopDateExam.split('/').join('');
                  /////////////////time
                  var nowTime = time.split(':').join('');
                  var newEnd = examData.examParent_end.split(':').join('');
@@ -654,25 +663,12 @@ const  ExamPageForStudent = ({location,questionIndex ,setLengthQuestions , getTi
                      // clearRepsonseStudent(getExamParentIdResponse);
                      alert('زمان امتحان تمام شده است!!!');
                  }else{
-                     var convertInfo =  spliterTime(examDataInfo.startTime);
-                    //  var convertEnd =  spliterTime(checkRef.current);
-                     var convertEnd =  spliterTime(realeTime.toLocaleTimeString([], {
-                        timeZone: "Asia/Tehran",
-                        hour: '2-digit',
-                        minute: '2-digit',
-                        second: '2-digit',
-                        hour12: false,
-                        }),);
-                     
-                     console.log('convertInfo', convertInfo);
-                     console.log('convertEnd', convertEnd);
-                     var calcTime = convertEnd - convertInfo;
-                     var convertDuraionToSecond = spliterTime(examDuration);
-                     console.log('convertDuraionToSecond',convertDuraionToSecond);
-                     console.log('calcTimeeeeeeeeeeeeeeee2',typeof calcTime);
-                     console.log('calcTimeeeeeeeeeeeeeeee',calcTime);
-                     if(convertDuraionToSecond <= calcTime ){
-                         runningTimeOfTimeForSolveQuestions({id:setRefExamParentID.current,val:true});
+                     console.log('compare date');
+                     var statrtDateExam = examDataInfo.startDate ? examDataInfo.startDate.split('/').join('') : '0';
+                     console.log('compare date2',statrtDateExam);
+                     if(dateSplited > statrtDateExam){
+                        console.log('compare yes',statrtDateExam , dateSplited);
+                        runningTimeOfTimeForSolveQuestions({id:setRefExamParentID.current,val:true});
                         //  ClearTimeToAttendTheExamPage(getExamParentIdResponse);
                          clearRepsonseStudent(getExamParentIdResponse);
                          clearInterval(timerClear.current);
@@ -681,151 +677,110 @@ const  ExamPageForStudent = ({location,questionIndex ,setLengthQuestions , getTi
                          clearTimeout(tickClear.current);
                          // ClearTimeToAttendTheExamPage();
                          // clearRepsonseStudent(getExamParentIdResponse);
-                         alert('زمان امتحان تمام شده است!!!');
+                         alert('فاصله زمانی از اولین ورود به صفحه امتحان زیاد بوده است اجازه امتحان ندارید');
                      }else{
-                        console.log('calcTime', calcTime);
-                         second = calcTime;
-                         /////////////////////////////////////
-                        //  var gTime = getTimeToAttendTheExamPageWithID;
-                        //  console.log('gTime',gTime);
-                        //  var convertArray;
-                        //  var hour;
-                        //  var min ;
-                        //  var sec;
-                        //  if(gTime){
-                        //     convertArray = gTime.split(':');
-                        //     hour = convertArray && convertArray.length > 0 &&  convertArray[0] ? convertArray[0] : 0;
-                        //     min = convertArray && convertArray.length > 0 &&  convertArray[1] ? convertArray[1] : 0;
-                        //     sec = convertArray && convertArray.length > 0 &&  convertArray[2] ? convertArray[2] : 0;
-                        //  }else{
-                        //     hour = 0;
-                        //     min = 0;
-                        //     sec = 0;
-                        //  }
-                        
+                        var convertInfo =  spliterTime(examDataInfo.startTime);
+                        //  var convertEnd =  spliterTime(checkRef.current);
+                         var convertEnd =  spliterTime(realeTime.toLocaleTimeString([], {
+                            timeZone: "Asia/Tehran",
+                            hour: '2-digit',
+                            minute: '2-digit',
+                            second: '2-digit',
+                            hour12: false,
+                            }),);
                          
-                        //  var timeL = (parseInt(hour) * 3600) + (parseInt(min) * 60) + parseInt(sec) ;
-                        //  second = timeL;
-                         setLoginTime(format(calcTime));
-                         tickClear.current = setTimeout(function run() {
-                             tick();
-                             tickClear.current = setTimeout(run, 1000);
-                           }, 1000);
-                           /////////////////////////////////////
-                        
-                         // for (let index = 0; index < allQuestons.length; index++) {
-                         //    var counterQuestionsParent = allQuestons[index].questionParent;
-                         //    var courseName = allQuestons[index] && allQuestons[index].groups && allQuestons[index].groups.length > 0 ? allQuestons[index].groups[0].course : '';
-                         //    var teacherName = allQuestons[index] && allQuestons[index].groups && allQuestons[index].groups.length > 0 && allQuestons[index].groups[0].people && allQuestons[index].groups[0].people.length > 0 ?  allQuestons[index].groups[0].people[0].name + ' ' + allQuestons[index].groups[0].people[0].surname : '';
-                         //    if(counterQuestionsParent && counterQuestionsParent.length > 0){
-                         //       for (let j = 0; j < counterQuestionsParent.length; j++) {
-                         //         //   console.log('allQuestons[index].questionParent[j]', allQuestons[index].questionParent[j] );
-                         //           if(allQuestons[index].questionParent[j].questionChild && allQuestons[index].questionParent[j].questionChild.length > 0){
-                         //               if(allQuestons[index].questionParent[j].questionChild[0].question_type == '6'){
-                                         
-                         //                 var mySeqRandomArray = await SeqRandomArray(allQuestons[index].questionParent[j].questionChild[0].question_seqItems)
-                         //                 console.log('allQuestons[index].questionParent[j].questionChild[0]666666666666666', {
-                         //                     ...allQuestons[index].questionParent[j].questionChild[0] ,
-                         //                     question_seqItems: mySeqRandomArray,
-                         //                     courseName:courseName,
-                         //                    teacherName:teacherName });
-                         //                 mergeQ.push({
-                         //                     ...allQuestons[index].questionParent[j].questionChild[0] ,
-                         //                     question_seqItems: mySeqRandomArray,
-                         //                     courseName:courseName,
-                         //                    teacherName:teacherName });
-                         //               }else if(allQuestons[index].questionParent[j].questionChild[0].question_type == '5')
-                         //               {
-                         //                 var myRandomArray = await RandomArray(allQuestons[index].questionParent[j].questionChild[0].question_compItems);
-                         //                 console.log('allQuestons[index].questionParent[j].questionChild[0]55555555555555555555', {...allQuestons[index].questionParent[j].questionChild[0] ,
-                         //                     question_compItems: myRandomArray,
-                         //                     courseName:courseName,
-                         //                    teacherName:teacherName });
-                         //                 mergeQ.push({...allQuestons[index].questionParent[j].questionChild[0] ,
-                         //                     question_compItems: myRandomArray,
-                         //                     courseName:courseName,
-                         //                    teacherName:teacherName });
-                         //               }else{
-                         //                 console.log('allQuestons[index].questionParent[j].questionChild[0]',allQuestons[index].questionParent[j].questionChild[0].question_type);
-                         //                 mergeQ.push({...allQuestons[index].questionParent[j].questionChild[0] ,
-                         //                     courseName:courseName,
-                         //                    teacherName:teacherName });
-                         //               }
-                         //             // console.log('allQuestons[index].questionParent[j].questionChild[0]',allQuestons[index].questionParent[j].questionChild[0]);
-                         //             // mergeQ.push({...allQuestons[index].questionParent[j].questionChild[0] ,
-                         //             //      courseName:courseName,
-                         //             //     teacherName:teacherName });
-                         //             // mergeQ.push(allQuestons[index].questionParent[j].questionChild[0]);
-                         //           }
-                         //       }
-                         //         // console.log('allQuestons[index].questionParent', allQuestons[index].questionParent );
-                         //         // mergeQ.push(allQuestons[index].questionParent[0])
-                         //     }
-                         // }
-                         // console.log('mergeQ',mergeQ);
-                         ///////////////////////////////////////////////
-                         for await (let myallQuestion of allQuestons) {
-                             var examChildLink = myallQuestion.examChild_pdf;
-                             var counterQuestionsParent = myallQuestion;
-                             var courseName = myallQuestion && myallQuestion.groups && myallQuestion.groups.length > 0 ? myallQuestion.groups[0].course : '';
-                             var teacherName = myallQuestion && myallQuestion.groups && myallQuestion.groups.length > 0 && myallQuestion.groups[0].people && myallQuestion.groups[0].people.length > 0 ?  myallQuestion.groups[0].people[0].name + ' ' + myallQuestion.groups[0].people[0].surname : '';
-                             var questionParentForExamChild = counterQuestionsParent.questionParent;
-                             if( questionParentForExamChild && questionParentForExamChild.length > 0){
-                                for (let j = 0; j < questionParentForExamChild.length; j++) {
-                                    if(questionParentForExamChild[j].questionChild && questionParentForExamChild[j].questionChild.length > 0){
-                                        if(questionParentForExamChild[j].questionChild[0].question_type == '6'){
-                                          var mySeqRandomArray = SeqRandomArray(questionParentForExamChild[j].questionChild[0].question_seqItems)
-                                          mergeQ.push({
-                                              ...questionParentForExamChild[j].questionChild[0] ,
-                                              examParentId:setRefExamParentID.current,
-                                              question_seqItems: mySeqRandomArray,
-                                              courseName:courseName,
-                                             teacherName:teacherName,
-                                             examChildLink:examChildLink,
-                                             examEndDate :examEndDate,
-                                             examEndTime :examEndTime,
-                                         });
-                                        }else if(questionParentForExamChild[j].questionChild[0].question_type == '5')
-                                        {
-                                          var myRandomArray = RandomArray(questionParentForExamChild[j].questionChild[0].question_compItems);
-                                          mergeQ.push({...questionParentForExamChild[j].questionChild[0] ,
-                                            examParentId:setRefExamParentID.current,  
-                                            question_compItems: myRandomArray,
-                                              courseName:courseName,
-                                             teacherName:teacherName,
-                                             examChildLink:examChildLink,
-                                             examEndDate :examEndDate,
-                                             examEndTime :examEndTime,
-                                          });
-                                        }else{
-                                          mergeQ.push({...questionParentForExamChild[j].questionChild[0] ,
-                                            examParentId:setRefExamParentID.current,  
-                                            courseName:courseName,
-                                             teacherName:teacherName,
-                                             examChildLink:examChildLink,
-                                             examEndDate :examEndDate,
-                                             examEndTime :examEndTime,
-                                          });
+                         console.log('convertInfo', convertInfo);
+                         console.log('convertEnd', convertEnd);
+                         var calcTime = convertEnd - convertInfo;
+                         var convertDuraionToSecond = spliterTime(examDuration);
+                         console.log('convertDuraionToSecond',convertDuraionToSecond);
+                         console.log('calcTimeeeeeeeeeeeeeeee2',typeof calcTime);
+                         console.log('calcTimeeeeeeeeeeeeeeee',calcTime);
+                         if(convertDuraionToSecond <= calcTime ){
+                             runningTimeOfTimeForSolveQuestions({id:setRefExamParentID.current,val:true});
+                            //  ClearTimeToAttendTheExamPage(getExamParentIdResponse);
+                             clearRepsonseStudent(getExamParentIdResponse);
+                             clearInterval(timerClear.current);
+                             clearInterval(CheckTheEndOfTheExam);
+                             clearTimeout(setTimeToPageTimeOut);
+                             clearTimeout(tickClear.current);
+                             // ClearTimeToAttendTheExamPage();
+                             // clearRepsonseStudent(getExamParentIdResponse);
+                             alert('زمان امتحان تمام شده است!!!');
+                         }else{
+                            console.log('calcTime', calcTime);
+                             second = calcTime;
+                             /////////////////////////////////////
+                             setLoginTime(format(calcTime));
+                             tickClear.current = setTimeout(function run() {
+                                 tick();
+                                 tickClear.current = setTimeout(run, 1000);
+                               }, 1000);
+                             ///////////////////////////////////////////////
+                             for await (let myallQuestion of allQuestons) {
+                                 var examChildLink = myallQuestion.examChild_pdf;
+                                 var counterQuestionsParent = myallQuestion;
+                                 var courseName = myallQuestion && myallQuestion.groups && myallQuestion.groups.length > 0 ? myallQuestion.groups[0].course : '';
+                                 var teacherName = myallQuestion && myallQuestion.groups && myallQuestion.groups.length > 0 && myallQuestion.groups[0].people && myallQuestion.groups[0].people.length > 0 ?  myallQuestion.groups[0].people[0].name + ' ' + myallQuestion.groups[0].people[0].surname : '';
+                                 var questionParentForExamChild = counterQuestionsParent.questionParent;
+                                 if( questionParentForExamChild && questionParentForExamChild.length > 0){
+                                    for (let j = 0; j < questionParentForExamChild.length; j++) {
+                                        if(questionParentForExamChild[j].questionChild && questionParentForExamChild[j].questionChild.length > 0){
+                                            if(questionParentForExamChild[j].questionChild[0].question_type == '6'){
+                                              var mySeqRandomArray = SeqRandomArray(questionParentForExamChild[j].questionChild[0].question_seqItems)
+                                              mergeQ.push({
+                                                  ...questionParentForExamChild[j].questionChild[0] ,
+                                                  examParentId:setRefExamParentID.current,
+                                                  question_seqItems: mySeqRandomArray,
+                                                  courseName:courseName,
+                                                 teacherName:teacherName,
+                                                 examChildLink:examChildLink,
+                                                 examEndDate :examEndDate,
+                                                 examEndTime :examEndTime,
+                                             });
+                                            }else if(questionParentForExamChild[j].questionChild[0].question_type == '5')
+                                            {
+                                              var myRandomArray = RandomArray(questionParentForExamChild[j].questionChild[0].question_compItems);
+                                              mergeQ.push({...questionParentForExamChild[j].questionChild[0] ,
+                                                examParentId:setRefExamParentID.current,  
+                                                question_compItems: myRandomArray,
+                                                  courseName:courseName,
+                                                 teacherName:teacherName,
+                                                 examChildLink:examChildLink,
+                                                 examEndDate :examEndDate,
+                                                 examEndTime :examEndTime,
+                                              });
+                                            }else{
+                                              mergeQ.push({...questionParentForExamChild[j].questionChild[0] ,
+                                                examParentId:setRefExamParentID.current,  
+                                                courseName:courseName,
+                                                 teacherName:teacherName,
+                                                 examChildLink:examChildLink,
+                                                 examEndDate :examEndDate,
+                                                 examEndTime :examEndTime,
+                                              });
+                                            }
+                                          // console.log('myallQuestion[j].questionChild[0]',myallQuestion[j].questionChild[0]);
+                                          // mergeQ.push({...myallQuestion[j].questionChild[0] ,
+                                          //      courseName:courseName,
+                                          //     teacherName:teacherName });
+                                          // mergeQ.push(myallQuestion[j].questionChild[0]);
                                         }
-                                      // console.log('myallQuestion[j].questionChild[0]',myallQuestion[j].questionChild[0]);
-                                      // mergeQ.push({...myallQuestion[j].questionChild[0] ,
-                                      //      courseName:courseName,
-                                      //     teacherName:teacherName });
-                                      // mergeQ.push(myallQuestion[j].questionChild[0]);
                                     }
-                                }
-                                  // console.log('myallQuestion', myallQuestion );
-                                  // mergeQ.push(myallQuestion[0])
+                                      // console.log('myallQuestion', myallQuestion );
+                                      // mergeQ.push(myallQuestion[0])
+                                  }
                               }
-                          }
-                         setLengthQuestions(mergeQ.length);
-                        //  CheckTheEndOfTheExam = setInterval(() => {
-                        //      // console.log('dddddddddddddddddddd');
-                        //      handleSendWxamDataAfterEndTime();
-                        //  }, 60000);
-                         // console.log('mergeQ',mergeQ);
-                         setItems(mergeQ);
+                             setLengthQuestions(mergeQ.length);
+                            //  CheckTheEndOfTheExam = setInterval(() => {
+                            //      // console.log('dddddddddddddddddddd');
+                            //      handleSendWxamDataAfterEndTime();
+                            //  }, 60000);
+                             // console.log('mergeQ',mergeQ);
+                             setItems(mergeQ);
+                         }
                      }
+
                  }
             }else{
                 ///////////////////////////////////////
@@ -921,8 +876,7 @@ const  ExamPageForStudent = ({location,questionIndex ,setLengthQuestions , getTi
                 // return mergeQ;
             }
         }else{
-            console.log('4444444444444');
-             for await (let myallQuestion of allQuestons) {
+            for await (let myallQuestion of allQuestons) {
                 var examChildLink = myallQuestion.examChild_pdf;
                 var counterQuestionsParent = myallQuestion;
                 var courseName = myallQuestion && myallQuestion.groups && myallQuestion.groups.length > 0 ? myallQuestion.groups[0].course : '';
@@ -965,24 +919,272 @@ const  ExamPageForStudent = ({location,questionIndex ,setLengthQuestions , getTi
                                 examEndTime :examEndTime,
                             });
                         }
-                        // console.log('myallQuestion[j].questionChild[0]',myallQuestion[j].questionChild[0]);
-                        // mergeQ.push({...myallQuestion[j].questionChild[0] ,
-                        //      courseName:courseName,
-                        //     teacherName:teacherName });
-                        // mergeQ.push(myallQuestion[j].questionChild[0]);
+                       
                     }
                 }
-                    // console.log('myallQuestion', myallQuestion );
-                    // mergeQ.push(myallQuestion[0])
                 }
             }
+
             setLengthQuestions(mergeQ.length);
-            // CheckTheEndOfTheExam = setInterval(() => {
-            //     // console.log('dddddddddddddddddddd');
-            //     handleSendWxamDataAfterEndTime();
-            // }, 60000);
-            // console.log('mergeQ',mergeQ);
+            second = 0
             setItems(mergeQ);
+            // tickClear.current = setTimeout(function run() {
+            //     tick();
+            //     tickClear.current = setTimeout(run, 1000);
+            // }, 1000);
+            /////////////////////////////////////////////////////////////////////////////////////
+            // if(data && data.responseInfoListByPerson.length > 0 && data.responseInfoListByPerson[0].startTime ){ 
+            //     var nowTime =  realeTime.toLocaleTimeString([], {
+            //         timeZone: "Asia/Tehran",
+            //         hour: '2-digit',
+            //         minute: '2-digit',
+            //         second: '2-digit',
+            //         hour12: false,
+            //     });
+
+            //     var spliterNowTime = nowTime.split(':').join('');
+            //     var examData = data.examParents[0];
+            //     var examEnd = examData.examParent_end;
+            //     var spliterexamEnd = examEnd.split(':').join('');
+            //     console.log('spliterNowTime',spliterNowTime);
+            //     console.log('spliterexamEnd',spliterexamEnd);
+            //     if(spliterNowTime > spliterexamEnd ){
+            //         runningTimeOfTimeForSolveQuestions({id:setRefExamParentID.current,val:true});
+            //         //  ClearTimeToAttendTheExamPage(getExamParentIdResponse);
+            //         clearRepsonseStudent(getExamParentIdResponse);
+            //         clearInterval(timerClear.current);
+            //         clearInterval(CheckTheEndOfTheExam);
+            //         clearTimeout(setTimeToPageTimeOut);
+            //         clearTimeout(tickClear.current);
+            //         // ClearTimeToAttendTheExamPage();
+            //         // clearRepsonseStudent(getExamParentIdResponse);
+            //         alert('زمان امتحان تمام شده است!!!');
+            //     }else{
+            //         console.log('3333333333333');
+            //         // var gTime = getTimeToAttendTheExamPageWithID;
+            //         var gTime = getRefExamTime.current;
+            //         console.log('gTime',gTime);
+            //         var convertArray;
+            //         var hour;
+            //         var min ;
+            //         var sec;
+            //         if(gTime){
+            //            convertArray = gTime.split(':');
+            //            hour = convertArray && convertArray.length > 0 &&  convertArray[0] ? convertArray[0] : 0;
+            //            min = convertArray && convertArray.length > 0 &&  convertArray[1] ? convertArray[1] : 0;
+            //            sec = convertArray && convertArray.length > 0 &&  convertArray[2] ? convertArray[2] : 0;
+            //         }else{
+            //            hour = '0';
+            //            min = '0';
+            //            sec = '0';
+            //         }
+                   
+            //         console.log('hour', hour);
+            //         var timeL = (parseInt(hour) * 3600) + (parseInt(min) * 60) + parseInt(sec) ;
+            //         second = timeL;
+            //         console.log('timeL', timeL);
+            //         setLoginTime(format(timeL));
+            //         for await (let myallQuestion of allQuestons) {
+            //             var examChildLink = myallQuestion.examChild_pdf;
+            //             var counterQuestionsParent = myallQuestion;
+            //             var courseName = myallQuestion && myallQuestion.groups && myallQuestion.groups.length > 0 ? myallQuestion.groups[0].course : '';
+            //             var teacherName = myallQuestion && myallQuestion.groups && myallQuestion.groups.length > 0 && myallQuestion.groups[0].people && myallQuestion.groups[0].people.length > 0 ?  myallQuestion.groups[0].people[0].name + ' ' + myallQuestion.groups[0].people[0].surname : '';
+            //             var questionParentForExamChild = counterQuestionsParent.questionParent;
+            //             if( questionParentForExamChild && questionParentForExamChild.length > 0){
+            //             for (let j = 0; j < questionParentForExamChild.length; j++) {
+            //                 if(questionParentForExamChild[j].questionChild && questionParentForExamChild[j].questionChild.length > 0){
+            //                     if(questionParentForExamChild[j].questionChild[0].question_type == '6'){
+            //                         var mySeqRandomArray = SeqRandomArray(questionParentForExamChild[j].questionChild[0].question_seqItems)
+            //                         mergeQ.push({
+            //                             ...questionParentForExamChild[j].questionChild[0] ,
+            //                             examParentId:setRefExamParentID.current,
+            //                             question_seqItems: mySeqRandomArray,
+            //                             courseName:courseName,
+            //                             teacherName:teacherName,
+            //                             examChildLink:examChildLink,
+            //                             examEndDate :examEndDate,
+            //                             examEndTime :examEndTime,
+            //                         });
+            //                     }else if(questionParentForExamChild[j].questionChild[0].question_type == '5')
+            //                     {
+            //                         var myRandomArray = RandomArray(questionParentForExamChild[j].questionChild[0].question_compItems);
+            //                         mergeQ.push({...questionParentForExamChild[j].questionChild[0] ,
+            //                         examParentId:setRefExamParentID.current,  
+            //                         question_compItems: myRandomArray,
+            //                             courseName:courseName,
+            //                             teacherName:teacherName,
+            //                             examChildLink:examChildLink,
+            //                             examEndDate :examEndDate,
+            //                             examEndTime :examEndTime,
+            //                         });
+            //                     }else{
+            //                         mergeQ.push({...questionParentForExamChild[j].questionChild[0] ,
+            //                         examParentId:setRefExamParentID.current,  
+            //                         courseName:courseName,
+            //                             teacherName:teacherName,
+            //                             examChildLink:examChildLink,
+            //                             examEndDate :examEndDate,
+            //                             examEndTime :examEndTime,
+            //                         });
+            //                     }
+            //                     // console.log('myallQuestion[j].questionChild[0]',myallQuestion[j].questionChild[0]);
+            //                     // mergeQ.push({...myallQuestion[j].questionChild[0] ,
+            //                     //      courseName:courseName,
+            //                     //     teacherName:teacherName });
+            //                     // mergeQ.push(myallQuestion[j].questionChild[0]);
+            //                 }
+            //             }
+            //                 // console.log('myallQuestion', myallQuestion );
+            //                 // mergeQ.push(myallQuestion[0])
+            //             }
+            //         }
+            //         setLengthQuestions(mergeQ.length);
+            //             setItems(mergeQ);
+            //             tickClear.current = setTimeout(function run() {
+            //                 tick();
+            //                 tickClear.current = setTimeout(run, 1000);
+            //               }, 1000);
+            //     }
+
+            // }else{
+               
+            //       ///////////////////////////////////////////////
+            //      for await (let myallQuestion of allQuestons) {
+            //         var examChildLink = myallQuestion.examChild_pdf;
+            //         var counterQuestionsParent = myallQuestion;
+            //         var courseName = myallQuestion && myallQuestion.groups && myallQuestion.groups.length > 0 ? myallQuestion.groups[0].course : '';
+            //         var teacherName = myallQuestion && myallQuestion.groups && myallQuestion.groups.length > 0 && myallQuestion.groups[0].people && myallQuestion.groups[0].people.length > 0 ?  myallQuestion.groups[0].people[0].name + ' ' + myallQuestion.groups[0].people[0].surname : '';
+            //         var questionParentForExamChild = counterQuestionsParent.questionParent;
+            //         if( questionParentForExamChild && questionParentForExamChild.length > 0){
+            //         for (let j = 0; j < questionParentForExamChild.length; j++) {
+            //             if(questionParentForExamChild[j].questionChild && questionParentForExamChild[j].questionChild.length > 0){
+            //                 if(questionParentForExamChild[j].questionChild[0].question_type == '6'){
+            //                     var mySeqRandomArray = SeqRandomArray(questionParentForExamChild[j].questionChild[0].question_seqItems)
+            //                     mergeQ.push({
+            //                         ...questionParentForExamChild[j].questionChild[0] ,
+            //                         examParentId:setRefExamParentID.current,
+            //                         question_seqItems: mySeqRandomArray,
+            //                         courseName:courseName,
+            //                         teacherName:teacherName,
+            //                         examChildLink:examChildLink,
+            //                         examEndDate :examEndDate,
+            //                         examEndTime :examEndTime,
+            //                     });
+            //                 }else if(questionParentForExamChild[j].questionChild[0].question_type == '5')
+            //                 {
+            //                     var myRandomArray = RandomArray(questionParentForExamChild[j].questionChild[0].question_compItems);
+            //                     mergeQ.push({...questionParentForExamChild[j].questionChild[0] ,
+            //                         examParentId:setRefExamParentID.current,
+            //                         question_compItems: myRandomArray,
+            //                         courseName:courseName,
+            //                         teacherName:teacherName,
+            //                         examChildLink:examChildLink,
+            //                         examEndDate :examEndDate,
+            //                         examEndTime :examEndTime,
+            //                     });
+            //                 }else{
+            //                     mergeQ.push({...questionParentForExamChild[j].questionChild[0] ,
+            //                         examParentId:setRefExamParentID.current,
+            //                         courseName:courseName,
+            //                         teacherName:teacherName,
+            //                         examChildLink:examChildLink,
+            //                         examEndDate :examEndDate,
+            //                         examEndTime :examEndTime,
+            //                     });
+            //                 }
+            //                 // console.log('myallQuestion[j].questionChild[0]',myallQuestion[j].questionChild[0]);
+            //                 // mergeQ.push({...myallQuestion[j].questionChild[0] ,
+            //                 //      courseName:courseName,
+            //                 //     teacherName:teacherName });
+            //                 // mergeQ.push(myallQuestion[j].questionChild[0]);
+            //             }
+            //         }
+            //             // console.log('myallQuestion', myallQuestion );
+            //             // mergeQ.push(myallQuestion[0])
+            //         }
+            //     }
+
+            //     setLengthQuestions(mergeQ.length);
+            // // CheckTheEndOfTheExam = setInterval(() => {
+            // //     // console.log('dddddddddddddddddddd');
+            // //     handleSendWxamDataAfterEndTime();
+            // // }, 60000);
+            // // console.log('mergeQ',mergeQ);
+            // second = 0
+            // setItems(mergeQ);
+            // tickClear.current = setTimeout(function run() {
+            //     tick();
+            //     tickClear.current = setTimeout(run, 1000);
+            //   }, 1000);
+            // }
+            ///////////////////////////////////////////////////////////////////////////////////
+            // console.log('4444444444444');
+            //  for await (let myallQuestion of allQuestons) {
+            //     var examChildLink = myallQuestion.examChild_pdf;
+            //     var counterQuestionsParent = myallQuestion;
+            //     var courseName = myallQuestion && myallQuestion.groups && myallQuestion.groups.length > 0 ? myallQuestion.groups[0].course : '';
+            //     var teacherName = myallQuestion && myallQuestion.groups && myallQuestion.groups.length > 0 && myallQuestion.groups[0].people && myallQuestion.groups[0].people.length > 0 ?  myallQuestion.groups[0].people[0].name + ' ' + myallQuestion.groups[0].people[0].surname : '';
+            //     var questionParentForExamChild = counterQuestionsParent.questionParent;
+            //     if( questionParentForExamChild && questionParentForExamChild.length > 0){
+            //     for (let j = 0; j < questionParentForExamChild.length; j++) {
+            //         if(questionParentForExamChild[j].questionChild && questionParentForExamChild[j].questionChild.length > 0){
+            //             if(questionParentForExamChild[j].questionChild[0].question_type == '6'){
+            //                 var mySeqRandomArray = SeqRandomArray(questionParentForExamChild[j].questionChild[0].question_seqItems)
+            //                 mergeQ.push({
+            //                     ...questionParentForExamChild[j].questionChild[0] ,
+            //                     examParentId:setRefExamParentID.current,
+            //                     question_seqItems: mySeqRandomArray,
+            //                     courseName:courseName,
+            //                     teacherName:teacherName,
+            //                     examChildLink:examChildLink,
+            //                     examEndDate :examEndDate,
+            //                     examEndTime :examEndTime,
+            //                 });
+            //             }else if(questionParentForExamChild[j].questionChild[0].question_type == '5')
+            //             {
+            //                 var myRandomArray = RandomArray(questionParentForExamChild[j].questionChild[0].question_compItems);
+            //                 mergeQ.push({...questionParentForExamChild[j].questionChild[0] ,
+            //                     examParentId:setRefExamParentID.current,
+            //                     question_compItems: myRandomArray,
+            //                     courseName:courseName,
+            //                     teacherName:teacherName,
+            //                     examChildLink:examChildLink,
+            //                     examEndDate :examEndDate,
+            //                     examEndTime :examEndTime,
+            //                 });
+            //             }else{
+            //                 mergeQ.push({...questionParentForExamChild[j].questionChild[0] ,
+            //                     examParentId:setRefExamParentID.current,
+            //                     courseName:courseName,
+            //                     teacherName:teacherName,
+            //                     examChildLink:examChildLink,
+            //                     examEndDate :examEndDate,
+            //                     examEndTime :examEndTime,
+            //                 });
+            //             }
+            //             // console.log('myallQuestion[j].questionChild[0]',myallQuestion[j].questionChild[0]);
+            //             // mergeQ.push({...myallQuestion[j].questionChild[0] ,
+            //             //      courseName:courseName,
+            //             //     teacherName:teacherName });
+            //             // mergeQ.push(myallQuestion[j].questionChild[0]);
+            //         }
+            //     }
+            //         // console.log('myallQuestion', myallQuestion );
+            //         // mergeQ.push(myallQuestion[0])
+            //     }
+            // }
+            // setLengthQuestions(mergeQ.length);
+            // // CheckTheEndOfTheExam = setInterval(() => {
+            // //     // console.log('dddddddddddddddddddd');
+            // //     handleSendWxamDataAfterEndTime();
+            // // }, 60000);
+            // // console.log('mergeQ',mergeQ);
+            // second = 0
+            // setItems(mergeQ);
+            // tickClear.current = setTimeout(function run() {
+            //     tick();
+            //     tickClear.current = setTimeout(run, 1000);
+            //   }, 1000);
         }
        
 
@@ -1252,9 +1454,14 @@ const  ExamPageForStudent = ({location,questionIndex ,setLengthQuestions , getTi
                             <CloseIcon style={{ fontSize:'3rem'}}/>
                         </ExitButton>
                     </Tooltip>
-                    <ShowLoginTimeContainer>
-                        <ShowLoginTime>{loginTime}</ShowLoginTime>
-                    </ShowLoginTimeContainer>
+                    {/* {
+                        items.length > 0 && items[questionIndex].examChildLink ? 
+                        <ShowLoginTimeContainer>
+                            <ShowLoginTime>{data.examParents[0].examParent_start_date != data.examParents[0].examParent_stop_date ? loginTime : checkRef.current }</ShowLoginTime>
+                        </ShowLoginTimeContainer>
+                        : ''
+                    } */}
+                   
                 </ExitButtonContainer>
                 <ShowQuestionsCourseNameContainer>
                     <ShowQuestionsCourseName>نام درس : {items.length > 0 ? items[questionIndex].courseName : ''}</ShowQuestionsCourseName>

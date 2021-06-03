@@ -30,7 +30,7 @@ const ResponseStudentReducer = (state = INITIAL_STATE , action) =>{
         case ResponsesStudentTypes.CLEAR_RESPONSE_STUDENT_TIMEOUT:
             return {
                 ...state,
-                responseStudent:clearQuestionsResponseForStudentWhenTimeOut(action.payload , state.responseStudent),
+                responseStudent:clearQuestionsResponseForStudentWhenTimeOut(state.responseStudent),
             }
 
         default:

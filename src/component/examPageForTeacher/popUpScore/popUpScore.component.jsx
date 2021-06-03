@@ -1,21 +1,23 @@
 import React, { useState, useEffect, useContext } from 'react';
-import {PopUpScoreContainer ,PopUpScoreContent,PopUpScoreHeader,PopUpScoreHeaderGroup,PopUpScoreHeaderTime,PopUpScoreHeaderDelay,
-  PopUpScoreBtnClose,PopUpScorePageQuesion} from './popUpScore.styles.jsx';
+import {PopUpScoreContainer ,PopUpScoreContent,PopUpScoreHeader,
+  PopUpScoreHeaderGroup,PopUpScoreHeaderTime,PopUpScoreHeaderDelay,PopUpScoreHeaderDelayContainer,
+  PopUpScoreBtnClose,PopUpScorePageQuesion,PopUpScoreHeaderFile} from './popUpScore.styles.jsx';
 import QuestionResponse from './QuestionResponse';
 import moment from 'moment';
 // import ShowImage from '../imageShow/showImage';
 import { useSelector } from 'react-redux';
 import ExamPageForTeacher from '../examPageForTeacher.component';
+//////////////////query
+import {GET_EXAMQUESTIONS_FOR_STUDENT_AND_TEACHER} from '../../../graphql/resolver';
+import {useQuery} from 'react-apollo';
+/////////////////
 // import AppContext from 'app/AppContext';
-const graphql_server_uri = '/graphql';
-
-
 const PopUpScore = props => {
   // const appContext = useContext(AppContext);
   // const user = useSelector(({ auth }) => auth.user);
   const [questionResponse, setQuestionResponse] = useState([]);
   const [questionResponseStudent, setQuestionResponseStudent] = useState([]);
-  const [delay, setDelay] = useState('0');
+  // const [delay, setDelay] = useState('0');
   /////////////////////////////////////////
 
   const [imageSrc, setImageSrc] = useState('');
@@ -28,184 +30,170 @@ const PopUpScore = props => {
   }
   /////////////////////////////////////
 
-  // useEffect(() => {
-  //   /////////////////////////////
-  //   if (user.role.indexOf('student') !== -1) {
-  //     fetch(graphql_server_uri, {
-  //       method: 'POST',
-  //       headers: { 'Content-Type': 'application/json' },
-  //       body: JSON.stringify({
-  //         query: `
-  //                   mutation{
-  //                       getQuestions(
-  //                           axamQuestion_input: {
-  //                               axamQuestions_id: "${props.axamIdProps}"
-  //                         }
-  //                       ){
-  //                           axamQuestions_id
-  //                           question
-  //                           question_link
-  //                           question_optionOne
-  //                           question_optionTwo
-  //                           question_optionThree
-  //                           question_optionFour
-  //                           question_correctOption
-  //                           question_timeTosolveProblem
-  //                           question_score
-  //                           question_explane
-  //                           exam_link
-  //                       }
-  //                   }
-  //               `,
-  //       }),
-  //     })
-  //       .then(res => res.json())
-  //       .then(res => {
-  //         var Questions = res.data.getQuestions;
-  //         // setQuestionResponse(res.data.getQuestions);
-  //         fetch(graphql_server_uri, {
-  //           method: 'POST',
-  //           headers: { 'Content-Type': 'application/json' },
-  //           body: JSON.stringify({
-  //             query: `
-  //                       mutation{
-  //                         getAxamResponse(
-  //                           axamResponse_input: {
-  //                             exam_id: "${props.axamIdProps}"
-  //                             student_id: "${user.user.person_id}"
-  //                             examResponse_className: "${user.user.class_name}"
-  //                             examResponse_level: "${user.user.level}"
-  //                             }
-  //                           ){
-  //                             exam_id
-  //                             student_id
-  //                             exam_QuestionResponse
-  //                             exam_delay
-  //                           }
-  //                       }
-  //                   `,
-  //           }),
-  //         })
-  //           .then(res => res.json())
-  //           .then(res => {
-  //             if (res.data.getAxamResponse) {
-  //               var tempArray = res.data.getAxamResponse.exam_QuestionResponse[0].split(
-  //                 '$',
-  //               );
-  //               setDelay(res.data.getAxamResponse.exam_delay);
-  //               setQuestionResponseStudent(tempArray);
-  //               setQuestionResponse(Questions);
-  //             } else {
-  //               setQuestionResponse(Questions);
-  //             }
-  //           });
-  //       });
-  //   } else if (user.role.indexOf('teacher') !== -1) {
-  //     fetch(graphql_server_uri, {
-  //       method: 'POST',
-  //       headers: { 'Content-Type': 'application/json' },
-  //       body: JSON.stringify({
-  //         query: `
-  //                   mutation{
-  //                       getQuestions(
-  //                           axamQuestion_input: {
-  //                               axamQuestions_id: "${props.axamIdProps}"
-  //                         }
-  //                       ){
-  //                           axamQuestions_id
-  //                           question
-  //                           question_link
-  //                           question_optionOne
-  //                           question_optionTwo
-  //                           question_optionThree
-  //                           question_optionFour
-  //                           question_correctOption
-  //                           question_timeTosolveProblem
-  //                           question_score
-  //                           question_explane
-  //                           exam_link
-  //                       }
-  //                   }
-  //               `,
-  //       }),
-  //     })
-  //       .then(res => res.json())
-  //       .then(res => {
-  //         var Questions = res.data.getQuestions;
-  //         fetch(graphql_server_uri, {
-  //           method: 'POST',
-  //           headers: { 'Content-Type': 'application/json' },
-  //           body: JSON.stringify({
-  //             query: `
-  //                       mutation{
-  //                         getAxamResponse(
-  //                           axamResponse_input: {
-  //                             exam_id: "${props.axamIdProps}"
-  //                             student_id: "${props.popUpScoreStudent.person_id}"
-  //                             examResponse_className: "${props.popUpScoreStudent.class_name}"
-  //                             examResponse_level: "${props.popUpScoreStudent.level}"
-  //                             }
-  //                           ){
-  //                             exam_id
-  //                             student_id
-  //                             exam_QuestionResponse
-  //                             exam_delay
-  //                           }
-  //                       }
-  //                   `,
-  //           }),
-  //         })
-  //           .then(res => res.json())
-  //           .then(res => {
-  //             if (res.data.getAxamResponse) {
-  //               var tempArray = res.data.getAxamResponse.exam_QuestionResponse[0].split(
-  //                 '$',
-  //               );
-  //               setDelay(res.data.getAxamResponse.exam_delay);
-  //               setQuestionResponseStudent(tempArray);
-  //               setQuestionResponse(Questions);
-  //             } else {
-  //               setQuestionResponse(Questions);
-  //             }
-  //           });
-  //       });
-  //   }
-  // }, []);
+  ////////////////////////////////////////////////////////////
+ const { loading, error, data ,refetch  } = useQuery(GET_EXAMQUESTIONS_FOR_STUDENT_AND_TEACHER , {
+        variables: {  
+            userName: "211",
+            password: "211",
+            id: props.examIdProps,
+        },
+        notifyOnNetworkStatusChange: true
+    });
+  ////////////////////////////////////////////////////////////
+  const [Items, setItems] = useState([]);
+  const [delay,setDelay] = useState('');
+  ////////////////////////////////////////////////////////////
+  ////////////////////////////////////
+  useEffect(()=>{
+    console.log('data0',data);
+    if(data){
+      // setItems(data.examChilds[0]);
+      if(data.examChilds && data.examChilds.length > 0 && data.examChilds[0].examParent && data.examChilds[0].examParent.length > 0
+        && data.examChilds[0].examParent[0].responseInfo && data.examChilds[0].examParent[0].responseInfo.length > 0){
+          setDelay(data.examChilds[0].examParent[0].responseInfo[0].delay);
+        }
+      
+        MergeQuestions(data.examChilds[0].questionParent);
+    }
+    
+},[data]);
+useEffect(()=>{
+    console.log('data1',props.examIdProps);
+    
+    
+},[])
+/////////////////////////
+const MergeQuestions = async(examC) => {
+    var mergeQ = [];
+    var allQuestons = examC;
+    for await (let myallQuestion of allQuestons) {//questions Parent
+      var QuestionsParent = myallQuestion;
+        if( QuestionsParent && QuestionsParent.questionChild){
+          var questionChild = QuestionsParent.questionChild;
+          console.log('questionChild',questionChild);
+            for (let j = 0; j < questionChild.length; j++) {
+                if(questionChild[j] && questionChild.length > 0){
+                    mergeQ.push({...questionChild[j]});
+                }
+            }
+        }
+    }
+    console.log('mergeQ',mergeQ);
+    setItems(mergeQ);
+}
+
+    //////////////////////////////////////////////////////
+    // const MergeQuestions = async(examP) => {
+    //     var mergeQ = [];
+    //     var mergeQInfo = {};
+    //     var examChildLink = myallQuestion.examChild_pdf;
+    //     var courseName = myallQuestion && myallQuestion.groups && myallQuestion.groups.length > 0 ? myallQuestion.groups[0].course : '';
+    //     var teacherName = myallQuestion && myallQuestion.groups && myallQuestion.groups.length > 0 && myallQuestion.groups[0].people && myallQuestion.groups[0].people.length > 0 ?  myallQuestion.groups[0].people[0].name + ' ' + myallQuestion.groups[0].people[0].surname : '';
+    //     console.log('teacherName', teacherName);
+    //     mergeQInfo.courseName=courseName;
+    //     mergeQInfo.teacherName=teacherName;
+    //     mergeQInfo.examChildLink=examChildLink;
+    //     mergeQInfo.courseName=courseName;
+    //     var examEndDate = examP.examParent_stop_date;
+    //     var examEndTime = examP.examParent_end;
+    //     var allQuestons = examP.examChild;
+    //     for await (let myallQuestion of allQuestons) {
+    //       var counterQuestionsParent = myallQuestion;
+    //         var questionParentForExamChild = counterQuestionsParent.questionParent;
+    //         if( questionParentForExamChild && questionParentForExamChild.length > 0){
+    //             for (let j = 0; j < questionParentForExamChild.length; j++) {
+    //                 if(questionParentForExamChild[j].questionChild && questionParentForExamChild[j].questionChild.length > 0){
+    //                     mergeQ.push({...questionParentForExamChild[j].questionChild[0] ,
+    //                         // examParentId:setRefExamParentID.current,
+    //                         // courseName:courseName,
+    //                         // teacherName:teacherName,
+    //                         // examChildLink:examChildLink,
+    //                         // examEndDate :examEndDate,
+    //                         // examEndTime :examEndTime,
+    //                     });
+    //                 }
+    //             }
+    //         }
+    //     }
+    //     console.log('mergeQ',mergeQ);
+    //     setItems(mergeQ);
+    // }
 
   return (
     <PopUpScoreContainer>
       <PopUpScoreContent>
         <PopUpScoreHeader>
           <PopUpScoreHeaderGroup>
-            <PopUpScoreHeaderTime>
-              زمان شروع : {moment(props.startTime).format('HH:mm:00')}
-            </PopUpScoreHeaderTime>
-            <PopUpScoreHeaderTime>
-              زمان پایان : {moment(props.endTime).format('HH:mm:00')}
-            </PopUpScoreHeaderTime>
+            {
+              props.popUpScoreStudent.examParent_start_date == props.popUpScoreStudent.examParent_stop_date ? 
+              <>
+              <PopUpScoreHeaderTime>
+                {/* زمان شروع : {moment(props.startTime).format('HH:mm:00')} */}
+                زمان شروع : {props.popUpScoreStudent.examParent_start}
+              </PopUpScoreHeaderTime>
+              <PopUpScoreHeaderTime>
+                {/* زمان پایان : {moment(props.endTime).format('HH:mm:00')} */}
+                زمان پایان : {props.popUpScoreStudent.examParent_end}
+              </PopUpScoreHeaderTime>
+              </>
+              : <>
+              <PopUpScoreHeaderTime>
+                {/* زمان شروع : {moment(props.startTime).format('HH:mm:00')} */}
+                تاریخ شروع : {props.popUpScoreStudent.examParent_start_date}
+              </PopUpScoreHeaderTime>
+              <PopUpScoreHeaderTime>
+                {/* زمان پایان : {moment(props.endTime).format('HH:mm:00')} */}
+                تاریخ پایان : {props.popUpScoreStudent.examParent_stop_date}
+              </PopUpScoreHeaderTime>
+              <PopUpScoreHeaderTime>
+                {/* زمان پایان : {moment(props.endTime).format('HH:mm:00')} */}
+                مدت زمان : {props.popUpScoreStudent.examParent_duration}
+              </PopUpScoreHeaderTime>
+              </>
+            }
+
+        
+          </PopUpScoreHeaderGroup>
+          <PopUpScoreHeaderGroup>
+          {props.popUpScoreStudent.examTopic ?  <PopUpScoreHeaderTime>
+            موضوع : {props.popUpScoreStudent.examTopic}
+            </PopUpScoreHeaderTime> : ''}
+            {data.examChilds && data.examChilds.length > 0 && data.examChilds[0].examChild_courseCoefficient ?  <PopUpScoreHeaderTime>
+            ضریب درس : {data.examChilds[0].examChild_courseCoefficient}
+            </PopUpScoreHeaderTime> : ''}
+            {data.examChilds && data.examChilds.length > 0 && data.examChilds[0].examChild_falseCoefficient ?  <PopUpScoreHeaderTime>
+            ضریب منفی : {data.examChilds[0].examChild_falseCoefficient}
+            </PopUpScoreHeaderTime> : ''}
           </PopUpScoreHeaderGroup>
           <PopUpScoreHeaderGroup>
             <PopUpScoreHeaderTime>
-              نام معلم : {props.teacherName}
+              نام معلم : {props.popUpScoreStudent.teacher_name}
             </PopUpScoreHeaderTime>
             <PopUpScoreHeaderTime>
-              نام درس : {parseInt(props.courseName) ===
-                parseInt(props.courseName, 10)
-                ? props.courseName
-                // appContext.initConfig.newCourseName[props.courseName]
-                : props.courseName}
+              نام درس : {props.popUpScoreStudent.exam_courseName}
             </PopUpScoreHeaderTime>
-           {props.examTopic ?  <PopUpScoreHeaderTime>
-            موضوع : {props.examTopic}
-            </PopUpScoreHeaderTime> : ''}
+          
           </PopUpScoreHeaderGroup>
         </PopUpScoreHeader>
-        <PopUpScoreHeaderDelay>
-          زمان تحویل : {delay}
+        <PopUpScoreHeaderDelayContainer>
+          <PopUpScoreHeaderDelay> زمان تحویل : {delay ? delay : 'تاخیر نداشت' }</PopUpScoreHeaderDelay>
+          {
+            data.examChilds && data.examChilds.length > 0 && data.examChilds[0].examChild_pdf ?
+              <PopUpScoreHeaderFile href={data.examChilds[0].examChild_pdf}>فایل امتحان</PopUpScoreHeaderFile>
+            :
+            ''
+          }
+          
+         
           {/* exam_delay: String, */}
-        </PopUpScoreHeaderDelay>
+        </PopUpScoreHeaderDelayContainer>
         <PopUpScorePageQuesion>
-          <ExamPageForTeacher type={props.type ?  props.type : '1' } />
+          <ExamPageForTeacher 
+          // type = {'1' } 
+          type = {props.type ?  props.type : '1' } 
+          examIdProps = {props.examIdProps ? props.examIdProps : ''}
+          Items={Items.length > 0 ? Items : []} 
+          />
           {/* {questionResponse.length
             ? questionResponse.map((res, index) => {
               return (

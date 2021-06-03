@@ -22,7 +22,7 @@ export const clearRepsonseStudent = (res) => ({
     payload:res,
 });
 
-export const clearResponseStudentTimeOut = (res) => ({
+export const clearResponseStudentTimeOut = () => ({
     type:ResponsesStudentTypes.CLEAR_RESPONSE_STUDENT_TIMEOUT,
-    payload:res,
+    // payload:res,
 });

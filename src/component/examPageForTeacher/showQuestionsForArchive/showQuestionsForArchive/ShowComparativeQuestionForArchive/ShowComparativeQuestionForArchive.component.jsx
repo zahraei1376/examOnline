@@ -5,7 +5,7 @@ import ShowComparativeItemForArchive from './compareItemForArchive/ShowComparati
 /////////////
 const ShowComparativeItemsForArchive = ({number,items,comparativeRes})=>{
 
-    const [questionRes,setQuestionRes] = useState(Array(items.question_compItems.length).fill(0).map(row => new Array(2).fill('')));
+    const [questionRes,setQuestionRes] = useState(Array(items.length).fill(0).map(row => new Array(2).fill('')));
 
     const handleRes = (i , text) =>{
         var temp =[...questionRes];
@@ -21,7 +21,7 @@ const ShowComparativeItemsForArchive = ({number,items,comparativeRes})=>{
     return(
         <ComparativeItemsConatiner>
             {
-                items.question_compItems.map((item , index) =>(
+                items.map((item , index) =>(
                     <ShowComparativeItemForArchive item={item} resItem={comparativeRes[index]} key={index} myIndex={index} handleRes={handleRes} />
                 ))
             }
@@ -30,13 +30,18 @@ const ShowComparativeItemsForArchive = ({number,items,comparativeRes})=>{
     )
 }
 
-const ShowComparativeQuestionForArchive = ({question, number,type}) =>{
+const ShowComparativeQuestionForArchive = ({question, number,type ,responseQuestion}) =>{
     return(
         <ShowBodyQuestionsForArchive myType={type} question={question} number={number} 
-        responseScore = {question.response_score}
+        responseScore = {responseQuestion ? responseQuestion.response_score : ''}
         // responseScore = {responseQuestion.response_score}
         >
-            <ShowComparativeItemsForArchive number={number} items={question} comparativeRes={question.response_comparativeQuestion}/>
+            <ShowComparativeItemsForArchive number={number} 
+            // items={question} 
+            items={responseQuestion && responseQuestion.response_comparativeQuestionRandom && responseQuestion.response_comparativeQuestionRandom.length > 0 ? responseQuestion.response_comparativeQuestionRandom : question.question_compItems} 
+            comparativeRes={responseQuestion ? responseQuestion.response_comparativeQuestion : ''}
+            // comparativeRes={responseQuestion ? responseQuestion.response_comparativeQuestionRandom : ''}
+            />
         </ShowBodyQuestionsForArchive>
     )
 };

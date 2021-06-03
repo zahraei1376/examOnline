@@ -34,7 +34,9 @@ const SequentialItemsForArchive = ({number,items , SeqResponse})=>{
         <SequentialConatiner>
              <SequentialItemConatiner>
             {
-                items.question_SeqItems.length > 0 ? items.question_SeqItems.map((item,index) =>(
+                
+                // items.question_seqItems && items.question_seqItems.length > 0 ? items.question_seqItems.map((item,index) =>(
+                    items && items.length > 0 ? items.map((item,index) =>(
                     // console.log('item',item)
                     <SequentialInputContainer key={index}>
                         
@@ -59,15 +61,16 @@ const SequentialItemsForArchive = ({number,items , SeqResponse})=>{
             
                     
             {
-                items.question_SeqItems.length > 0 ? items.question_SeqItems.map((item,index) =>{
-                    var res =SeqResponse[index];
-                     console.log('res',res)
+                // items.question_seqItems && items.question_seqItems.length > 0 ? items.question_seqItems.map((item,index) =>{
+                    items && items.length > 0 ? items.map((item,index) =>{
+                    var res = SeqResponse[index];
+                     console.log('ressssssssssssssssssssssssssss',res[1])
                     return(
                    
                     <SequentialResInputContainer key={index}>
                         
                         <SequentialResInput type="text" 
-                            value={res ? res[1] : ''} 
+                            value={res ? res[0] : ''} 
                             readOnly
                         // onChange={(e) => handleSetRes(index ,e.target.value)} 
                         />
@@ -80,10 +83,19 @@ const SequentialItemsForArchive = ({number,items , SeqResponse})=>{
     )
 }
 
-const ShowSequentialQuestionForArchive = ({question, number,type }) =>{
+const ShowSequentialQuestionForArchive = ({question, number,type ,responseQuestion }) =>{
+    useEffect(()=>{
+        console.log('responseQuestion.response_sequentialQuestionRandom',responseQuestion.response_sequentialQuestion);
+    })
     return(
-        <ShowBodyQuestionsForArchive myType={type} question={question} number={number} responseScore = {question.response_score}>
-            <SequentialItemsForArchive number={number} items={question} SeqResponse={question.response_sequentialQuestion} />
+        <ShowBodyQuestionsForArchive myType={type} question={question} number={number} responseScore = {responseQuestion ? responseQuestion.response_score : ''}>
+            <SequentialItemsForArchive number={number} 
+            // items={question} 
+            items={responseQuestion && responseQuestion.response_sequentialQuestionRandom && responseQuestion.response_sequentialQuestionRandom.length > 0 ? responseQuestion.response_sequentialQuestionRandom : question.question_seqItems} 
+            // items={responseQuestion ? responseQuestion.response_sequentialQuestionRandom : ''} 
+            SeqResponse={responseQuestion ? responseQuestion.response_sequentialQuestion : ''}
+            // SeqResponse={responseQuestion ? responseQuestion.response_sequentialQuestionRandom : ''}
+             />
         </ShowBodyQuestionsForArchive>
     )
 };

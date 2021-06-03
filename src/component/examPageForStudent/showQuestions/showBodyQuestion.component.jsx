@@ -36,6 +36,7 @@ const ShowBodyQuestions = ({
     ////////////////////////////////////////setToRedux
     const [resForRedux , setResForRedux] = useState('');
     const [responseDesImage ,setResponseDesImage] = useState('');
+    const [randomValue , setRandomValue] = useState([]);
     ////////////////////////////////////////////messageBox
     const [showMessage,setShowMessage] = useState(false);
     const [message,setMessage] =useState('');
@@ -43,13 +44,13 @@ const ShowBodyQuestions = ({
     //////////////////////////////////////////
     const [responseQuestion,setResponseQuestion] = useState('');
     //////////////////////////////////////////
-    // useEffect(()=>{
-    //   console.log('bodyRes',ResItem);
-    // },[])
-    ///////////////////////////////////////////
     useEffect(()=>{
-        console.log('getValueTimeOutToSolveQuestions',getValueTimeOutToSolveQuestions);
-    });
+      console.log('randomValue',randomValue);
+    },[randomValue])
+    ///////////////////////////////////////////
+    // useEffect(()=>{
+    //     console.log('getValueTimeOutToSolveQuestions',getValueTimeOutToSolveQuestions);
+    // });
     ///////////////////////////////////////////
     const showPic = () => {
       setShowImage(!showImage);
@@ -85,7 +86,7 @@ const ShowBodyQuestions = ({
     };
     ///////////////////////////////////////////
     const handleNextQuestion = async() =>{
-        // console.log("CCCCCCCCC:", resForRedux);
+        console.log("question.question_type:",question.question_type, randomValue);
         await addResponse({ variables: { 
             userName: "210",
             password: "210",
@@ -96,7 +97,9 @@ const ShowBodyQuestions = ({
             response_comparativeQuestion: question.question_type == '5' ? resForRedux : [], 
             response_descriptionQuestion: question.question_type == '1' ? resForRedux : "",
             response_vancyQuestion: question.question_type == '4' ? resForRedux : [],
-            response_score: "1"
+            response_comparativeQuestionRandom: question.question_type == '5' ? randomValue :'',
+            response_sequentialQuestionRandom: question.question_type == '6' ? randomValue : '',
+            response_score: "0"
          } 
         }).then(res=>{
           if(res.data && res.data.addResponse){
@@ -141,6 +144,7 @@ const ShowBodyQuestions = ({
           return React.cloneElement(child, { 
             setResForRedux: setResForRedux ,
             setResponseDesImage:setResponseDesImage,
+            setRandomValue:setRandomValue,
             // setResponseQuestion:setResponseQuestion,
             // responseQuestion:responseQuestion,
           });

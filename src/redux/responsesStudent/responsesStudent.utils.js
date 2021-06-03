@@ -9,10 +9,11 @@ moment().format('jYYYY/jMM/jDD')
 
 // export const setQuestionResponseForStudent = (id , res , responseArray) =>{
 export const setQuestionResponseForStudent = (res , responseArray) =>{
-    // console.log('responseresponse', res);
-    var existId = responseArray.find(item => item.id === res.id);
+    console.log('responseresponse', responseArray);
+    // if()
+    // var existId = responseArray.find(item => item.id === res.id);
     // console.log('existId',existId);
-    if(existId){
+    if(responseArray.length > 0){
         // console.log('id id exist');
         // console.log('responseArray.length',responseArray.length);
         // responseArray.map(item => item.id === res.id ? {...item , res : res.res} : item);
@@ -35,7 +36,7 @@ export const setQuestionResponseForStudent = (res , responseArray) =>{
     return  responseArray;
 }
 
-export const clearQuestionsResponseForStudent = async(examPID , responseArray) =>{
+export const clearQuestionsResponseForStudent = (examPID , responseArray) =>{
     // for (let index = 0; index < responseArray.length; index++) {
     //     console.log('responseArray[index].id',responseArray[index].examPID);
     //     if(responseArray[index].examPID === examPID){
@@ -48,14 +49,22 @@ export const clearQuestionsResponseForStudent = async(examPID , responseArray) =
 
     ////////////////////////////////////////////////////////////////
     if(responseArray.length > 0){
-        for await (let [i, res] of responseArray.entries()) {
-            // console.log('responseArray',i); 
-            if(res.examPID === examPID){
-                responseArray.splice(i , 1);
+        for (let index = 0; index < responseArray.length; index++) {
+            // console.log('responseArray[index].id',responseArray[index].id);
+            if(responseArray[index].examPID === examPID){
+                responseArray.splice(index , 1);
                 // console.log('responseArray',responseArray); 
                 // return;
             }
         }
+        // for await (let [i, res] of responseArray.entries()) {
+        //     // console.log('responseArray',i); 
+        //     if(res.examPID === examPID){
+        //         responseArray.splice(i , 1);
+        //         // console.log('responseArray',responseArray); 
+        //         // return;
+        //     }
+        // }
         // if(!responseArray){
         //     return [];
         // }
@@ -68,29 +77,38 @@ export const clearQuestionsResponseForStudent = async(examPID , responseArray) =
 }
 
 
-export const clearQuestionsResponseForStudentWhenTimeOut = async(responseArray) =>{
+export const clearQuestionsResponseForStudentWhenTimeOut = (responseArray) =>{
+    console.log('clearQuestionsResponseForStudentWhenTimeOut', responseArray);
+    // var nowDate = fixNumbers(moment(realeTime).format('jYYYY/jMM/jDD'));
+    // var nowTime =  realeTime.toLocaleTimeString([], {
+    //     timeZone: "Asia/Tehran",
+    //     hour: '2-digit',
+    //     minute: '2-digit',
+    //     second: '2-digit',
+    //     hour12: false,
+    // });
+    // ////////////////////////////////////////////////////////////////
+    // if (responseArray && responseArray.length > 0) {
 
-    var nowDate = fixNumbers(moment(realeTime).format('jYYYY/jMM/jDD'));
-    var nowTime =  realeTime.toLocaleTimeString([], {
-        timeZone: "Asia/Tehran",
-        hour: '2-digit',
-        minute: '2-digit',
-        second: '2-digit',
-        hour12: false,
-    });
-    ////////////////////////////////////////////////////////////////
-    if (responseArray && responseArray.length > 0) {
+    //     // for await (let [i, res] of responseArray.entries()) {
+    //     //     // console.log('responseArray',i); 
+    //     //     // if(res.examPID === examPID){
+    //     //     if(nowTime > res.examEndTime && nowDate > res.examEndDate){
+    //     //         responseArray.splice(i , 1);
+    //     //         // console.log('responseArray',responseArray); 
+    //     //         // return;
+    //     //     }
+    //     // }
 
-        for await (let [i, res] of responseArray.entries()) {
-            // console.log('responseArray',i); 
-            // if(res.examPID === examPID){
-            if(nowTime > res.examEndTime && nowDate > res.examEndDate){
-                responseArray.splice(i , 1);
-                // console.log('responseArray',responseArray); 
-                // return;
-            }
-        }
-    }
-    // console.log('responseArrayresponseArray',responseArray); 
-    return  responseArray;
+    //     for (let index = 0; index < responseArray.length; index++) {
+    //         // console.log('responseArray[index].id',responseArray[index].id);
+    //         if(nowTime > responseArray[index].examEndTime && nowDate > responseArray[index].examEndDate){
+    //             responseArray.splice(index , 1);
+                
+    //         }
+    //     }
+    // }
+    // // console.log('responseArrayresponseArray',responseArray); 
+    // return  responseArray;
+    return [];
 }

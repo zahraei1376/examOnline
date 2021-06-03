@@ -128,8 +128,12 @@ const ArchiveForStudent = () => {
         if(EPD && EPD.length > 0 ){
             var cn = exams[index].course;
             for (let index2 = 0; index2 < EPD.length; index2++) {
+              var examChild =  EPD[index2].examChild;
+              for (let index3 = 0; index3 < examChild.length; index3++) {
+                // const element = examChild[index3];
                 MyRows.push({
-                  id : EPD[index2].id,
+                  id : examChild[index3].id,
+                  // id : EPD[index2].id,
                   exam_courseName : cn,
                   teacher_name : exams[index].people[0].name + ' ' + exams[index].people[0].surname ,
                   examParent_topic : EPD[index2].examParent_topic,
@@ -137,10 +141,27 @@ const ArchiveForStudent = () => {
                   examParent_stop_date : EPD[index2].examParent_stop_date,
                   examParent_start : EPD[index2].examParent_start ,
                   examParent_end : EPD[index2].examParent_end ,
+                  examParent_duration: EPD[index2].examParent_duration,
                   // examParent_start : EPD[index2].examParent_start ? fixNumbers(moment(EPD[index2].examParent_start).tz('Asia/Tehran').format('HH:mm:00')) : '',
                   // examParent_end : EPD[index2].examParent_end ? fixNumbers(moment(EPD[index2].examParent_end).tz('Asia/Tehran').format('HH:mm:00')) : '',
                   }
               )
+                
+              }
+              //   MyRows.push({
+              //     id : EPD[index2].id,
+              //     exam_courseName : cn,
+              //     teacher_name : exams[index].people[0].name + ' ' + exams[index].people[0].surname ,
+              //     examParent_topic : EPD[index2].examParent_topic,
+              //     examParent_start_date : EPD[index2].examParent_start_date,
+              //     examParent_stop_date : EPD[index2].examParent_stop_date,
+              //     examParent_start : EPD[index2].examParent_start ,
+              //     examParent_end : EPD[index2].examParent_end ,
+              //     examParent_duration: EPD[index2].examParent_duration,
+              //     // examParent_start : EPD[index2].examParent_start ? fixNumbers(moment(EPD[index2].examParent_start).tz('Asia/Tehran').format('HH:mm:00')) : '',
+              //     // examParent_end : EPD[index2].examParent_end ? fixNumbers(moment(EPD[index2].examParent_end).tz('Asia/Tehran').format('HH:mm:00')) : '',
+              //     }
+              // )
               
             }
             
@@ -151,19 +172,19 @@ const ArchiveForStudent = () => {
     setDataTable(MyRows);
   }
   ////////////////////////////////////
-  useEffect(()=>{
-    var getReq = setInterval(() => {
-      refetch();
-    }, 60000);
+  // useEffect(()=>{
+  //   var getReq = setInterval(() => {
+  //     refetch();
+  //   }, 60000);
 
-    return () => {
-      clearInterval(getReq);
-    };
-  },[])
+  //   return () => {
+  //     clearInterval(getReq);
+  //   };
+  // },[])
 
   useEffect(()=>{
     if(data && data.groupsListByStudent){
-      // console.log('data.groupsListByStudent',data.groupsListByStudent);
+      console.log('data.groupsListByStudent',data.groupsListByStudent);
         createRows(data.groupsListByStudent);
     }
   },[data]);
@@ -178,6 +199,9 @@ const ArchiveForStudent = () => {
     refetch();
   },[newSelectedDate]);
   ////////////////////////////////////
+  useEffect(()=>{
+    console.log('createeeeeeeTable');
+  },[]);
   return (
     <div>
       <Grid style={{border:'1px solid #000',margin:'3rem'}} >

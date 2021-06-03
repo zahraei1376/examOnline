@@ -89,7 +89,7 @@ export const PopUpScoreContent = styled.div`
 
 export const PopUpScoreHeader = styled.div`
     margin: 10px;
-    padding: 20px;
+    padding: 0 20px 10px 20px;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -110,15 +110,30 @@ export const PopUpScoreHeaderTime = styled.h1`
     font-size: 16px;
     text-align: center;
     font-family: 'BNazanin';
+	margin-top:2rem;
 `;
 
-export const PopUpScoreHeaderDelay = styled.div`
+export const PopUpScoreHeaderDelayContainer = styled.div`
+    text-align: center;
+	display:flex;
+    justify-content:space-evenly;
+    align-items:center;
+    font-family:Bnazanin;
+`;
+
+export const PopUpScoreHeaderDelay = styled.p`
     color: red;
     font-size: 18px;
     text-align: center;
 `;
 
+export const PopUpScoreHeaderFile = styled.a`
+	font-size: 18px;
+	text-align: center;
+`;
+
 export const PopUpScoreBtnClose = styled.button`
+		cursor:pointer;
 		// font-family: 'BNazanin';
 		// font-size: large;
 		// width: 5rem;

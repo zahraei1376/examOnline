@@ -2,7 +2,7 @@ import React,{useState,useEffect} from 'react';
 import {BodyContainer,BodyQuestion,BodyQuestionBoxWithChildren,BodyQuestionBoxContainer,BodyQuestionBox,BodyDiv,ImageQuestion,ImageQuestionContainer,
     ImageWithQuestionContainer , ImageWithQuestion,ScoreTag,ImageQuestionMainContainer,
     InputScoreContainer,InputScore,InputScoreLabel,BtnOk} from './showBodyQuestionForArchive.styles';
-import ExplainQuestion from '../../../explainQuestionComponent/explainQuestionComponent.component';
+import ExplainQuestion from '../../../explainQuestionComponent/explainQuestionComponentForArchive.component';
 import MyPic from '../../../../assets/img/images.jpg';
 import MyPic2 from '../../../../assets/img/image2.jpg';
 /////////////////////////
@@ -36,6 +36,9 @@ const ShowBodyQuestionsForArchive = ({question,number,myType,children,responseSc
     const [imageSrc, setImageSrc] = useState('');
     const [captionImage, setCaptionImage] = useState(false);
     const [showImage, setShowImage] = useState(false);
+    //////////////////////////////////////////////////////////////
+    const [responseDesImage ,setResponseDesImage] = useState('');
+    //////////////////////////////////////////////////////////////
 
     const [score, setScore] = useState(responseScore ? responseScore : '');
     // const [score, setScore] = useState('');
@@ -116,13 +119,104 @@ const ShowBodyQuestionsForArchive = ({question,number,myType,children,responseSc
     // });
   }
 
+  const childrenWithProps = React.Children.map(children, child => {
+    if (React.isValidElement(child)) {
+      return React.cloneElement(child, { 
+        // setResponseDesImage:setResponseDesImage,
+        setShowImage:setShowImage,
+        setImageSrc:setImageSrc,
+        // setResponseQuestion:setResponseQuestion,
+        // responseQuestion:responseQuestion,
+      });
+    }
+    return child;
+  });
+
 
     return(
     <BodyContainer>
         <BodyQuestionBoxWithChildren>
         <BodyQuestionBoxContainer>
             <BodyQuestionBox>
-            {question.exam_link ? (
+            {(() => {
+              if(question.question_link){
+                <ImageQuestionMainContainer>
+                    <ImageQuestionContainer>
+                        <ImageQuestion
+                        onClick={() =>
+                            handleShowPic(question.question_link)
+                        }
+                        src={question.question_link}
+                        // src={question.exam_link}
+                        // src={`https://kamal-exam.s3.ir-thr-at1.arvanstorage.com/${question.exam_link}`}
+                        />
+                        <ExplainQuestion responseID={question.response && question.response.length > 0 ? question.response[0].id : ''} id={question.id} myType = {myType} number={number} explain={question.question_explane} time={question.question_timeToSolveProblem}/>
+                    </ImageQuestionContainer>
+                    <ScoreTag
+                    >
+                    (نمره {question.question_score})
+                    </ScoreTag>
+                    
+                    
+                </ImageQuestionMainContainer>
+                  /////////////////////////////////////////////
+                //   return <ImageQuestionMainContainer>
+                //     <ImageQuestionContainer>
+                //         <ExplainQuestion number={number} explain={question.question_explain} time={question.question_timeToSolveProblem}/>
+                //             <ImageQuestion
+                //             onClick={() =>
+                //                 handleShowPic(question.question_link)
+                //             }
+                //             // src={MyPic}
+                //             src={question.question_link}
+                //             />
+                            
+                //         </ImageQuestionContainer>
+                //     <ScoreTag
+                //     >
+                //     (نمره {question.question_score})
+                //     </ScoreTag>
+                        
+                        
+                //   </ImageQuestionMainContainer>
+              }else{
+                if(question.exam_link){
+                  return (<ImageQuestionMainContainer>
+                    <BodyDiv>
+                      <ExplainQuestion responseID={question.response && question.response.length > 0 ? question.response[0].id : ''} id={question.id} myType = {myType} number={number} explain={question.question_explain} time={question.question_timeToSolveProblem}/>
+                      <BodyQuestion>
+                          {question.question.split('%0A').join('\r\n')}
+                          <br/> (
+                          {question.question_score} نمره)
+                      </BodyQuestion>
+                      
+                  </BodyDiv>
+                    <ImageWithQuestionContainer>
+                    <ImageWithQuestion
+                    onClick={() => handleShowPic(question.exam_link)}
+                    // src={MyPic2}
+                    src={question.exam_link}
+                    />
+                </ImageWithQuestionContainer>
+                </ImageQuestionMainContainer>)
+                }else{
+                  return (<BodyDiv>
+                    <ExplainQuestion responseID={question.response && question.response.length > 0 ? question.response[0].id : ''} id={question.id} myType = {myType} number={number} explain={question.question_explain} time={question.question_timeToSolveProblem}/>
+                    <BodyQuestion>
+                        {question.question.split('%0A').join('\r\n')}
+                        <br/> (
+                        {question.question_score} نمره)
+                    </BodyQuestion>
+                  
+                  </BodyDiv>)
+                  
+                }
+                  
+              }
+              
+            })()}
+                {/* ////////////////////////////////////////////////////////////////// */}
+            {/* {question.exam_link ? (
                  <ImageWithQuestionContainer>
                  <ImageWithQuestion
                  onClick={() => handleShowPic(`https://kamal-exam.s3.ir-thr-at1.arvanstorage.com/${question.exam_link}`)}
@@ -147,8 +241,6 @@ const ShowBodyQuestionsForArchive = ({question,number,myType,children,responseSc
                          )
                      }
                      src={MyPic}
-                     // src={question.exam_link}
-                     // src={`https://kamal-exam.s3.ir-thr-at1.arvanstorage.com/${question.exam_link}`}
                      />
                      <ExplainQuestion number={number} explain={question.question_explane} time={question.question_timeToSolveProblem}/>
                  </ImageQuestionContainer>
@@ -176,25 +268,18 @@ const ShowBodyQuestionsForArchive = ({question,number,myType,children,responseSc
                 </BodyDiv>
             ) : (
                 ''
-                )}
+                )} */}
             </BodyQuestionBox>
             <InputScoreContainer>
-                {/* <Tooltip title="تایید" aria-label="تایید"  style={{ fontSize:'3rem'}} >
-                    <BtnOk 
-                        onClick={sendScore}
-                    >
-                        <DoneIcon style={{ fontSize:'3rem'}} />
-                    </BtnOk>
-                </Tooltip> */}
-                <InputScore type="number" readOnly={myType == '0' ? true : false} value={score} onChange={e => setScore(e.target.value)} />
                 <InputScoreLabel>نمره تخصیص داده شده</InputScoreLabel>
-                
+                <InputScore type="number" readOnly={myType == '0' ? true : false} value={score} onChange={e => setScore(e.target.value)} />
             </InputScoreContainer>
         </BodyQuestionBoxContainer>
         
         {/* //////////////////////////////////////////////children */}
         {/* <children/> */}
-        {children}
+        {childrenWithProps}
+        {/* {children} */}
         </BodyQuestionBoxWithChildren>
         {/* /////////////////////////////////footer */}
         {/* <FooterQuestionContainer>

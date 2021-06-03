@@ -304,3 +304,25 @@ export const ShowImageCaption = styled.p`
 		//   transform: translate(-50%, 0);
 		//   height: auto;
 `;
+
+export const BtnClose = styled.button`
+	width: 6rem;
+	height: 6rem;
+	background-color: rgb(63, 135, 166);
+	color: #fff;
+	border-radius: 50%;
+	outline: none;
+	border:1px solid transparent;
+	position: absolute;
+	top: 1rem;
+	right: 5rem;
+	font-size:2rem;
+	font-family:Bnazanin;
+	cursor:pointer;
+	transition:all 0.3s;
+	&:hover{
+		background-color: #fff;
+		border:1px solid rgb(63, 135, 166);
+		color:rgb(63, 135, 166);
+	}
+`;
